@@ -9,7 +9,7 @@ const gameRows = [
   ["BALL x PIT", 2062430],
   ["Bless Online", 681660],
   ["Breathedge", 738520],
-  ["Castlevania: Belmont's Curse", 4231820, "October 15, 2026"],
+  ["Castlevania: Belmont's Curse", 4231820, "2026-10-15", "October 15, 2026"],
   ["Clair Obscur: Expedition 33", 1903340],
   ["Dead Cells", 588650],
   ["Dead Frontier 2", 744900],
@@ -94,12 +94,13 @@ const gameRows = [
 ];
 
 window.GAME_LIBRARY = Object.freeze(
-  gameRows.map(([title, appId, releaseDate], index) =>
+  gameRows.map(([title, appId, releaseDate, releaseLabel], index) =>
     Object.freeze({
       number: index + 1,
       title,
       appId,
       releaseDate: releaseDate || null,
+      releaseLabel: releaseLabel || null,
     }),
   ),
 );

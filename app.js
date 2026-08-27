@@ -5,7 +5,6 @@
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
   const libraryCount = document.querySelector("#library-count");
-  const upcomingArt = document.querySelector("#upcoming-art");
 
   const headerFallbacks = Object.freeze({
     11610: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/11610/header.jpg?t=1516788252",
@@ -61,6 +60,21 @@
       .toUpperCase() || "GAME";
   }
 
+  function isGameUpcoming(game, now) {
+    if (!game.releaseDate) return false;
+
+    const dateParts = game.releaseDate.split("-").map(Number);
+    if (dateParts.length !== 3 || dateParts.some(Number.isNaN)) return false;
+
+    const releaseStart = new Date(
+      dateParts[0],
+      dateParts[1] - 1,
+      dateParts[2],
+    );
+
+    return now < releaseStart;
+  }
+
   function createCover(game, eager) {
     const shell = document.createElement("div");
     shell.className = "cover-shell";
@@ -103,6 +117,7 @@
   }
 
   function createGameCard(game, index) {
+    const upcoming = isGameUpcoming(game, new Date());
     const card = document.createElement("a");
     card.className = "game-card";
     card.href = `https://store.steampowered.com/app/${game.appId}/`;
@@ -110,7 +125,7 @@
     card.rel = "noopener noreferrer";
     card.setAttribute("aria-label", `View ${game.title} on Steam`);
 
-    if (game.releaseDate) {
+    if (upcoming) {
       card.classList.add("upcoming-game");
     }
 
@@ -128,24 +143,20 @@
 
     details.append(number, title);
 
-    if (game.releaseDate) {
+    if (upcoming) {
       const release = document.createElement("p");
       release.className = "card-release";
-      release.textContent = `Coming ${game.releaseDate}`;
+      release.append("Coming ");
+
+      const releaseTime = document.createElement("time");
+      releaseTime.dateTime = game.releaseDate;
+      releaseTime.textContent = game.releaseLabel || game.releaseDate;
+      release.append(releaseTime);
       details.append(release);
     }
 
     card.append(cover, details);
     return card;
-  }
-
-  function renderUpcomingCover() {
-    if (!upcomingArt) return;
-
-    const upcomingGame = games.find((game) => game.releaseDate);
-    if (!upcomingGame) return;
-
-    upcomingArt.append(createCover(upcomingGame, true));
   }
 
   function renderLibrary() {
@@ -162,6 +173,5 @@
     grid.replaceChildren(fragment);
   }
 
-  renderUpcomingCover();
   renderLibrary();
 })();

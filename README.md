@@ -27,3 +27,7 @@ The published site will appear at:
 Cover art is loaded from official Steam store assets by app ID. If Steam does
 not provide a vertical cover for a title, the card automatically displays a
 branded text fallback instead.
+
+Castlevania: Belmont's Curse remains in the 92-game library. Its card is marked
+as coming soon until October 15, 2026, then automatically becomes a regular
+game card based on the visitor's local date.

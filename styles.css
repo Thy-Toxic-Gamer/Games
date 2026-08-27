@@ -132,8 +132,7 @@ main {
   margin-bottom: clamp(2.5rem, 5vw, 5rem);
 }
 
-.eyebrow,
-.status-label {
+.eyebrow {
   margin: 0 0 0.75rem;
   color: var(--toxic);
   font-size: 0.78rem;
@@ -162,68 +161,6 @@ h1 {
   margin-bottom: 0;
   color: var(--muted);
   font-size: clamp(1rem, 2vw, 1.2rem);
-}
-
-.upcoming {
-  display: grid;
-  grid-template-columns: minmax(180px, 330px) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: center;
-  margin-bottom: clamp(4rem, 8vw, 8rem);
-  padding: clamp(1rem, 3vw, 2.5rem);
-  border: 1px solid var(--toxic);
-  border-left-width: 6px;
-  background: var(--surface);
-  box-shadow: 0 24px 60px var(--shadow);
-}
-
-.upcoming-art {
-  max-width: 330px;
-}
-
-.upcoming-copy {
-  max-width: 720px;
-}
-
-.upcoming h2 {
-  margin-bottom: 0.55rem;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1;
-  letter-spacing: -0.045em;
-}
-
-.upcoming-copy > p:not(.status-label):not(.release-date) {
-  max-width: 610px;
-  color: var(--muted);
-}
-
-.release-date {
-  margin-bottom: 1rem;
-  color: var(--toxic-soft);
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
-  font-weight: 700;
-}
-
-.steam-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--toxic);
-  color: var(--toxic);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background-color 160ms ease, color 160ms ease;
-}
-
-.steam-link:hover,
-.steam-link:focus-visible {
-  background: var(--toxic);
-  color: #071000;
 }
 
 .section-heading {
@@ -403,15 +340,6 @@ footer p {
 
   main {
     padding-top: 3.25rem;
-  }
-
-  .upcoming {
-    grid-template-columns: 1fr;
-  }
-
-  .upcoming-art {
-    width: min(72vw, 300px);
-    margin: 0 auto;
   }
 
   .section-heading {
