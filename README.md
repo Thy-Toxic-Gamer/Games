@@ -2,6 +2,27 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 6.5 — Never-Crop Code of Princess EX
+
+- Code of Princess EX now receives an explicit full-cover class in both its Switch card and hover preview, guaranteeing the entire supplied cover remains visible.
+
+## Version 6.4 — Complete Code of Princess EX Artwork
+
+- Code of Princess EX now shows the entire supplied Nintendo Switch cover inside its card instead of cropping the artwork.
+
+## Version 6.3 — PC Tab-Style Front Panel
+
+- The PC front panel now uses the same wide Steam artwork, card proportions, numbering, titles, spacing, and wrapping grid as the full PC tab.
+- The PC preview displays 12 games in two six-card rows on wide screens, matching the supplied reference.
+- Responsive columns keep every preview inside the panel without overlap or horizontal overflow.
+
+## Version 6.2 — Matching Tab Covers + Responsive PC Showcase
+
+- Atelier Ryza Secret Trilogy Deluxe Pack and Code of Princess EX now use the supplied local Nintendo Switch artwork.
+- PC front-page cards now reuse the exact artwork shown in the PC tab instead of loading separate portrait covers.
+- The PC front-page showcase still displays exactly 22 games.
+- Responsive column counts now keep all PC cards inside the panel without overlap or horizontal overflow.
+
 ## Included changes
 
 - Professional multi-platform dashboard on the **All** tab

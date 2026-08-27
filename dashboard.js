@@ -10,7 +10,7 @@
 
   const platformMeta = Object.freeze({
     switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
-    pc: { label: "PC", icon: "▣", limit: 22, accent: "#79b51f" },
+    pc: { label: "PC", icon: "▣", limit: 12, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
@@ -50,11 +50,6 @@
       "FINAL FANTASY VII REBIRTH",
       "Resident Evil 4",
     ]),
-  });
-
-  const pcPreviewCoverOverrides = Object.freeze({
-    "BALL x PIT": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2062430/b6cabe1940c55119820eee4ed2d0b604bd5b3af4/library_600x900.jpg",
-    "Castlevania: Belmont\'s Curse": "assets/covers/pc/castlevania-belmonts-curse.png",
   });
 
   const previewRotationInterval = 20000;
@@ -100,46 +95,12 @@
     const clone = card.cloneNode(true);
     clone.classList.add("dashboard-card");
 
-    if (platformId === "pc") {
-      const image = clone.querySelector(".game-cover");
-      const href = clone.getAttribute("href") || "";
-      const match = href.match(/\/app\/(\d+)/);
-      const title = clone.querySelector(".game-details h3")?.textContent?.trim() || "";
-
-      const portraitOverride = pcPreviewCoverOverrides[title];
-      const canUseSteamPortrait = match && !clone.classList.contains("upcoming-game");
-
-      if (image && (portraitOverride || canUseSteamPortrait)) {
-        const original = image.src;
-        const portrait = portraitOverride
-          || `https://cdn.cloudflare.steamstatic.com/steam/apps/${match[1]}/library_600x900.jpg`;
-        image.classList.remove("landscape-cover", "landscape-art");
-        image.classList.add("portrait-cover", "portrait-art");
-        image.src = portrait;
-        image.addEventListener("error", function restoreHeader() {
-          image.src = original;
-          image.classList.remove("portrait-cover", "portrait-art");
-          image.classList.add("landscape-cover", "landscape-art");
-        }, { once: true });
-      } else if (image && clone.classList.contains("upcoming-game")) {
-        image.classList.remove("portrait-cover", "portrait-art");
-        image.classList.add("unreleased-landscape");
-      }
-    }
-
     const details = clone.querySelector(".game-details");
     const genre = clone.querySelector(".game-genre")?.textContent?.trim() || "Game";
 
-    if (details) {
+    if (details && platformId !== "pc") {
       const metadata = document.createElement("div");
       metadata.className = "dashboard-card-meta";
-
-      if (platformId === "pc") {
-        const store = document.createElement("span");
-        store.className = "dashboard-card-store";
-        store.textContent = "● Steam";
-        metadata.append(store);
-      }
 
       const category = document.createElement("span");
       category.className = "dashboard-card-category";
@@ -389,9 +350,11 @@
     if (sourceImage) {
       image.src = sourceImage.currentSrc || sourceImage.src;
       image.alt = `${title} cover art`;
+      image.classList.toggle("full-cover-art", sourceImage.classList.contains("full-cover-art"));
     } else {
       image.removeAttribute("src");
       image.alt = "";
+      image.classList.remove("full-cover-art");
     }
 
     positionPopover(card);

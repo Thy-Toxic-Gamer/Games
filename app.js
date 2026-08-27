@@ -387,6 +387,9 @@
     image.dataset.coverAttempt = game.image ? "external" : "header";
 
     image.classList.add(game.image ? "console-cover" : "landscape-cover");
+    if (game.title === "Code of Princess EX") {
+      image.classList.add("full-cover-art");
+    }
     shell.classList.add("has-cover-image");
     shell.style.setProperty(
       "--cover-image",
