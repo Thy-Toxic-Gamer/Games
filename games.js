@@ -1,4 +1,4 @@
-const gameRows = [
+const pcRows = [
   ["30XX", 1029210],
   ["Albion Online", 761890],
   ["Apex Legends", 1172470],
@@ -94,14 +94,120 @@ const gameRows = [
   ["Wizardry Variants Daphne", 2379740],
 ];
 
-window.GAME_LIBRARY = Object.freeze(
-  gameRows.map(([title, appId, releaseDate, releaseLabel], index) =>
-    Object.freeze({
-      number: index + 1,
-      title,
-      appId,
-      releaseDate: releaseDate || null,
-      releaseLabel: releaseLabel || null,
-    }),
-  ),
-);
+const switchRows = [
+  ["FINAL FANTASY I-VI Bundle", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70070000017105/665dad530a02655c926000cca05aeeb1e182384a2f530c5b9d3525778673e631"],
+  ["FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000098624/4f8dd05a9e8d3c390b3a1f683f15fbdcea55de7aec9537266957820f5581a30c"],
+  ["Atelier Ryza Secret Trilogy Deluxe Pack", "https://atelier.games/secretdx/assets/img/og2_en.jpg"],
+  ["FINAL FANTASY VII", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/39140/header.jpg?t=1771952602"],
+  ["Rogue Legacy 2", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1253920/header.jpg?t=1710829748"],
+  ["Guardian Tales", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000041655/2c8e04df5b0a67cadda0b78f4848ee28d901ee581028bcaea5c2adf861b7b145"],
+  [".hack//G.U. Last Recode", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/525480/header.jpg?t=1701322437"],
+  ["Valthirian Arc: Hero School Story", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/785850/header.jpg?t=1741786623"],
+  ["Sonic Mania", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/584400/header.jpg?t=1785856230"],
+  ["Record of Lodoss War-Deedlit in Wonder Labyrinth-", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1203630/header.jpg?t=1774922378"],
+  ["Miden Tower", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1265580/header.jpg?t=1725607858"],
+  ["Ruinverse", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1445430/header.jpg?t=1725607229"],
+  ["DRAGON BALL Z: KAKAROT + A NEW POWER AWAKENS SET", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/851850/header.jpg?t=1769139697"],
+  ["Mega Man Zero/ZX Legacy Collection", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/999020/header.jpg?t=1769135516"],
+  ["Actraiser Renaissance", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1393370/header.jpg?t=1776132573"],
+  ["Darksiders Genesis", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/710920/header.jpg?t=1754079110"],
+  ["Langrisser I & II", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1060220/header.jpg?t=1732585229"],
+  ["Paper Mario: The Origami King", "https://upload.wikimedia.org/wikipedia/en/5/59/Paper_Mario_The_Origami_King.jpg"],
+  ["Super Mario Maker 2", "https://upload.wikimedia.org/wikipedia/en/c/c7/Super_Mario_Maker_2.jpg"],
+  ["PixARK", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/593600/1b88b609b567b06c2cbc93becc5b6027b2626aa0/header_alt_assets_8.jpg?t=1787790345"],
+  ["Code of Princess EX", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000001438/876ae78e006e3026e02a4327115505c5eb5dbb29786580775e6fd1b5ec624699"],
+  ["Pokémon Shield", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000004492/6a824ace8e4b9504eb2937a1a054536d5dc2538ef8c9ef5ac7f1d9ab0f39a78a"],
+  ["OCTOPATH TRAVELER", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/921570/header.jpg?t=1785812096"],
+  ["Children of Morta", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/330020/header.jpg?t=1765218667"],
+  ["Minecraft", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000000964/a28a81253e919298beab2295e39a56b7a5140ef15abdb56135655e5c221b2a3a"],
+  ["Minecraft Dungeons", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1672970/header.jpg?t=1787063807"],
+  ["Tetris 99", "https://upload.wikimedia.org/wikipedia/en/7/76/Tetris99-coverart.png"],
+  ["Hello Neighbor", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/521890/header.jpg?t=1784143317"],
+  ["Diablo III: Eternal Collection", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000012305/9d8f95e20b59b76eab1a74aaefdabbabe6438b6761efc4efa6306dde638987f3"],
+  ["Goblin Sword", "https://upload.wikimedia.org/wikipedia/en/9/91/Goblin_Sword_cover.jpg"],
+  ["Crypt of the NecroDancer: Nintendo Switch Edition", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/247080/d82a7663aad7a678370462212071264cbee7fb47/header.jpg?t=1781119569"],
+  ["DRAGON QUEST XI S: Echoes of an Elusive Age - Definitive Edition", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1295510/header.jpg?t=1774588986"],
+  ["Teenage Mutant Ninja Turtles: The Cowabunga Collection", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1659600/header.jpg?t=1756915028"],
+  ["Teenage Mutant Ninja Turtles: Shredder's Revenge", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1361510/header.jpg?t=1782982752"],
+  ["MAGLAM LORD", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1799380/header.jpg?t=1782117308"],
+  ["Super Mario Odyssey", "https://upload.wikimedia.org/wikipedia/en/8/8d/Super_Mario_Odyssey.jpg"],
+  ["Sonic Frontiers", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1237320/header.jpg?t=1783493175"],
+  ["Metroid Prime 4: Beyond", "https://upload.wikimedia.org/wikipedia/en/4/48/Metroid_Prime_4_Beyond_cover_art.png"],
+  ["The Legend of Zelda: Echoes of Wisdom", "https://upload.wikimedia.org/wikipedia/en/1/1e/The_Legend_of_Zelda_%E2%80%93_Echoes_of_Wisdom.jpg"],
+  ["The Legend of Zelda: Link's Awakening", "https://upload.wikimedia.org/wikipedia/en/7/74/The_Legend_of_Zelda_Link%27s_Awakening_%282019_video_game%29.jpg"],
+  ["The Legend of Zelda: Skyward Sword HD", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000038612/63595b0826bb6ece7b95e4eb2a33e5ad0559224b350a5e2974a44f772963ae59"],
+  ["The Legend of Zelda: Breath of the Wild", "https://upload.wikimedia.org/wikipedia/en/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg"],
+];
+
+const ps5Rows = [
+  ["FINAL FANTASY XVI", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2515020/header.jpg?t=1773294537"],
+  ["Assassin's Creed Valhalla", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2208920/header.jpg?t=1786637382"],
+  ["The First Descendant", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2074920/dc8ac02c8328d66f2f78ea8b83472bdd7e281a62/header.jpg?t=1787211276"],
+  ["FINAL FANTASY VII REBIRTH", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg?t=1775124617"],
+  ["Resident Evil 4", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg?t=1772502922"],
+  ["The Legend of Dragoon", "https://upload.wikimedia.org/wikipedia/en/3/32/Legend_of_Dragoon.jpg"],
+  ["Dead Space", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1693980/header.jpg?t=1777396576"],
+  ["DRAGON BALL Z: KAKAROT", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/851850/header.jpg?t=1769139697"],
+  ["CRISIS CORE -FINAL FANTASY VII- REUNION", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1608070/header.jpg?t=1777343206"],
+  ["The Callisto Protocol", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1544020/header.jpg?t=1760331403"],
+  ["Sonic Frontiers", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1237320/header.jpg?t=1783493175"],
+  ["The Last of Us Part I", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg?t=1750959031"],
+  ["STRANGER OF PARADISE FINAL FANTASY ORIGIN", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1358700/header.jpg?t=1775030600"],
+  ["Horizon Forbidden West Digital Deluxe Content", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/header.jpg?t=1776465869"],
+  ["Horizon Forbidden West", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2420110/header.jpg?t=1776465869"],
+  ["Destiny 2", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1085660/0ccf0dc0a8c4ec078db7ab99ddc820b2fa884441/header.jpg?t=1781815889"],
+  ["FINAL FANTASY XIV Online", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/39210/header.jpg?t=1782870674"],
+  ["Ghost of Tsushima", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg?t=1763409398"],
+  ["Ratchet & Clank: Rift Apart Digital Deluxe Edition", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1895880/header.jpg?t=1750956328"],
+  ["Ruinverse", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1445430/header.jpg?t=1725607229"],
+  ["Hood: Outlaws & Legends", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/927350/header.jpg?t=1729038436"],
+  ["FINAL FANTASY VII REMAKE", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1462040/header.jpg?t=1773895755"],
+  ["OUTRIDERS", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/680420/header.jpg?t=1774022529"],
+  ["Marvel's Spider-Man Remastered", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1817070/header.jpg?t=1763569047"],
+];
+
+const snesRows = [
+  ["Chrono Trigger", "https://upload.wikimedia.org/wikipedia/en/a/a7/Chrono_Trigger.jpg"],
+  ["The Legend of Zelda: A Link to the Past", "https://upload.wikimedia.org/wikipedia/en/2/21/The_Legend_of_Zelda_A_Link_to_the_Past_SNES_Game_Cover.jpg"],
+  ["Secret of Mana", "https://upload.wikimedia.org/wikipedia/en/b/b7/Secret_of_Mana_Box.jpg"],
+  ["Secret of Evermore", "https://upload.wikimedia.org/wikipedia/en/9/99/Secret_of_Evermore.jpg"],
+];
+
+function freezePcGames(rows) {
+  return Object.freeze(
+    rows.map(([title, appId, releaseDate, releaseLabel], index) =>
+      Object.freeze({
+        number: index + 1,
+        title,
+        appId,
+        releaseDate: releaseDate || null,
+        releaseLabel: releaseLabel || null,
+      }),
+    ),
+  );
+}
+
+function freezeConsoleGames(rows) {
+  return Object.freeze(
+    rows.map(([title, image], index) =>
+      Object.freeze({
+        number: index + 1,
+        title,
+        image,
+      }),
+    ),
+  );
+}
+
+const platforms = Object.freeze([
+  Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
+  Object.freeze({ id: "switch", label: "Nintendo Switch", games: freezeConsoleGames(switchRows) }),
+  Object.freeze({ id: "ps5", label: "PS5", games: freezeConsoleGames(ps5Rows) }),
+  Object.freeze({ id: "snes", label: "SNES", games: freezeConsoleGames(snesRows) }),
+  Object.freeze({ id: "xbox", label: "Xbox", games: Object.freeze([]), comingSoon: true }),
+]);
+
+window.GAME_LIBRARY = Object.freeze({
+  platforms,
+  totalGames: platforms.reduce((total, platform) => total + platform.games.length, 0),
+});

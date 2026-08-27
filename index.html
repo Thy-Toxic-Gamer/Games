@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Explore ThyToxicGamer's complete 93-game library."
+      content="Explore ThyToxicGamer's multi-platform game library."
     />
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
@@ -25,7 +25,7 @@
         </span>
       </a>
       <div class="library-count" aria-label="Total games">
-        <strong id="header-count">93</strong>
+        <strong id="header-count">163</strong>
         <span>Games</span>
       </div>
     </header>
@@ -35,21 +35,43 @@
         <p class="eyebrow">☣ The Toxic Vault</p>
         <h1 id="page-title">The Complete Game Library</h1>
         <p class="intro-copy">
-          Every game in ThyToxicGamer's collection, gathered into one visual
-          library.
+          Explore ThyToxicGamer's PC, Nintendo Switch, PS5, and SNES
+          collections in one toxic vault.
         </p>
       </section>
 
       <section class="library-section" id="game-library" aria-labelledby="library-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Full Collection</p>
-            <h2 id="library-title">All <span id="library-count">93</span> Games</h2>
-          </div>
-          <p>Cover art loads directly from each game's Steam listing.</p>
-        </div>
+        <div
+          class="platform-tabs"
+          id="platform-tabs"
+          role="tablist"
+          aria-label="Game platforms"
+        ></div>
 
-        <div class="game-grid" id="game-grid" aria-live="polite"></div>
+        <div
+          class="platform-panel"
+          id="platform-panel"
+          role="tabpanel"
+          aria-labelledby="tab-pc"
+          tabindex="0"
+        >
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Full Collection</p>
+              <h2 id="library-title">
+                <span id="platform-name">PC Library</span>
+                <span class="count-chip" id="library-count">93 Games</span>
+              </h2>
+            </div>
+          </div>
+
+          <div class="game-grid" id="game-grid" aria-live="polite"></div>
+          <div class="coming-soon-panel" id="xbox-coming-soon" hidden>
+            <p class="eyebrow">Xbox Library</p>
+            <h3>Coming Soon</h3>
+            <p>Xbox games will be added here.</p>
+          </div>
+        </div>
         <noscript>
           <p class="noscript-message">
             JavaScript must be enabled to display the game library.
@@ -61,8 +83,8 @@
     <footer>
       <span aria-hidden="true">☣</span>
       <p>
-        Cover art is served from Steam. All game names, artwork, and trademarks
-        belong to their respective owners.
+        All game names, artwork, and trademarks belong to their respective
+        owners.
       </p>
     </footer>
   </body>

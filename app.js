@@ -1,10 +1,16 @@
 (function () {
   "use strict";
 
-  const games = Array.isArray(window.GAME_LIBRARY) ? window.GAME_LIBRARY : [];
+  const library = window.GAME_LIBRARY || { platforms: [], totalGames: 0 };
+  const platforms = Array.isArray(library.platforms) ? library.platforms : [];
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
+  const tabs = document.querySelector("#platform-tabs");
+  const panel = document.querySelector("#platform-panel");
+  const platformName = document.querySelector("#platform-name");
   const libraryCount = document.querySelector("#library-count");
+  const comingSoon = document.querySelector("#xbox-coming-soon");
+  let activePlatformId = "pc";
 
   const currentHeaderImages = Object.freeze({
     1029210: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1029210/4e755d52979ed36dd7a7bfef3ad98d93f07922d0/header.jpg?t=1781208599",
@@ -102,13 +108,17 @@
     582660: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/582660/3c4172635738d9e5901e340b28136745fd9e491a/header_alt_assets_27.jpg?t=1786645008",
   });
 
-  function coverUrl(appId, alternate) {
-    if (alternate) {
-      return `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/library_600x900.jpg`;
+  function coverUrl(game, alternate) {
+    if (game.image) {
+      return game.image;
     }
 
-    return currentHeaderImages[appId]
-      || `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`;
+    if (alternate) {
+      return `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/library_600x900.jpg`;
+    }
+
+    return currentHeaderImages[game.appId]
+      || `https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/header.jpg`;
   }
 
   function initials(title) {
@@ -148,23 +158,29 @@
 
     const image = document.createElement("img");
     image.className = "game-cover";
-    image.src = coverUrl(game.appId, false);
+    image.src = coverUrl(game, false);
     image.alt = `${game.title} cover art`;
     image.loading = eager ? "eager" : "lazy";
     image.decoding = "async";
-    image.dataset.coverAttempt = "0";
+    image.dataset.coverAttempt = game.image ? "external" : "0";
 
-    image.classList.add("landscape-cover");
+    image.classList.add(game.image ? "console-cover" : "landscape-cover");
+    shell.classList.add("has-cover-image");
+    shell.style.setProperty(
+      "--cover-image",
+      `url("${image.src.replace(/\"/g, "%22")}")`,
+    );
 
     image.addEventListener("error", function () {
       if (image.dataset.coverAttempt === "0") {
         image.dataset.coverAttempt = "1";
         image.classList.remove("landscape-cover");
-        image.src = coverUrl(game.appId, true);
+        image.src = coverUrl(game, true);
         return;
       }
 
       image.remove();
+      shell.classList.remove("has-cover-image");
       shell.classList.add("cover-unavailable");
     });
 
@@ -172,14 +188,18 @@
     return shell;
   }
 
-  function createGameCard(game, index) {
+  function createGameCard(game, index, platform) {
     const upcoming = isGameUpcoming(game, new Date());
-    const card = document.createElement("a");
+    const isPcGame = platform.id === "pc" && game.appId;
+    const card = document.createElement(isPcGame ? "a" : "article");
     card.className = "game-card";
-    card.href = `https://store.steampowered.com/app/${game.appId}/`;
-    card.target = "_blank";
-    card.rel = "noopener noreferrer";
-    card.setAttribute("aria-label", `View ${game.title} on Steam`);
+
+    if (isPcGame) {
+      card.href = `https://store.steampowered.com/app/${game.appId}/`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.setAttribute("aria-label", `View ${game.title} on Steam`);
+    }
 
     if (upcoming) {
       card.classList.add("upcoming-game");
@@ -215,18 +235,118 @@
     return card;
   }
 
-  function renderLibrary() {
-    if (!grid || !headerCount || !libraryCount) return;
+  function renderPlatform(platform) {
+    panel.setAttribute("aria-labelledby", `tab-${platform.id}`);
+    platformName.textContent = `${platform.label} Library`;
 
-    headerCount.textContent = String(games.length);
-    libraryCount.textContent = String(games.length);
+    if (platform.comingSoon) {
+      libraryCount.textContent = "Coming Soon";
+      grid.hidden = true;
+      comingSoon.hidden = false;
+      grid.replaceChildren();
+      return;
+    }
+
+    libraryCount.textContent = `${platform.games.length} Games`;
+    grid.hidden = false;
+    comingSoon.hidden = true;
 
     const fragment = document.createDocumentFragment();
-    games.forEach((game, index) => {
-      fragment.append(createGameCard(game, index));
+    platform.games.forEach((game, index) => {
+      fragment.append(createGameCard(game, index, platform));
     });
 
     grid.replaceChildren(fragment);
+  }
+
+  function activatePlatform(id, focusTab) {
+    const platform = platforms.find((entry) => entry.id === id) || platforms[0];
+    if (!platform) return;
+
+    activePlatformId = platform.id;
+
+    tabs.querySelectorAll('[role="tab"]').forEach((tab) => {
+      const selected = tab.dataset.platform === activePlatformId;
+      tab.classList.toggle("active", selected);
+      tab.setAttribute("aria-selected", String(selected));
+      tab.tabIndex = selected ? 0 : -1;
+
+      if (selected && focusTab) {
+        tab.focus();
+      }
+    });
+
+    renderPlatform(platform);
+  }
+
+  function createTabs() {
+    const fragment = document.createDocumentFragment();
+
+    platforms.forEach((platform, index) => {
+      const button = document.createElement("button");
+      button.className = "platform-tab";
+      button.id = `tab-${platform.id}`;
+      button.type = "button";
+      button.dataset.platform = platform.id;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", "platform-panel");
+      button.setAttribute("aria-selected", String(platform.id === activePlatformId));
+      button.tabIndex = platform.id === activePlatformId ? 0 : -1;
+
+      const label = document.createElement("span");
+      label.textContent = platform.label;
+
+      const count = document.createElement("span");
+      count.className = "tab-count";
+      count.textContent = platform.comingSoon ? "Soon" : String(platform.games.length);
+
+      button.append(label, count);
+      button.addEventListener("click", () => activatePlatform(platform.id, false));
+      button.addEventListener("keydown", (event) => {
+        let targetIndex = index;
+
+        if (event.key === "ArrowRight") {
+          targetIndex = (index + 1) % platforms.length;
+        } else if (event.key === "ArrowLeft") {
+          targetIndex = (index - 1 + platforms.length) % platforms.length;
+        } else if (event.key === "Home") {
+          targetIndex = 0;
+        } else if (event.key === "End") {
+          targetIndex = platforms.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        activatePlatform(platforms[targetIndex].id, true);
+      });
+
+      fragment.append(button);
+    });
+
+    tabs.replaceChildren(fragment);
+  }
+
+  function renderLibrary() {
+    if (
+      !grid
+      || !headerCount
+      || !tabs
+      || !panel
+      || !platformName
+      || !libraryCount
+      || !comingSoon
+      || platforms.length === 0
+    ) {
+      return;
+    }
+
+    const totalGames = library.totalGames
+      || platforms.reduce((total, platform) => total + platform.games.length, 0);
+
+    headerCount.textContent = String(totalGames);
+    createTabs();
+    activatePlatform(activePlatformId, false);
   }
 
   renderLibrary();

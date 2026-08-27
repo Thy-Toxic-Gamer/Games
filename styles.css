@@ -163,6 +163,63 @@ h1 {
   font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
+.platform-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.platform-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 46px;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.platform-tab:hover,
+.platform-tab:focus-visible {
+  border-color: var(--toxic);
+  color: var(--text);
+  outline: none;
+}
+
+.platform-tab.active {
+  border-color: var(--toxic);
+  background: var(--toxic);
+  color: #071000;
+  box-shadow: 0 0 24px rgba(124, 255, 0, 0.14);
+}
+
+.tab-count {
+  display: inline-grid;
+  min-width: 1.65rem;
+  min-height: 1.65rem;
+  padding: 0.15rem 0.4rem;
+  place-items: center;
+  border: 1px solid currentColor;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.68rem;
+}
+
+.platform-panel:focus-visible {
+  outline: 1px solid var(--toxic);
+  outline-offset: 0.55rem;
+}
+
 .section-heading {
   display: flex;
   align-items: end;
@@ -179,6 +236,18 @@ h1 {
   letter-spacing: -0.035em;
 }
 
+.count-chip {
+  display: inline-block;
+  margin-left: 0.45rem;
+  padding: 0.32rem 0.55rem;
+  border: 1px solid var(--border);
+  color: var(--toxic);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: clamp(0.68rem, 1.4vw, 0.84rem);
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+
 .section-heading > p {
   max-width: 420px;
   margin-bottom: 0.25rem;
@@ -191,6 +260,35 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: clamp(0.9rem, 2vw, 1.4rem);
+}
+
+.game-grid[hidden],
+.coming-soon-panel[hidden] {
+  display: none;
+}
+
+.coming-soon-panel {
+  display: grid;
+  min-height: 360px;
+  padding: clamp(2rem, 6vw, 5rem);
+  place-content: center;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(circle at center, rgba(124, 255, 0, 0.09), transparent 48%),
+    var(--surface);
+  text-align: center;
+}
+
+.coming-soon-panel h3 {
+  margin-bottom: 0.7rem;
+  color: var(--text);
+  font-size: clamp(2.3rem, 7vw, 5rem);
+  letter-spacing: -0.05em;
+}
+
+.coming-soon-panel p:last-child {
+  margin-bottom: 0;
+  color: var(--muted);
 }
 
 .game-card {
@@ -237,7 +335,25 @@ h1 {
   background: var(--surface-bright);
 }
 
+.cover-shell::before {
+  position: absolute;
+  inset: -1rem;
+  background-position: center;
+  background-size: cover;
+  content: "";
+  opacity: 0;
+  transform: scale(1.08);
+}
+
+.cover-shell.has-cover-image::before {
+  background-image: var(--cover-image);
+  filter: blur(16px) brightness(0.55);
+  opacity: 0.72;
+}
+
 .cover-fallback {
+  position: relative;
+  z-index: 0;
   color: var(--toxic);
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 900;
@@ -248,6 +364,7 @@ h1 {
 .game-cover {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
@@ -256,7 +373,11 @@ h1 {
 
 .game-cover.landscape-cover {
   padding: 0.35rem;
-  background: #060806;
+  object-fit: contain;
+}
+
+.game-cover.console-cover {
+  padding: 0.35rem;
   object-fit: contain;
 }
 
@@ -352,6 +473,15 @@ footer p {
     text-align: left;
   }
 
+  .platform-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .platform-tab:last-child {
+    grid-column: 1 / -1;
+  }
+
   .game-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -375,6 +505,10 @@ footer p {
   .game-details h3 {
     font-size: 0.84rem;
   }
+
+  .platform-tab {
+    padding-inline: 0.7rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -383,7 +517,7 @@ footer p {
   }
 
   .game-card,
-  .steam-link {
+  .platform-tab {
     transition: none;
   }
 }
