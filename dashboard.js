@@ -54,11 +54,19 @@
 
   const pcPreviewCoverOverrides = Object.freeze({
     "BALL x PIT": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2062430/b6cabe1940c55119820eee4ed2d0b604bd5b3af4/library_600x900.jpg",
+    "Castlevania: Belmont\'s Curse": "assets/covers/pc/castlevania-belmonts-curse.png",
+  });
+
+  const previewRotationInterval = 20000;
+  const initialFeaturedTitles = Object.freeze({
+    pc: "Castlevania: Belmont\'s Curse",
+    ps5: "The First Descendant",
   });
 
   let dashboard = null;
   let scheduled = false;
   let hidePopoverTimer = null;
+  let previewRotationRound = 0;
 
   const popover = document.createElement("aside");
   popover.className = "game-detail-popover";
@@ -98,9 +106,12 @@
       const match = href.match(/\/app\/(\d+)/);
       const title = clone.querySelector(".game-details h3")?.textContent?.trim() || "";
 
-      if (image && match && !clone.classList.contains("upcoming-game")) {
+      const portraitOverride = pcPreviewCoverOverrides[title];
+      const canUseSteamPortrait = match && !clone.classList.contains("upcoming-game");
+
+      if (image && (portraitOverride || canUseSteamPortrait)) {
         const original = image.src;
-        const portrait = pcPreviewCoverOverrides[title]
+        const portrait = portraitOverride
           || `https://cdn.cloudflare.steamstatic.com/steam/apps/${match[1]}/library_600x900.jpg`;
         image.classList.remove("landscape-cover", "landscape-art");
         image.classList.add("portrait-cover", "portrait-art");
@@ -140,10 +151,39 @@
     return clone;
   }
 
+  function shuffleCards(cards) {
+    const shuffled = [...cards];
+
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const swapIndex = Math.floor(Math.random() * (index + 1));
+      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+    }
+
+    return shuffled;
+  }
+
+  function cardTitle(card) {
+    return card.querySelector(".game-details h3")?.textContent?.trim() || "";
+  }
+
   function orderedPreviewCards(platformId, cards) {
-    // The source arrays are alphabetized before rendering; preserve that order
-    // in every dashboard preview instead of applying a featured-title priority.
-    return cards;
+    if (platformId === "snes") return cards;
+
+    const shuffled = shuffleCards(cards);
+    const featuredTitle = previewRotationRound === 0
+      ? initialFeaturedTitles[platformId]
+      : null;
+
+    if (featuredTitle) {
+      const featuredIndex = shuffled.findIndex((card) => cardTitle(card) === featuredTitle);
+
+      if (featuredIndex > 0) {
+        const [featuredCard] = shuffled.splice(featuredIndex, 1);
+        shuffled.unshift(featuredCard);
+      }
+    }
+
+    return shuffled;
   }
 
   function createFeaturedDetail() {
@@ -400,8 +440,18 @@
     setTimeout(scheduleDashboard, 0);
   });
 
+  function rotateDashboardPreviews() {
+    if (document.hidden || activePlatform() !== "all") return;
+    if (dashboard?.matches(":hover") || dashboard?.contains(document.activeElement)) return;
+
+    previewRotationRound += 1;
+    hidePopover();
+    buildDashboard();
+  }
+
   const observer = new MutationObserver(scheduleDashboard);
   observer.observe(grid, { childList: true });
 
+  window.setInterval(rotateDashboardPreviews, previewRotationInterval);
   scheduleDashboard();
 })();

@@ -134,3 +134,14 @@ This pass corrects the remaining visual mismatch:
 - Mapped each uploaded cover to its matching Nintendo Switch catalog entry.
 - Renamed the PS5 entry to **Horizon Forbidden West Digital Deluxe**.
 - Cache-busting query strings updated to version 6.0.
+
+
+## Version 6.1 — Rotating Dashboard and Updated Artwork
+
+- Added the supplied Season 4 artwork for The First Descendant on PS5.
+- Added the supplied portrait artwork for Castlevania: Belmont's Curse on the PC dashboard.
+- Replaced the incomplete Minecraft, Paper Mario: The Origami King, and Super Mario Maker 2 repository images with their complete files.
+- PC, Nintendo Switch, and PS5 dashboard selections now randomize every 20 seconds; rotation pauses while a dashboard card is being hovered or focused.
+- SNES remains fixed because its section contains four games.
+- Full platform libraries remain alphabetized.
+- Cache-busting query strings updated to version 6.1.

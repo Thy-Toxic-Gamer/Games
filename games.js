@@ -151,7 +151,7 @@ const switchRows = [
 const ps5Rows = [
   ["FINAL FANTASY XVI", "https://cdn.cloudflare.steamstatic.com/steam/apps/2515020/library_600x900.jpg"],
   ["Assassin's Creed Valhalla", "https://cdn.cloudflare.steamstatic.com/steam/apps/2208920/library_600x900.jpg"],
-  ["The First Descendant", "https://cdn.cloudflare.steamstatic.com/steam/apps/2074920/library_600x900.jpg"],
+  ["The First Descendant", "assets/covers/ps5/the-first-descendant-season-4.png"],
   ["FINAL FANTASY VII REBIRTH", "https://cdn.cloudflare.steamstatic.com/steam/apps/2909400/library_600x900.jpg"],
   ["Resident Evil 4", "https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/library_600x900.jpg"],
   ["The Legend of Dragoon", "https://upload.wikimedia.org/wikipedia/en/3/32/Legend_of_Dragoon.jpg"],
