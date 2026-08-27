@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 6.7 — Root-Level Switch Artwork Fix
+
+- Moved the Atelier Ryza and Code of Princess EX PNGs to the repository root and updated their game entries to use simple root-level paths.
+- This prevents blank fallback tiles when GitHub uploads do not preserve the nested artwork folders.
+
 ## Version 6.6 — Restored Supplied Switch Covers
 
 - Replaced Atelier Ryza Secret Trilogy Deluxe Pack and Code of Princess EX with the newly supplied local PNG files.
