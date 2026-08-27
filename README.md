@@ -79,3 +79,13 @@ This pass corrects the remaining visual mismatch:
 - Switch, PS5, and SNES cards use fixed, consistent portrait cover viewports.
 - Artwork is contained instead of stretched, so games with different source dimensions stay aligned.
 - Hover story/genre panels and platform color layout remain unchanged.
+
+
+## Version 5.4 — Switch Physical-Case Fix
+
+- Nintendo Switch logo is now a small red badge in the upper-left corner of each cover, matching the physical Switch case style.
+- The badge no longer overlaps or pushes the artwork downward.
+- Switch artwork uses the full portrait cover area.
+- Horizontal source images use a blurred backing instead of empty black bands.
+- Replaced known broken/poor Switch art for `.hack//G.U. Last Recode`, `Guardian Tales`, and `FANTASY LIFE i` with portrait front-cover sources.
+- PS5/SNES styling, platform colors, All dashboard, and hover story/genre panel remain intact.
