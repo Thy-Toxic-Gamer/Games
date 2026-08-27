@@ -374,49 +374,8 @@
 
     shell.append(fallback, image);
 
-    // Console packaging frame: gives each cover the visual identity of its system
-    // while keeping the actual game artwork fully visible.
-    const platformId =
-      game.sourcePlatformId ||
-      document.querySelector(".platform-tab.active")?.dataset.platform ||
-      "";
+    // Use clean game artwork only; no platform/system logo overlays.
 
-    if (game.image && ["switch", "ps5", "snes"].includes(platformId)) {
-      shell.classList.add("system-box", `system-box-${platformId}`);
-
-      const imageUrl = String(game.image || "");
-      const hasPrintedSwitchBranding =
-        platformId === "switch" &&
-        (
-          imageUrl.includes("gamefaqs.gamespot.com/a/box/") ||
-          imageUrl.includes("images.launchbox-app.com/") ||
-          imageUrl.includes("gamesdb-images.launchbox.gg/")
-        );
-
-      if (hasPrintedSwitchBranding) {
-        shell.classList.add("printed-system-branding");
-      }
-
-      const systemBanner = document.createElement("div");
-      systemBanner.className = "system-box-banner";
-      systemBanner.setAttribute("aria-hidden", "true");
-
-      if (platformId === "switch") {
-        systemBanner.innerHTML =
-          '<img class="official-system-logo official-switch-logo" src="https://www.nintendo.co.jp/common/v2/img/ncommon/_common/logo/switch.svg" alt="" />';
-      } else if (platformId === "ps5") {
-        systemBanner.innerHTML =
-          '<img class="official-system-logo official-ps5-logo" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/PlayStation_5_logo_and_wordmark.svg" alt="" />';
-      } else {
-        systemBanner.innerHTML =
-          '<span class="snes-wordmark">SUPER NINTENDO</span>';
-      }
-
-      // Switch cards intentionally use artwork only; no synthetic system badge.
-      if (platformId !== "switch") {
-        shell.prepend(systemBanner);
-      }
-    }
 
     return shell;
   }
@@ -490,7 +449,9 @@
 
   function renderPlatform(platform) {
     panel.setAttribute("aria-labelledby", `tab-${platform.id}`);
-    platformName.textContent = `${platform.label} Library`;
+    platformName.textContent = platform.id === "all"
+      ? "All Games"
+      : `${platform.label} Library`;
 
     if (platform.comingSoon) {
       libraryCount.textContent = "Coming Soon";

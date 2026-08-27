@@ -233,7 +233,7 @@ main {
 }
 
 .dashboard-featured .dashboard-card-grid {
-  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-columns: repeat(11, minmax(0, 1fr));
 }
 
 .dashboard-lower-grid {
@@ -278,7 +278,7 @@ main {
 }
 
 .dashboard-card .game-details {
-  min-height: 60px;
+  min-height: 72px;
   padding: 0.43rem 0.36rem 0.4rem;
   text-align: center;
 }
@@ -290,6 +290,145 @@ main {
 .dashboard-card .game-details h3 {
   font-size: 0.67rem;
   line-height: 1.22;
+}
+
+.dashboard-card-meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  color: #aeb7b0;
+  font-size: 0.52rem;
+  line-height: 1.15;
+}
+
+.dashboard-card-store {
+  flex: 0 0 auto;
+  color: #dfe6e1;
+  text-transform: uppercase;
+}
+
+.dashboard-card-category {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-featured > .dashboard-view-all {
+  display: none;
+}
+
+.dashboard-feature-detail {
+  position: relative;
+  display: grid;
+  grid-column: span 4;
+  grid-template-columns: minmax(92px, 0.72fr) minmax(0, 1.55fr);
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 100%;
+  padding: 0.65rem;
+  overflow: hidden;
+  border: 1px solid var(--switch-accent);
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 57, 43, 0.1), transparent 40%),
+    #050706;
+  box-shadow: 0 0 18px rgba(255, 57, 43, 0.08);
+}
+
+.dashboard-feature-detail[hidden] {
+  display: none;
+}
+
+.featured-detail-close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 3;
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  place-items: center;
+  border: 1px solid #59605b;
+  border-radius: 50%;
+  background: #070907;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.featured-detail-close:hover,
+.featured-detail-close:focus-visible {
+  border-color: var(--switch-accent);
+  outline: none;
+}
+
+.featured-detail-cover {
+  min-width: 0;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 1px solid rgba(255, 57, 43, 0.58);
+  border-radius: 4px;
+  background: #070907;
+}
+
+.featured-detail-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.featured-detail-copy {
+  min-width: 0;
+  padding: 0.2rem 1.5rem 0.15rem 0;
+}
+
+.featured-detail-copy h3 {
+  margin-bottom: 0.2rem;
+  color: #fff;
+  font-size: clamp(0.92rem, 1.45vw, 1.18rem);
+  line-height: 1.12;
+}
+
+.featured-detail-edition {
+  margin: 0 0 0.55rem;
+  color: var(--switch-accent);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.featured-detail-label {
+  display: block;
+  margin: 0.42rem 0 0.14rem;
+  color: var(--toxic);
+  font-size: 0.59rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.featured-detail-genre,
+.featured-detail-story {
+  margin: 0;
+  color: #eef3ef;
+  font-size: 0.65rem;
+  line-height: 1.33;
+}
+
+.dashboard-switch .dashboard-card.selected {
+  z-index: 5;
+  border-color: var(--switch-accent);
+  box-shadow: 0 0 0 1px rgba(255, 57, 43, 0.36), 0 0 14px rgba(255, 57, 43, 0.12);
 }
 
 .dashboard-card .card-release {
@@ -446,13 +585,17 @@ main {
   border-color: var(--snes-accent);
 }
 
-@media (max-width: 1120px) {
+@media (max-width: 900px) {
   .platform-tabs {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .dashboard-featured .dashboard-card-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .dashboard-feature-detail {
+    grid-column: span 3;
   }
 
   .dashboard-lower-grid {
@@ -476,6 +619,11 @@ main {
   .dashboard-featured .dashboard-card-grid,
   .dashboard-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-feature-detail {
+    grid-column: 1 / -1;
+    grid-template-columns: 96px minmax(0, 1fr);
   }
 
   #platform-panel[data-dashboard-platform="switch"] .game-grid,
@@ -814,380 +962,18 @@ main {
 }
 
 
-/* ============================================================
-   V5.3 — OFFICIAL SYSTEM BRANDING + UNIFORM COVER VIEWPORTS
-   ============================================================ */
-
-/* Every console cover uses exactly the same physical-case footprint. */
-.dashboard-card .system-box,
-.game-card.console-game .system-box,
-.system-box {
-  width: 100% !important;
-  aspect-ratio: 2 / 3 !important;
-  position: relative !important;
-  overflow: hidden !important;
-  background: #050505 !important;
-}
-
-/* The art itself is given one consistent viewport beneath the system bar. */
+/* V5.4 — clean artwork: no platform logos or packaging banners */
+.system-box .system-box-banner,
+.system-box-banner { display: none !important; }
+.system-box .game-cover.landscape-art,
 .system-box .game-cover,
 .dashboard-card .system-box .game-cover,
 .game-card.console-game .system-box .game-cover {
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  background: #050505 !important;
-}
-
-/* Switch and PS5 art start below a fixed header, so every card's image area
-   is identical even when the source artwork has a different aspect ratio. */
-.system-box-switch .game-cover {
-  top: 34px !important;
-  height: calc(100% - 34px) !important;
-}
-
-.system-box-ps5 .game-cover {
-  top: 31px !important;
-  height: calc(100% - 31px) !important;
-}
-
-.system-box-snes .game-cover {
-  top: 28px !important;
-  height: calc(100% - 28px) !important;
-}
-
-/* Remaining horizontal artwork stays centered and never gets stretched. */
-.system-box .game-cover.landscape-art {
-  padding: 0 !important;
-  object-fit: contain !important;
-}
-
-/* System header bars now use the real platform wordmarks. */
-.system-box .system-box-banner {
-  position: absolute !important;
-  inset: 0 0 auto 0 !important;
-  z-index: 5 !important;
-  display: flex !important;
-  align-items: center !important;
-  width: 100% !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Nintendo Switch retail-style red header with official Nintendo Switch logo. */
-.system-box-switch .system-box-banner {
-  height: 34px !important;
-  justify-content: flex-start !important;
-  padding: 3px 6px !important;
-  background: #e60012 !important;
-  border-bottom: 1px solid rgba(255,255,255,.25) !important;
-}
-
-.official-switch-logo {
-  display: block !important;
-  width: 27px !important;
-  height: 27px !important;
-  object-fit: contain !important;
-}
-
-/* PS5 retail-style white header with the official Sony PS5 wordmark. */
-.system-box-ps5 .system-box-banner {
-  height: 31px !important;
-  justify-content: flex-start !important;
-  padding: 5px 8px !important;
-  background: linear-gradient(180deg, #ffffff 0%, #eef1f5 100%) !important;
-  border-bottom: 1px solid #cfd5dc !important;
-}
-
-.official-ps5-logo {
-  display: block !important;
-  width: 69px !important;
-  height: 18px !important;
-  object-fit: contain !important;
-  object-position: left center !important;
-}
-
-/* Do not show the old approximation characters anymore. */
-.switch-symbol,
-.ps-symbol,
-.ps5-wordmark {
-  display: none !important;
-}
-
-/* SNES keeps the era-specific black/silver treatment. */
-.system-box-snes .system-box-banner {
-  height: 28px !important;
-  justify-content: center !important;
-}
-
-/* Prevent the fallback initials from appearing behind valid images. */
-.system-box.has-cover-image .cover-fallback {
-  display: none !important;
-}
-
-/* Consistent dashboard card sizes regardless of source-art dimensions. */
-.dashboard-switch .dashboard-card,
-.dashboard-ps5 .dashboard-card,
-.dashboard-snes .dashboard-card {
-  min-width: 0 !important;
-}
-
-@media (max-width: 640px) {
-  .system-box-switch .system-box-banner { height: 30px !important; }
-  .system-box-switch .game-cover {
-    top: 30px !important;
-    height: calc(100% - 30px) !important;
-  }
-
-  .official-switch-logo {
-    width: 23px !important;
-    height: 23px !important;
-  }
-
-  .system-box-ps5 .system-box-banner { height: 28px !important; }
-  .system-box-ps5 .game-cover {
-    top: 28px !important;
-    height: calc(100% - 28px) !important;
-  }
-
-  .official-ps5-logo {
-    width: 61px !important;
-    height: 16px !important;
-  }
-}
-
-
-/* ============================================================
-   V5.4 — REAL SWITCH CASE CORNER BADGE
-   Matches the physical Nintendo Switch cover presentation:
-   the red Nintendo Switch mark sits in the top-left corner
-   instead of covering the entire top of the artwork.
-   ============================================================ */
-
-/* Switch artwork uses the full portrait case again. */
-.system-box-switch .game-cover,
-.dashboard-card .system-box-switch .game-cover,
-.game-card.console-game .system-box-switch .game-cover {
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
+  inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
   padding: 0 !important;
   object-fit: cover !important;
   object-position: center center !important;
 }
-
-/* Small corner badge only — no full-width red banner. */
-.system-box-switch .system-box-banner {
-  top: 5px !important;
-  left: 5px !important;
-  right: auto !important;
-  width: 42px !important;
-  height: 31px !important;
-  min-height: 0 !important;
-  padding: 3px !important;
-  justify-content: center !important;
-  border: 1px solid rgba(255,255,255,.92) !important;
-  border-radius: 2px !important;
-  background: #e60012 !important;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.18) inset,
-    0 2px 6px rgba(0,0,0,.34) !important;
-}
-
-.system-box-switch .official-switch-logo {
-  display: block !important;
-  width: 34px !important;
-  height: 24px !important;
-  max-width: none !important;
-  object-fit: contain !important;
-}
-
-/* The artwork always sits behind the badge, never underneath a header row. */
-.system-box-switch {
-  display: block !important;
-  position: relative !important;
-  aspect-ratio: 2 / 3 !important;
-  overflow: hidden !important;
-}
-
-/* Keep portrait front covers uncropped whenever possible. */
-.system-box-switch .game-cover.portrait-art {
-  object-fit: contain !important;
-  background: #050505 !important;
-}
-
-/* For remaining landscape store art, fill the case with a blurred backing
-   while keeping the complete image visible in front instead of leaving
-   empty black bands. */
-.system-box-switch:has(.game-cover.landscape-art)::before {
-  display: block !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-  background-image: var(--cover-image) !important;
-  background-position: center !important;
-  background-size: cover !important;
-  filter: blur(15px) brightness(.42) !important;
-  transform: scale(1.12) !important;
-  opacity: .88 !important;
-}
-
-.system-box-switch .game-cover.landscape-art {
-  z-index: 1 !important;
-  object-fit: contain !important;
-  background: transparent !important;
-}
-
-/* The badge must stay above every artwork/fallback layer. */
-.system-box-switch .system-box-banner {
-  z-index: 8 !important;
-}
-
-@media (max-width: 640px) {
-  .system-box-switch .system-box-banner {
-    top: 4px !important;
-    left: 4px !important;
-    width: 36px !important;
-    height: 27px !important;
-    padding: 2px !important;
-  }
-
-  .system-box-switch .official-switch-logo {
-    width: 30px !important;
-    height: 21px !important;
-  }
-}
-
-
-/* ============================================================
-   V5.5 — PHYSICAL SWITCH BOX ART PASS
-   Genuine front-cover scans keep their printed Nintendo Switch
-   corner branding. No duplicate synthetic logo is added.
-   ============================================================ */
-
-.system-box-switch.printed-system-branding .game-cover {
-  inset: 0 !important;
-  top: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  background: #050505 !important;
-}
-
-.system-box-switch.printed-system-branding .system-box-banner {
-  display: none !important;
-}
-
-/* Keep genuine portrait scans fully visible without cropping the logo or ESRB area. */
-.system-box-switch.printed-system-branding {
-  background: #050505 !important;
-}
-
-/* Digital-only / non-box sources still use the small top-left Switch badge. */
-.system-box-switch:not(.printed-system-branding) .system-box-banner {
-  top: 5px !important;
-  left: 5px !important;
-  right: auto !important;
-  width: 42px !important;
-  height: 31px !important;
-}
-
-/* Never zoom horizontal art; if a title only has digital key art, keep it intact. */
-.system-box-switch .game-cover.landscape-art {
-  object-fit: contain !important;
-}
-
-
-/* ============================================================
-   V5.6 — REAL COVER ART / NO SYNTHETIC SWITCH BRANDING
-   ============================================================ */
-
-/* Never draw our own Nintendo Switch logo or red badge.
-   If the real box scan includes Nintendo branding, it remains part of the art. */
-.system-box-switch .system-box-banner {
-  display: none !important;
-}
-
-/* Switch cover art owns the entire card face. */
-.system-box-switch .game-cover,
-.dashboard-card .system-box-switch .game-cover,
-.game-card.console-game .system-box-switch .game-cover {
-  inset: 0 !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  background: #050505 !important;
-}
-
-/* Physical scans are shown edge-to-edge without cropping their printed
-   Nintendo Switch strip, ESRB mark, or bottom case details. */
-.system-box-switch .game-cover.portrait-art {
-  object-fit: contain !important;
-}
-
-/* Digital-only key art also remains intact; no fake red Switch strip. */
-.system-box-switch .game-cover.landscape-art {
-  object-fit: contain !important;
-  background: #050505 !important;
-}
-
-/* Disable the old blurred pseudo-box background on Switch. */
-.system-box-switch::before,
-.system-box-switch:has(.game-cover.landscape-art)::before {
-  display: none !important;
-}
-
-
-/* ============================================================
-   V5.7 — CLEAN SWITCH ARTWORK
-   No synthetic Nintendo Switch branding anywhere.
-   ============================================================ */
-
-.system-box-switch .system-box-banner,
-.system-box-switch .official-switch-logo,
-.system-box-switch .switch-symbol {
-  display: none !important;
-}
-
-.system-box-switch,
-.dashboard-card .system-box-switch,
-.game-card.console-game .system-box-switch {
-  background: #050505 !important;
-}
-
-.system-box-switch .game-cover,
-.dashboard-card .system-box-switch .game-cover,
-.game-card.console-game .system-box-switch .game-cover {
-  position: absolute !important;
-  inset: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  object-fit: contain !important;
-  object-position: center center !important;
-  background: #050505 !important;
-}
-
-.system-box-switch::before,
-.system-box-switch::after {
-  display: none !important;
-}
+.dashboard-featured .dashboard-card-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }

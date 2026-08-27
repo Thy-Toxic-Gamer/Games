@@ -19,7 +19,7 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - `View all` buttons jump directly to each full platform library
 - Nintendo Switch Final Fantasy I–VI remain separate titles
 - All tab remains available
-- Cache-busting query strings use version `4.0`
+- Cache-busting query strings use version `5.3`
 
 ## Upload to GitHub
 
@@ -72,61 +72,21 @@ This pass corrects the remaining visual mismatch:
 - Switch / PS5 / SNES system headers, platform colors, and hover story/genre panels remain.
 
 
-## Version 5.3 — Official System Branding and Uniform Covers
+## Version 5.3 — Reference Dashboard Match
 
-- Nintendo Switch cards now use the official Nintendo Switch logo in the red system header.
-- PS5 cards now use the official PlayStation 5 wordmark in the white system header.
-- Switch, PS5, and SNES cards use fixed, consistent portrait cover viewports.
-- Artwork is contained instead of stretched, so games with different source dimensions stay aligned.
-- Hover story/genre panels and platform color layout remain unchanged.
-
-
-## Version 5.4 — Switch Physical-Case Fix
-
-- Nintendo Switch logo is now a small red badge in the upper-left corner of each cover, matching the physical Switch case style.
-- The badge no longer overlaps or pushes the artwork downward.
-- Switch artwork uses the full portrait cover area.
-- Horizontal source images use a blurred backing instead of empty black bands.
-- Replaced known broken/poor Switch art for `.hack//G.U. Last Recode`, `Guardian Tales`, and `FANTASY LIFE i` with portrait front-cover sources.
-- PS5/SNES styling, platform colors, All dashboard, and hover story/genre panel remain intact.
+- The All tab opens with a compact Nintendo Switch showcase.
+- Sixteen Switch covers form an 11-card first row and five-card second row on desktop.
+- FINAL FANTASY VI is selected initially in an inline detail panel matching the reference layout.
+- Selecting or focusing another Switch card updates the inline cover, title, genre, and description.
+- PC, PS5, and SNES remain in three compact preview panels below the Switch section.
+- Every preview card now includes a small genre label; PC cards also show Steam.
 
 
-## Version 5.5 — Physical Switch Box Art Pass
+## Version 5.4 — PC Featured + Clean Artwork
 
-Replaced remaining horizontal/promotional Switch artwork with portrait front-cover sources where a real Switch box scan is available:
-- FANTASY LIFE i
-- Code of Princess EX
-- Pokémon Shield
-- Minecraft
-- Diablo III: Eternal Collection
-- The Legend of Zelda: Skyward Sword HD
-- Guardian Tales
-
-When a cover scan already contains the Nintendo Switch branding printed in the upper-left corner, the website no longer overlays a second Switch logo.
-
-Digital-only titles without an official physical retail box keep the clean portrait presentation with the small Switch corner badge.
-
-
-## Version 5.6 — Real Switch Covers, No Added Switch Badge
-
-The website no longer draws any red Nintendo Switch badge/logo over Switch artwork.
-Where a real physical box-front scan exists, the printed Nintendo Switch branding in the scan is used as-is.
-
-Updated cover pass:
-- FANTASY LIFE i: The Girl Who Steals Time — Switch box front
-- Super Mario Maker 2 — Switch box front
-- Tetris 99 — Switch box front
-- The Legend of Zelda: Link's Awakening — Switch box front
-- The Legend of Zelda: Echoes of Wisdom — Switch box front
-- Metroid Prime 4: Beyond — Switch-family box front
-- Super Mario Odyssey — US Switch box front
-- Guardian Tales — best portrait cover art retained because Nintendo lists the Switch release as digital
-- Atelier Ryza Secret Trilogy Deluxe Pack — best portrait/key art used because Nintendo lists the Switch bundle as digital
-
-
-## Version 5.7 — Clean Switch Artwork
-
-- Removed all synthetic red Nintendo Switch logos/badges from the website.
-- Problem Switch titles use clean portrait/key art selected to match the game.
-- No fake physical-case treatment is added.
-- Artwork is contained inside a consistent portrait card without stretching.
+- PC now occupies the featured top position previously used by Nintendo Switch.
+- Nintendo Switch moves into the lower dashboard row with PS5 and SNES.
+- Removed generated Switch / PS5 / SNES packaging logos and system banners.
+- Cover images fill their card slots precisely with centered cropping.
+- Artwork sources should be clean game/key art rather than platform-branded box fronts whenever available.
+- Cache-busting query strings updated to version `5.4`.

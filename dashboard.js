@@ -9,12 +9,47 @@
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Switch", icon: "◫", limit: 12, accent: "#ff392b" },
+    switch: { label: "Nintendo Switch", icon: "◫", limit: 16, accent: "#ff392b" },
     pc: { label: "PC", icon: "▣", limit: 5, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
     xbox: { label: "Xbox", accent: "#a2aaa5" },
+  });
+
+  const previewPriority = Object.freeze({
+    switch: Object.freeze([
+      "FINAL FANTASY",
+      "FINAL FANTASY II",
+      "FINAL FANTASY III",
+      "FINAL FANTASY IV",
+      "FINAL FANTASY V",
+      "FINAL FANTASY VI",
+      "FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition",
+      "Atelier Ryza Secret Trilogy Deluxe Pack",
+      "Rogue Legacy 2",
+      ".hack//G.U. Last Recode",
+      "Valthirian Arc: Hero School Story",
+      "Sonic Mania",
+      "FINAL FANTASY VII",
+      "Guardian Tales",
+      "Record of Lodoss War-Deedlit in Wonder Labyrinth-",
+      "Miden Tower",
+    ]),
+    pc: Object.freeze([
+      "God of War",
+      "Clair Obscur: Expedition 33",
+      "DOOM Eternal",
+      "The Witcher 3: Wild Hunt - Complete Edition",
+      "FINAL FANTASY XIV Online",
+    ]),
+    ps5: Object.freeze([
+      "FINAL FANTASY XVI",
+      "Horizon Forbidden West",
+      "The First Descendant",
+      "FINAL FANTASY VII REBIRTH",
+      "Resident Evil 4",
+    ]),
   });
 
   let dashboard = null;
@@ -71,7 +106,105 @@
       }
     }
 
+    const details = clone.querySelector(".game-details");
+    const genre = clone.querySelector(".game-genre")?.textContent?.trim() || "Game";
+
+    if (details) {
+      const metadata = document.createElement("div");
+      metadata.className = "dashboard-card-meta";
+
+      if (platformId === "pc") {
+        const store = document.createElement("span");
+        store.className = "dashboard-card-store";
+        store.textContent = "● Steam";
+        metadata.append(store);
+      }
+
+      const category = document.createElement("span");
+      category.className = "dashboard-card-category";
+      category.textContent = genre;
+      metadata.append(category);
+      details.append(metadata);
+    }
+
     return clone;
+  }
+
+  function orderedPreviewCards(platformId, cards) {
+    const preferredTitles = previewPriority[platformId];
+    if (!preferredTitles) return cards;
+
+    const cardsByTitle = new Map(cards.map((card) => [
+      card.querySelector(".game-details h3")?.textContent?.trim(),
+      card,
+    ]));
+    const preferredCards = preferredTitles
+      .map((title) => cardsByTitle.get(title))
+      .filter(Boolean);
+    const preferredSet = new Set(preferredCards);
+
+    return preferredCards.concat(cards.filter((card) => !preferredSet.has(card)));
+  }
+
+  function createFeaturedDetail() {
+    const detail = document.createElement("aside");
+    detail.className = "dashboard-feature-detail";
+    detail.setAttribute("aria-live", "polite");
+    detail.innerHTML = `
+      <button class="featured-detail-close" type="button" aria-label="Close game details">×</button>
+      <div class="featured-detail-cover"><img alt="" /></div>
+      <div class="featured-detail-copy">
+        <h3></h3>
+        <p class="featured-detail-edition"></p>
+        <span class="featured-detail-label">Genre</span>
+        <p class="featured-detail-genre"></p>
+        <span class="featured-detail-label">About the game</span>
+        <p class="featured-detail-story"></p>
+      </div>
+    `;
+
+    detail.querySelector(".featured-detail-close").addEventListener("click", function () {
+      detail.hidden = true;
+      const container = detail.closest(".dashboard-platform") || detail.parentElement;
+      container
+        ?.querySelectorAll(".dashboard-card.selected")
+        .forEach((card) => card.classList.remove("selected"));
+    });
+
+    return detail;
+  }
+
+  function showFeaturedDetail(detail, card) {
+    const title = card.querySelector(".game-details h3")?.textContent?.trim() || "Game";
+    const genre = card.querySelector(".game-genre")?.textContent?.trim() || "Game";
+    const story = card.querySelector(".game-description")?.textContent?.trim()
+      || "Story information is not available.";
+    const sourceImage = card.querySelector(".game-cover");
+    const pixelRemaster = /^FINAL FANTASY(?: II| III| IV| V| VI)?$/.test(title);
+
+    detail.querySelector("h3").textContent = title;
+    detail.querySelector(".featured-detail-edition").textContent = pixelRemaster
+      ? "Pixel Remaster"
+      : "Nintendo Switch";
+    detail.querySelector(".featured-detail-genre").textContent = genre;
+    detail.querySelector(".featured-detail-story").textContent = story;
+
+    const image = detail.querySelector("img");
+    if (sourceImage) {
+      image.src = sourceImage.currentSrc || sourceImage.src;
+      image.alt = `${title} cover art`;
+    } else {
+      image.removeAttribute("src");
+      image.alt = "";
+    }
+
+    const container = detail.closest(".dashboard-platform") || detail.parentElement;
+    container
+      ?.querySelectorAll(".dashboard-card")
+      .forEach((preview) => preview.classList.toggle("selected", preview === card));
+
+    detail.hidden = false;
+    hidePopover();
   }
 
   function viewAllButton(platformId, count) {
@@ -106,9 +239,38 @@
     const cardGrid = document.createElement("div");
     cardGrid.className = "dashboard-card-grid";
 
-    cards.slice(0, meta.limit).forEach((card) => {
-      cardGrid.append(preparePreviewCard(card, platformId));
+    const previewCards = orderedPreviewCards(platformId, cards).slice(0, meta.limit).map((card) =>
+      preparePreviewCard(card, platformId));
+
+    previewCards.forEach((card) => {
+      cardGrid.append(card);
     });
+
+    if (featured) {
+      const detail = createFeaturedDetail();
+      cardGrid.append(detail);
+
+      previewCards.forEach((card) => {
+        card.addEventListener("click", function (event) {
+          event.preventDefault();
+          showFeaturedDetail(detail, card);
+        });
+        card.addEventListener("mouseenter", function () {
+          showFeaturedDetail(detail, card);
+        });
+        card.addEventListener("focus", function () {
+          showFeaturedDetail(detail, card);
+        });
+      });
+
+      const initialCard = previewCards.find((card) =>
+        card.querySelector(".game-details h3")?.textContent?.trim() === "God of War")
+        || previewCards[0];
+
+      if (initialCard) {
+        showFeaturedDetail(detail, initialCard);
+      }
+    }
 
     section.append(heading, cardGrid, viewAllButton(platformId, cards.length));
     return section;
@@ -142,11 +304,11 @@
     }
 
     const fragment = document.createDocumentFragment();
-    fragment.append(platformSection("switch", cardsByPlatform.switch, true));
+    fragment.append(platformSection("pc", cardsByPlatform.pc, true));
 
     const lower = document.createElement("div");
     lower.className = "dashboard-lower-grid";
-    ["pc", "ps5", "snes"].forEach((id) => {
+    ["switch", "ps5", "snes"].forEach((id) => {
       lower.append(platformSection(id, cardsByPlatform[id], false));
     });
     fragment.append(lower);
@@ -227,25 +389,27 @@
 
   document.addEventListener("mouseover", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (!card) return;
+    if (!card || card.closest(".dashboard-featured")) return;
     showPopover(card);
   });
 
   document.addEventListener("mouseout", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (!card) return;
+    if (!card || card.closest(".dashboard-featured")) return;
     if (event.relatedTarget && card.contains(event.relatedTarget)) return;
     hidePopoverTimer = setTimeout(hidePopover, 70);
   });
 
   document.addEventListener("focusin", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (card) showPopover(card);
+    if (card && !card.closest(".dashboard-featured")) showPopover(card);
   });
 
   document.addEventListener("focusout", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (card) hidePopoverTimer = setTimeout(hidePopover, 70);
+    if (card && !card.closest(".dashboard-featured")) {
+      hidePopoverTimer = setTimeout(hidePopover, 70);
+    }
   });
 
   window.addEventListener("scroll", hidePopover, { passive: true });
