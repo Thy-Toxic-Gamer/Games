@@ -144,7 +144,7 @@ const switchRows = [
   ["Metroid Prime 4: Beyond", "https://omegametroid.com/wp-content/uploads/2025/03/Switch_750x1000_MetroidPrime4Beyond_KeyArt.png"],
   ["The Legend of Zelda: Echoes of Wisdom", "https://upload.wikimedia.org/wikipedia/en/1/1e/The_Legend_of_Zelda_%E2%80%93_Echoes_of_Wisdom.jpg"],
   ["The Legend of Zelda: Link's Awakening", "https://cdn.cultura.com/cdn-cgi/image/width%3D1200/media/pim/zelda-link-s-awakening-0045496424442_23.jpg"],
-  ["The Legend of Zelda: Skyward Sword HD", "https://techraptor.net/sites/default/files/2021-02/The%20Legend%20of%20Zelda%20Skyward%20Sword%20Key%20Art.jpg"],
+  ["The Legend of Zelda: Skyward Sword HD", portraitArtwork("https://techraptor.net/sites/default/files/2021-02/The%20Legend%20of%20Zelda%20Skyward%20Sword%20Key%20Art.jpg")],
   ["The Legend of Zelda: Breath of the Wild", "https://i.3djuegos.com/juegos/9205/zelda_wii_u/fotos/ficha/zelda_wii_u-5953251.jpg"],
 ];
 
