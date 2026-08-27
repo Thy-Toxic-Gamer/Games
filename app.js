@@ -315,7 +315,7 @@
   function fallbackCoverUrl(title) {
     const safeTitle = escapeXml(title);
     const shortTitle = safeTitle.length > 28
-      ? ${safeTitle.slice(0, 25)}…
+      ? `${safeTitle.slice(0, 25)}…`
       : safeTitle;
     const initialsText = initials(title) || "GAME";
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900">
