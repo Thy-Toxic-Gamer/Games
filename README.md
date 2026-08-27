@@ -108,3 +108,13 @@ This pass corrects the remaining visual mismatch:
 - Replaced several Switch sources that were horizontal or packaging-heavy with cleaner game-specific artwork that does not include the Nintendo Switch system banner.
 - Existing hover/focus genre and About the Game detail behavior remains unchanged.
 - Cache-busting query strings updated to version 5.6.
+
+
+## Version 5.7 — Unified Portrait Artwork
+
+- Dashboard and full Switch/PS5/SNES cards use portrait-safe artwork sizing.
+- Artwork fills the shared portrait slot without stretching; landscape sources are cropped rather than displayed as horizontal cards.
+- The unreleased PC **Castlevania: Belmont's Curse** entry remains allowed to display contained landscape art.
+- Failed artwork receives a generated cover-style fallback instead of leaving an empty card.
+- PC entries 55–57 are ordered as Ninja Gaiden Σ, Ninja Gaiden Σ2, and Ninja Gaiden 3: Razor's Edge.
+- Cache-busting query strings updated to version 5.7.
