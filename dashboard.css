@@ -1028,3 +1028,12 @@ main {
 #platform-panel[data-dashboard-platform="snes"] .game-card.console-game .game-cover.console-cover {
   object-fit: cover;
 }
+
+
+/* V5.9 — SNES artwork stays fully visible inside its border. */
+.dashboard-snes .dashboard-card .game-cover,
+#platform-panel[data-dashboard-platform="snes"] .game-card.console-game .game-cover.console-cover {
+  padding: 0.25rem;
+  object-fit: contain;
+  object-position: center;
+}
