@@ -50,3 +50,13 @@ Console covers now use a system-authentic presentation:
 - Professional platform dashboard and hover genre/story panel remain intact
 
 Upload all files in this package to the repository root and replace the older files.
+
+
+## Version 5.1 — Cover Layout Fix
+
+This patch fixes the v5 console-cover display issue:
+- Real Switch, PS5, and SNES artwork fills the entire portrait case.
+- System headers now overlay the artwork instead of taking up a separate grid row.
+- Large green abbreviation fallbacks remain hidden whenever artwork loads successfully.
+- Fallback initials only appear if an image genuinely fails to load.
+- Hover genre/story details and the professional dashboard remain unchanged.
