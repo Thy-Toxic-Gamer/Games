@@ -1,12 +1,12 @@
 # ThyToxicGamer Game Library
 
-A GitHub Pages-ready visual catalog of all 91 games in ThyToxicGamer's library.
+A GitHub Pages-ready visual catalog of all 93 games in ThyToxicGamer's library.
 
 ## Repository files
 
 - `index.html` — page structure and written content
 - `styles.css` — responsive toxic black-and-green design
-- `games.js` — the complete 91-game catalog and Steam app IDs
+- `games.js` — the complete 93-game catalog and Steam app IDs
 - `app.js` — cover loading and game-card rendering
 - `.nojekyll` — keeps GitHub Pages from processing the files with Jekyll
 
@@ -24,10 +24,10 @@ The published site will appear at:
 
 ## Cover art
 
-Cover art is loaded from official Steam store assets by app ID. If Steam does
-not provide a vertical cover for a title, the card automatically displays a
-branded text fallback instead.
+Cover art uses the current official Steam store header for each app ID. If a
+header becomes unavailable, the card tries Steam's library cover and then a
+branded text fallback.
 
-Castlevania: Belmont's Curse remains in the 91-game library. Its card is marked
+Castlevania: Belmont's Curse remains in the 93-game library. Its card is marked
 as coming soon until October 15, 2026, then automatically becomes a regular
 game card based on the visitor's local date.

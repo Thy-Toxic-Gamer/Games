@@ -189,7 +189,7 @@ h1 {
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: clamp(0.9rem, 2vw, 1.4rem);
 }
 
@@ -231,7 +231,7 @@ h1 {
 .cover-shell {
   position: relative;
   display: grid;
-  aspect-ratio: 2 / 3;
+  aspect-ratio: 460 / 215;
   place-items: center;
   overflow: hidden;
   background: var(--surface-bright);
