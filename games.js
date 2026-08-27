@@ -30,7 +30,6 @@ const gameRows = [
   ["The Elder Scrolls Online", 306130],
   ["Enshrouded", 1203620],
   ["FINAL FANTASY VII", 3837340],
-  ["FINAL FANTASY VII (2013)", 39140],
   ["FINAL FANTASY XIII", 292120],
   ["FINAL FANTASY XIII-2", 292140],
   ["The First Descendant", 2074920],
