@@ -9,18 +9,39 @@
 
   const headerFallbacks = Object.freeze({
     11610: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/11610/header.jpg?t=1516788252",
+    109600: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/109600/b45ba04297b16c13373f491bcd6bda81e6cda1d6/header.jpg?t=1781552751",
     2062430: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2062430/5e7885a3802fe7d38b92fdeb44888b4828a842ba/header_alt_assets_2.jpg?t=1786035856",
+    238960: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/238960/177c953b362c5a6221f9c15d340a0b1e2b8bfab8/header.jpg?t=1784681738",
     292140: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292140/header.jpg?t=1775177243",
     295550: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/295550/header.jpg?t=1782985043",
+    2694490: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2694490/24eeddcbda17903f03d819588757e40845f8115f/header.jpg?t=1787697213",
+    292030: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/97cca1147b256f450331044255b1dbd2d57d609e/header_alt_assets_4.jpg?t=1787688132",
     345350: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/345350/header.jpg?t=1775177550",
     1374490: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1374490/6f6bba2ddccb49f3a0abb831684ca085e453c721/header_alt_assets_3.jpg?t=1785893866",
     3265700: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3265700/5590e42cab09dacabee973dd2c3e27ef12ed4950/header.jpg?t=1776925935",
     3590290: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3590290/e0279893a393cecd472e1475d16ddb648aad15a3/header.jpg?t=1785164308",
     3837340: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3837340/467568ecc51ea77191ce048636a6f211c1c93a9f/header.jpg?t=1775108423",
     4231820: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4231820/6b65aec2c398006aea8b76e1463cc34d0e4ba68b/header.jpg?t=1785458750",
+    892970: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/892970/de0bdcf6c008c508a79d8e75eb91fc67f4bebd5d/header.jpg?t=1786012504",
+    3041230: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3041230/7e838d87d787735d5d29d72777c5ee55653dfb2b/header.jpg?t=1783932953",
   });
 
+  const preferredHeaderCovers = new Set([
+    109600,
+    238960,
+    2694490,
+    292030,
+    892970,
+    3041230,
+  ]);
+
   function coverUrl(appId, alternate) {
+    if (preferredHeaderCovers.has(appId)) {
+      return alternate
+        ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/library_600x900.jpg`
+        : headerFallbacks[appId];
+    }
+
     if (alternate) {
       return headerFallbacks[appId]
         || `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/library_600x900.jpg`;
@@ -57,10 +78,16 @@
     image.decoding = "async";
     image.dataset.coverAttempt = "0";
 
+    if (preferredHeaderCovers.has(game.appId)) {
+      image.classList.add("landscape-cover");
+    }
+
     image.addEventListener("error", function () {
       if (image.dataset.coverAttempt === "0") {
         image.dataset.coverAttempt = "1";
-        if (headerFallbacks[game.appId]) {
+        if (preferredHeaderCovers.has(game.appId)) {
+          image.classList.remove("landscape-cover");
+        } else if (headerFallbacks[game.appId]) {
           image.classList.add("landscape-cover");
         }
         image.src = coverUrl(game.appId, true);

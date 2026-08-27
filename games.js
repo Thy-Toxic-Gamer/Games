@@ -51,7 +51,7 @@ const gameRows = [
   ["Medieval Dynasty", 1129580],
   ["Mega Man Battle Network Legacy Collection Vol. 1", 1798010],
   ["Mega Man Battle Network Legacy Collection Vol. 2", 1798020],
-  ["Neverwinter", 109600],
+  ["Neverwinter: Biting Cold", 109600],
   ["NINJA GAIDEN 3: Razor's Edge [NINJA GAIDEN: Master Collection]", 1369760],
   ["NINJA GAIDEN Σ [NINJA GAIDEN: Master Collection]", 1580780],
   ["NINJA GAIDEN Σ2 [NINJA GAIDEN: Master Collection]", 1580790],
@@ -63,8 +63,8 @@ const gameRows = [
   ["OUTRIDERS", 680420],
   ["Outward", 794260],
   ["Palworld", 1623730],
-  ["Path of Exile", 238960],
-  ["Path of Exile 2", 2694490],
+  ["Path of Exile: Curse of the Allflame", 238960],
+  ["Path of Exile 2: Return of the Ancients", 2694490],
   ["Phantasy Star Online 2 New Genesis", 1056640],
   ["Pyre", 462770],
   ["Remnant: From the Ashes", 617290],
@@ -89,7 +89,7 @@ const gameRows = [
   ["Windrose", 3041230],
   ["The Witcher: Enhanced Edition", 20900],
   ["The Witcher 2: Assassins of Kings Enhanced Edition", 20920],
-  ["The Witcher 3: Wild Hunt", 292030],
+  ["The Witcher 3: Wild Hunt - Complete Edition", 292030],
   ["Wizardry Variants Daphne", 2379740],
 ];
 
