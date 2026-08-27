@@ -98,7 +98,7 @@
       const match = href.match(/\/app\/(\d+)/);
       const title = clone.querySelector(".game-details h3")?.textContent?.trim() || "";
 
-      if (image && match) {
+      if (image && match && !clone.classList.contains("upcoming-game")) {
         const original = image.src;
         const portrait = pcPreviewCoverOverrides[title]
           || `https://cdn.cloudflare.steamstatic.com/steam/apps/${match[1]}/library_600x900.jpg`;
@@ -110,6 +110,9 @@
           image.classList.remove("portrait-cover", "portrait-art");
           image.classList.add("landscape-cover", "landscape-art");
         }, { once: true });
+      } else if (image && clone.classList.contains("upcoming-game")) {
+        image.classList.remove("portrait-cover", "portrait-art");
+        image.classList.add("unreleased-landscape");
       }
     }
 
