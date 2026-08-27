@@ -99,3 +99,12 @@ This pass corrects the remaining visual mismatch:
 - Nintendo Switch preview returns to a compact five-card lower panel.
 - Every game card, including PC, Switch, PS5, SNES, and full-library cards, uses the same hover/focus detail popup with cover art, platform, genre, and game description.
 - Cache-busting query strings updated to version `5.5`.
+
+
+## Version 5.6 — PC 22-Game Showcase + Switch Artwork Cleanup
+
+- PC showcase now displays 22 games (two 11-card rows on wide desktop layouts).
+- BALL x PIT uses its dedicated 600x900 Steam library capsule in the PC showcase instead of the horizontal header fallback.
+- Replaced several Switch sources that were horizontal or packaging-heavy with cleaner game-specific artwork that does not include the Nintendo Switch system banner.
+- Existing hover/focus genre and About the Game detail behavior remains unchanged.
+- Cache-busting query strings updated to version 5.6.

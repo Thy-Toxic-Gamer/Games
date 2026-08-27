@@ -988,3 +988,15 @@ main {
 @media (max-width: 820px) {
   .dashboard-featured .dashboard-card-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
+
+
+/* V5.6 — 22-game PC showcase + clean, full-bleed artwork */
+.dashboard-featured .dashboard-card-grid {
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+.dashboard-featured .dashboard-card .game-cover {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}

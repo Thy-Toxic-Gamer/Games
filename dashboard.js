@@ -10,7 +10,7 @@
 
   const platformMeta = Object.freeze({
     switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
-    pc: { label: "PC", icon: "▣", limit: 16, accent: "#79b51f" },
+    pc: { label: "PC", icon: "▣", limit: 22, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
@@ -50,6 +50,10 @@
       "FINAL FANTASY VII REBIRTH",
       "Resident Evil 4",
     ]),
+  });
+
+  const pcPreviewCoverOverrides = Object.freeze({
+    "BALL x PIT": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2062430/b6cabe1940c55119820eee4ed2d0b604bd5b3af4/library_600x900.jpg",
   });
 
   let dashboard = null;
@@ -92,16 +96,19 @@
       const image = clone.querySelector(".game-cover");
       const href = clone.getAttribute("href") || "";
       const match = href.match(/\/app\/(\d+)/);
+      const title = clone.querySelector(".game-details h3")?.textContent?.trim() || "";
 
       if (image && match) {
         const original = image.src;
-        image.classList.remove("landscape-cover");
-        image.classList.add("portrait-cover");
-        image.src = `https://cdn.cloudflare.steamstatic.com/steam/apps/${match[1]}/library_600x900.jpg`;
+        const portrait = pcPreviewCoverOverrides[title]
+          || `https://cdn.cloudflare.steamstatic.com/steam/apps/${match[1]}/library_600x900.jpg`;
+        image.classList.remove("landscape-cover", "landscape-art");
+        image.classList.add("portrait-cover", "portrait-art");
+        image.src = portrait;
         image.addEventListener("error", function restoreHeader() {
           image.src = original;
-          image.classList.remove("portrait-cover");
-          image.classList.add("landscape-cover");
+          image.classList.remove("portrait-cover", "portrait-art");
+          image.classList.add("landscape-cover", "landscape-art");
         }, { once: true });
       }
     }
