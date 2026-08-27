@@ -1,8 +1,8 @@
 # ThyToxicGamer Game Library
 
 A GitHub Pages-ready visual catalog of ThyToxicGamer's multi-platform game
-library. It currently includes 163 games: 93 PC, 42 Nintendo Switch, 24 PS5,
-and 4 SNES titles. The Xbox tab is marked **Coming Soon**.
+library. It currently includes 168 games: 93 PC, 47 Nintendo Switch, 24 PS5,
+and 4 SNES titles. An **All** tab shows the complete collection in one view. The Xbox tab is marked **Coming Soon**.
 
 ## Repository files
 

@@ -3,6 +3,13 @@
 
   const library = window.GAME_LIBRARY || { platforms: [], totalGames: 0 };
   const platforms = Array.isArray(library.platforms) ? library.platforms : [];
+  const allGames = platforms
+    .filter((platform) => !platform.comingSoon)
+    .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId: platform.id })));
+  const viewPlatforms = [
+    { id: "all", label: "All", games: allGames },
+    ...platforms,
+  ];
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
   const tabs = document.querySelector("#platform-tabs");
@@ -10,7 +17,7 @@
   const platformName = document.querySelector("#platform-name");
   const libraryCount = document.querySelector("#library-count");
   const comingSoon = document.querySelector("#xbox-coming-soon");
-  let activePlatformId = "pc";
+  let activePlatformId = "all";
 
   const currentHeaderImages = Object.freeze({
     1029210: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1029210/4e755d52979ed36dd7a7bfef3ad98d93f07922d0/header.jpg?t=1781208599",
@@ -190,7 +197,7 @@
 
   function createGameCard(game, index, platform) {
     const upcoming = isGameUpcoming(game, new Date());
-    const isPcGame = platform.id === "pc" && game.appId;
+    const isPcGame = (platform.id === "pc" || game.sourcePlatformId === "pc") && game.appId;
     const card = document.createElement(isPcGame ? "a" : "article");
     card.className = "game-card";
 
@@ -260,7 +267,7 @@
   }
 
   function activatePlatform(id, focusTab) {
-    const platform = platforms.find((entry) => entry.id === id) || platforms[0];
+    const platform = viewPlatforms.find((entry) => entry.id === id) || viewPlatforms[0];
     if (!platform) return;
 
     activePlatformId = platform.id;
@@ -282,7 +289,7 @@
   function createTabs() {
     const fragment = document.createDocumentFragment();
 
-    platforms.forEach((platform, index) => {
+    viewPlatforms.forEach((platform, index) => {
       const button = document.createElement("button");
       button.className = "platform-tab";
       button.id = `tab-${platform.id}`;
@@ -306,19 +313,19 @@
         let targetIndex = index;
 
         if (event.key === "ArrowRight") {
-          targetIndex = (index + 1) % platforms.length;
+          targetIndex = (index + 1) % viewPlatforms.length;
         } else if (event.key === "ArrowLeft") {
-          targetIndex = (index - 1 + platforms.length) % platforms.length;
+          targetIndex = (index - 1 + viewPlatforms.length) % viewPlatforms.length;
         } else if (event.key === "Home") {
           targetIndex = 0;
         } else if (event.key === "End") {
-          targetIndex = platforms.length - 1;
+          targetIndex = viewPlatforms.length - 1;
         } else {
           return;
         }
 
         event.preventDefault();
-        activatePlatform(platforms[targetIndex].id, true);
+        activatePlatform(viewPlatforms[targetIndex].id, true);
       });
 
       fragment.append(button);

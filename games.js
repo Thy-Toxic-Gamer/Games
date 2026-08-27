@@ -95,7 +95,12 @@ const pcRows = [
 ];
 
 const switchRows = [
-  ["FINAL FANTASY I-VI Bundle", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70070000017105/665dad530a02655c926000cca05aeeb1e182384a2f530c5b9d3525778673e631"],
+  ["FINAL FANTASY", "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/store/software/switch/70010000056567/18471c57be0c4cc1d1f1b76f1f22ce0c4e9a0f1bec4596072773cd145039980d"],
+  ["FINAL FANTASY II", "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/store/software/switch/70010000056572/3023b1b4759fcb679e471dd7bd4b8340fb4150b04ce62dcc147e005dac09037b"],
+  ["FINAL FANTASY III", "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/store/software/switch/70010000056577/70e89e31ff3010fda960537db0d6314d4cbf38e7674e078c2108ffe27f7c9537"],
+  ["FINAL FANTASY IV", "https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_1240/b_white/f_auto/q_auto/store/software/switch/70010000056582/530ebea1bfab7fc0452e8e84afb5ac2fe5f6887da63be950d7c80e91d58b26f8"],
+  ["FINAL FANTASY V", "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/store/software/switch/70010000056587/6a0af01045f2e0aa6912df7b9f646e40a353bf7b0c6a1dd3be84cb9902b3d83b"],
+  ["FINAL FANTASY VI", "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_1.5/store/software/switch/70010000056592/52a43b0ec590a9a95d7d4eb2cc7c1e5f52268603516ebf4ae5a62e3b3dd7efd8"],
   ["FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch2/70010000098624/4f8dd05a9e8d3c390b3a1f683f15fbdcea55de7aec9537266957820f5581a30c"],
   ["Atelier Ryza Secret Trilogy Deluxe Pack", "https://atelier.games/secretdx/assets/img/og2_en.jpg"],
   ["FINAL FANTASY VII", "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/39140/header.jpg?t=1771952602"],
