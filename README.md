@@ -105,3 +105,20 @@ Replaced remaining horizontal/promotional Switch artwork with portrait front-cov
 When a cover scan already contains the Nintendo Switch branding printed in the upper-left corner, the website no longer overlays a second Switch logo.
 
 Digital-only titles without an official physical retail box keep the clean portrait presentation with the small Switch corner badge.
+
+
+## Version 5.6 — Real Switch Covers, No Added Switch Badge
+
+The website no longer draws any red Nintendo Switch badge/logo over Switch artwork.
+Where a real physical box-front scan exists, the printed Nintendo Switch branding in the scan is used as-is.
+
+Updated cover pass:
+- FANTASY LIFE i: The Girl Who Steals Time — Switch box front
+- Super Mario Maker 2 — Switch box front
+- Tetris 99 — Switch box front
+- The Legend of Zelda: Link's Awakening — Switch box front
+- The Legend of Zelda: Echoes of Wisdom — Switch box front
+- Metroid Prime 4: Beyond — Switch-family box front
+- Super Mario Odyssey — US Switch box front
+- Guardian Tales — best portrait cover art retained because Nintendo lists the Switch release as digital
+- Atelier Ryza Secret Trilogy Deluxe Pack — best portrait/key art used because Nintendo lists the Switch bundle as digital

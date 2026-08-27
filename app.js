@@ -412,7 +412,7 @@
           '<span class="snes-wordmark">SUPER NINTENDO</span>';
       }
 
-      if (!hasPrintedSwitchBranding) {
+      if (platformId !== "switch") {
         shell.prepend(systemBanner);
       }
     }

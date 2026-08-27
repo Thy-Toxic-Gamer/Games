@@ -1107,3 +1107,50 @@ main {
 .system-box-switch .game-cover.landscape-art {
   object-fit: contain !important;
 }
+
+
+/* ============================================================
+   V5.6 — REAL COVER ART / NO SYNTHETIC SWITCH BRANDING
+   ============================================================ */
+
+/* Never draw our own Nintendo Switch logo or red badge.
+   If the real box scan includes Nintendo branding, it remains part of the art. */
+.system-box-switch .system-box-banner {
+  display: none !important;
+}
+
+/* Switch cover art owns the entire card face. */
+.system-box-switch .game-cover,
+.dashboard-card .system-box-switch .game-cover,
+.game-card.console-game .system-box-switch .game-cover {
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #050505 !important;
+}
+
+/* Physical scans are shown edge-to-edge without cropping their printed
+   Nintendo Switch strip, ESRB mark, or bottom case details. */
+.system-box-switch .game-cover.portrait-art {
+  object-fit: contain !important;
+}
+
+/* Digital-only key art also remains intact; no fake red Switch strip. */
+.system-box-switch .game-cover.landscape-art {
+  object-fit: contain !important;
+  background: #050505 !important;
+}
+
+/* Disable the old blurred pseudo-box background on Switch. */
+.system-box-switch::before,
+.system-box-switch:has(.game-cover.landscape-art)::before {
+  display: none !important;
+}
