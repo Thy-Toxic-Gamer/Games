@@ -363,6 +363,35 @@
     });
 
     shell.append(fallback, image);
+
+    // Console packaging frame: gives each cover the visual identity of its system
+    // while keeping the actual game artwork fully visible.
+    const platformId =
+      game.sourcePlatformId ||
+      document.querySelector(".platform-tab.active")?.dataset.platform ||
+      "";
+
+    if (game.image && ["switch", "ps5", "snes"].includes(platformId)) {
+      shell.classList.add("system-box", `system-box-${platformId}`);
+
+      const systemBanner = document.createElement("div");
+      systemBanner.className = "system-box-banner";
+      systemBanner.setAttribute("aria-hidden", "true");
+
+      if (platformId === "switch") {
+        systemBanner.innerHTML =
+          '<span class="switch-symbol">◧</span><span>NINTENDO<br>SWITCH</span>';
+      } else if (platformId === "ps5") {
+        systemBanner.innerHTML =
+          '<span class="ps-symbol">PS</span><span class="ps5-wordmark">PS5</span>';
+      } else {
+        systemBanner.innerHTML =
+          '<span class="snes-wordmark">SUPER NINTENDO</span>';
+      }
+
+      shell.prepend(systemBanner);
+    }
+
     return shell;
   }
 

@@ -38,3 +38,15 @@ After GitHub Pages redeploys, refresh the website with `Ctrl + F5` once.
 Published site:
 
 https://thy-toxic-gamer.github.io/Games/
+
+
+## Version 5.0 — System Box Art Presentation
+
+Console covers now use a system-authentic presentation:
+- Nintendo Switch: red Switch retail header
+- PS5: white PS5 retail header
+- SNES: black/silver Super Nintendo-era header
+- Existing game artwork stays fully visible inside the case treatment
+- Professional platform dashboard and hover genre/story panel remain intact
+
+Upload all files in this package to the repository root and replace the older files.

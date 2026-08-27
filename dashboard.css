@@ -498,3 +498,163 @@ main {
     display: none;
   }
 }
+
+
+/* ============================================================
+   V5 — SYSTEM-AUTHENTIC BOX PRESENTATION
+   Keeps the real artwork visible and adds the console packaging
+   identity seen on physical Switch / PS5 / SNES releases.
+   ============================================================ */
+
+.system-box {
+  position: relative;
+  display: grid;
+  grid-template-rows: 27px 1fr;
+  aspect-ratio: 2 / 3 !important;
+  overflow: hidden;
+  padding: 0 !important;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 4px 4px 2px 2px;
+  background: #050505 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 4px 12px rgba(0,0,0,.42);
+}
+
+.system-box .system-box-banner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 27px;
+  padding: 3px 6px;
+  line-height: .88;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.system-box .game-cover {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0;
+  object-fit: cover !important;
+  object-position: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #050505 !important;
+}
+
+.system-box .cover-fallback {
+  grid-row: 2;
+}
+
+/* Nintendo Switch — red retail header. */
+.system-box-switch {
+  grid-template-rows: 30px 1fr;
+  border-color: rgba(255, 59, 48, .55);
+}
+
+.system-box-switch .system-box-banner {
+  justify-content: flex-start;
+  color: #fff;
+  background: #e60012;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.system-box-switch .switch-symbol {
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 20px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* PlayStation 5 — white retail header with black PS5 treatment. */
+.system-box-ps5 {
+  grid-template-rows: 28px 1fr;
+  border-color: rgba(255,255,255,.55);
+}
+
+.system-box-ps5 .system-box-banner {
+  justify-content: space-between;
+  color: #111;
+  background: linear-gradient(#fff, #e9edf3);
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.system-box-ps5 .ps-symbol {
+  font-size: 10px;
+  font-style: italic;
+  letter-spacing: -.08em;
+}
+
+.system-box-ps5 .ps5-wordmark {
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: -.08em;
+}
+
+/* SNES — black/silver Super Nintendo era header. */
+.system-box-snes {
+  grid-template-rows: 27px 1fr;
+  border-color: rgba(214,214,214,.38);
+}
+
+.system-box-snes .system-box-banner {
+  justify-content: center;
+  color: #f2f2f2;
+  background:
+    linear-gradient(180deg, #151515 0%, #050505 65%, #2b2b2b 100%);
+  border-bottom: 2px solid #c71f2d;
+  font-size: 7px;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -.03em;
+}
+
+.system-box-snes .snes-wordmark {
+  transform: scaleX(.92);
+}
+
+/* Keep the compact professional dashboard proportions. */
+.dashboard-card .system-box {
+  aspect-ratio: 2 / 3 !important;
+}
+
+.dashboard-card .system-box .game-cover,
+.game-card.console-game .system-box .game-cover {
+  object-fit: cover !important;
+}
+
+/* A little extra platform polish on the card itself. */
+.dashboard-switch .dashboard-card { border-color: rgba(230,0,18,.34); }
+.dashboard-ps5 .dashboard-card { border-color: rgba(0,112,209,.38); }
+.dashboard-snes .dashboard-card { border-color: rgba(221,80,224,.32); }
+
+#platform-panel[data-dashboard-platform="switch"] .game-card { border-color: rgba(230,0,18,.25); }
+#platform-panel[data-dashboard-platform="ps5"] .game-card { border-color: rgba(0,112,209,.28); }
+#platform-panel[data-dashboard-platform="snes"] .game-card { border-color: rgba(221,80,224,.24); }
+
+@media (max-width: 640px) {
+  .system-box {
+    grid-template-rows: 23px 1fr;
+  }
+
+  .system-box-switch {
+    grid-template-rows: 25px 1fr;
+  }
+
+  .system-box .system-box-banner {
+    min-height: 23px;
+    padding-inline: 4px;
+  }
+}
