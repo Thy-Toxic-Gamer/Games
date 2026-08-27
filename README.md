@@ -60,3 +60,13 @@ This patch fixes the v5 console-cover display issue:
 - Large green abbreviation fallbacks remain hidden whenever artwork loads successfully.
 - Fallback initials only appear if an image genuinely fails to load.
 - Hover genre/story details and the professional dashboard remain unchanged.
+
+
+## Version 5.2 — Portrait Cover Artwork
+
+This pass corrects the remaining visual mismatch:
+- Steam-backed Switch and PS5 entries use portrait 600x900 artwork instead of landscape header art.
+- FINAL FANTASY I–VI use their individual portrait Pixel Remaster artwork.
+- Portrait artwork is shown in full with no zoom/crop.
+- Remaining horizontal Nintendo/store artwork is contained instead of enlarged.
+- Switch / PS5 / SNES system headers, platform colors, and hover story/genre panels remain.

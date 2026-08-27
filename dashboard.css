@@ -760,3 +760,55 @@ main {
   width: 100% !important;
   aspect-ratio: 2 / 3 !important;
 }
+
+
+/* ============================================================
+   V5.2 — TRUE PORTRAIT ART PASS
+   Steam-backed console titles now use 600x900 portrait library
+   artwork instead of 16:9 headers. Remaining landscape sources
+   are contained instead of zoomed/cropped.
+   ============================================================ */
+
+.system-box .game-cover,
+.dashboard-card .system-box .game-cover,
+.game-card.console-game .system-box .game-cover {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,255,255,.045), transparent 50%),
+    #050505 !important;
+}
+
+/* 2:3 portrait sources fill the case naturally without cropping. */
+.system-box .game-cover.portrait-art {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Horizontal store/banner art is never blown up again. */
+.system-box .game-cover.landscape-art {
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 31px 0 0 !important;
+  background: #050505 !important;
+}
+
+/* Keep the packaging header crisp and separate from the artwork. */
+.system-box-switch .system-box-banner {
+  height: 28px !important;
+}
+.system-box-ps5 .system-box-banner {
+  height: 27px !important;
+}
+.system-box-snes .system-box-banner {
+  height: 26px !important;
+}
+
+/* The popup preview should show the entire cover too. */
+.game-hover-info .system-box .game-cover,
+.hover-card .system-box .game-cover {
+  object-fit: contain !important;
+  object-position: center !important;
+}

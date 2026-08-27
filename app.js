@@ -349,6 +349,16 @@
       `url("${image.src.replace(/\"/g, "%22")}")`,
     );
 
+    image.addEventListener("load", function () {
+      image.classList.remove("portrait-art", "landscape-art");
+
+      if (image.naturalHeight > image.naturalWidth * 1.08) {
+        image.classList.add("portrait-art");
+      } else {
+        image.classList.add("landscape-art");
+      }
+    });
+
     image.addEventListener("error", function () {
       if (image.dataset.coverAttempt === "0") {
         image.dataset.coverAttempt = "1";
