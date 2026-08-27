@@ -126,3 +126,11 @@ This pass corrects the remaining visual mismatch:
 - All PC, Nintendo Switch, PS5, SNES, and All Games displays now sort alphabetically.
 - Dashboard previews preserve the same alphabetical order.
 - Cache-busting query strings updated to version 5.8.
+
+
+## Version 6.0 — Repository-Hosted Switch Artwork
+
+- Added user-approved local artwork files for Goblin Sword, Minecraft, Pokémon Shield, Super Mario Maker 2, Super Mario Odyssey, The Legend of Zelda: Skyward Sword HD, and Paper Mario: The Origami King.
+- Mapped each uploaded cover to its matching Nintendo Switch catalog entry.
+- Renamed the PS5 entry to **Horizon Forbidden West Digital Deluxe**.
+- Cache-busting query strings updated to version 6.0.
