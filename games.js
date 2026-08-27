@@ -1,3 +1,7 @@
+function portraitArtwork(source) {
+  return `https://images.weserv.nl/?url=${encodeURIComponent(source)}&w=600&h=900&fit=cover&output=jpg`;
+}
+
 const pcRows = [
   ["30XX", 1029210],
   ["Albion Online", 761890],
@@ -101,8 +105,8 @@ const switchRows = [
   ["FINAL FANTASY IV", "https://cdn.cloudflare.steamstatic.com/steam/apps/1173800/library_600x900.jpg"],
   ["FINAL FANTASY V", "https://cdn.cloudflare.steamstatic.com/steam/apps/1173810/library_600x900.jpg"],
   ["FINAL FANTASY VI", "https://cdn.cloudflare.steamstatic.com/steam/apps/1173820/library_600x900.jpg"],
-  ["FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition", "https://universonintendo.com/wp-content/uploads/2024/09/QUAD-FANTASY-LIFE-i-The-Girl-Who-Steals-Time.jpg"],
-  ["Atelier Ryza Secret Trilogy Deluxe Pack", "https://www.digitallydownloaded.net/wp-content/uploads/2025/08/Atelier-Ryza-Secret-Trilogy-Deluxe-Pack-key-art-cropped.webp"],
+  ["FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition", portraitArtwork("https://nintendowire.com/wp-content/uploads/2024/02/NintendoSwitch_Fantasy_Life_i_The_Girl_Who_Steals_Time_Keyart-Horizontal.jpg")],
+  ["Atelier Ryza Secret Trilogy Deluxe Pack", portraitArtwork("https://p2.bahamut.com.tw/B/2KU/50/1ad3d5bdd79e94abcaf2b23edc1uwwu5.JPG?w=1500")],
   ["FINAL FANTASY VII", "https://cdn.cloudflare.steamstatic.com/steam/apps/39140/library_600x900.jpg"],
   ["Rogue Legacy 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/1253920/library_600x900.jpg"],
   ["Guardian Tales", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000041655/2c8e04df5b0a67cadda0b78f4848ee28d901ee581028bcaea5c2adf861b7b145"],
@@ -117,25 +121,25 @@ const switchRows = [
   ["Actraiser Renaissance", "https://cdn.cloudflare.steamstatic.com/steam/apps/1393370/library_600x900.jpg"],
   ["Darksiders Genesis", "https://cdn.cloudflare.steamstatic.com/steam/apps/710920/library_600x900.jpg"],
   ["Langrisser I & II", "https://cdn.cloudflare.steamstatic.com/steam/apps/1060220/library_600x900.jpg"],
-  ["Paper Mario: The Origami King", "https://conteudo.imguol.com.br/c/entretenimento/a8/2020/08/04/paper-mario-origami-king-1596574113134_v2_1x1.jpg"],
-  ["Super Mario Maker 2", "https://images.nintendolife.com/2f9822f80efb2/large.jpg"],
+  ["Paper Mario: The Origami King", portraitArtwork("https://ssb.wiki.gallery/images/5/59/Paper_Mario_The_Origami_King.jpg")],
+  ["Super Mario Maker 2", portraitArtwork("https://upload.wikimedia.org/wikipedia/en/c/c7/Super_Mario_Maker_2.jpg")],
   ["PixARK", "https://cdn.cloudflare.steamstatic.com/steam/apps/593600/library_600x900.jpg"],
-  ["Code of Princess EX", "https://gamespace.com/wp-content/uploads/2018/08/COP-EX-keyart.jpg"],
-  ["Pokémon Shield", "https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A256%2Ccw%3A512%2Cch%3A512%2Cq%3A80%2Cw%3A512/pF6U2ep9FVYgBCFMSRxQqT.jpg"],
+  ["Code of Princess EX", portraitArtwork("https://gamespace.com/wp-content/uploads/2018/08/COP-EX-keyart.jpg")],
+  ["Pokémon Shield", portraitArtwork("https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A256%2Ccw%3A512%2Cch%3A512%2Cq%3A80%2Cw%3A512/pF6U2ep9FVYgBCFMSRxQqT.jpg")],
   ["OCTOPATH TRAVELER", "https://cdn.cloudflare.steamstatic.com/steam/apps/921570/library_600x900.jpg"],
   ["Children of Morta", "https://cdn.cloudflare.steamstatic.com/steam/apps/330020/library_600x900.jpg"],
-  ["Minecraft", "https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A256%2Ccw%3A1536%2Cch%3A1152%2Cq%3A80%2Cw%3A1536/rpPGiw7RjFaeJCCDBC4Bna.jpg"],
+  ["Minecraft", portraitArtwork("https://cdn.mos.cms.futurecdn.net/v2/t%3A0%2Cl%3A256%2Ccw%3A1536%2Cch%3A1152%2Cq%3A80%2Cw%3A1536/rpPGiw7RjFaeJCCDBC4Bna.jpg")],
   ["Minecraft Dungeons", "https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/library_600x900.jpg"],
   ["Tetris 99", "https://assets.games.gg/tetris_99_cover_a5464d6500.png"],
   ["Hello Neighbor", "https://cdn.cloudflare.steamstatic.com/steam/apps/521890/library_600x900.jpg"],
-  ["Diablo III: Eternal Collection", "https://image.api.playstation.com/cdn/EP0002/CUSA00434_00/CggG9mciYpjyX68Hat1BGdMrUjWogfnl.png"],
-  ["Goblin Sword", "https://upload.wikimedia.org/wikipedia/en/9/91/Goblin_Sword_cover.jpg"],
+  ["Diablo III: Eternal Collection", portraitArtwork("https://image.api.playstation.com/cdn/EP0002/CUSA00434_00/CggG9mciYpjyX68Hat1BGdMrUjWogfnl.png")],
+  ["Goblin Sword", portraitArtwork("https://s3.amazonaws.com/files.thegamecrafter.com/a0f5d40fb2844764815e21decc541ded97b30398")],
   ["Crypt of the NecroDancer: Nintendo Switch Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/247080/library_600x900.jpg"],
   ["DRAGON QUEST XI S: Echoes of an Elusive Age - Definitive Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/1295510/library_600x900.jpg"],
   ["Teenage Mutant Ninja Turtles: The Cowabunga Collection", "https://cdn.cloudflare.steamstatic.com/steam/apps/1659600/library_600x900.jpg"],
   ["Teenage Mutant Ninja Turtles: Shredder's Revenge", "https://cdn.cloudflare.steamstatic.com/steam/apps/1361510/library_600x900.jpg"],
   ["MAGLAM LORD", "https://cdn.cloudflare.steamstatic.com/steam/apps/1799380/library_600x900.jpg"],
-  ["Super Mario Odyssey", "https://upload.wikimedia.org/wikipedia/en/8/8d/Super_Mario_Odyssey.jpg"],
+  ["Super Mario Odyssey", portraitArtwork("https://m.media-amazon.com/images/M/MV5BY2FkZTI3ZWQtYjBhNC00ODE5LTk1NjktOWNmMmNmZmNlZTllXkEyXkFqcGc%40._V1_.jpg")],
   ["Sonic Frontiers", "https://cdn.cloudflare.steamstatic.com/steam/apps/1237320/library_600x900.jpg"],
   ["Metroid Prime 4: Beyond", "https://omegametroid.com/wp-content/uploads/2025/03/Switch_750x1000_MetroidPrime4Beyond_KeyArt.png"],
   ["The Legend of Zelda: Echoes of Wisdom", "https://upload.wikimedia.org/wikipedia/en/1/1e/The_Legend_of_Zelda_%E2%80%93_Echoes_of_Wisdom.jpg"],
@@ -178,9 +182,20 @@ const snesRows = [
   ["Secret of Evermore", "https://upload.wikimedia.org/wikipedia/en/9/99/Secret_of_Evermore.jpg"],
 ];
 
+function compareGameRows(left, right) {
+  return left[0].localeCompare(right[0], "en", {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+function sortGameRows(rows) {
+  return [...rows].sort(compareGameRows);
+}
+
 function freezePcGames(rows) {
   return Object.freeze(
-    rows.map(([title, appId, releaseDate, releaseLabel], index) =>
+    sortGameRows(rows).map(([title, appId, releaseDate, releaseLabel], index) =>
       Object.freeze({
         number: index + 1,
         title,
@@ -194,7 +209,7 @@ function freezePcGames(rows) {
 
 function freezeConsoleGames(rows) {
   return Object.freeze(
-    rows.map(([title, image], index) =>
+    sortGameRows(rows).map(([title, image], index) =>
       Object.freeze({
         number: index + 1,
         title,
