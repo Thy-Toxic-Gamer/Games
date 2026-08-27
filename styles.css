@@ -1,0 +1,461 @@
+:root {
+  color-scheme: dark;
+  --background: #050706;
+  --surface: #0d100e;
+  --surface-raised: #121712;
+  --surface-bright: #192019;
+  --toxic: #7cff00;
+  --toxic-soft: #b7ff73;
+  --text: #f1f5ef;
+  --muted: #a9b4a4;
+  --border: #2a3824;
+  --shadow: rgba(0, 0, 0, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+a {
+  color: inherit;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--toxic);
+  background: var(--background);
+  color: var(--toxic);
+  transform: translateY(-160%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 0.75rem clamp(1rem, 4vw, 4.5rem);
+  border-bottom: 1px solid var(--border);
+  background: rgba(5, 7, 6, 0.96);
+  backdrop-filter: blur(14px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid var(--toxic);
+  color: var(--toxic);
+  font-size: 1.65rem;
+  box-shadow: 0 0 22px rgba(124, 255, 0, 0.18);
+}
+
+.brand strong,
+.brand small {
+  display: block;
+}
+
+.brand strong {
+  font-size: 0.98rem;
+  letter-spacing: 0.02em;
+}
+
+.brand small {
+  margin-top: 0.05rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.library-count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.45rem 0.7rem;
+  border-left: 3px solid var(--toxic);
+  background: var(--surface);
+}
+
+.library-count strong {
+  color: var(--toxic);
+  font-size: 1.25rem;
+}
+
+.library-count span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+main {
+  width: min(1540px, 100%);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 6rem) clamp(1rem, 4vw, 4.5rem) 5rem;
+}
+
+.intro {
+  max-width: 780px;
+  margin-bottom: clamp(2.5rem, 5vw, 5rem);
+}
+
+.eyebrow,
+.status-label {
+  margin: 0 0 0.75rem;
+  color: var(--toxic);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  max-width: 760px;
+  margin-bottom: 1rem;
+  font-size: clamp(2.45rem, 6vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.intro-copy {
+  max-width: 620px;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.upcoming {
+  display: grid;
+  grid-template-columns: minmax(180px, 330px) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  margin-bottom: clamp(4rem, 8vw, 8rem);
+  padding: clamp(1rem, 3vw, 2.5rem);
+  border: 1px solid var(--toxic);
+  border-left-width: 6px;
+  background: var(--surface);
+  box-shadow: 0 24px 60px var(--shadow);
+}
+
+.upcoming-art {
+  max-width: 330px;
+}
+
+.upcoming-copy {
+  max-width: 720px;
+}
+
+.upcoming h2 {
+  margin-bottom: 0.55rem;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.upcoming-copy > p:not(.status-label):not(.release-date) {
+  max-width: 610px;
+  color: var(--muted);
+}
+
+.release-date {
+  margin-bottom: 1rem;
+  color: var(--toxic-soft);
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 700;
+}
+
+.steam-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--toxic);
+  color: var(--toxic);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.steam-link:hover,
+.steam-link:focus-visible {
+  background: var(--toxic);
+  color: #071000;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  letter-spacing: -0.035em;
+}
+
+.section-heading > p {
+  max-width: 420px;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-align: right;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.4rem);
+}
+
+.game-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.game-card:hover,
+.game-card:focus-visible {
+  z-index: 2;
+  border-color: var(--toxic);
+  outline: none;
+  transform: translateY(-4px);
+}
+
+.game-card.upcoming-game::after {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--toxic);
+  color: #071000;
+  content: "COMING SOON";
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.cover-shell {
+  position: relative;
+  display: grid;
+  aspect-ratio: 2 / 3;
+  place-items: center;
+  overflow: hidden;
+  background: var(--surface-bright);
+}
+
+.cover-fallback {
+  color: var(--toxic);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.game-cover {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-cover.landscape-cover {
+  padding: 0.35rem;
+  background: #060806;
+  object-fit: contain;
+}
+
+.cover-unavailable::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.65rem;
+  color: var(--muted);
+  content: "Cover unavailable";
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
+.game-details {
+  display: flex;
+  min-height: 112px;
+  flex: 1;
+  flex-direction: column;
+  padding: 0.9rem;
+}
+
+.game-number {
+  margin-bottom: 0.45rem;
+  color: var(--toxic);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+}
+
+.game-details h3 {
+  margin-bottom: 0;
+  font-size: 0.93rem;
+  line-height: 1.3;
+}
+
+.card-release {
+  margin: auto 0 0;
+  padding-top: 0.65rem;
+  color: var(--toxic-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.noscript-message {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem clamp(1rem, 4vw, 4.5rem);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  text-align: center;
+}
+
+footer span {
+  color: var(--toxic);
+  font-size: 1.4rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    min-height: 68px;
+  }
+
+  .brand-mark {
+    width: 39px;
+    height: 39px;
+  }
+
+  main {
+    padding-top: 3.25rem;
+  }
+
+  .upcoming {
+    grid-template-columns: 1fr;
+  }
+
+  .upcoming-art {
+    width: min(72vw, 300px);
+    margin: 0 auto;
+  }
+
+  .section-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .section-heading > p {
+    text-align: left;
+  }
+
+  .game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .brand small,
+  .library-count span {
+    display: none;
+  }
+
+  .game-grid {
+    gap: 0.65rem;
+  }
+
+  .game-details {
+    min-height: 104px;
+    padding: 0.75rem;
+  }
+
+  .game-details h3 {
+    font-size: 0.84rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .game-card,
+  .steam-link {
+    transition: none;
+  }
+}

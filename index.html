@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore ThyToxicGamer's complete 92-game library."
+    />
+    <meta name="theme-color" content="#050706" />
+    <title>ThyToxicGamer Game Library</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="games.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#game-library">Skip to game library</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Return to the top">
+        <span class="brand-mark" aria-hidden="true">☣</span>
+        <span>
+          <strong>ThyToxicGamer</strong>
+          <small>Game Library</small>
+        </span>
+      </a>
+      <div class="library-count" aria-label="Total games">
+        <strong id="header-count">92</strong>
+        <span>Games</span>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">☣ The Toxic Vault</p>
+        <h1 id="page-title">The Complete Game Library</h1>
+        <p class="intro-copy">
+          Every game in ThyToxicGamer's collection, gathered into one visual
+          library.
+        </p>
+      </section>
+
+      <section class="upcoming" aria-labelledby="upcoming-title">
+        <div class="upcoming-art" id="upcoming-art" aria-hidden="true"></div>
+        <div class="upcoming-copy">
+          <p class="status-label">Incoming Contamination</p>
+          <h2 id="upcoming-title">Castlevania: Belmont's Curse</h2>
+          <p class="release-date">
+            Coming <time datetime="2026-10-15">October 15, 2026</time>
+          </p>
+          <p>
+            The newest addition to the vault is already listed and waiting for
+            release day.
+          </p>
+          <a
+            class="steam-link"
+            href="https://store.steampowered.com/app/4231820/Castlevania_Belmonts_Curse/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on Steam <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="library-section" id="game-library" aria-labelledby="library-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Full Collection</p>
+            <h2 id="library-title">All <span id="library-count">92</span> Games</h2>
+          </div>
+          <p>Cover art loads directly from each game's Steam listing.</p>
+        </div>
+
+        <div class="game-grid" id="game-grid" aria-live="polite"></div>
+        <noscript>
+          <p class="noscript-message">
+            JavaScript must be enabled to display the game library.
+          </p>
+        </noscript>
+      </section>
+    </main>
+
+    <footer>
+      <span aria-hidden="true">☣</span>
+      <p>
+        Cover art is served from Steam. All game names, artwork, and trademarks
+        belong to their respective owners.
+      </p>
+    </footer>
+  </body>
+</html>
