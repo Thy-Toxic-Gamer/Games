@@ -5,7 +5,11 @@
   const platforms = Array.isArray(library.platforms) ? library.platforms : [];
   const allGames = platforms
     .filter((platform) => !platform.comingSoon)
-    .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId: platform.id })));
+    .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId: platform.id })))
+    .sort((left, right) => left.title.localeCompare(right.title, "en", {
+      numeric: true,
+      sensitivity: "base",
+    }));
   const viewPlatforms = [
     { id: "all", label: "All", games: allGames },
     ...platforms,
