@@ -141,19 +141,9 @@
   }
 
   function orderedPreviewCards(platformId, cards) {
-    const preferredTitles = previewPriority[platformId];
-    if (!preferredTitles) return cards;
-
-    const cardsByTitle = new Map(cards.map((card) => [
-      card.querySelector(".game-details h3")?.textContent?.trim(),
-      card,
-    ]));
-    const preferredCards = preferredTitles
-      .map((title) => cardsByTitle.get(title))
-      .filter(Boolean);
-    const preferredSet = new Set(preferredCards);
-
-    return preferredCards.concat(cards.filter((card) => !preferredSet.has(card)));
+    // The source arrays are alphabetized before rendering; preserve that order
+    // in every dashboard preview instead of applying a featured-title priority.
+    return cards;
   }
 
   function createFeaturedDetail() {
