@@ -1066,3 +1066,44 @@ main {
     height: 21px !important;
   }
 }
+
+
+/* ============================================================
+   V5.5 — PHYSICAL SWITCH BOX ART PASS
+   Genuine front-cover scans keep their printed Nintendo Switch
+   corner branding. No duplicate synthetic logo is added.
+   ============================================================ */
+
+.system-box-switch.printed-system-branding .game-cover {
+  inset: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #050505 !important;
+}
+
+.system-box-switch.printed-system-branding .system-box-banner {
+  display: none !important;
+}
+
+/* Keep genuine portrait scans fully visible without cropping the logo or ESRB area. */
+.system-box-switch.printed-system-branding {
+  background: #050505 !important;
+}
+
+/* Digital-only / non-box sources still use the small top-left Switch badge. */
+.system-box-switch:not(.printed-system-branding) .system-box-banner {
+  top: 5px !important;
+  left: 5px !important;
+  right: auto !important;
+  width: 42px !important;
+  height: 31px !important;
+}
+
+/* Never zoom horizontal art; if a title only has digital key art, keep it intact. */
+.system-box-switch .game-cover.landscape-art {
+  object-fit: contain !important;
+}

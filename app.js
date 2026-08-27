@@ -384,6 +384,19 @@
     if (game.image && ["switch", "ps5", "snes"].includes(platformId)) {
       shell.classList.add("system-box", `system-box-${platformId}`);
 
+      const imageUrl = String(game.image || "");
+      const hasPrintedSwitchBranding =
+        platformId === "switch" &&
+        (
+          imageUrl.includes("gamefaqs.gamespot.com/a/box/") ||
+          imageUrl.includes("images.launchbox-app.com/") ||
+          imageUrl.includes("gamesdb-images.launchbox.gg/")
+        );
+
+      if (hasPrintedSwitchBranding) {
+        shell.classList.add("printed-system-branding");
+      }
+
       const systemBanner = document.createElement("div");
       systemBanner.className = "system-box-banner";
       systemBanner.setAttribute("aria-hidden", "true");
@@ -399,7 +412,9 @@
           '<span class="snes-wordmark">SUPER NINTENDO</span>';
       }
 
-      shell.prepend(systemBanner);
+      if (!hasPrintedSwitchBranding) {
+        shell.prepend(systemBanner);
+      }
     }
 
     return shell;

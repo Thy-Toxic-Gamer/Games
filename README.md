@@ -89,3 +89,19 @@ This pass corrects the remaining visual mismatch:
 - Horizontal source images use a blurred backing instead of empty black bands.
 - Replaced known broken/poor Switch art for `.hack//G.U. Last Recode`, `Guardian Tales`, and `FANTASY LIFE i` with portrait front-cover sources.
 - PS5/SNES styling, platform colors, All dashboard, and hover story/genre panel remain intact.
+
+
+## Version 5.5 — Physical Switch Box Art Pass
+
+Replaced remaining horizontal/promotional Switch artwork with portrait front-cover sources where a real Switch box scan is available:
+- FANTASY LIFE i
+- Code of Princess EX
+- Pokémon Shield
+- Minecraft
+- Diablo III: Eternal Collection
+- The Legend of Zelda: Skyward Sword HD
+- Guardian Tales
+
+When a cover scan already contains the Nintendo Switch branding printed in the upper-left corner, the website no longer overlays a second Switch logo.
+
+Digital-only titles without an official physical retail box keep the clean portrait presentation with the small Switch corner badge.
