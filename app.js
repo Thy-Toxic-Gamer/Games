@@ -302,6 +302,46 @@
       .toUpperCase() || "GAME";
   }
 
+  function escapeXml(value) {
+    return String(value).replace(/[<>&'"]/g, (character) => ({
+      "<": "&lt;",
+      ">": "&gt;",
+      "&": "&amp;",
+      "'": "&apos;",
+      '"': "&quot;",
+    }[character]));
+  }
+
+  function fallbackCoverUrl(title) {
+    const safeTitle = escapeXml(title);
+    const shortTitle = safeTitle.length > 28
+      ? ${safeTitle.slice(0, 25)}…
+      : safeTitle;
+    const initialsText = initials(title) || "GAME";
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#162b0d"/>
+          <stop offset="0.52" stop-color="#071006"/>
+          <stop offset="1" stop-color="#020302"/>
+        </linearGradient>
+        <pattern id="grid" width="34" height="34" patternUnits="userSpaceOnUse">
+          <path d="M34 0H0V34" fill="none" stroke="#7cff00" stroke-opacity=".12"/>
+        </pattern>
+      </defs>
+      <rect width="600" height="900" fill="url(#bg)"/>
+      <rect width="600" height="900" fill="url(#grid)"/>
+      <circle cx="470" cy="165" r="150" fill="#7cff00" fill-opacity=".08"/>
+      <path d="M-80 760L680 420" stroke="#7cff00" stroke-opacity=".2" stroke-width="5"/>
+      <path d="M-40 835L720 495" stroke="#7cff00" stroke-opacity=".1" stroke-width="18"/>
+      <text x="42" y="120" fill="#7cff00" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="6">THYTOXICGAMER</text>
+      <text x="42" y="430" fill="#f1f5ef" font-family="Arial,sans-serif" font-size="64" font-weight="900">${initialsText}</text>
+      <text x="42" y="500" fill="#b7ff73" font-family="Arial,sans-serif" font-size="25" font-weight="700">${shortTitle}</text>
+      <text x="42" y="842" fill="#7cff00" font-family="Consolas,monospace" font-size="22" letter-spacing="4">ARTWORK FALLBACK</text>
+    </svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  }
+
 
   function getGameInfo(game) {
     return GAME_INFO[game.title] || {
@@ -340,13 +380,13 @@
     image.alt = `${game.title} cover art`;
     image.loading = eager ? "eager" : "lazy";
     image.decoding = "async";
-    image.dataset.coverAttempt = game.image ? "external" : "0";
+    image.dataset.coverAttempt = game.image ? "external" : "header";
 
     image.classList.add(game.image ? "console-cover" : "landscape-cover");
     shell.classList.add("has-cover-image");
     shell.style.setProperty(
       "--cover-image",
-      `url("${image.src.replace(/\"/g, "%22")}")`,
+      `url("${image.src.replace(/"/g, "%22")}")`,
     );
 
     image.addEventListener("load", function () {
@@ -360,23 +400,32 @@
     });
 
     image.addEventListener("error", function () {
-      if (image.dataset.coverAttempt === "0") {
-        image.dataset.coverAttempt = "1";
+      if (image.dataset.coverAttempt === "header") {
+        image.dataset.coverAttempt = "portrait";
         image.classList.remove("landscape-cover");
         image.src = coverUrl(game, true);
         return;
       }
 
+      if (image.dataset.coverAttempt !== "fallback") {
+        image.dataset.coverAttempt = "fallback";
+        image.classList.remove(
+          "landscape-cover",
+          "console-cover",
+          "portrait-art",
+          "landscape-art",
+        );
+        image.classList.add("generated-cover");
+        shell.classList.remove("has-cover-image");
+        image.src = fallbackCoverUrl(game.title);
+        return;
+      }
+
       image.remove();
-      shell.classList.remove("has-cover-image");
       shell.classList.add("cover-unavailable");
     });
 
     shell.append(fallback, image);
-
-    // Use clean game artwork only; no platform/system logo overlays.
-
-
     return shell;
   }
 
