@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 6.6 — Restored Supplied Switch Covers
+
+- Replaced Atelier Ryza Secret Trilogy Deluxe Pack and Code of Princess EX with the newly supplied local PNG files.
+- Both covers now receive the explicit full-cover treatment in their cards and hover previews, preventing cropping.
+
 ## Version 6.5 — Never-Crop Code of Princess EX
 
 - Code of Princess EX now receives an explicit full-cover class in both its Switch card and hover preview, guaranteeing the entire supplied cover remains visible.

@@ -1114,7 +1114,7 @@ main {
   }
 }
 
-/* V6.5 — never crop Code of Princess EX in its card or hover preview. */
+/* V6.6 — never crop the two supplied Switch covers in cards or hover previews. */
 .game-cover.full-cover-art,
 .game-detail-cover img.full-cover-art {
   width: 100% !important;

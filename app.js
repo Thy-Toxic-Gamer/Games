@@ -387,7 +387,10 @@
     image.dataset.coverAttempt = game.image ? "external" : "header";
 
     image.classList.add(game.image ? "console-cover" : "landscape-cover");
-    if (game.title === "Code of Princess EX") {
+    if ([
+      "Atelier Ryza Secret Trilogy Deluxe Pack",
+      "Code of Princess EX",
+    ].includes(game.title)) {
       image.classList.add("full-cover-art");
     }
     shell.classList.add("has-cover-image");
