@@ -1,0 +1,500 @@
+:root {
+  --all-accent: #7cff00;
+  --pc-accent: #79b51f;
+  --switch-accent: #ff392b;
+  --ps5-accent: #159cff;
+  --snes-accent: #d766ff;
+  --xbox-accent: #a2aaa5;
+}
+
+/* Professional dashboard header */
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  min-height: 72px;
+  padding: 0.65rem clamp(1rem, 2vw, 2rem);
+  border-bottom-color: #1d261e;
+  background: rgba(3, 5, 4, 0.98);
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  font-size: 2rem;
+  box-shadow: none;
+}
+
+.brand strong {
+  color: var(--toxic);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
+
+.brand small {
+  color: var(--toxic-soft);
+  letter-spacing: 0.2em;
+}
+
+.library-count {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.library-count strong {
+  color: var(--toxic);
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.library-count span {
+  margin-top: 0.25rem;
+  color: #c0c8c2;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.vault-mark {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  color: var(--toxic);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.vault-mark > span {
+  font-size: 1.35rem;
+}
+
+/* The platform dashboard is the visual hero. */
+.intro {
+  display: none;
+}
+
+main {
+  width: min(1600px, 100%);
+  padding: 0.8rem clamp(0.75rem, 1.25vw, 1.35rem) 2.4rem;
+}
+
+.library-section {
+  position: relative;
+}
+
+/* Platform navigation */
+.platform-tabs {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-bottom: 0.72rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.platform-tab {
+  --tab-accent: var(--border);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.8rem 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  min-height: 64px;
+  padding: 0.72rem 0.8rem 0.68rem 2.8rem;
+  border-color: color-mix(in srgb, var(--tab-accent) 50%, #2a302b);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent), #090b0a;
+  color: #e8ece9;
+  text-align: left;
+}
+
+.platform-tab::before {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  color: var(--tab-accent);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 1.35rem;
+  font-weight: 900;
+  transform: translateY(-50%);
+}
+
+.platform-tab[data-platform="all"] { --tab-accent: var(--all-accent); }
+.platform-tab[data-platform="all"]::before { content: "▦"; }
+.platform-tab[data-platform="pc"] { --tab-accent: var(--pc-accent); }
+.platform-tab[data-platform="pc"]::before { content: "▣"; }
+.platform-tab[data-platform="switch"] { --tab-accent: var(--switch-accent); }
+.platform-tab[data-platform="switch"]::before { content: "◫"; }
+.platform-tab[data-platform="ps5"] { --tab-accent: var(--ps5-accent); }
+.platform-tab[data-platform="ps5"]::before { content: "△"; }
+.platform-tab[data-platform="snes"] { --tab-accent: var(--snes-accent); }
+.platform-tab[data-platform="snes"]::before { content: "✚"; }
+.platform-tab[data-platform="xbox"] { --tab-accent: var(--xbox-accent); }
+.platform-tab[data-platform="xbox"]::before { content: "◉"; }
+
+.platform-tab:hover,
+.platform-tab:focus-visible {
+  border-color: var(--tab-accent);
+  color: #fff;
+  outline: none;
+  box-shadow: inset 0 0 30px color-mix(in srgb, var(--tab-accent) 9%, transparent);
+}
+
+.platform-tab.active {
+  border-color: var(--tab-accent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tab-accent) 18%, #0a0c0a), #090b0a);
+  color: #fff;
+  box-shadow: inset 0 0 34px color-mix(in srgb, var(--tab-accent) 13%, transparent), 0 0 16px color-mix(in srgb, var(--tab-accent) 8%, transparent);
+}
+
+.platform-tab .tab-count {
+  grid-column: 2;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  color: #aeb7b0;
+  font-size: 0.68rem;
+}
+
+/* Hide the old large heading only when showing the All dashboard. */
+#platform-panel[data-dashboard-platform="all"] > .section-heading {
+  display: none;
+}
+
+/* All-tab system dashboard */
+.platform-dashboard {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.platform-dashboard[hidden] {
+  display: none;
+}
+
+.dashboard-platform {
+  --panel-accent: var(--pc-accent);
+  min-width: 0;
+  padding: 0.78rem;
+  border: 1px solid var(--panel-accent);
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--panel-accent) 5%, transparent), transparent 34%),
+    #050706;
+  box-shadow: inset 0 1px rgba(255,255,255,0.02);
+}
+
+.dashboard-switch { --panel-accent: var(--switch-accent); }
+.dashboard-pc { --panel-accent: var(--pc-accent); }
+.dashboard-ps5 { --panel-accent: var(--ps5-accent); }
+.dashboard-snes { --panel-accent: var(--snes-accent); }
+
+.dashboard-platform-heading {
+  margin-bottom: 0.7rem;
+}
+
+.dashboard-platform-title {
+  display: flex;
+  align-items: center;
+  gap: 0.58rem;
+}
+
+.dashboard-platform-title h2 {
+  margin: 0;
+  color: #f6f8f6;
+  font-size: clamp(1.05rem, 1.6vw, 1.42rem);
+  letter-spacing: -0.025em;
+}
+
+.dashboard-platform-icon {
+  color: var(--panel-accent);
+  font-family: Consolas, monospace;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.dashboard-platform-count {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--panel-accent) 58%, #080a08);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.dashboard-card-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.dashboard-featured .dashboard-card-grid {
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.dashboard-lower-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.dashboard-card {
+  min-width: 0;
+  overflow: hidden;
+  border-color: #273029;
+  border-radius: 5px;
+  background: #080a09;
+  box-shadow: none;
+}
+
+.dashboard-card:hover,
+.dashboard-card:focus-visible {
+  z-index: 6;
+  border-color: var(--panel-accent, var(--toxic));
+  transform: translateY(-2px);
+}
+
+.dashboard-card .cover-shell {
+  aspect-ratio: 2 / 3;
+  background: #070908;
+}
+
+.dashboard-card .cover-shell.has-cover-image::before {
+  opacity: 0;
+}
+
+.dashboard-card .game-cover {
+  padding: 0;
+  background: #070908;
+  object-fit: contain;
+}
+
+.dashboard-card .game-cover.portrait-cover {
+  object-fit: cover;
+}
+
+.dashboard-card .game-details {
+  min-height: 60px;
+  padding: 0.43rem 0.36rem 0.4rem;
+  text-align: center;
+}
+
+.dashboard-card .game-number {
+  display: none;
+}
+
+.dashboard-card .game-details h3 {
+  font-size: 0.67rem;
+  line-height: 1.22;
+}
+
+.dashboard-card .card-release {
+  font-size: 0.58rem;
+}
+
+/* The professional layout uses one floating detail card instead of covering the art. */
+.game-card .game-hover-info {
+  display: none !important;
+}
+
+.game-card:hover .game-details,
+.game-card:focus-visible .game-details,
+.game-card:focus-within .game-details {
+  opacity: 1;
+}
+
+.game-detail-popover {
+  --detail-accent: var(--toxic);
+  position: fixed;
+  z-index: 100;
+  width: min(440px, calc(100vw - 28px));
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 0.75rem;
+  border: 1px solid var(--detail-accent);
+  border-radius: 7px;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--detail-accent) 4%, #070907), #050706 42%),
+    #050706;
+  box-shadow: 0 20px 70px rgba(0,0,0,0.72), 0 0 24px color-mix(in srgb, var(--detail-accent) 8%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.985);
+  transition: opacity 130ms ease, transform 130ms ease;
+}
+
+.game-detail-popover.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.game-detail-cover {
+  width: 112px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--detail-accent) 58%, #303730);
+  border-radius: 4px;
+  background: #0a0c0b;
+}
+
+.game-detail-cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.game-detail-copy {
+  min-width: 0;
+}
+
+.game-detail-copy h3 {
+  margin: 0 0 0.2rem;
+  color: #fff;
+  font-size: 1.18rem;
+  line-height: 1.12;
+}
+
+.game-detail-platform {
+  margin: 0 0 0.65rem;
+  color: var(--detail-accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.game-detail-label {
+  display: block;
+  margin: 0.45rem 0 0.18rem;
+  color: var(--detail-accent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.game-detail-genre,
+.game-detail-story {
+  margin: 0;
+  color: #eef3ef;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.dashboard-view-all {
+  display: block;
+  width: fit-content;
+  margin: 0.65rem auto 0;
+  padding: 0.43rem 1.05rem;
+  border: 1px solid var(--panel-accent);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--panel-accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.7rem;
+}
+
+.dashboard-view-all:hover,
+.dashboard-view-all:focus-visible {
+  background: color-mix(in srgb, var(--panel-accent) 13%, transparent);
+  outline: none;
+}
+
+/* Full console tabs: compact cards with the entire cover visible. */
+#platform-panel[data-dashboard-platform="switch"] .game-grid,
+#platform-panel[data-dashboard-platform="ps5"] .game-grid,
+#platform-panel[data-dashboard-platform="snes"] .game-grid {
+  grid-template-columns: repeat(auto-fill, minmax(145px, 175px));
+  gap: 0.75rem;
+  justify-content: start;
+}
+
+.game-card.console-game .cover-shell {
+  aspect-ratio: 2 / 3;
+  background: #070908;
+}
+
+.game-card.console-game .cover-shell.has-cover-image::before {
+  opacity: 0;
+}
+
+.game-card.console-game .game-cover.console-cover {
+  padding: 0;
+  background: #070908;
+  object-fit: contain;
+}
+
+#platform-panel[data-dashboard-platform="switch"] .game-card:hover,
+#platform-panel[data-dashboard-platform="switch"] .game-card:focus-visible {
+  border-color: var(--switch-accent);
+}
+
+#platform-panel[data-dashboard-platform="ps5"] .game-card:hover,
+#platform-panel[data-dashboard-platform="ps5"] .game-card:focus-visible {
+  border-color: var(--ps5-accent);
+}
+
+#platform-panel[data-dashboard-platform="snes"] .game-card:hover,
+#platform-panel[data-dashboard-platform="snes"] .game-card:focus-visible {
+  border-color: var(--snes-accent);
+}
+
+@media (max-width: 1120px) {
+  .platform-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dashboard-featured .dashboard-card-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .dashboard-lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .vault-mark {
+    display: none;
+  }
+
+  .platform-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-featured .dashboard-card-grid,
+  .dashboard-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #platform-panel[data-dashboard-platform="switch"] .game-grid,
+  #platform-panel[data-dashboard-platform="ps5"] .game-grid,
+  #platform-panel[data-dashboard-platform="snes"] .game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .game-detail-popover {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .game-detail-cover {
+    width: 86px;
+  }
+}
+
+@media (hover: none), (max-width: 600px) {
+  .game-detail-popover {
+    display: none;
+  }
+}
