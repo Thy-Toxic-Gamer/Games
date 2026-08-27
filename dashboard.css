@@ -1154,3 +1154,40 @@ main {
 .system-box-switch:has(.game-cover.landscape-art)::before {
   display: none !important;
 }
+
+
+/* ============================================================
+   V5.7 — CLEAN SWITCH ARTWORK
+   No synthetic Nintendo Switch branding anywhere.
+   ============================================================ */
+
+.system-box-switch .system-box-banner,
+.system-box-switch .official-switch-logo,
+.system-box-switch .switch-symbol {
+  display: none !important;
+}
+
+.system-box-switch,
+.dashboard-card .system-box-switch,
+.game-card.console-game .system-box-switch {
+  background: #050505 !important;
+}
+
+.system-box-switch .game-cover,
+.dashboard-card .system-box-switch .game-cover,
+.game-card.console-game .system-box-switch .game-cover {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #050505 !important;
+}
+
+.system-box-switch::before,
+.system-box-switch::after {
+  display: none !important;
+}

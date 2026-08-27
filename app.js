@@ -412,6 +412,7 @@
           '<span class="snes-wordmark">SUPER NINTENDO</span>';
       }
 
+      // Switch cards intentionally use artwork only; no synthetic system badge.
       if (platformId !== "switch") {
         shell.prepend(systemBanner);
       }

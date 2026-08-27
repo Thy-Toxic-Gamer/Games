@@ -122,3 +122,11 @@ Updated cover pass:
 - Super Mario Odyssey — US Switch box front
 - Guardian Tales — best portrait cover art retained because Nintendo lists the Switch release as digital
 - Atelier Ryza Secret Trilogy Deluxe Pack — best portrait/key art used because Nintendo lists the Switch bundle as digital
+
+
+## Version 5.7 — Clean Switch Artwork
+
+- Removed all synthetic red Nintendo Switch logos/badges from the website.
+- Problem Switch titles use clean portrait/key art selected to match the game.
+- No fake physical-case treatment is added.
+- Artwork is contained inside a consistent portrait card without stretching.
