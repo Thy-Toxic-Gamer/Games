@@ -1000,3 +1000,31 @@ main {
   object-fit: cover !important;
   object-position: center center !important;
 }
+
+
+/* V5.7 — portrait-safe artwork presentation.
+   Covers keep their aspect ratio, fill the same card space, and never stretch.
+   The unreleased PC Castlevania entry may remain contained as a landscape image. */
+.dashboard-card .game-cover,
+.game-card.console-game .game-cover.console-cover {
+  object-fit: cover;
+  object-position: center;
+}
+
+.dashboard-card .game-cover.unreleased-landscape {
+  padding: 0.25rem;
+  object-fit: contain;
+  object-position: center;
+}
+
+.dashboard-card .game-cover.generated-cover,
+.game-card.console-game .game-cover.generated-cover {
+  padding: 0;
+  object-fit: cover;
+}
+
+#platform-panel[data-dashboard-platform="switch"] .game-card.console-game .game-cover.console-cover,
+#platform-panel[data-dashboard-platform="ps5"] .game-card.console-game .game-cover.console-cover,
+#platform-panel[data-dashboard-platform="snes"] .game-card.console-game .game-cover.console-cover {
+  object-fit: cover;
+}
