@@ -182,6 +182,18 @@ const snesRows = [
 ];
 
 function compareGameRows(left, right) {
+  const witcherOrder = new Map([
+    ["The Witcher: Enhanced Edition", 1],
+    ["The Witcher 2: Assassins of Kings Enhanced Edition", 2],
+    ["The Witcher 3: Wild Hunt - Complete Edition", 3],
+  ]);
+  const leftWitcher = witcherOrder.get(left[0]);
+  const rightWitcher = witcherOrder.get(right[0]);
+
+  if (leftWitcher && rightWitcher) {
+    return leftWitcher - rightWitcher;
+  }
+
   return left[0].localeCompare(right[0], "en", {
     numeric: true,
     sensitivity: "base",

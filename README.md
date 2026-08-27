@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 6.8 — Correct Witcher Sequence
+
+- The Witcher: Enhanced Edition is now PC game #079.
+- The Witcher 2 moves to #080 and The Witcher 3 moves to #081.
+
 ## Version 6.7 — Root-Level Switch Artwork Fix
 
 - Moved the Atelier Ryza and Code of Princess EX PNGs to the repository root and updated their game entries to use simple root-level paths.
