@@ -118,3 +118,11 @@ This pass corrects the remaining visual mismatch:
 - Failed artwork receives a generated cover-style fallback instead of leaving an empty card.
 - PC entries 55–57 are ordered as Ninja Gaiden Σ, Ninja Gaiden Σ2, and Ninja Gaiden 3: Razor's Edge.
 - Cache-busting query strings updated to version 5.7.
+
+
+## Version 5.8 — Portrait Artwork and Alphabetical Catalog
+
+- Replaced the requested Switch artwork with portrait-transformed clean artwork.
+- All PC, Nintendo Switch, PS5, SNES, and All Games displays now sort alphabetically.
+- Dashboard previews preserve the same alphabetical order.
+- Cache-busting query strings updated to version 5.8.
