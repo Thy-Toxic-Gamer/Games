@@ -70,3 +70,12 @@ This pass corrects the remaining visual mismatch:
 - Portrait artwork is shown in full with no zoom/crop.
 - Remaining horizontal Nintendo/store artwork is contained instead of enlarged.
 - Switch / PS5 / SNES system headers, platform colors, and hover story/genre panels remain.
+
+
+## Version 5.3 — Official System Branding and Uniform Covers
+
+- Nintendo Switch cards now use the official Nintendo Switch logo in the red system header.
+- PS5 cards now use the official PlayStation 5 wordmark in the white system header.
+- Switch, PS5, and SNES cards use fixed, consistent portrait cover viewports.
+- Artwork is contained instead of stretched, so games with different source dimensions stay aligned.
+- Hover story/genre panels and platform color layout remain unchanged.

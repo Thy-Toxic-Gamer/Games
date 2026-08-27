@@ -390,10 +390,10 @@
 
       if (platformId === "switch") {
         systemBanner.innerHTML =
-          '<span class="switch-symbol">◧</span><span>NINTENDO<br>SWITCH</span>';
+          '<img class="official-system-logo official-switch-logo" src="https://www.nintendo.co.jp/common/v2/img/ncommon/_common/logo/switch.svg" alt="" />';
       } else if (platformId === "ps5") {
         systemBanner.innerHTML =
-          '<span class="ps-symbol">PS</span><span class="ps5-wordmark">PS5</span>';
+          '<img class="official-system-logo official-ps5-logo" src="https://upload.wikimedia.org/wikipedia/commons/c/cb/PlayStation_5_logo_and_wordmark.svg" alt="" />';
       } else {
         systemBanner.innerHTML =
           '<span class="snes-wordmark">SUPER NINTENDO</span>';

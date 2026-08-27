@@ -812,3 +812,152 @@ main {
   object-fit: contain !important;
   object-position: center !important;
 }
+
+
+/* ============================================================
+   V5.3 — OFFICIAL SYSTEM BRANDING + UNIFORM COVER VIEWPORTS
+   ============================================================ */
+
+/* Every console cover uses exactly the same physical-case footprint. */
+.dashboard-card .system-box,
+.game-card.console-game .system-box,
+.system-box {
+  width: 100% !important;
+  aspect-ratio: 2 / 3 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #050505 !important;
+}
+
+/* The art itself is given one consistent viewport beneath the system bar. */
+.system-box .game-cover,
+.dashboard-card .system-box .game-cover,
+.game-card.console-game .system-box .game-cover {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #050505 !important;
+}
+
+/* Switch and PS5 art start below a fixed header, so every card's image area
+   is identical even when the source artwork has a different aspect ratio. */
+.system-box-switch .game-cover {
+  top: 34px !important;
+  height: calc(100% - 34px) !important;
+}
+
+.system-box-ps5 .game-cover {
+  top: 31px !important;
+  height: calc(100% - 31px) !important;
+}
+
+.system-box-snes .game-cover {
+  top: 28px !important;
+  height: calc(100% - 28px) !important;
+}
+
+/* Remaining horizontal artwork stays centered and never gets stretched. */
+.system-box .game-cover.landscape-art {
+  padding: 0 !important;
+  object-fit: contain !important;
+}
+
+/* System header bars now use the real platform wordmarks. */
+.system-box .system-box-banner {
+  position: absolute !important;
+  inset: 0 0 auto 0 !important;
+  z-index: 5 !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Nintendo Switch retail-style red header with official Nintendo Switch logo. */
+.system-box-switch .system-box-banner {
+  height: 34px !important;
+  justify-content: flex-start !important;
+  padding: 3px 6px !important;
+  background: #e60012 !important;
+  border-bottom: 1px solid rgba(255,255,255,.25) !important;
+}
+
+.official-switch-logo {
+  display: block !important;
+  width: 27px !important;
+  height: 27px !important;
+  object-fit: contain !important;
+}
+
+/* PS5 retail-style white header with the official Sony PS5 wordmark. */
+.system-box-ps5 .system-box-banner {
+  height: 31px !important;
+  justify-content: flex-start !important;
+  padding: 5px 8px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f5 100%) !important;
+  border-bottom: 1px solid #cfd5dc !important;
+}
+
+.official-ps5-logo {
+  display: block !important;
+  width: 69px !important;
+  height: 18px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+}
+
+/* Do not show the old approximation characters anymore. */
+.switch-symbol,
+.ps-symbol,
+.ps5-wordmark {
+  display: none !important;
+}
+
+/* SNES keeps the era-specific black/silver treatment. */
+.system-box-snes .system-box-banner {
+  height: 28px !important;
+  justify-content: center !important;
+}
+
+/* Prevent the fallback initials from appearing behind valid images. */
+.system-box.has-cover-image .cover-fallback {
+  display: none !important;
+}
+
+/* Consistent dashboard card sizes regardless of source-art dimensions. */
+.dashboard-switch .dashboard-card,
+.dashboard-ps5 .dashboard-card,
+.dashboard-snes .dashboard-card {
+  min-width: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .system-box-switch .system-box-banner { height: 30px !important; }
+  .system-box-switch .game-cover {
+    top: 30px !important;
+    height: calc(100% - 30px) !important;
+  }
+
+  .official-switch-logo {
+    width: 23px !important;
+    height: 23px !important;
+  }
+
+  .system-box-ps5 .system-box-banner { height: 28px !important; }
+  .system-box-ps5 .game-cover {
+    top: 28px !important;
+    height: calc(100% - 28px) !important;
+  }
+
+  .official-ps5-logo {
+    width: 61px !important;
+    height: 16px !important;
+  }
+}
