@@ -90,3 +90,12 @@ This pass corrects the remaining visual mismatch:
 - Cover images fill their card slots precisely with centered cropping.
 - Artwork sources should be clean game/key art rather than platform-branded box fronts whenever available.
 - Cache-busting query strings updated to version `5.4`.
+
+
+## Version 5.5 — Unified Hover Details
+
+- Removed the large persistent PC detail panel from the All dashboard.
+- PC is still the wide featured section and now previews up to 16 games.
+- Nintendo Switch preview returns to a compact five-card lower panel.
+- Every game card, including PC, Switch, PS5, SNES, and full-library cards, uses the same hover/focus detail popup with cover art, platform, genre, and game description.
+- Cache-busting query strings updated to version `5.5`.

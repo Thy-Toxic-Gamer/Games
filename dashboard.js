@@ -9,8 +9,8 @@
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Switch", icon: "◫", limit: 16, accent: "#ff392b" },
-    pc: { label: "PC", icon: "▣", limit: 5, accent: "#79b51f" },
+    switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
+    pc: { label: "PC", icon: "▣", limit: 16, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
@@ -246,31 +246,8 @@
       cardGrid.append(card);
     });
 
-    if (featured) {
-      const detail = createFeaturedDetail();
-      cardGrid.append(detail);
-
-      previewCards.forEach((card) => {
-        card.addEventListener("click", function (event) {
-          event.preventDefault();
-          showFeaturedDetail(detail, card);
-        });
-        card.addEventListener("mouseenter", function () {
-          showFeaturedDetail(detail, card);
-        });
-        card.addEventListener("focus", function () {
-          showFeaturedDetail(detail, card);
-        });
-      });
-
-      const initialCard = previewCards.find((card) =>
-        card.querySelector(".game-details h3")?.textContent?.trim() === "God of War")
-        || previewCards[0];
-
-      if (initialCard) {
-        showFeaturedDetail(detail, initialCard);
-      }
-    }
+    // A featured section is only a wider preview grid.
+    // Game details are shown consistently by the hover/focus popover for every platform.
 
     section.append(heading, cardGrid, viewAllButton(platformId, cards.length));
     return section;
@@ -389,25 +366,25 @@
 
   document.addEventListener("mouseover", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (!card || card.closest(".dashboard-featured")) return;
+    if (!card) return;
     showPopover(card);
   });
 
   document.addEventListener("mouseout", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (!card || card.closest(".dashboard-featured")) return;
+    if (!card) return;
     if (event.relatedTarget && card.contains(event.relatedTarget)) return;
     hidePopoverTimer = setTimeout(hidePopover, 70);
   });
 
   document.addEventListener("focusin", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (card && !card.closest(".dashboard-featured")) showPopover(card);
+    if (card) showPopover(card);
   });
 
   document.addEventListener("focusout", function (event) {
     const card = event.target.closest?.(".game-card");
-    if (card && !card.closest(".dashboard-featured")) {
+    if (card) {
       hidePopoverTimer = setTimeout(hidePopover, 70);
     }
   });
