@@ -521,3 +521,103 @@ footer p {
     transition: none;
   }
 }
+
+
+/* Console cover sizing: fill Switch/PS5/SNES cards cleanly instead of showing the blurred backing image. */
+.game-card.console-game .cover-shell {
+  aspect-ratio: 2 / 3;
+  background: #090c09;
+}
+
+.game-card.console-game .game-cover.console-cover {
+  padding: 0;
+  object-fit: cover;
+}
+
+.game-card.console-game .cover-shell.has-cover-image::before {
+  opacity: 0;
+}
+
+/* Hover/focus story panel */
+.game-card {
+  isolation: isolate;
+}
+
+.game-hover-info {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 4;
+  display: grid;
+  gap: 0.55rem;
+  max-height: 72%;
+  padding: 0.95rem;
+  border-top: 1px solid rgba(124, 255, 0, 0.42);
+  background:
+    linear-gradient(180deg, rgba(7, 10, 8, 0.94), rgba(4, 6, 5, 0.985));
+  box-shadow: 0 -18px 36px rgba(0, 0, 0, 0.48);
+  opacity: 0;
+  overflow-y: auto;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.game-card:hover .game-hover-info,
+.game-card:focus-visible .game-hover-info,
+.game-card:focus-within .game-hover-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.game-card:hover .game-details,
+.game-card:focus-visible .game-details,
+.game-card:focus-within .game-details {
+  opacity: 0.12;
+}
+
+.game-details {
+  transition: opacity 160ms ease;
+}
+
+.game-genre {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.28rem 0.48rem;
+  border: 1px solid rgba(124, 255, 0, 0.55);
+  border-radius: 999px;
+  color: var(--toxic-soft);
+  background: rgba(124, 255, 0, 0.07);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.game-description {
+  margin: 0;
+  color: #edf4e9;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.game-card.console-game {
+  min-height: 0;
+}
+
+@media (hover: none) {
+  .game-card:focus .game-hover-info {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .game-hover-info {
+    max-height: 78%;
+    padding: 0.75rem;
+  }
+
+  .game-description {
+    font-size: 0.7rem;
+  }
+}

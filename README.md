@@ -33,3 +33,7 @@ unavailable, the card displays a branded text fallback.
 Castlevania: Belmont's Curse remains in the PC library. Its card is marked
 as coming soon until October 15, 2026, then automatically becomes a regular
 game card based on the visitor's local date.
+
+## Hover details
+
+Every game card now shows a short story/premise summary and genre when hovered with a mouse or focused with a keyboard. Nintendo Switch, PS5, and SNES cover panels also use a portrait layout so the cover fills the card cleanly without the blurred background showing around it.
