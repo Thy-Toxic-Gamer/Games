@@ -20,12 +20,12 @@
     get("pending-viewer").textContent=request.twitch_name;get("pending-time").textContent=new Date(request.created_at).toLocaleString();
     get("pending-platform").textContent=request.platform||"Not specified";get("pending-note").textContent=request.viewer_note||"No note provided.";
   }
-  function renderHistory(requests) {
-    const container=get("request-history");container.replaceChildren();
-    const history=requests.filter((request)=>request.status!=="pending");
-    if(!history.length){container.append(make("p","request-history-empty","No reviewed or completed requests yet."));return;}
+  function renderHistory(requests,options={}) {
+    const container=get(options.containerId||"request-history");container.replaceChildren();
+    const history=options.archived?requests:requests.filter((request)=>request.status!=="pending");
+    if(!history.length){container.append(make("p","request-history-empty",options.emptyMessage||"No reviewed or completed requests yet."));return;}
     history.forEach((request)=>{
-      const card=make("article","request-history-card");
+      const card=make("article",`request-history-card${options.archived?" is-archived":""}`);
       const head=make("div","request-history-head");
       const copy=make("div");copy.append(make("small",null,request.id),make("h3",null,request.game_title),make("p",null,`${request.twitch_name} · $${request.minimum_amount} minimum`));
       const status=make("span","review-status",statusLabels[request.status]||request.status);status.dataset.status=request.status;
@@ -33,21 +33,26 @@
       const details=make("p","request-history-details",`Submitted ${new Date(request.created_at).toLocaleString()} · ${request.platform||"Game"}`);card.append(details);
       if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
       if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
+      if(options.archived&&request.archived_at){
+        const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
+        card.append(make("p","request-history-details",`Archived ${archivedAt.toLocaleString()} · Scheduled deletion after ${deleteAt.toLocaleDateString()}`));
+      }
       container.append(card);
     });
   }
   async function refreshDashboard() {
-    const [{data:state,error:stateError},{data:requests,error:requestsError}] = await Promise.all([
+    const [{data:state,error:stateError},{data:requests,error:requestsError},{data:archived,error:archiveError}] = await Promise.all([
       client.rpc("request_system_state"),
-      client.from("game_requests").select("*").order("created_at",{ascending:false}).limit(25)
+      client.from("game_requests").select("*").is("archived_at",null).order("created_at",{ascending:false}).limit(25),
+      client.from("game_requests").select("*").not("archived_at","is",null).order("archived_at",{ascending:false}).limit(50)
     ]);
-    if(stateError||requestsError){message("Dashboard unavailable","Run the v8.3 review-dashboard SQL upgrade, then refresh this page.");return;}
+    if(stateError||requestsError||archiveError){message("Dashboard unavailable","Run the v8.4 archive-retention SQL upgrade, then refresh this page.");return;}
     get("staff-message").hidden=true;get("staff-dashboard").hidden=false;
     const active=state.globalCooldownEnds&&new Date(state.globalCooldownEnds).getTime()>Date.now();
     get("global-cooldown-state").textContent=active?"Cooldown Active":"Requests Open";get("global-cooldown-state").dataset.status=active?"denied":"approved";
     get("global-cooldown-message").textContent=active?`Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`:"There is no active global cooldown. Viewers can submit a game request.";
     get("reset-global-cooldown").disabled=!active;
-    renderPending(requests.find((request)=>request.status==="pending")||null);renderHistory(requests);
+    renderPending(requests.find((request)=>request.status==="pending")||null);renderHistory(requests);renderHistory(archived,{containerId:"request-archive",archived:true,emptyMessage:"No requests have reached the Archive yet."});
   }
   async function initialize() {
     if(!client){message("Connection error","The staff service could not load.");return;}

@@ -252,3 +252,11 @@ This pass corrects the remaining visual mismatch:
 - Added recent request history for awaiting-payment, approved, denied, expired, and cancelled records.
 - Approval reserves the request slot but does not start the 14-day cooldown; payment confirmation will start it later.
 - Included the one-time `RUN-THIS-v8.3-REVIEW-DASHBOARD.sql` database upgrade.
+
+## Version 8.4 — Automatic Request Archive
+
+- Completed requests remain in **Recent Requests** for 30 days, then move to the staff-only **Archive**.
+- Archived requests are permanently deleted after spending six months in the Archive.
+- Pending and awaiting-payment requests are never archived or deleted by retention maintenance.
+- Maintenance runs automatically once each day through Supabase Cron.
+- Included the one-time `RUN-THIS-v8.4-ARCHIVE-RETENTION.sql` database upgrade.
