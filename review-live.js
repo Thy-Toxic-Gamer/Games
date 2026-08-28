@@ -2,7 +2,7 @@
   "use strict";
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
-  const statusLabels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
+  const statusLabels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   let session = null;
   let pendingRequest = null;
   let serviceEnabled = true;

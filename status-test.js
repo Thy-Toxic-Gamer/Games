@@ -2,7 +2,7 @@
   "use strict";
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
-  const labels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
+  const labels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   const messages = {
     pending:"Your game request is waiting for review. No payment is requested yet.",
     awaiting_payment:"Your request was approved for payment. Use the secure StreamElements option below before the deadline.",
