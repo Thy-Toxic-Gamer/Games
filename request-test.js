@@ -19,7 +19,7 @@
   const unlistedButton = document.querySelector("#unlisted-request-button");
   let selected = null;
   let session = null;
-  let systemState = { slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
+  let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
 
   function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
   function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog · $10 Minimum" : `${prettyPlatform(selection.gamePlatform)} · Owned Game · $5 Minimum`; }
@@ -28,7 +28,7 @@
     return data.preferred_username || data.user_name || data.login || data.name || data.full_name || "Twitch Viewer";
   }
   function cooldownActive() { return !systemState.canBypassCooldown && systemState.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now(); }
-  function requestLocked() { return !systemState.slotOpen || cooldownActive(); }
+  function requestLocked() { return systemState.serviceEnabled === false || !systemState.slotOpen || cooldownActive(); }
   function authRedirect() { return new URL("index.html", window.location.href).href; }
   async function signIn() {
     if (!client) return;
@@ -48,14 +48,17 @@
     signOutButton.hidden = !signedIn;
     document.querySelectorAll(".request-game-button").forEach((button) => {
       button.setAttribute("aria-disabled", String(locked));
-      button.textContent = locked ? "Request Slot Unavailable" : signedIn ? "Request for $5+" : "Sign in to Request";
+      button.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request for $5+" : "Sign in to Request";
     });
     if (unlistedButton) {
       unlistedButton.disabled = locked;
-      unlistedButton.textContent = locked ? "Request Slot Unavailable" : signedIn ? "Request for $10+" : "Sign in to Request";
+      unlistedButton.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request for $10+" : "Sign in to Request";
     }
     if (unlistedTitle) unlistedTitle.disabled = locked;
-    if (cooldownActive()) {
+    if (systemState.serviceEnabled === false) {
+      slotCard.dataset.state = "cooldown"; slotLabel.textContent = "New Requests Temporarily Off";
+      slotDetail.textContent = "Staff paused new submissions. Existing requests continue normally.";
+    } else if (cooldownActive()) {
       slotCard.dataset.state = "cooldown"; slotLabel.textContent = "14-Day Cooldown";
       slotDetail.textContent = `Requests reopen ${new Date(systemState.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`;
     } else if (!systemState.slotOpen) {

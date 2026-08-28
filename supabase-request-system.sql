@@ -3,6 +3,9 @@
 
 create table if not exists public.request_system_settings (
   singleton boolean primary key default true check (singleton = true),
+  service_enabled boolean not null default true,
+  service_changed_at timestamptz,
+  service_changed_by uuid references auth.users(id) on delete set null,
   global_cooldown_ends timestamptz,
   cooldown_started_at timestamptz,
   cooldown_request_id uuid references public.game_requests(id) on delete set null,
@@ -10,11 +13,30 @@ create table if not exists public.request_system_settings (
   reset_by uuid references auth.users(id) on delete set null
 );
 
+alter table public.request_system_settings
+  add column if not exists service_enabled boolean not null default true,
+  add column if not exists service_changed_at timestamptz,
+  add column if not exists service_changed_by uuid references auth.users(id) on delete set null;
+
 insert into public.request_system_settings (singleton)
 values (true)
 on conflict (singleton) do nothing;
 
 alter table public.request_system_settings enable row level security;
+
+create or replace function public.request_service_enabled()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select coalesce((
+    select service_enabled
+    from public.request_system_settings
+    where singleton = true
+  ), true);
+$$;
 
 create or replace function public.global_request_cooldown_active()
 returns boolean
@@ -39,6 +61,7 @@ to authenticated
 with check (
   viewer_id = auth.uid()
   and status = 'pending'
+  and public.request_service_enabled()
   and (
     public.can_bypass_request_cooldown()
     or not public.global_request_cooldown_active()
@@ -92,6 +115,7 @@ security definer
 set search_path = public
 as $$
   select jsonb_build_object(
+    'serviceEnabled', public.request_service_enabled(),
     'slotOpen', not exists (
       select 1 from public.game_requests
       where status in ('pending', 'awaiting_payment')
@@ -104,6 +128,38 @@ as $$
     ),
     'canBypassCooldown', public.can_bypass_request_cooldown()
   );
+$$;
+
+-- This is the function used by the private website service switch.
+create or replace function public.set_request_service_enabled(enabled boolean)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not exists (
+    select 1 from public.request_staff where user_id = auth.uid()
+  ) then
+    raise exception 'Staff access required.';
+  end if;
+
+  if enabled is null then
+    raise exception 'A service state is required.';
+  end if;
+
+  insert into public.request_system_settings (
+    singleton, service_enabled, service_changed_at, service_changed_by
+  ) values (
+    true, enabled, now(), auth.uid()
+  )
+  on conflict (singleton) do update set
+    service_enabled = excluded.service_enabled,
+    service_changed_at = excluded.service_changed_at,
+    service_changed_by = excluded.service_changed_by;
+
+  return jsonb_build_object('success', true, 'serviceEnabled', enabled, 'changedAt', now());
+end;
 $$;
 
 -- Staff can confirm their access without reading the staff table directly.
@@ -163,6 +219,10 @@ $$;
 revoke all on function public.request_system_state() from public;
 revoke all on function public.my_request_staff_access() from public;
 revoke all on function public.reset_global_request_cooldown() from public;
+revoke all on function public.request_service_enabled() from public;
+revoke all on function public.set_request_service_enabled(boolean) from public;
 grant execute on function public.request_system_state() to anon, authenticated;
 grant execute on function public.my_request_staff_access() to authenticated;
 grant execute on function public.reset_global_request_cooldown() to authenticated;
+grant execute on function public.request_service_enabled() to authenticated;
+grant execute on function public.set_request_service_enabled(boolean) to authenticated;

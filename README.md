@@ -292,3 +292,12 @@ This pass corrects the remaining visual mismatch:
 - Confirmed payments record the provider, currency, amount, tip ID, and paid time before starting the 14-day global cooldown.
 - Preserved the version 8.6 live refresh, countdown, last-checked time, and tab-return refresh behavior.
 - Included `RUN-THIS-v9.0-AUTOMATIC-PAYMENTS.sql` and `PAYMENT-SETUP.md`.
+
+## Version 9.1 — Global Service Switch
+
+- Added a staff-only ON/OFF switch for new game-request submissions.
+- Turning services OFF immediately blocks only brand-new request submissions.
+- Existing requests continue through review, StreamElements payment, confirmation, and normal expiration without interruption.
+- The manual service switch is separate from the automatic 14-day global cooldown and stays OFF until staff turns it back ON.
+- Added server-side enforcement so stale or bypassed website pages cannot submit a new request while services are OFF.
+- Included `RUN-THIS-v9.1-GLOBAL-SERVICE-SWITCH.sql`.
