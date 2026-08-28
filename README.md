@@ -260,3 +260,15 @@ This pass corrects the remaining visual mismatch:
 - Pending and awaiting-payment requests are never archived or deleted by retention maintenance.
 - Maintenance runs automatically once each day through Supabase Cron.
 - Included the one-time `RUN-THIS-v8.4-ARCHIVE-RETENTION.sql` database upgrade.
+
+## Version 8.5 — Awaiting Request Controls
+
+- The live staff queue now displays both pending and awaiting-payment requests.
+- Added a confirmed **Cancel Awaiting Request** staff control with a required explanation.
+- Staff cancellation immediately releases the single request slot.
+- The viewer sees the cancellation explanation on the request-status page.
+- Awaiting requests show their automatic expiration deadline in Staff Control.
+- Awaiting requests automatically expire after 48 hours, checked every five minutes.
+- Included the working Discord router source under `supabase/functions/discord-game-requests/` without private secret values.
+- Included the reusable `RUN-THIS-v8.5-AUTO-EXPIRY.sql` maintenance script.
+- Included the one-time `RUN-THIS-v8.5-STAFF-AWAITING-CANCEL.sql` database upgrade.

@@ -2,14 +2,14 @@
   "use strict";
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
-  const labels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled by Viewer"};
+  const labels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   const messages = {
     pending:"Your game request is waiting for review. No payment is requested yet.",
     awaiting_payment:"Your request was approved for payment. The secure payment option will appear here after the payment connection is completed.",
     approved:"Your payment was confirmed and the request is approved. The global 14-day request cooldown is active unless staff reopens requests early.",
     denied:"Your request was denied. The explanation is recorded below, and the viewer request slot is open again.",
     expired:"The payment reservation expired and the viewer request slot reopened.",
-    cancelled:"You cancelled this request before review. The viewer request slot is open again."
+    cancelled:"This request was cancelled. The viewer request slot is open again."
   };
   let session = null;
   let currentRequest = null;
@@ -31,8 +31,10 @@
     get("status-state").dataset.status = request.status;
     const globalCooldownActive = systemState?.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now();
     get("status-message").textContent = request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status] || "Request status updated.";
-    get("status-reason-row").hidden = !request.denial_reason;
-    get("status-reason").textContent = request.denial_reason || "";
+    const recordedReason = request.denial_reason || request.cancellation_reason;
+    get("status-reason-row").hidden = !recordedReason;
+    get("status-reason-label").textContent = request.cancellation_reason ? "Cancellation explanation" : "Decision explanation";
+    get("status-reason").textContent = recordedReason || "";
     get("status-deadline-row").hidden = !request.payment_deadline || request.status !== "awaiting_payment";
     get("status-deadline").textContent = request.payment_deadline ? new Date(request.payment_deadline).toLocaleString() : "";
     get("cancel-request-button").hidden = request.status !== "pending";
