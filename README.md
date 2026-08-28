@@ -301,3 +301,11 @@ This pass corrects the remaining visual mismatch:
 - The manual service switch is separate from the automatic 14-day global cooldown and stays OFF until staff turns it back ON.
 - Added server-side enforcement so stale or bypassed website pages cannot submit a new request while services are OFF.
 - Included `RUN-THIS-v9.1-GLOBAL-SERVICE-SWITCH.sql`.
+
+## Version 9.2 — Verified Payment Channel and Status Labels
+
+- Updated the repository Edge Function backup to match the successfully tested StreamElements payment checker.
+- Payment matching now reads the StreamElements channel that owns the public tipping page, which is the connected YouTube channel in the current setup; Twitch remains the viewer request identity.
+- Restored the production `$5` catalog and `$10` unlisted-game minimums after the live `$1` verification test.
+- Staff-approved requests display **Approved · Awaiting Payment** until payment is confirmed.
+- Confirmed requests display **Paid & Approved** on both staff review and viewer status pages.
