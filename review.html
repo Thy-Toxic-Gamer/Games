@@ -1,26 +1,42 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#050706" /><title>Toxic Game Request Review · Test Mode</title>
-  <link rel="stylesheet" href="styles.css?v=7.3" /><link rel="stylesheet" href="request-test.css?v=7.3" />
-  <script src="review-test.js?v=7.3" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050706" />
+  <title>Toxic Game Request Staff Control</title>
+  <link rel="stylesheet" href="styles.css?v=8.1" />
+  <link rel="stylesheet" href="request-test.css?v=8.1" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="supabase-config.js?v=8.1" defer></script>
+  <script src="review-live.js?v=8.1" defer></script>
 </head>
 <body class="request-page">
-  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Control</small></span></a><div class="vault-mark"><span>☣</span><strong>Test Mode</strong></div></header>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
   <main class="request-page-shell">
-    <section class="request-page-heading"><p class="eyebrow">Private Review Website · Browser Test</p><h1>Game Request Control</h1><p>Test the approval, denial-reason, payment-waiting, approval, and cooldown states before connecting a secure login, Discord, Twitch, or payments.</p></section>
-    <section class="review-empty" id="review-empty"><span>☣</span><h2>No request is waiting</h2><p>Submit a test request from the game catalog first.</p><a class="request-link-button" href="index.html">Open Catalog</a></section>
-    <article class="review-card" id="review-card" hidden>
-      <div class="review-card-head"><div><p class="eyebrow" id="review-id"></p><h2 id="review-title"></h2><p id="review-platform"></p></div><span class="review-status" id="review-status"></span></div>
-      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="review-viewer"></dd></div><div><dt>Submitted</dt><dd id="review-time"></dd></div><div><dt>Viewer note</dt><dd id="review-note"></dd></div><div id="review-decision-row"><dt>Decision details</dt><dd id="review-decision"></dd></div></dl>
-      <div class="review-actions" id="review-actions">
-        <button class="review-button" id="preapprove-button" type="button">Pre-Approve Request</button>
-        <button class="review-button review-button-deny" id="deny-button" type="button">Deny Request</button>
-        <button class="review-button" id="payment-button" type="button" hidden>Mark Test Payment Complete</button>
-      </div>
+    <section class="request-page-heading">
+      <p class="eyebrow">Private Staff Control</p>
+      <h1>Game Request Control</h1>
+      <p>Only Twitch accounts assigned as the owner or authorized staff can use these controls.</p>
+      <div class="request-center-actions"><button class="request-link-button" id="staff-sign-in" type="button">Sign in with Twitch</button><button class="request-link-button request-link-admin" id="staff-sign-out" type="button" hidden>Sign Out</button><a class="request-link-button request-link-admin" href="index.html">Back to Catalog</a></div>
+    </section>
+    <section class="review-empty" id="staff-message"><span>☣</span><h2 id="staff-message-title">Checking staff access</h2><p id="staff-message-copy">Connecting securely…</p></section>
+    <article class="review-card" id="staff-panel" hidden>
+      <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
+      <div class="status-message" id="global-cooldown-message"></div>
+      <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
+      <p class="request-dialog-rules">Resetting reopens game requests immediately for everyone, including the viewer whose approved request started the cooldown.</p>
     </article>
-    <section class="review-audit"><h2>Test controls</h2><p>Reset removes only the test request stored in this browser.</p><button class="review-button review-button-muted" id="reset-button" type="button">Reset Test Request</button></section>
   </main>
-  <dialog class="request-dialog" id="deny-dialog"><form id="deny-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close">×</button><p class="eyebrow">Denial Record</p><h2>Deny Game Request</h2><label>Explanation required<textarea class="review-reason" id="deny-reason" maxlength="500" rows="5" required placeholder="Explain why this game request was denied."></textarea></label><p class="request-form-error" id="deny-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Denial</button></form></dialog>
-</body></html>
+  <dialog class="request-dialog" id="reset-cooldown-dialog">
+    <form id="reset-cooldown-form" method="dialog">
+      <button class="request-dialog-close" type="button" aria-label="Close reset confirmation">×</button>
+      <p class="eyebrow">Staff Confirmation</p>
+      <h2>Reset the global cooldown?</h2>
+      <p class="request-dialog-rules">This immediately allows every eligible viewer to submit a new game request. This action will be recorded.</p>
+      <div class="request-center-actions"><button class="review-button review-button-muted" id="keep-global-cooldown" type="button">Keep Cooldown</button><button class="review-button review-button-deny" type="submit">Confirm Reset</button></div>
+      <p class="request-form-error" id="reset-cooldown-error" role="alert"></p>
+    </form>
+  </dialog>
+</body>
+</html>

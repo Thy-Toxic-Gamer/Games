@@ -214,3 +214,24 @@ This pass corrects the remaining visual mismatch:
 - Games not in the catalog are recorded as **Not in Catalog · $10 Minimum**.
 - Approval still happens before any payment option is shown.
 - Cache-busting query strings updated to version 7.3.
+
+## Version 8.0 — Live Twitch and Supabase Requests
+
+- Replaced browser-only request storage with the shared Supabase database.
+- Added Twitch sign-in and automatic Twitch-account identification.
+- Added real authenticated catalog and unlisted-game submissions.
+- Added a live viewer status page that reads only the signed-in viewer's records.
+- Added secure pending-request cancellation through a database function.
+- Added public request-slot and viewer-cooldown state without exposing another viewer's information.
+- Kept the $5 catalog and $10 unlisted minimum pricing tiers.
+- Included `supabase-request-system.sql`, which must be run once before publishing version 8.0.
+- The owner review dashboard and Discord delivery remain disabled until the owner account is assigned in the next stage.
+
+## Version 8.1 — Global Cooldown Staff Reset
+
+- Changed the 14-day restriction into one global community request cooldown.
+- An approved request automatically closes new requests for 14 days.
+- Added a private Twitch-authenticated staff control page.
+- Owners and authorized staff can confirm **Reset Global Cooldown** to reopen requests immediately.
+- Resetting makes every viewer eligible again, including the viewer whose request started the cooldown.
+- Staff cooldown bypass remains supported through the staff permission record.
