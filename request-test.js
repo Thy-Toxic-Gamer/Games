@@ -20,17 +20,18 @@
   function saveRequest(request) { localStorage.setItem(STORAGE_KEY, JSON.stringify(request)); window.dispatchEvent(new Event("toxic-request-updated")); }
   function isCooldownActive(request) { return request?.status === "approved" && new Date(request.cooldownEnds).getTime() > Date.now(); }
   function isLocked(request) { return request && ["pending", "awaiting_payment"].includes(request.status) || isCooldownActive(request); }
-  function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",snes:"SNES",unlisted:"Unlisted Game · Higher Request Price"})[value] || value; }
+  function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
+  function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog · $10 Minimum" : `${prettyPlatform(selection.gamePlatform)} · Owned Game · $5 Minimum`; }
   function updateSlot() {
     const request = readRequest();
     const locked = isLocked(request);
     document.querySelectorAll(".request-game-button").forEach((button) => {
       button.setAttribute("aria-disabled", String(locked));
-      button.textContent = locked ? "Request Slot Unavailable" : "Request This Game";
+      button.textContent = locked ? "Request Slot Unavailable" : "Request for $5+";
     });
-    if (unlistedButton) { unlistedButton.disabled = locked; unlistedButton.textContent = locked ? "Request Slot Unavailable" : "Request Unlisted Game"; }
+    if (unlistedButton) { unlistedButton.disabled = locked; unlistedButton.textContent = locked ? "Request Slot Unavailable" : "Request for $10+"; }
     if (unlistedTitle) unlistedTitle.disabled = locked;
-    if (!request || (!locked && ["denied", "expired"].includes(request.status))) {
+    if (!request || (!locked && ["denied", "expired", "cancelled"].includes(request.status))) {
       slotCard.dataset.state = "open"; slotLabel.textContent = "Open"; slotDetail.textContent = "Choose any game below."; return;
     }
     if (isCooldownActive(request)) {
@@ -43,7 +44,7 @@
   function openRequest(button) {
     if (isLocked(readRequest())) { updateSlot(); return; }
     selected = { gameTitle: button.dataset.gameTitle, gamePlatform: button.dataset.gamePlatform, requestType:"catalog" };
-    title.textContent = selected.gameTitle; platform.textContent = prettyPlatform(selected.gamePlatform); error.textContent = ""; dialog.showModal(); userName.focus();
+    title.textContent = selected.gameTitle; platform.textContent = requestLabel(selected); error.textContent = ""; dialog.showModal(); userName.focus();
   }
   document.addEventListener("click", (event) => {
     const button = event.target.closest?.(".request-game-button");
@@ -61,13 +62,14 @@
     const gameTitle = unlistedTitle.value.trim();
     if (!gameTitle) return;
     selected = { gameTitle, gamePlatform:"unlisted", requestType:"unlisted" };
-    title.textContent = gameTitle; platform.textContent = prettyPlatform("unlisted"); error.textContent = ""; dialog.showModal(); userName.focus();
+    title.textContent = gameTitle; platform.textContent = requestLabel(selected); error.textContent = ""; dialog.showModal(); userName.focus();
   });
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!selected || !userName.value.trim()) { error.textContent = "Enter a Twitch username for this test."; return; }
     if (isLocked(readRequest())) { error.textContent = "The viewer request slot is already locked."; updateSlot(); return; }
-    const request = { id:`GR-${Date.now().toString().slice(-6)}`, status:"pending", requestType:selected.requestType || "catalog", gameTitle:selected.gameTitle, platform:prettyPlatform(selected.gamePlatform), twitchName:userName.value.trim(), note:note.value.trim(), createdAt:new Date().toISOString() };
+    const isUnlisted = selected.requestType === "unlisted";
+    const request = { id:`GR-${Date.now().toString().slice(-6)}`, status:"pending", requestType:isUnlisted ? "unlisted" : "catalog", minimumAmount:isUnlisted ? 10 : 5, gameTitle:selected.gameTitle, platform:requestLabel(selected), twitchName:userName.value.trim(), note:note.value.trim(), createdAt:new Date().toISOString() };
     saveRequest(request); dialog.close(); form.reset(); selected = null; updateSlot(); window.location.href = "status.html";
   });
   window.addEventListener("storage", updateSlot); window.addEventListener("toxic-request-updated", updateSlot);

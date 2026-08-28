@@ -4,7 +4,7 @@
   const get=(id)=>document.getElementById(id);
   const read=()=>{try{return JSON.parse(localStorage.getItem(KEY))||null}catch{return null}};
   const save=(value)=>localStorage.setItem(KEY,JSON.stringify(value));
-  const labels={pending:"Pending Review",awaiting_payment:"Awaiting Test Payment",approved:"Approved · Cooldown Active",denied:"Denied",expired:"Expired"};
+  const labels={pending:"Pending Review",awaiting_payment:"Awaiting Test Payment",approved:"Approved · Cooldown Active",denied:"Denied",expired:"Expired",cancelled:"Cancelled by Viewer"};
   function render(){
     const request=read(); get("review-empty").hidden=Boolean(request); get("review-card").hidden=!request;
     if(!request)return;

@@ -9,13 +9,13 @@
     />
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
-    <link rel="stylesheet" href="styles.css?v=7.1" />
-    <link rel="stylesheet" href="dashboard.css?v=7.1" />
-    <link rel="stylesheet" href="request-test.css?v=7.1" />
-    <script src="games.js?v=7.1" defer></script>
-    <script src="app.js?v=7.1" defer></script>
-    <script src="dashboard.js?v=7.1" defer></script>
-    <script src="request-test.js?v=7.1" defer></script>
+    <link rel="stylesheet" href="styles.css?v=7.3" />
+    <link rel="stylesheet" href="dashboard.css?v=7.3" />
+    <link rel="stylesheet" href="request-test.css?v=7.3" />
+    <script src="games.js?v=7.3" defer></script>
+    <script src="app.js?v=7.3" defer></script>
+    <script src="dashboard.js?v=7.3" defer></script>
+    <script src="request-test.js?v=7.3" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -44,7 +44,7 @@
           <div class="request-center-copy">
             <p class="eyebrow">Game Request System · Test Mode</p>
             <h1 id="request-center-title">Choose the next game from the Toxic Vault</h1>
-            <p>Select a game from this catalog and submit it for review. Only one viewer request can be active at a time. Payment is shown only after pre-approval; the real payment and Discord connections will be added after this test flow is approved.</p>
+            <p>Request a game you see in this catalog for a $5 minimum, or request a game not listed for a $10 minimum. Only one viewer request can be active at a time. Payment is shown only after pre-approval; the real payment and Discord connections will be added after this test flow is approved.</p>
           </div>
           <div class="request-status-card" id="request-status-card" data-state="open">
             <span class="request-status-light" aria-hidden="true"></span>
@@ -53,11 +53,11 @@
           <form class="unlisted-request" id="unlisted-request-form">
             <div>
               <strong>Can't find the game?</strong>
-              <span>Type an unlisted game below. If approved, it will use the higher request price. Prices will be decided later.</span>
+              <span>Request a game not in the catalog for a $10 minimum. You will only receive the payment option after approval.</span>
             </div>
             <label class="sr-only" for="unlisted-game-title">Unlisted game title</label>
             <input id="unlisted-game-title" maxlength="120" required placeholder="Type the game title" />
-            <button id="unlisted-request-button" type="submit">Request Unlisted Game</button>
+            <button id="unlisted-request-button" type="submit">Request for $10+</button>
           </form>
           <div class="request-center-actions">
             <a class="request-link-button" href="status.html">View Request Status</a>

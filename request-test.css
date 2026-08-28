@@ -47,6 +47,7 @@
 .review-card-head h2 { margin:.2rem 0; font-size:clamp(1.5rem,4vw,2.6rem); }.review-card-head p:last-child{margin:0;color:var(--toxic)}
 .review-status { padding:.45rem .65rem; border:1px solid var(--request-amber); color:var(--request-amber); font-size:.68rem; font-weight:900; text-transform:uppercase; }
 .review-status[data-status="approved"]{border-color:var(--toxic);color:var(--toxic)}.review-status[data-status="denied"]{border-color:var(--request-red);color:#ff7970}
+.review-status[data-status="cancelled"]{border-color:#69716b;color:#c9d0cb}
 .review-details { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; margin:1rem 0; }.review-details div{padding:.8rem;border:1px solid #202a21;background:#060806}.review-details dt{color:var(--toxic);font-size:.65rem;font-weight:900;text-transform:uppercase}.review-details dd{margin:.25rem 0 0;color:#eef3ef}
 .review-actions { display:flex; flex-wrap:wrap; gap:.7rem; }.review-button-deny{border-color:var(--request-red)!important;color:#ff7970!important;background:rgba(255,59,48,.08)!important}.review-button-muted{border-color:#69716b;color:#c9d0cb;background:#111}
 .review-audit{margin-top:1rem}.review-audit h2{margin-top:0}.review-audit p{color:var(--muted)}.status-message{margin:1rem 0;padding:1rem;border-left:3px solid var(--toxic);background:rgba(124,255,0,.05)}

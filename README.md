@@ -197,3 +197,20 @@ This pass corrects the remaining visual mismatch:
 - Unlisted requests are clearly marked **Unlisted Game · Higher Request Price** while exact prices remain undecided.
 - Catalog and unlisted requests share the same one-viewer request slot, approval/denial process, test payment step, and 14-day cooldown.
 - Cache-busting query strings updated to version 7.1.
+
+## Version 7.2 — Viewer Request Cancellation
+
+- Added **Cancel My Request** to the viewer status page while a request is pending review.
+- Cancellation requires confirmation and records the status as **Cancelled by Viewer**.
+- A cancelled request immediately reopens the single viewer request slot.
+- Requests can no longer be cancelled after pre-approval or payment.
+- Cache-busting query strings updated to version 7.2.
+
+## Version 7.3 — Request Pricing Tiers
+
+- Every owned game tile now displays **Request for $5+**.
+- The unlisted-game bar now displays **Request for $10+** and explains the $10 minimum.
+- Catalog requests are recorded as **Owned Game · $5 Minimum**.
+- Games not in the catalog are recorded as **Not in Catalog · $10 Minimum**.
+- Approval still happens before any payment option is shown.
+- Cache-busting query strings updated to version 7.3.
