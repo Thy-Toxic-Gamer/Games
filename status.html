@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=8.6" /><link rel="stylesheet" href="request-test.css?v=8.6" />
+  <link rel="stylesheet" href="styles.css?v=9.0" /><link rel="stylesheet" href="request-test.css?v=9.0" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-config.js?v=8.6" defer></script>
-  <script src="status-test.js?v=8.6" defer></script>
+  <script src="supabase-config.js?v=9.0" defer></script>
+  <script src="status-test.js?v=9.0" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -17,7 +17,15 @@
       <div class="request-live-state"><span class="request-live-dot" aria-hidden="true"></span><strong>Live status</strong><span id="status-last-checked">Connecting…</span></div>
       <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><span class="review-status" id="status-state"></span></div>
       <div class="status-message" id="status-message" aria-live="polite"></div>
-      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Request deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div></dl>
+      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Payment deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div></dl>
+      <section class="payment-panel" id="payment-panel" hidden aria-labelledby="payment-title">
+        <p class="eyebrow">Secure Payment</p>
+        <h3 id="payment-title">Complete your approved request</h3>
+        <p>Send at least <strong id="payment-minimum"></strong> through StreamElements and paste the exact request code below into the tip message.</p>
+        <div class="payment-reference-row"><code id="payment-reference"></code><button class="review-button review-button-muted" id="copy-payment-reference" type="button">Copy Code</button></div>
+        <p class="payment-help" id="payment-help">Keep this page open. It checks automatically and approves the request after StreamElements confirms the payment.</p>
+        <div class="request-center-actions"><a class="request-link-button" id="open-payment-page" href="https://streamelements.com/thytoxicgamer-cacd4/tip" target="_blank" rel="noopener noreferrer">Pay with StreamElements</a><button class="review-button review-button-muted" id="check-payment-button" type="button">Check Payment</button></div>
+      </section>
       <div class="request-center-actions">
         <a class="request-link-button" href="index.html">Return to Catalog</a>
         <button class="review-button review-button-deny" id="cancel-request-button" type="button">Cancel My Request</button>

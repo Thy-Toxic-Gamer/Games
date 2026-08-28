@@ -5,7 +5,7 @@
   const labels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   const messages = {
     pending:"Your game request is waiting for review. No payment is requested yet.",
-    awaiting_payment:"Your request was approved for payment. The secure payment option will appear here after the payment connection is completed.",
+    awaiting_payment:"Your request was approved for payment. Use the secure StreamElements option below before the deadline.",
     approved:"Your payment was confirmed and the request is approved. The global 14-day request cooldown is active unless staff reopens requests early.",
     denied:"Your request was denied. The explanation is recorded below, and the viewer request slot is open again.",
     expired:"The payment reservation expired and the viewer request slot reopened.",
@@ -14,6 +14,7 @@
   let session = null;
   let currentRequest = null;
   let loading = false;
+  let paymentCheckRunning = false;
   function authRedirect() { return new URL("status.html", window.location.href).href; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
   function showEmpty(title,message) {
@@ -60,7 +61,38 @@
     get("status-deadline").textContent = request.payment_deadline ? new Date(request.payment_deadline).toLocaleString() : "";
     get("cancel-request-button").hidden = request.status !== "pending";
     get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+    const awaitingPayment = request.status === "awaiting_payment";
+    get("payment-panel").hidden = !awaitingPayment;
+    if (awaitingPayment) {
+      get("payment-minimum").textContent = `$${Number(request.minimum_amount).toFixed(2)}`;
+      get("payment-reference").textContent = request.payment_reference || "Preparing code…";
+      get("copy-payment-reference").disabled = !request.payment_reference;
+    }
     updateCountdown();
+  }
+  async function checkPayment() {
+    if (paymentCheckRunning || currentRequest?.status !== "awaiting_payment") return;
+    paymentCheckRunning = true;
+    const button = get("check-payment-button");
+    button.disabled = true;
+    get("payment-help").textContent = "Checking StreamElements for your payment…";
+    const {data,error} = await client.functions.invoke("check-game-request-payment",{body:{requestId:currentRequest.id}});
+    paymentCheckRunning = false;
+    button.disabled = false;
+    if (error) {
+      get("payment-help").textContent = "Payment confirmation is temporarily unavailable. Your payment is not lost; try Check Payment again shortly.";
+      return;
+    }
+    if (data?.status === "approved") {
+      get("payment-help").textContent = "Payment confirmed. Your request is approved!";
+      await loadRequest();
+      return;
+    }
+    if (data?.status === "expired") {
+      await loadRequest();
+      return;
+    }
+    get("payment-help").textContent = "No matching payment yet. Make sure the exact request code is included in the StreamElements tip message.";
   }
   async function loadRequest(showLoading=false) {
     if (loading) return;
@@ -80,6 +112,14 @@
   }
   get("status-sign-in").addEventListener("click",signIn);
   get("status-sign-out").addEventListener("click",async()=>{await client.auth.signOut();window.location.reload()});
+  get("copy-payment-reference").addEventListener("click",async()=>{
+    const reference = currentRequest?.payment_reference;
+    if (!reference) return;
+    await navigator.clipboard.writeText(reference);
+    get("copy-payment-reference").textContent = "Copied";
+    window.setTimeout(()=>{get("copy-payment-reference").textContent="Copy Code"},1500);
+  });
+  get("check-payment-button").addEventListener("click",checkPayment);
   const cancelDialog = get("cancel-request-dialog");
   get("cancel-request-button").addEventListener("click",()=>cancelDialog.showModal());
   get("keep-request-button").addEventListener("click",()=>cancelDialog.close());
@@ -99,9 +139,10 @@
     get("status-sign-out").hidden = !session;
     client.auth.onAuthStateChange((_event,nextSession)=>{session=nextSession;get("status-sign-in").hidden=Boolean(session);get("status-sign-out").hidden=!session;loadRequest(true)});
     await loadRequest(true);
-    window.setInterval(()=>{if(!document.hidden)loadRequest()},15000);
+    await checkPayment();
+    window.setInterval(async()=>{if(!document.hidden){await loadRequest();await checkPayment()}},15000);
     window.setInterval(updateCountdown,1000);
-    document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadRequest()});
+    document.addEventListener("visibilitychange",async()=>{if(!document.hidden){await loadRequest();await checkPayment()}});
   }
   initialize();
 })();

@@ -40,6 +40,11 @@
 .request-dialog-rules { margin:0; color:var(--muted); font-size:.75rem; }
 .request-account-line { margin:0; padding:.7rem; border-left:3px solid var(--toxic); background:rgba(124,255,0,.05); color:var(--muted); }.request-account-line strong{color:#fff}
 .request-form-error { min-height:1.2em; margin:0; color:#ff7970; font-size:.78rem; }
+.payment-panel { margin-top:1.25rem; padding:1.25rem; border:1px solid rgba(116,255,74,.38); border-radius:16px; background:linear-gradient(145deg,rgba(24,49,20,.62),rgba(5,8,6,.92)); box-shadow:inset 0 0 30px rgba(83,255,45,.05); }
+.payment-panel h3 { margin:.2rem 0 .65rem; }
+.payment-reference-row { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin:1rem 0; }
+.payment-reference-row code { padding:.75rem 1rem; border:1px solid rgba(116,255,74,.5); border-radius:10px; color:#a8ff8d; background:#030604; font:800 1.05rem/1.1 ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.08em; }
+.payment-help { color:#cbd6cb; }
 @media(max-width:760px){.request-center{grid-template-columns:1fr}.request-center-actions,.unlisted-request,.request-auth-card{grid-column:auto}.unlisted-request{grid-template-columns:1fr}.request-game-button{font-size:.64rem;padding:.45rem}}
 .request-page { min-height:100vh; background:radial-gradient(circle at 80% 5%,rgba(124,255,0,.08),transparent 28%),#050706; }
 .request-page-shell { width:min(1040px,calc(100% - 28px)); margin:0 auto; padding:clamp(1.2rem,4vw,3rem) 0; }

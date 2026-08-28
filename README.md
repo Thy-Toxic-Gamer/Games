@@ -280,3 +280,15 @@ This pass corrects the remaining visual mismatch:
 - Added a visible live-status indicator and last-checked time.
 - Returning to the browser tab triggers an immediate status refresh.
 - Updated the repository Discord function backup with Cancelled and Expired routing.
+
+## Version 9.0 — Automatic StreamElements Payments
+
+- Added the real StreamElements tip link to requests approved for payment.
+- Added a unique payment reference for every awaiting-payment request.
+- Added secure automatic payment matching through a Supabase Edge Function.
+- StreamElements credentials stay in Supabase secrets and never enter GitHub Pages.
+- Successful tips must contain the exact request reference and meet the $5 or $10 minimum.
+- A StreamElements tip can approve only one request.
+- Confirmed payments record the provider, currency, amount, tip ID, and paid time before starting the 14-day global cooldown.
+- Preserved the version 8.6 live refresh, countdown, last-checked time, and tab-return refresh behavior.
+- Included `RUN-THIS-v9.0-AUTOMATIC-PAYMENTS.sql` and `PAYMENT-SETUP.md`.
