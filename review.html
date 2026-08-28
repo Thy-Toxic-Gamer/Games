@@ -5,38 +5,52 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
-  <link rel="stylesheet" href="styles.css?v=8.2" />
-  <link rel="stylesheet" href="request-test.css?v=8.2" />
+  <link rel="stylesheet" href="styles.css?v=8.3" />
+  <link rel="stylesheet" href="request-test.css?v=8.3" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-config.js?v=8.2" defer></script>
-  <script src="review-live.js?v=8.2" defer></script>
+  <script src="supabase-config.js?v=8.3" defer></script>
+  <script src="review-live.js?v=8.3" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
   <main class="request-page-shell">
     <section class="request-page-heading">
-      <p class="eyebrow">Private Staff Control</p>
-      <h1>Game Request Control</h1>
-      <p>Only Twitch accounts assigned as the owner or authorized staff can use these controls.</p>
+      <p class="eyebrow">Private Staff Control</p><h1>Game Request Control</h1>
+      <p>Review live requests, record denial explanations, and control the global cooldown.</p>
       <div class="request-center-actions"><button class="request-link-button" id="staff-sign-in" type="button">Sign in with Twitch</button><button class="request-link-button request-link-admin" id="staff-sign-out" type="button" hidden>Sign Out</button><a class="request-link-button request-link-admin" href="index.html">Back to Catalog</a></div>
     </section>
+
     <section class="review-empty" id="staff-message"><span>☣</span><h2 id="staff-message-title">Checking staff access</h2><p id="staff-message-copy">Connecting securely…</p></section>
-    <article class="review-card" id="staff-panel" hidden>
-      <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
-      <div class="status-message" id="global-cooldown-message"></div>
-      <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
-      <p class="request-dialog-rules">Resetting reopens game requests immediately for everyone, including the viewer whose approved request started the cooldown.</p>
-    </article>
+
+    <div id="staff-dashboard" hidden>
+      <article class="review-card">
+        <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
+        <div class="status-message" id="global-cooldown-message"></div>
+        <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
+        <p class="request-dialog-rules">Resetting reopens requests immediately for everyone, including the viewer whose approved request started the cooldown.</p>
+      </article>
+
+      <section class="review-live-section">
+        <div class="review-section-title"><div><p class="eyebrow">Live Queue</p><h2>Pending Request</h2></div><button class="review-button review-button-muted" id="refresh-requests" type="button">Refresh</button></div>
+        <section class="review-empty" id="pending-empty"><span>☣</span><h2>No request is waiting</h2><p>The request slot is currently open.</p></section>
+        <article class="review-card" id="pending-request" hidden>
+          <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status">Pending Review</span></div>
+          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div></dl>
+          <div class="review-actions"><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button></div>
+        </article>
+      </section>
+
+      <section class="review-live-section">
+        <div class="review-section-title"><div><p class="eyebrow">Audit Trail</p><h2>Recent Requests</h2></div></div>
+        <div class="request-history" id="request-history"></div>
+      </section>
+    </div>
   </main>
-  <dialog class="request-dialog" id="reset-cooldown-dialog">
-    <form id="reset-cooldown-form" method="dialog">
-      <button class="request-dialog-close" type="button" aria-label="Close reset confirmation">×</button>
-      <p class="eyebrow">Staff Confirmation</p>
-      <h2>Reset the global cooldown?</h2>
-      <p class="request-dialog-rules">This immediately allows every eligible viewer to submit a new game request. This action will be recorded.</p>
-      <div class="request-center-actions"><button class="review-button review-button-muted" id="keep-global-cooldown" type="button">Keep Cooldown</button><button class="review-button review-button-deny" type="submit">Confirm Reset</button></div>
-      <p class="request-form-error" id="reset-cooldown-error" role="alert"></p>
-    </form>
-  </dialog>
+
+  <dialog class="request-dialog" id="reset-cooldown-dialog"><form id="reset-cooldown-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close reset confirmation">×</button><p class="eyebrow">Staff Confirmation</p><h2>Reset the global cooldown?</h2><p class="request-dialog-rules">This immediately allows every eligible viewer to submit a new request.</p><div class="request-center-actions"><button class="review-button review-button-muted" id="keep-global-cooldown" type="button">Keep Cooldown</button><button class="review-button review-button-deny" type="submit">Confirm Reset</button></div><p class="request-form-error" id="reset-cooldown-error" role="alert"></p></form></dialog>
+
+  <dialog class="request-dialog" id="approve-dialog"><form id="approve-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close approval confirmation">×</button><p class="eyebrow">Approval Confirmation</p><h2>Approve this request for payment?</h2><p class="request-dialog-rules">This changes the request to Awaiting Payment and reserves the request slot. It does not start the 14-day cooldown.</p><div class="request-center-actions"><button class="review-button review-button-muted" id="cancel-approval" type="button">Go Back</button><button class="review-button" type="submit">Confirm Approval</button></div><p class="request-form-error" id="approve-error" role="alert"></p></form></dialog>
+
+  <dialog class="request-dialog" id="deny-dialog"><form id="deny-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close denial form">×</button><p class="eyebrow">Denial Record</p><h2>Deny Game Request</h2><label>Explanation required<textarea class="review-reason" id="deny-reason" maxlength="500" rows="5" required placeholder="Explain why this request was denied."></textarea></label><p class="request-dialog-rules">The viewer will see this explanation on their request-status page.</p><p class="request-form-error" id="deny-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Denial</button></form></dialog>
 </body>
 </html>

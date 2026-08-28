@@ -2,42 +2,73 @@
   "use strict";
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
+  const statusLabels = {pending:"Pending Review",awaiting_payment:"Awaiting Payment",approved:"Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   let session = null;
-  function authRedirect() { return new URL("review.html", window.location.href).href; }
-  function message(title,copy) { get("staff-message").hidden=false;get("staff-panel").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
+  let pendingRequest = null;
+
+  function authRedirect() { return new URL("review.html",window.location.href).href; }
+  function message(title,copy) { get("staff-message").hidden=false;get("staff-dashboard").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
-  async function refreshPanel() {
-    if (!session?.user) { message("Staff sign-in required","Sign in with an authorized Twitch account to open the private controls."); return; }
-    const {data:access,error:accessError} = await client.rpc("my_request_staff_access");
-    if (accessError) { message("Staff controls unavailable","The staff access check could not be completed."); return; }
-    if (!access?.isStaff) { message("Access denied","This Twitch account has not been assigned as the owner or authorized staff."); return; }
-    const {data:state,error:stateError} = await client.rpc("request_system_state");
-    if (stateError) { message("Cooldown unavailable","The global cooldown status could not be loaded."); return; }
-    get("staff-message").hidden=true;get("staff-panel").hidden=false;
-    get("staff-role").textContent = `Signed in as ${access.role === "owner" ? "Owner" : "Moderator"}`;
-    const active = state.globalCooldownEnds && new Date(state.globalCooldownEnds).getTime() > Date.now();
-    get("global-cooldown-state").textContent = active ? "Cooldown Active" : "Requests Open";
-    get("global-cooldown-state").dataset.status = active ? "denied" : "approved";
-    get("global-cooldown-message").textContent = active ? `Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.` : "There is no active global cooldown. Viewers can submit a game request.";
-    get("reset-global-cooldown").disabled = !active;
+  function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
+
+  function renderPending(request) {
+    pendingRequest=request;
+    get("pending-empty").hidden=Boolean(request);get("pending-request").hidden=!request;
+    if(!request)return;
+    get("pending-id").textContent=request.id;get("pending-title").textContent=request.game_title;
+    get("pending-tier").textContent=`${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · $${request.minimum_amount} Minimum`;
+    get("pending-viewer").textContent=request.twitch_name;get("pending-time").textContent=new Date(request.created_at).toLocaleString();
+    get("pending-platform").textContent=request.platform||"Not specified";get("pending-note").textContent=request.viewer_note||"No note provided.";
   }
-  get("staff-sign-in").addEventListener("click",signIn);
-  get("staff-sign-out").addEventListener("click",async()=>{await client.auth.signOut();window.location.reload()});
-  const resetDialog = get("reset-cooldown-dialog");
-  get("reset-global-cooldown").addEventListener("click",()=>{get("reset-cooldown-error").textContent="";resetDialog.showModal()});
-  get("keep-global-cooldown").addEventListener("click",()=>resetDialog.close());
-  resetDialog.querySelector(".request-dialog-close").addEventListener("click",()=>resetDialog.close());
-  get("reset-cooldown-form").addEventListener("submit",async(event)=>{
-    event.preventDefault();
-    const {error} = await client.rpc("reset_global_request_cooldown");
-    if (error) { get("reset-cooldown-error").textContent="The cooldown could not be reset. Confirm that this Twitch account has staff access."; return; }
-    resetDialog.close(); await refreshPanel();
-  });
+  function renderHistory(requests) {
+    const container=get("request-history");container.replaceChildren();
+    const history=requests.filter((request)=>request.status!=="pending");
+    if(!history.length){container.append(make("p","request-history-empty","No reviewed or completed requests yet."));return;}
+    history.forEach((request)=>{
+      const card=make("article","request-history-card");
+      const head=make("div","request-history-head");
+      const copy=make("div");copy.append(make("small",null,request.id),make("h3",null,request.game_title),make("p",null,`${request.twitch_name} · $${request.minimum_amount} minimum`));
+      const status=make("span","review-status",statusLabels[request.status]||request.status);status.dataset.status=request.status;
+      head.append(copy,status);card.append(head);
+      const details=make("p","request-history-details",`Submitted ${new Date(request.created_at).toLocaleString()} · ${request.platform||"Game"}`);card.append(details);
+      if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
+      if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
+      container.append(card);
+    });
+  }
+  async function refreshDashboard() {
+    const [{data:state,error:stateError},{data:requests,error:requestsError}] = await Promise.all([
+      client.rpc("request_system_state"),
+      client.from("game_requests").select("*").order("created_at",{ascending:false}).limit(25)
+    ]);
+    if(stateError||requestsError){message("Dashboard unavailable","Run the v8.3 review-dashboard SQL upgrade, then refresh this page.");return;}
+    get("staff-message").hidden=true;get("staff-dashboard").hidden=false;
+    const active=state.globalCooldownEnds&&new Date(state.globalCooldownEnds).getTime()>Date.now();
+    get("global-cooldown-state").textContent=active?"Cooldown Active":"Requests Open";get("global-cooldown-state").dataset.status=active?"denied":"approved";
+    get("global-cooldown-message").textContent=active?`Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`:"There is no active global cooldown. Viewers can submit a game request.";
+    get("reset-global-cooldown").disabled=!active;
+    renderPending(requests.find((request)=>request.status==="pending")||null);renderHistory(requests);
+  }
   async function initialize() {
-    if (!client) { message("Connection error","The staff service could not load."); return; }
-    const {data} = await client.auth.getSession(); session=data.session;
-    get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
-    await refreshPanel();
+    if(!client){message("Connection error","The staff service could not load.");return;}
+    const {data}=await client.auth.getSession();session=data.session;get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
+    if(!session){message("Staff sign-in required","Sign in with an authorized Twitch account to open the private controls.");return;}
+    const {data:access,error}=await client.rpc("my_request_staff_access");
+    if(error){message("Staff controls unavailable","The staff access check could not be completed.");return;}
+    if(!access?.isStaff){message("Access denied","This Twitch account has not been assigned as the owner or authorized staff.");return;}
+    get("staff-role").textContent=`Signed in as ${access.role==="owner"?"Owner":"Moderator"}`;await refreshDashboard();
   }
+
+  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+
+  const resetDialog=get("reset-cooldown-dialog");get("reset-global-cooldown").addEventListener("click",()=>{get("reset-cooldown-error").textContent="";resetDialog.showModal()});get("keep-global-cooldown").addEventListener("click",()=>resetDialog.close());resetDialog.querySelector(".request-dialog-close").addEventListener("click",()=>resetDialog.close());
+  get("reset-cooldown-form").addEventListener("submit",async(event)=>{event.preventDefault();const {error}=await client.rpc("reset_global_request_cooldown");if(error){get("reset-cooldown-error").textContent="The cooldown could not be reset.";return}resetDialog.close();await refreshDashboard()});
+
+  const approveDialog=get("approve-dialog");get("approve-request").addEventListener("click",()=>{get("approve-error").textContent="";approveDialog.showModal()});get("cancel-approval").addEventListener("click",()=>approveDialog.close());approveDialog.querySelector(".request-dialog-close").addEventListener("click",()=>approveDialog.close());
+  get("approve-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!pendingRequest)return;const {error}=await client.rpc("staff_review_game_request",{request_id:pendingRequest.id,decision:"approve",denial_explanation:null});if(error){get("approve-error").textContent="This request could not be approved. Its status may have changed.";return}approveDialog.close();await refreshDashboard()});
+
+  const denyDialog=get("deny-dialog");get("deny-request").addEventListener("click",()=>{get("deny-reason").value="";get("deny-error").textContent="";denyDialog.showModal();get("deny-reason").focus()});denyDialog.querySelector(".request-dialog-close").addEventListener("click",()=>denyDialog.close());
+  get("deny-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!pendingRequest)return;const reason=get("deny-reason").value.trim();if(!reason){get("deny-error").textContent="A denial explanation is required.";return}const {error}=await client.rpc("staff_review_game_request",{request_id:pendingRequest.id,decision:"deny",denial_explanation:reason});if(error){get("deny-error").textContent="This request could not be denied. Its status may have changed.";return}denyDialog.close();await refreshDashboard()});
+
   initialize();
 })();

@@ -242,3 +242,13 @@ This pass corrects the remaining visual mismatch:
 - Signed-in viewers and staff now see only **Sign Out**.
 - Signed-out visitors now see only **Sign in with Twitch**.
 - Cache-busting query strings updated to version 8.2.
+
+## Version 8.3 — Live Approval and Denial Dashboard
+
+- Added the live pending-request card to the private staff dashboard.
+- Authorized reviewers can approve a pending request into **Awaiting Payment**.
+- Denial requires a written explanation of up to 500 characters.
+- The viewer sees the denial explanation on their request-status page.
+- Added recent request history for awaiting-payment, approved, denied, expired, and cancelled records.
+- Approval reserves the request slot but does not start the 14-day cooldown; payment confirmation will start it later.
+- Included the one-time `RUN-THIS-v8.3-REVIEW-DASHBOARD.sql` database upgrade.
