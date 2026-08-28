@@ -45,3 +45,8 @@ set payment_reference = 'TG-' || upper(substr(replace(gen_random_uuid()::text, '
 where status = 'awaiting_payment'
   and payment_reference is null;
 
+
+-- The Edge Function service role may read and confirm payments.
+grant select, update
+on table public.game_requests
+to service_role;
