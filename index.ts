@@ -8,6 +8,7 @@ type GameRequest = {
   platform: string | null;
   viewer_note: string | null;
   denial_reason: string | null;
+  cancellation_reason: string | null;
   created_at: string;
 };
 
@@ -43,6 +44,8 @@ Deno.serve(async (request) => {
   const isAwaitingPayment = payload.type === "UPDATE" && gameRequest.status === "awaiting_payment" && previous?.status !== "awaiting_payment";
   const isNewApproval = payload.type === "UPDATE" && gameRequest.status === "approved" && previous?.status !== "approved";
   const isNewDenial = payload.type === "UPDATE" && gameRequest.status === "denied" && previous?.status !== "denied";
+  const isNewCancellation = payload.type === "UPDATE" && gameRequest.status === "cancelled" && previous?.status !== "cancelled";
+  const isNewExpiration = payload.type === "UPDATE" && gameRequest.status === "expired" && previous?.status !== "expired";
 
   let webhook: string | undefined;
   let title = "";
@@ -70,6 +73,16 @@ Deno.serve(async (request) => {
     title = "❌ Game Request Denied";
     description = shorten(gameRequest.denial_reason);
     color = 0xff3b30;
+  } else if (isNewCancellation) {
+    webhook = Deno.env.get("DISCORD_CANCELLED_WEBHOOK");
+    title = gameRequest.cancellation_reason ? "🚫 Cancelled by Staff" : "🚫 Cancelled by Viewer";
+    description = gameRequest.cancellation_reason ? shorten(gameRequest.cancellation_reason) : "The viewer cancelled this request before staff approval.";
+    color = 0x8a9490;
+  } else if (isNewExpiration) {
+    webhook = Deno.env.get("DISCORD_EXPIRED_WEBHOOK");
+    title = "⌛ Game Request Expired";
+    description = "The 48-hour deadline passed without completion. The request slot is open again.";
+    color = 0x707070;
   } else return Response.json({ ignored: true });
 
   if (!webhook) return Response.json({ error: "Required Discord webhook secret is missing" }, { status: 500 });

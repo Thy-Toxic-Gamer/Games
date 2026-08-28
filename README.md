@@ -272,3 +272,11 @@ This pass corrects the remaining visual mismatch:
 - Included the working Discord router source under `supabase/functions/discord-game-requests/` without private secret values.
 - Included the reusable `RUN-THIS-v8.5-AUTO-EXPIRY.sql` maintenance script.
 - Included the one-time `RUN-THIS-v8.5-STAFF-AWAITING-CANCEL.sql` database upgrade.
+
+## Version 8.6 — Live Viewer Status
+
+- The viewer status page now refreshes automatically every 15 seconds without page flicker.
+- Awaiting requests display a live days, hours, minutes, and seconds countdown.
+- Added a visible live-status indicator and last-checked time.
+- Returning to the browser tab triggers an immediate status refresh.
+- Updated the repository Discord function backup with Cancelled and Expired routing.

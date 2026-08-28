@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=8.5" /><link rel="stylesheet" href="request-test.css?v=8.5" />
+  <link rel="stylesheet" href="styles.css?v=8.6" /><link rel="stylesheet" href="request-test.css?v=8.6" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-config.js?v=8.5" defer></script>
-  <script src="status-test.js?v=8.5" defer></script>
+  <script src="supabase-config.js?v=8.6" defer></script>
+  <script src="status-test.js?v=8.6" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -14,9 +14,10 @@
     <section class="request-page-heading"><p class="eyebrow">Viewer Request · Twitch Connected</p><h1>Request Status</h1><p>Sign in with the same Twitch account used to submit your request.</p><div class="request-center-actions"><button class="request-link-button" id="status-sign-in" type="button">Sign in with Twitch</button><button class="request-link-button request-link-admin" id="status-sign-out" type="button" hidden>Sign Out</button></div></section>
     <section class="review-empty" id="status-empty"><span>☣</span><h2 id="status-empty-title">Checking request status</h2><p id="status-empty-message">Connecting securely…</p><a class="request-link-button" href="index.html">Open Catalog</a></section>
     <article class="review-card" id="status-card" hidden>
+      <div class="request-live-state"><span class="request-live-dot" aria-hidden="true"></span><strong>Live status</strong><span id="status-last-checked">Connecting…</span></div>
       <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><span class="review-status" id="status-state"></span></div>
-      <div class="status-message" id="status-message"></div>
-      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Request deadline</dt><dd id="status-deadline"></dd></div></dl>
+      <div class="status-message" id="status-message" aria-live="polite"></div>
+      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Request deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div></dl>
       <div class="request-center-actions">
         <a class="request-link-button" href="index.html">Return to Catalog</a>
         <button class="review-button review-button-deny" id="cancel-request-button" type="button">Cancel My Request</button>

@@ -13,11 +13,32 @@
   };
   let session = null;
   let currentRequest = null;
+  let loading = false;
   function authRedirect() { return new URL("status.html", window.location.href).href; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
   function showEmpty(title,message) {
     get("status-empty").hidden = false; get("status-card").hidden = true;
     get("status-empty-title").textContent = title; get("status-empty-message").textContent = message;
+  }
+  function updateCountdown() {
+    if (!currentRequest || currentRequest.status !== "awaiting_payment" || !currentRequest.payment_deadline) {
+      get("status-countdown").textContent = "";
+      return;
+    }
+    const remaining = new Date(currentRequest.payment_deadline).getTime() - Date.now();
+    if (remaining <= 0) {
+      get("status-countdown").textContent = "Deadline reached · checking for expiration update…";
+      return;
+    }
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const parts = [];
+    if (days) parts.push(`${days}d`);
+    parts.push(`${hours}h`,`${minutes}m`,`${seconds}s`);
+    get("status-countdown").textContent = `${parts.join(" ")} remaining`;
   }
   function render(request,systemState) {
     currentRequest = request;
@@ -38,15 +59,24 @@
     get("status-deadline-row").hidden = !request.payment_deadline || request.status !== "awaiting_payment";
     get("status-deadline").textContent = request.payment_deadline ? new Date(request.payment_deadline).toLocaleString() : "";
     get("cancel-request-button").hidden = request.status !== "pending";
+    get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
+    updateCountdown();
   }
-  async function loadRequest() {
+  async function loadRequest(showLoading=false) {
+    if (loading) return;
     if (!session?.user) { showEmpty("Sign in to view your request","Use the same Twitch account that submitted the request."); return; }
-    showEmpty("Checking request status","Loading your latest request…");
+    loading = true;
+    if (showLoading && !currentRequest) showEmpty("Checking request status","Loading your latest request…");
     const {data,error} = await client.from("game_requests").select("*").eq("viewer_id",session.user.id).order("created_at",{ascending:false}).limit(1).maybeSingle();
-    if (error) { showEmpty("Request status unavailable","The request service could not load your status. Please try again."); return; }
-    if (!data) { showEmpty("No request found","Choose a game from the catalog to begin."); return; }
+    if (error) {
+      if (!currentRequest) showEmpty("Request status unavailable","The request service could not load your status. Please try again.");
+      else get("status-last-checked").textContent = "Update failed · retrying automatically";
+      loading = false; return;
+    }
+    if (!data) { currentRequest=null;showEmpty("No request found","Choose a game from the catalog to begin.");loading=false;return; }
     const {data:systemState} = await client.rpc("request_system_state");
     render(data,systemState);
+    loading = false;
   }
   get("status-sign-in").addEventListener("click",signIn);
   get("status-sign-out").addEventListener("click",async()=>{await client.auth.signOut();window.location.reload()});
@@ -67,8 +97,11 @@
     const {data} = await client.auth.getSession(); session = data.session;
     get("status-sign-in").hidden = Boolean(session);
     get("status-sign-out").hidden = !session;
-    client.auth.onAuthStateChange((_event,nextSession)=>{session=nextSession;get("status-sign-in").hidden=Boolean(session);get("status-sign-out").hidden=!session;loadRequest()});
-    await loadRequest();
+    client.auth.onAuthStateChange((_event,nextSession)=>{session=nextSession;get("status-sign-in").hidden=Boolean(session);get("status-sign-out").hidden=!session;loadRequest(true)});
+    await loadRequest(true);
+    window.setInterval(()=>{if(!document.hidden)loadRequest()},15000);
+    window.setInterval(updateCountdown,1000);
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)loadRequest()});
   }
   initialize();
 })();
