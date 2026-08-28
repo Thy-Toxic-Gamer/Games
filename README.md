@@ -235,3 +235,10 @@ This pass corrects the remaining visual mismatch:
 - Owners and authorized staff can confirm **Reset Global Cooldown** to reopen requests immediately.
 - Resetting makes every viewer eligible again, including the viewer whose request started the cooldown.
 - Staff cooldown bypass remains supported through the staff permission record.
+
+## Version 8.2 — Authentication Button Display Fix
+
+- Fixed hidden authentication controls being forced visible by the shared button display style.
+- Signed-in viewers and staff now see only **Sign Out**.
+- Signed-out visitors now see only **Sign in with Twitch**.
+- Cache-busting query strings updated to version 8.2.
