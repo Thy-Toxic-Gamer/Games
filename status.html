@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
+  <link rel="stylesheet" href="styles.css?v=7.0" /><link rel="stylesheet" href="request-test.css?v=7.0" />
+  <script src="status-test.js?v=7.0" defer></script>
+</head>
+<body class="request-page">
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
+  <main class="request-page-shell">
+    <section class="request-page-heading"><p class="eyebrow">Viewer Request · Test Mode</p><h1>Request Status</h1><p>This page will become the viewer’s reliable status link after the secure backend and Twitch sign-in are connected.</p></section>
+    <section class="review-empty" id="status-empty"><span>☣</span><h2>No test request found</h2><p>Choose a game from the catalog to begin.</p><a class="request-link-button" href="index.html">Open Catalog</a></section>
+    <article class="review-card" id="status-card" hidden>
+      <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><span class="review-status" id="status-state"></span></div>
+      <div class="status-message" id="status-message"></div>
+      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div id="status-reason-row"><dt>Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Test payment deadline</dt><dd id="status-deadline"></dd></div></dl>
+      <a class="request-link-button" href="index.html">Return to Catalog</a>
+    </article>
+  </main>
+</body></html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#050706" /><title>Toxic Game Request Review · Test Mode</title>
+  <link rel="stylesheet" href="styles.css?v=7.0" /><link rel="stylesheet" href="request-test.css?v=7.0" />
+  <script src="review-test.js?v=7.0" defer></script>
+</head>
+<body class="request-page">
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Control</small></span></a><div class="vault-mark"><span>☣</span><strong>Test Mode</strong></div></header>
+  <main class="request-page-shell">
+    <section class="request-page-heading"><p class="eyebrow">Private Review Website · Browser Test</p><h1>Game Request Control</h1><p>Test the approval, denial-reason, payment-waiting, approval, and cooldown states before connecting a secure login, Discord, Twitch, or payments.</p></section>
+    <section class="review-empty" id="review-empty"><span>☣</span><h2>No request is waiting</h2><p>Submit a test request from the game catalog first.</p><a class="request-link-button" href="index.html">Open Catalog</a></section>
+    <article class="review-card" id="review-card" hidden>
+      <div class="review-card-head"><div><p class="eyebrow" id="review-id"></p><h2 id="review-title"></h2><p id="review-platform"></p></div><span class="review-status" id="review-status"></span></div>
+      <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="review-viewer"></dd></div><div><dt>Submitted</dt><dd id="review-time"></dd></div><div><dt>Viewer note</dt><dd id="review-note"></dd></div><div id="review-decision-row"><dt>Decision details</dt><dd id="review-decision"></dd></div></dl>
+      <div class="review-actions" id="review-actions">
+        <button class="review-button" id="preapprove-button" type="button">Pre-Approve Request</button>
+        <button class="review-button review-button-deny" id="deny-button" type="button">Deny Request</button>
+        <button class="review-button" id="payment-button" type="button" hidden>Mark Test Payment Complete</button>
+      </div>
+    </article>
+    <section class="review-audit"><h2>Test controls</h2><p>Reset removes only the test request stored in this browser.</p><button class="review-button review-button-muted" id="reset-button" type="button">Reset Test Request</button></section>
+  </main>
+  <dialog class="request-dialog" id="deny-dialog"><form id="deny-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close">×</button><p class="eyebrow">Denial Record</p><h2>Deny Game Request</h2><label>Explanation required<textarea class="review-reason" id="deny-reason" maxlength="500" rows="5" required placeholder="Explain why this game request was denied."></textarea></label><p class="request-form-error" id="deny-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Denial</button></form></dialog>
+</body></html>

@@ -2,6 +2,14 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 7.0 — Game Request Phase 1 Test
+
+- Added a test-mode request center and status display to the catalog.
+- Added Request This Game controls to every game card.
+- Added a one-viewer-slot browser test flow, requester status page, and toxic-styled review panel.
+- Added pre-approval, required denial explanations, test payment completion, approved status, and 14-day cooldown simulation.
+- This phase intentionally uses browser storage only. It is not the final secure multi-user, Discord, Twitch, or payment integration.
+
 ## Version 6.8 — Correct Witcher Sequence
 
 - The Witcher: Enhanced Edition is now PC game #079.
@@ -181,3 +189,11 @@ This pass corrects the remaining visual mismatch:
 - SNES remains fixed because its section contains four games.
 - Full platform libraries remain alphabetized.
 - Cache-busting query strings updated to version 6.1.
+
+## Version 7.1 — Unlisted Game Requests
+
+- Added a **Can't find the game?** message bar above the catalog.
+- Viewers can type a game that is not in the catalog and submit it through the same review flow.
+- Unlisted requests are clearly marked **Unlisted Game · Higher Request Price** while exact prices remain undecided.
+- Catalog and unlisted requests share the same one-viewer request slot, approval/denial process, test payment step, and 14-day cooldown.
+- Cache-busting query strings updated to version 7.1.

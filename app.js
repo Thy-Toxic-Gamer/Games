@@ -489,6 +489,18 @@
       details.append(release);
     }
 
+    const requestButton = document.createElement(isPcGame ? "span" : "button");
+    requestButton.className = "request-game-button";
+    requestButton.textContent = "Request This Game";
+    requestButton.dataset.gameTitle = game.title;
+    requestButton.dataset.gamePlatform = sourcePlatformId;
+    if (isPcGame) {
+      requestButton.setAttribute("role", "button");
+      requestButton.tabIndex = 0;
+    } else {
+      requestButton.type = "button";
+    }
+
     const gameInfo = getGameInfo(game);
     const hoverInfo = document.createElement("div");
     hoverInfo.className = "game-hover-info";
@@ -502,7 +514,7 @@
     description.textContent = gameInfo.description;
 
     hoverInfo.append(genre, description);
-    card.append(cover, details, hoverInfo);
+    card.append(cover, details, hoverInfo, requestButton);
     return card;
   }
 
