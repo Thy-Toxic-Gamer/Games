@@ -341,7 +341,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Crusader of Centy": "assets/covers/hybrid/catalog/crusader-of-centy.webp",
   "Dr. Robotnik's Mean Bean Machine": "assets/covers/hybrid/catalog/dr-robotnik-s-mean-bean-machine.webp",
   "Dynamite Headdy": "assets/covers/hybrid/catalog/dynamite-headdy.webp",
-  "Earthworm Jim": "assets/covers/hybrid/catalog/earthworm-jim.webp",
+  "Earthworm Jim": "assets/covers/hybrid/catalog/earthworm-jim-generated.webp",
   "Ecco the Dolphin": "assets/covers/hybrid/catalog/ecco-the-dolphin.webp",
   "ESWAT: City Under Siege": "assets/covers/hybrid/catalog/eswat-city-under-siege.webp",
   "Flicky": "assets/covers/hybrid/catalog/flicky.webp",
