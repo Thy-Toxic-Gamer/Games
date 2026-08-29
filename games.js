@@ -106,9 +106,9 @@ const switchRows = [
   ["FINAL FANTASY V", "https://cdn.cloudflare.steamstatic.com/steam/apps/1173810/library_600x900.jpg"],
   ["FINAL FANTASY VI", "https://cdn.cloudflare.steamstatic.com/steam/apps/1173820/library_600x900.jpg"],
   ["FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition", "https://cdn.cdkeys.com/496x700/media/catalog/product/f/a/fantasy_life_i-_the_girl_who_steals_time_cdkeys.png"],
-  ["Atelier Ryza: Ever Darkness & the Secret Hideout DX", "https://cdn.cloudflare.steamstatic.com/steam/apps/3365030/library_600x900.jpg"],
-  ["Atelier Ryza 2: Lost Legends & the Secret Fairy DX", "https://cdn.cloudflare.steamstatic.com/steam/apps/3365040/library_600x900.jpg"],
-  ["Atelier Ryza 3: Alchemist of the End & the Secret Key DX", "https://cdn.cloudflare.steamstatic.com/steam/apps/3365050/library_600x900.jpg"],
+  ["Atelier Ryza: Ever Darkness & the Secret Hideout DX", "assets/covers/switch/atelier-ryza-ever-darkness-dx.webp"],
+  ["Atelier Ryza 2: Lost Legends & the Secret Fairy DX", "assets/covers/switch/atelier-ryza-2-dx.webp"],
+  ["Atelier Ryza 3: Alchemist of the End & the Secret Key DX", "assets/covers/switch/atelier-ryza-3-dx.webp"],
   ["FINAL FANTASY VII", "https://cdn.cloudflare.steamstatic.com/steam/apps/39140/library_600x900.jpg"],
   ["Rogue Legacy 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/1253920/library_600x900.jpg"],
   ["Guardian Tales", "https://assets.nintendo.com/image/upload/c_fill,w_1200/q_auto:best/f_auto/dpr_2.0/store/software/switch/70010000041655/2c8e04df5b0a67cadda0b78f4848ee28d901ee581028bcaea5c2adf861b7b145"],
@@ -124,12 +124,13 @@ const switchRows = [
   ["Actraiser Renaissance", "https://cdn.cloudflare.steamstatic.com/steam/apps/1393370/library_600x900.jpg"],
   ["Darksiders Genesis", "https://cdn.cloudflare.steamstatic.com/steam/apps/710920/library_600x900.jpg"],
   ["Langrisser I & II", "https://cdn.cloudflare.steamstatic.com/steam/apps/1060220/library_600x900.jpg"],
-  ["Super Mario 3D All-Stars", portraitArtwork("https://i5.walmartimages.com/asr/94870182-f924-49d9-a65b-1fca9171975e.9ac2060649361fb4f5e2f5afdfc8c4b8.jpeg")],
+  ["Super Mario 64", "assets/covers/switch/super-mario-64.webp"],
+  ["Super Mario Sunshine", "assets/covers/switch/super-mario-sunshine.webp"],
+  ["Super Mario Galaxy", "assets/covers/switch/super-mario-galaxy.webp"],
   ["Paper Mario: The Origami King", "assets/covers/switch/paper-mario-origami-king.png"],
   ["Super Mario Maker 2", "assets/covers/switch/super-mario-maker-2.png"],
   ["PixARK", "https://cdn.cloudflare.steamstatic.com/steam/apps/593600/library_600x900.jpg"],
   ["Code of Princess EX", "code-of-princess-ex.png"],
-  ["Pokémon HOME", "https://images.launchbox-app.com/ba5395cb-a58a-46e2-a036-bf399e194b48.png"],
   ["Pokémon Shield", "assets/covers/switch/pokemon-shield.png"],
   ["OCTOPATH TRAVELER", "https://cdn.cloudflare.steamstatic.com/steam/apps/921570/library_600x900.jpg"],
   ["Blair Witch", "https://cdn.cloudflare.steamstatic.com/steam/apps/1092660/library_600x900.jpg"],
@@ -138,11 +139,11 @@ const switchRows = [
   ["Minecraft Dungeons", "https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/library_600x900.jpg"],
   ["Tetris 99", "https://assets.games.gg/tetris_99_cover_a5464d6500.png"],
   ["Hello Neighbor", "https://cdn.cloudflare.steamstatic.com/steam/apps/521890/library_600x900.jpg"],
-  ["Diablo III: Eternal Collection", "https://image.api.playstation.com/cdn/EP0002/CUSA00434_00/CggG9mciYpjyX68Hat1BGdMrUjWogfnl.png"],
+  ["Diablo III: Eternal Collection", "assets/covers/switch/diablo-iii-eternal-collection.webp"],
   ["Goblin Sword", "assets/covers/switch/goblin-sword.png"],
   ["Crypt of the NecroDancer: Nintendo Switch Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/247080/library_600x900.jpg"],
   ["DRAGON QUEST XI S: Echoes of an Elusive Age - Definitive Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/1295510/library_600x900.jpg"],
-  ["Hyrule Warriors: Definitive Edition", "https://cloudfront-eu-central-1.images.arcpublishing.com/leparisien/CVR7YO6CUZHQZAYGDDN4SUQ6HU.png"],
+  ["Hyrule Warriors: Definitive Edition", "assets/covers/switch/hyrule-warriors-definitive-edition.webp"],
   ["Nine Parchments", "https://cdn.cloudflare.steamstatic.com/steam/apps/471550/library_600x900.jpg"],
   ["Resident Evil Revelations 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/287290/library_600x900.jpg"],
   ["Resident Evil Revelations", "https://cdn.cloudflare.steamstatic.com/steam/apps/222480/library_600x900.jpg"],
@@ -151,10 +152,10 @@ const switchRows = [
   ["DRAGON BALL XENOVERSE 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/454650/library_600x900.jpg"],
   ["Blossom Tales: The Sleeping King", "https://cdn.cloudflare.steamstatic.com/steam/apps/446810/library_600x900.jpg"],
   ["Hyperdimension Neptunia Re;Birth2: Sisters Generation", "https://cdn.cloudflare.steamstatic.com/steam/apps/351710/library_600x900.jpg"],
-  ["DragonFangZ - The Rose & Dungeon of Time", "https://cdn.cloudflare.steamstatic.com/steam/apps/749850/library_600x900.jpg"],
+  ["DragonFangZ - The Rose & Dungeon of Time", "assets/covers/switch/dragonfangz.webp"],
   ["MIGHTY GUNVOLT BURST", "https://cdn.cloudflare.steamstatic.com/steam/apps/774651/library_600x900.jpg"],
   ["Mario + Rabbids Kingdom Battle", portraitArtwork("https://cdn.awsli.com.br/800x800/53/53761/produto/19052323/ec97419a58.jpg")],
-  ["Xenoblade Chronicles 2", portraitArtwork("https://videogamesplus.ca/cdn/shop/products/xenoblade-chronicles-2-508077.23_1200x1200.jpg?v=1652462171")],
+  ["Xenoblade Chronicles 2", "assets/covers/switch/xenoblade-chronicles-2.webp"],
   ["Megadimension Neptunia VII", "https://cdn.cloudflare.steamstatic.com/steam/apps/460120/library_600x900.jpg"],
   ["Shovel Knight: Treasure Trove", "https://cdn.cloudflare.steamstatic.com/steam/apps/250760/library_600x900.jpg"],
   ["Teenage Mutant Ninja Turtles: The Cowabunga Collection", "https://cdn.cloudflare.steamstatic.com/steam/apps/1659600/library_600x900.jpg"],
@@ -163,8 +164,8 @@ const switchRows = [
   ["Super Mario Odyssey", "assets/covers/switch/super-mario-odyssey.png"],
   ["Sonic Frontiers", "https://cdn.cloudflare.steamstatic.com/steam/apps/1237320/library_600x900.jpg"],
   ["Metroid Prime 4: Beyond", "https://omegametroid.com/wp-content/uploads/2025/03/Switch_750x1000_MetroidPrime4Beyond_KeyArt.png"],
-  ["The Legend of Zelda: Echoes of Wisdom", "https://upload.wikimedia.org/wikipedia/en/1/1e/The_Legend_of_Zelda_%E2%80%93_Echoes_of_Wisdom.jpg"],
-  ["The Legend of Zelda: Link's Awakening", "https://cdn.cultura.com/cdn-cgi/image/width%3D1200/media/pim/zelda-link-s-awakening-0045496424442_23.jpg"],
+  ["The Legend of Zelda: Echoes of Wisdom", "assets/covers/switch/zelda-echoes-of-wisdom.webp"],
+  ["The Legend of Zelda: Link's Awakening", "assets/covers/switch/zelda-links-awakening.webp"],
   ["The Legend of Zelda: Skyward Sword HD", "assets/covers/switch/zelda-skyward-sword-hd.png"],
   ["The Legend of Zelda: Breath of the Wild", "https://i.3djuegos.com/juegos/9205/zelda_wii_u/fotos/ficha/zelda_wii_u-5953251.jpg"],
 ];
@@ -310,13 +311,24 @@ const snesRows = [
 ];
 
 function compareGameRows(left, right) {
+  const ryzaOrder = new Map([
+    ["Atelier Ryza: Ever Darkness & the Secret Hideout DX", 1],
+    ["Atelier Ryza 2: Lost Legends & the Secret Fairy DX", 2],
+    ["Atelier Ryza 3: Alchemist of the End & the Secret Key DX", 3],
+  ]);
   const witcherOrder = new Map([
     ["The Witcher: Enhanced Edition", 1],
     ["The Witcher 2: Assassins of Kings Enhanced Edition", 2],
     ["The Witcher 3: Wild Hunt - Complete Edition", 3],
   ]);
+  const leftRyza = ryzaOrder.get(left[0]);
+  const rightRyza = ryzaOrder.get(right[0]);
   const leftWitcher = witcherOrder.get(left[0]);
   const rightWitcher = witcherOrder.get(right[0]);
+
+  if (leftRyza && rightRyza) {
+    return leftRyza - rightRyza;
+  }
 
   if (leftWitcher && rightWitcher) {
     return leftWitcher - rightWitcher;
