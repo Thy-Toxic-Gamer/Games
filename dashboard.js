@@ -9,7 +9,7 @@
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
+    switch: { label: "Nintendo Switch + Nintendo Collection", icon: "◫", limit: 5, accent: "#ff392b" },
     pc: { label: "PC", icon: "▣", limit: 12, accent: "#ffe600" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     ps4: { label: "PS4", icon: "△", limit: 5, accent: "#159cff" },

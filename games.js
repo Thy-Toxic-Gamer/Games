@@ -405,7 +405,7 @@ const platforms = Object.freeze([
   Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
   Object.freeze({
     id: "switch",
-    label: "Nintendo Switch",
+    label: "Nintendo Switch + Nintendo Collection",
     games: allSwitchGames,
     sections: Object.freeze([
       Object.freeze({ id: "switch-games", label: "Nintendo Switch", games: regularSwitchGames }),
