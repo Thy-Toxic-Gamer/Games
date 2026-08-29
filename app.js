@@ -526,7 +526,7 @@
 
     if (platform.updates) {
       platformName.textContent = "System Updates";
-      libraryCount.textContent = "v10.4";
+      libraryCount.textContent = "v10.5";
       grid.hidden = true;
       comingSoon.hidden = true;
       updatesPanel.hidden = false;
@@ -652,8 +652,18 @@
     headerCount.textContent = String(totalGames);
     createTabs();
     siteUpdatesButton.addEventListener("click", function () {
-      activatePlatform("updates", false);
-      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      const updatesTab = tabs.querySelector('[data-platform="updates"]');
+      updatesTab?.click();
+
+      requestAnimationFrame(function () {
+        if (!updatesTab?.classList.contains("active")) {
+          activatePlatform("updates", false);
+        }
+
+        requestAnimationFrame(function () {
+          updatesPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
     });
     activatePlatform(activePlatformId, false);
   }

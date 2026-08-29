@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 10.5 — Reliable Updates Shortcut
+
+- The Site Updates shortcut now activates the real Updates tab before scrolling.
+- Added a follow-up check so the Updates view is restored if another page handler interrupts the initial tab switch.
+
 ## Version 10.4 — Site Updates Shortcut
 
 - Added a prominent Site Updates button beside the Twitch sign-in and sign-out controls.
