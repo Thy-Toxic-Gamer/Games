@@ -490,7 +490,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Doom": "assets/covers/hybrid/catalog/doom-generated.webp",
   "Final Fantasy II": "assets/covers/hybrid/catalog/final-fantasy-ii-generated.webp",
   "Final Fantasy III": "assets/covers/hybrid/catalog/final-fantasy-iii-generated.webp",
-  "Final Fantasy: Mystic Quest": "assets/covers/hybrid/catalog/final-fantasy-mystic-quest.webp",
+  "Final Fantasy: Mystic Quest": "assets/covers/hybrid/catalog/final-fantasy-mystic-quest-generated.webp",
   "Illusion of Gaia": "assets/covers/hybrid/catalog/illusion-of-gaia.webp",
   "Judge Dredd": "assets/covers/hybrid/catalog/judge-dredd.webp",
   "Lufia & the Fortress of Doom": "assets/covers/hybrid/catalog/lufia-the-fortress-of-doom.webp",
