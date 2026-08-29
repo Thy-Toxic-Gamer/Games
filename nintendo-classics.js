@@ -1660,7 +1660,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   virtualBoy: Object.freeze([
   [
     "3D Tetris",
-    "assets/covers/virtual-boy/3d-tetris.webp?v=2",
+    "assets/covers/virtual-boy/3d-tetris.webp?v=3",
     "Puzzle"
   ],
   [
