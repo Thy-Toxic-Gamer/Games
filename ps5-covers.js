@@ -22,5 +22,5 @@ window.PS5_COVERS = Object.freeze({
   "Hood: Outlaws & Legends": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:19",
   "FINAL FANTASY VII REMAKE": "hybrid-sprite:assets/covers/ps5/atlases/ps5-02.webp:0",
   "OUTRIDERS": "hybrid-sprite:assets/covers/ps5/atlases/ps5-02.webp:1",
-  "Marvel's Spider-Man Remastered": "hybrid-sprite:assets/covers/ps5/atlases/ps5-02.webp:2",
+  "Marvel's Spider-Man Remastered": "assets/covers/ps5/marvels-spider-man-remastered.webp",
 });
