@@ -487,7 +487,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Ys VIII: Lacrimosa of Dana": "assets/covers/hybrid/catalog/ys-viii-lacrimosa-of-dana.webp",
   "Chrono Trigger": "assets/covers/hybrid/catalog/chrono-trigger.webp",
   "Contra III: The Alien Wars": "assets/covers/hybrid/catalog/contra-iii-the-alien-wars-generated.webp",
-  "Doom": "assets/covers/hybrid/catalog/doom.webp",
+  "Doom": "assets/covers/hybrid/catalog/doom-generated.webp",
   "Final Fantasy II": "assets/covers/hybrid/catalog/final-fantasy-ii-b74b22b.webp",
   "Final Fantasy III": "assets/covers/hybrid/catalog/final-fantasy-iii-ed62233.webp",
   "Final Fantasy: Mystic Quest": "assets/covers/hybrid/catalog/final-fantasy-mystic-quest.webp",
