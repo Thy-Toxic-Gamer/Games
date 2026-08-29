@@ -572,11 +572,12 @@
       const slot = Number(slotText);
       const column = slot % 5;
       const row = Math.floor(slot / 5);
+      const versionedAtlasUrl = `${atlasUrl}${atlasUrl.includes("?") ? "&" : "?"}v=1.0.23`;
       const sprite = document.createElement("div");
       sprite.className = "game-cover console-cover hybrid-cover hybrid-sprite-cover portrait-art";
       sprite.setAttribute("role", "img");
       sprite.setAttribute("aria-label", `${game.title} cover art`);
-      sprite.style.setProperty("--sprite-image", `url("${atlasUrl.replace(/"/g, "%22")}")`);
+      sprite.style.setProperty("--sprite-image", `url("${versionedAtlasUrl.replace(/"/g, "%22")}")`);
       sprite.style.setProperty("--sprite-position", `${column * 25}% ${row * (100 / 3)}%`);
       shell.classList.add("has-cover-image");
       shell.append(fallback, sprite);
