@@ -1785,10 +1785,5 @@ window.NINTENDO_CLASSICS = Object.freeze({
     "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Pokemon%20XD_%20Gale%20of%20Darkness%20%28USA%29.png",
     "Role-Playing"
   ],
-  [
-    "Super Mario Sunshine",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Super%20Mario%20Sunshine%20%28USA%29.png",
-    "Platformer"
-  ]
 ]),
 });
