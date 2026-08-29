@@ -1705,7 +1705,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Jack Bros.",
-    "assets/covers/virtual-boy/jack-bros.webp?v=2",
+    "assets/covers/virtual-boy/jack-bros.webp?v=3",
     "Action / Puzzle"
   ],
   [
