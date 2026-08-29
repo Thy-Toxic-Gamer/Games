@@ -1720,7 +1720,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Vertical Force",
-    "assets/covers/virtual-boy/vertical-force.webp?v=2",
+    "assets/covers/virtual-boy/vertical-force.webp?v=3",
     "Shooter"
   ],
   [
