@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 10.6 — Better Shortcut Positioning
+
+- The Site Updates shortcut now scrolls to the platform-tab row instead of the bottom update panel.
+- Added spacing for the sticky header so the selected Updates tab remains fully visible.
+
 ## Version 10.5 — Reliable Updates Shortcut
 
 - The Site Updates shortcut now activates the real Updates tab before scrolling.

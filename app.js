@@ -526,7 +526,7 @@
 
     if (platform.updates) {
       platformName.textContent = "System Updates";
-      libraryCount.textContent = "v10.5";
+      libraryCount.textContent = "v10.6";
       grid.hidden = true;
       comingSoon.hidden = true;
       updatesPanel.hidden = false;
@@ -661,7 +661,7 @@
         }
 
         requestAnimationFrame(function () {
-          updatesPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          tabs.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
     });

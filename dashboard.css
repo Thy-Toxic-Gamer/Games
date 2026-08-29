@@ -92,6 +92,7 @@ main {
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.55rem;
   margin-bottom: 0.72rem;
+  scroll-margin-top: 84px;
   padding-bottom: 0;
   border-bottom: 0;
 }
