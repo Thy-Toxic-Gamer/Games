@@ -1685,7 +1685,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Teleroboxer",
-    "assets/covers/virtual-boy/teleroboxer.webp?v=2",
+    "assets/covers/virtual-boy/teleroboxer.webp?v=3",
     "Fighting"
   ],
   [
