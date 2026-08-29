@@ -1,7 +1,7 @@
 // Individually generated PS5 key art with titles integrated into each image.
 window.PS5_COVERS = Object.freeze({
   "FINAL FANTASY XVI": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:0",
-  "Assassin's Creed Valhalla": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:1",
+  "Assassin's Creed Valhalla": "assets/covers/ps5/assassins-creed-valhalla.webp",
   "The First Descendant": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:2",
   "FINAL FANTASY VII REBIRTH": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:3",
   "Resident Evil 4": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:4",
