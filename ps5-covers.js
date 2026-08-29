@@ -15,7 +15,7 @@ window.PS5_COVERS = Object.freeze({
   "STRANGER OF PARADISE FINAL FANTASY ORIGIN": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:12",
   "Horizon Forbidden West Digital Deluxe": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:13",
   "Destiny 2": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:14",
-  "FINAL FANTASY XIV Online": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:15",
+  "FINAL FANTASY XIV Online": "assets/covers/ps5/final-fantasy-xiv-online.webp",
   "Ghost of Tsushima": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:16",
   "Ratchet & Clank: Rift Apart Digital Deluxe Edition": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:17",
   "Ruinverse": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:18",
