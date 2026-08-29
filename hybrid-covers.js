@@ -394,7 +394,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Virtual Bowling": "assets/covers/hybrid/catalog/virtual-bowling.webp",
   "Virtual Boy Wario Land": "assets/covers/hybrid/catalog/virtual-boy-wario-land.webp",
   "Zero Racers": "assets/covers/hybrid/catalog/zero-racers.webp",
-  "Chibi-Robo!": "assets/covers/hybrid/catalog/chibi-robo.webp",
+  "Chibi-Robo!": "assets/covers/hybrid/catalog/chibi-robo-generated.webp",
   "F-Zero GX": "assets/covers/hybrid/catalog/f-zero-gx.webp",
   "Fire Emblem: Path of Radiance": "assets/covers/hybrid/catalog/fire-emblem-path-of-radiance.webp",
   "Luigi's Mansion": "assets/covers/hybrid/catalog/luigi-s-mansion.webp",
