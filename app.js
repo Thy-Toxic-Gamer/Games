@@ -401,6 +401,66 @@
     "Xenoblade Chronicles 2": "JRPG",
   });
 
+  const PLAYSTATION_GENRES = Object.freeze({
+    "Horizon Forbidden West Digital Deluxe": "Action RPG / Adventure",
+    "Agents of Mayhem": "Action Adventure / Third-Person Shooter",
+    "Batman: Arkham Knight": "Action Adventure",
+    "Batman: Return to Arkham - Arkham Asylum": "Action Adventure",
+    "Batman: Return to Arkham - Arkham City": "Action Adventure",
+    "Battle Chasers: Nightwar": "Turn-Based RPG",
+    "Blacklight: Retribution": "First-Person Shooter",
+    "Bleach: Brave Souls": "Action RPG",
+    "Bloodborne": "Action RPG / Soulslike",
+    "Dark Cloud": "Action RPG / Dungeon Crawler",
+    "Dark Cloud 2": "Action RPG / Dungeon Crawler",
+    "Dark Souls III": "Action RPG / Soulslike",
+    "Darksiders II Deathinitive Edition": "Action RPG / Hack and Slash",
+    "Destiny": "Online FPS / Looter Shooter",
+    "Diablo III: Reaper of Souls - Ultimate Evil Edition": "Action RPG",
+    "Dragon's Crown Pro": "Beat 'em Up / Action RPG",
+    "Dragon's Dogma: Dark Arisen": "Action RPG / Open World",
+    "FINAL FANTASY XV": "Action JRPG",
+    "For Honor": "Fighting / Action",
+    "Fortnite": "Battle Royale / Third-Person Shooter",
+    "Grand Kingdom": "Tactical RPG",
+    "Horizon Zero Dawn": "Action RPG / Adventure",
+    "Injustice: Gods Among Us Ultimate Edition": "Fighting",
+    "KINGDOM HEARTS - HD 1.5+2.5 ReMIX -": "Action RPG / Collection",
+    "KINGDOM HEARTS HD 2.8 FINAL CHAPTER PROLOGUE": "Action RPG / Collection",
+    "Knack 2": "Action Platformer",
+    "LEGO Marvel Super Heroes 2": "Action Adventure / Platformer",
+    "Lords of the Fallen": "Action RPG / Soulslike",
+    "Mega Man X Legacy Collection": "Action Platformer / Collection",
+    "Mega Man X Legacy Collection 2": "Action Platformer / Collection",
+    "Metro 2033 Redux": "FPS / Survival Horror",
+    "Middle-earth: Shadow of Mordor": "Action Adventure / Open World",
+    "Monster Hunter World: Iceborne": "Action RPG",
+    "Neverwinter": "Action MMORPG",
+    "Nioh: Complete Edition": "Action RPG / Soulslike",
+    "ONE PIECE: PIRATE WARRIORS 3": "Musou / Hack and Slash",
+    "Onigiri": "Action MMORPG",
+    "Overwatch": "Hero Shooter",
+    "Paragon": "MOBA",
+    "Pillars of Eternity: Complete Edition": "Computer RPG",
+    "Psychonauts in the Rhombus of Ruin": "VR Adventure / Puzzle",
+    "Resident Evil 2": "Survival Horror",
+    "Resident Evil 3": "Survival Horror / Action",
+    "Resident Evil 5": "Action / Survival Horror",
+    "Resident Evil 6": "Action / Survival Horror",
+    "Resident Evil Resistance": "Asymmetrical Survival Horror",
+    "Resident Evil Revelations 2": "Survival Horror / Action",
+    "SMITE": "MOBA",
+    "STAR OCEAN: Integrity and Faithlessness": "Action JRPG",
+    "Star Wars Battlefront II": "Action Shooter",
+    "Terraria": "Sandbox / Survival",
+    "The Last of Us Part II": "Action Adventure / Survival",
+    "The Last of Us Remastered": "Action Adventure / Survival",
+    "Tom Clancy's Ghost Recon Wildlands": "Tactical Third-Person Shooter / Open World",
+    "Tom Clancy's Rainbow Six Siege": "Tactical First-Person Shooter",
+    "Tom Clancy's The Division": "Looter Shooter / Action RPG",
+    "Ys VIII: Lacrimosa of Dana": "Action JRPG",
+  });
+
   function coverUrl(game, alternate) {
     if (game.image) {
       return game.image;
@@ -472,12 +532,14 @@
       description: `Explore the world, characters, and challenges of ${game.title}.`,
     };
 
-    const switchGenre = game.sourcePlatformId === "switch"
+    const catalogGenre = game.sourcePlatformId === "switch"
       ? SWITCH_GENRES[game.title]
-      : null;
+      : ["ps5", "ps4"].includes(game.sourcePlatformId)
+        ? PLAYSTATION_GENRES[game.title]
+        : null;
 
-    return switchGenre
-      ? { ...info, genre: switchGenre }
+    return catalogGenre
+      ? { ...info, genre: catalogGenre }
       : info;
   }
 
