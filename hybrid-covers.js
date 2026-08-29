@@ -498,7 +498,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Mega Man 7": "assets/covers/hybrid/catalog/mega-man-7-generated.webp",
   "Mega Man Soccer": "assets/covers/hybrid/catalog/mega-man-soccer-generated.webp",
   "Mega Man X": "assets/covers/hybrid/catalog/mega-man-x-generated.webp",
-  "Mega Man X2": "assets/covers/hybrid/catalog/mega-man-x2.webp",
+  "Mega Man X2": "assets/covers/hybrid/catalog/mega-man-x2-generated.webp",
   "Mega Man X3": "assets/covers/hybrid/catalog/mega-man-x3.webp",
   "Secret of Evermore": "assets/covers/hybrid/catalog/secret-of-evermore.webp",
   "Secret of Mana": "assets/covers/hybrid/catalog/secret-of-mana.webp",
