@@ -511,7 +511,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Terranigma": "assets/covers/hybrid/catalog/terranigma-generated.webp",
   "Tiny Toon Adventures: Buster Busts Loose!": "assets/covers/hybrid/catalog/tiny-toon-adventures-buster-busts-loose-generated.webp",
   "Tom and Jerry": "assets/covers/hybrid/catalog/tom-and-jerry-generated.webp",
-  "Wolverine: Adamantium Rage": "assets/covers/hybrid/catalog/wolverine-adamantium-rage.webp",
+  "Wolverine: Adamantium Rage": "assets/covers/hybrid/catalog/wolverine-adamantium-rage-generated.webp",
   "X-Men: Mutant Apocalypse": "assets/covers/hybrid/catalog/x-men-mutant-apocalypse.webp",
   "Ys III: Wanderers from Ys": "assets/covers/hybrid/catalog/ys-iii-wanderers-from-ys.webp"
 });
