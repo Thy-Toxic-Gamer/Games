@@ -1,5 +1,5 @@
 function portraitArtwork(source) {
-  return `https://images.weserv.nl/?url=${encodeURIComponent(source)}&w=600&h=900&fit=cover&output=jpg`;
+  return `https://images.weserv.nl/?url=${encodeURIComponent(source)}&w=600&h=900&fit=contain&bg=090c09&output=jpg`;
 }
 
 const pcRows = [
@@ -191,7 +191,6 @@ const ps4Rows = [
   ["Onigiri", "https://cdn.cloudflare.steamstatic.com/steam/apps/290470/library_600x900.jpg"],
   ["Neverwinter", "https://cdn.cloudflare.steamstatic.com/steam/apps/109600/library_600x900.jpg"],
   ["SMITE", "https://cdn.cloudflare.steamstatic.com/steam/apps/386360/library_600x900.jpg"],
-  ["Knights of Valour", portraitArtwork("https://images.cgames.de/images/gsgp/290/knights-of-valour_2796978.jpg")],
   ["TERA", "https://cdn.cloudflare.steamstatic.com/steam/apps/323370/library_600x900.jpg"],
   ["Batman: Arkham Knight", "https://cdn.cloudflare.steamstatic.com/steam/apps/208650/library_600x900.jpg"],
   ["Batman: Return to Arkham - Arkham City", "https://cdn.cloudflare.steamstatic.com/steam/apps/200260/library_600x900.jpg"],
@@ -211,33 +210,33 @@ const ps4Rows = [
   ["Nioh: Complete Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/485510/library_600x900.jpg"],
   ["Star Wars Battlefront II", "https://cdn.cloudflare.steamstatic.com/steam/apps/1237950/library_600x900.jpg"],
   ["Horizon Zero Dawn", "https://cdn.cloudflare.steamstatic.com/steam/apps/1151640/library_600x900.jpg"],
-  ["Overwatch", portraitArtwork("https://d2e6ccujb3mkqf.cloudfront.net/647e53e1-8f6c-4a4c-87f7-3f9125be2b31-1_4630fd76-d63b-4d2a-9bbd-f8000a42e5d3.jpg")],
+  ["Overwatch", "assets/covers/ps4/overwatch.jpg"],
   ["Knack 2", "https://assetsio.gnwcdn.com/co4le9.jpg?auto=webp&fit=bounds&format=jpg&height=2048&quality=85&width=2048"],
   ["Psychonauts in the Rhombus of Ruin", "https://cdn.cloudflare.steamstatic.com/steam/apps/517670/library_600x900.jpg"],
   ["LEGO Marvel Super Heroes 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/647830/library_600x900.jpg"],
   ["KINGDOM HEARTS HD 2.8 FINAL CHAPTER PROLOGUE", "https://cdn.cloudflare.steamstatic.com/steam/apps/2552440/library_600x900.jpg"],
   ["KINGDOM HEARTS - HD 1.5+2.5 ReMIX -", "https://cdn.cloudflare.steamstatic.com/steam/apps/2552430/library_600x900.jpg"],
-  ["Destiny", portraitArtwork("https://farm4.staticflickr.com/3699/10018672564_22dfbc1003_c.jpg")],
+  ["Destiny", "assets/covers/ps4/destiny.jpg"],
   ["Darksiders II Deathinitive Edition", "https://cdn.cloudflare.steamstatic.com/steam/apps/388410/library_600x900.jpg"],
   ["Metro 2033 Redux", "https://cdn.cloudflare.steamstatic.com/steam/apps/286690/library_600x900.jpg"],
   ["Resident Evil Revelations 2", "https://cdn.cloudflare.steamstatic.com/steam/apps/287290/library_600x900.jpg"],
   ["Terraria", "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/library_600x900.jpg"],
   ["Middle-earth: Shadow of Mordor", "https://cdn.cloudflare.steamstatic.com/steam/apps/241930/library_600x900.jpg"],
   ["Lords of the Fallen", "https://cdn.cloudflare.steamstatic.com/steam/apps/265300/library_600x900.jpg"],
-  ["The Last of Us Remastered", portraitArtwork("https://bioscomputacion.com.ar/img/Public/1161-producto-d-nq-np-2x-802593-mla43429424402-2359.jpg")],
-  ["Diablo III: Reaper of Souls - Ultimate Evil Edition", portraitArtwork("https://s.pacn.ws/1/p/13r/diablo-iii-ultimate-evil-edition-latam-cover-715615.16.jpg?crop=1035%2C1305&v=ramavh&width=800")],
-  ["Injustice: Gods Among Us Ultimate Edition", portraitArtwork("https://image.api.playstation.com/cdn/UP1018/NPUB31377_00/gEfqRxC2WTB50llc36Xs7oNnXjw866Vc.png")],
+  ["The Last of Us Remastered", "assets/covers/ps4/the-last-of-us-remastered.jpg"],
+  ["Diablo III: Reaper of Souls - Ultimate Evil Edition", "assets/covers/ps4/diablo-iii-reaper-of-souls.jpg"],
+  ["Injustice: Gods Among Us Ultimate Edition", "assets/covers/ps4/injustice-gods-among-us.jpg"],
   ["Tom Clancy's Rainbow Six Siege", "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/library_600x900.jpg"],
   ["Tom Clancy's Ghost Recon Wildlands", "https://cdn.cloudflare.steamstatic.com/steam/apps/460930/library_600x900.jpg"],
   ["For Honor", "https://cdn.cloudflare.steamstatic.com/steam/apps/304390/library_600x900.jpg"],
   ["Blacklight: Retribution", portraitArtwork("https://cdn-uploads.gameblog.fr/images/jeux/10811/BlacklightRetribution_Multi_Jaquette_002.jpg?ver=1")],
   ["Warframe", "https://cdn.cloudflare.steamstatic.com/steam/apps/230410/library_600x900.jpg"],
-  ["Paragon", portraitArtwork("https://wallpapers.com/images/hd/p-s4-paragon-game-cover-art-gqotdsak7vgp9q86-gqotdsak7vgp9q86.png")],
+  ["Paragon", "assets/covers/ps4/paragon.jpg"],
   ["Resident Evil 6", "https://cdn.cloudflare.steamstatic.com/steam/apps/221040/library_600x900.jpg"],
   ["Resident Evil 5", "https://cdn.cloudflare.steamstatic.com/steam/apps/21690/library_600x900.jpg"],
   ["STAR OCEAN: Integrity and Faithlessness", portraitArtwork("https://scale.coolshop-cdn.com/product-media.coolshop-cdn.com/AF7Z2E/942c3487cb194800a8dd8a263c45dd5a.jpeg/f/star-ocean-integrity-and-faithlessness.jpeg")],
   ["ONE PIECE: PIRATE WARRIORS 3", portraitArtwork("https://www.chilesteam.cl/337-large_default/one-piece-pirate-warriors-3.jpg")],
-  ["Dark Cloud", portraitArtwork("https://media.vandal.net/m/34898/dark-cloud-201512713294_11.jpg")],
+  ["Dark Cloud", "assets/covers/ps4/dark-cloud.jpg"],
   ["Dark Cloud 2", portraitArtwork("https://i.3djuegos.com/juegos/12684/dark_cloud_2/fotos/ficha/dark_cloud_2-3274310.webp")],
 ];
 
