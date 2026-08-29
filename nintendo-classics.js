@@ -1725,7 +1725,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Virtual Bowling",
-    "assets/covers/virtual-boy/virtual-bowling.webp?v=2",
+    "assets/covers/virtual-boy/virtual-bowling.webp?v=3",
     "Sports"
   ],
   [
