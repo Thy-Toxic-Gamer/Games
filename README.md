@@ -2,47 +2,18 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
-## Version 10.6 — Better Shortcut Positioning
+## Ver. 1.0 — First Public Release — August 28, 2026
 
-- The Site Updates shortcut now scrolls to the platform-tab row instead of the bottom update panel.
-- Added spacing for the sticky header so the selected Updates tab remains fully visible.
-
-## Version 10.5 — Reliable Updates Shortcut
-
-- The Site Updates shortcut now activates the real Updates tab before scrolling.
-- Added a follow-up check so the Updates view is restored if another page handler interrupts the initial tab switch.
-
-## Version 10.4 — Site Updates Shortcut
-
-- Added a prominent Site Updates button beside the Twitch sign-in and sign-out controls.
-- The button opens the existing Updates tab and scrolls it into view.
-
-## Version 10.3 — Updates Tab + Stream Window
-
-- Added a viewer-facing Updates tab covering the major request-system improvements.
-- Clarified that paid and approved games are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.
-- Added a highlighted stream-window notice to the request center.
-
-## Version 10.0 — Automatic Twitch Staff + Optional Scheduling
-
+- Added the viewer-facing Site Updates center and prominent shortcut.
+- Clarified the Friday evening or Saturday morning 18–24 hour stream window.
 - Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.
 - Existing owner and manually assigned staff access is preserved.
-- Automatic moderator access is reverified hourly and expires when Twitch can no longer confirm it.
+- Automatic moderators must reauthorize after leaving Staff Control, and removed moderators lose access.
 - Paid and approved requests can optionally be scheduled for an exact Eastern date and time after everyone agrees.
+- Rescheduling or clearing an existing game time requires a written reason.
 - Viewers see the recorded schedule on their request-status page.
 - Discord can announce schedule, reschedule, and schedule-cleared updates without duplicating payment approval notices.
-- See AUTO-MODS-SCHEDULING-SETUP.md and run RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql before publishing the v10.0 website files.
-
-### Version 10.1 Staff Session Hardening
-
-- Automatic moderators must reauthorize after leaving Staff Control and returning.
-- Returning focus to an open Staff Control tab immediately rechecks Twitch moderator status.
-
-### Version 10.2 Schedule Change Explanations
-
-- Initial scheduling remains optional and does not require an explanation.
-- Rescheduling or clearing an existing game time requires a written reason.
-- The viewer status page and Discord schedule update display the reason.
+- The Ver. 1.0 database setup retains its original internal migration filenames for deployment compatibility.
 
 ## Version 7.0 — Game Request Phase 1 Test
 

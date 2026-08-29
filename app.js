@@ -526,7 +526,7 @@
 
     if (platform.updates) {
       platformName.textContent = "System Updates";
-      libraryCount.textContent = "v10.6";
+      libraryCount.textContent = "Ver. 1.0";
       grid.hidden = true;
       comingSoon.hidden = true;
       updatesPanel.hidden = false;
