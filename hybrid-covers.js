@@ -400,7 +400,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Luigi's Mansion": "assets/covers/hybrid/catalog/luigis-mansion-generated.webp",
   "Pokémon XD: Gale of Darkness": "assets/covers/hybrid/catalog/pokemon-xd-gale-of-darkness-generated.webp",
   "Soulcalibur II": "assets/covers/hybrid/catalog/soulcalibur-ii-generated.webp",
-  "Super Mario Strikers": "assets/covers/hybrid/catalog/super-mario-strikers.webp",
+  "Super Mario Strikers": "assets/covers/hybrid/catalog/super-mario-strikers-generated.webp",
   "The Legend of Zelda: The Wind Waker": "assets/covers/hybrid/catalog/the-legend-of-zelda-the-wind-waker.webp",
   "Wario World": "assets/covers/hybrid/catalog/wario-world.webp",
   "Assassin's Creed Valhalla": "assets/covers/hybrid/catalog/assassin-s-creed-valhalla.webp",
