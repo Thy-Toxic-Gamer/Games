@@ -783,7 +783,7 @@ main {
   width: 100% !important;
   height: 100% !important;
   padding: 0 !important;
-  background: #070908 !important;
+  background-color: #070908 !important;
   object-fit: contain !important;
   object-position: center !important;
 }
