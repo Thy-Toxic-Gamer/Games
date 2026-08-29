@@ -1175,9 +1175,19 @@ main {
 /* V5.9 — SNES artwork stays fully visible inside its border. */
 .dashboard-snes .dashboard-card .game-cover,
 #platform-panel[data-dashboard-platform="snes"] .game-card.console-game .game-cover.console-cover {
-  padding: 0.25rem;
-  object-fit: contain;
-  object-position: center;
+  padding: 0.25rem !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+/* Ver. 1.0 — SNES dashboard artwork matches the full SNES tab. */
+.dashboard-snes .dashboard-card .system-box .game-cover.console-cover {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0.25rem !important;
+  object-fit: contain !important;
+  object-position: center !important;
 }
 
 /* Show the complete supplied Code of Princess EX box art inside its card. */

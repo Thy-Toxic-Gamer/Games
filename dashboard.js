@@ -12,7 +12,7 @@
     switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
     pc: { label: "PC", icon: "▣", limit: 12, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
+    snes: { label: "SNES", icon: "✚", limit: 3, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
     xbox: { label: "Xbox", accent: "#a2aaa5" },
     updates: { label: "Updates", accent: "#ffb000" },
@@ -129,8 +129,6 @@
   }
 
   function orderedPreviewCards(platformId, cards) {
-    if (platformId === "snes") return cards;
-
     const shuffled = shuffleCards(cards);
     const featuredTitle = previewRotationRound === 0
       ? initialFeaturedTitles[platformId]
