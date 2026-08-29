@@ -361,6 +361,8 @@ function freezeConsoleGames(rows, sourcePlatformId, useOriginalCover = false) {
         title,
         image: useOriginalCover
           ? image
+          : sourcePlatformId === "ps4"
+            ? `hybrid-sprite:assets/covers/ps4/atlases/ps4-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
           : approvedCovers[title] ||
             (sourcePlatformId === "ps5" ? ps5Covers[title] : null) ||
             hybridCovers[title] ||
