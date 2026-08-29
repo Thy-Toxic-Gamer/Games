@@ -508,7 +508,7 @@ window.HYBRID_COVERS = Object.freeze({
   "SWAT Kats: The Radical Squadron": "assets/covers/hybrid/catalog/swat-kats-the-radical-squadron-generated.webp",
   "Tales of Phantasia": "assets/covers/hybrid/catalog/tales-of-phantasia-generated.webp",
   "Teenage Mutant Ninja Turtles IV: Turtles in Time": "assets/covers/hybrid/catalog/teenage-mutant-ninja-turtles-iv-turtles-in-time-generated.webp",
-  "Terranigma": "assets/covers/hybrid/catalog/terranigma.webp",
+  "Terranigma": "assets/covers/hybrid/catalog/terranigma-generated.webp",
   "Tiny Toon Adventures: Buster Busts Loose!": "assets/covers/hybrid/catalog/tiny-toon-adventures-buster-busts-loose.webp",
   "Tom and Jerry": "assets/covers/hybrid/catalog/tom-and-jerry.webp",
   "Wolverine: Adamantium Rage": "assets/covers/hybrid/catalog/wolverine-adamantium-rage.webp",
