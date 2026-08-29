@@ -3,16 +3,20 @@
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
   const statusLabels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
+  const navigationType=performance.getEntriesByType("navigation")[0]?.type||"navigate";
+  const oauthReturnPending=window.sessionStorage.getItem("toxic-staff-oauth-pending")==="true";
+  if(!oauthReturnPending&&navigationType!=="reload")window.sessionStorage.removeItem("toxic-twitch-provider-token");
   let session = null;
   let providerToken = window.sessionStorage.getItem("toxic-twitch-provider-token") || "";
   let pendingRequest = null;
   let scheduleRequest = null;
+  let staffAccessSource = null;
   let serviceEnabled = true;
   const easternZone = "America/New_York";
 
   function authRedirect() { return new URL("review.html",window.location.href).href; }
   function message(title,copy) { get("staff-message").hidden=false;get("staff-dashboard").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
-  async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
+  async function signIn() { window.sessionStorage.setItem("toxic-staff-oauth-pending","true");await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function easternInputValue(value) {
@@ -99,16 +103,17 @@
   }
   async function initialize() {
     if(!client){message("Connection error","The staff service could not load.");return;}
-    const {data}=await client.auth.getSession();session=data.session;if(session?.provider_token){providerToken=session.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
+    const {data}=await client.auth.getSession();session=data.session;if(oauthReturnPending&&session?.provider_token){providerToken=session.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}window.sessionStorage.removeItem("toxic-staff-oauth-pending");get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
     if(!session){message("Staff sign-in required","Sign in with an authorized Twitch account to open the private controls.");return;}
     await verifyAutomaticStaff();
     const {data:access,error}=await client.rpc("my_request_staff_access");
     if(error){message("Staff controls unavailable","The staff access check could not be completed.");return;}
+    staffAccessSource=access?.accessSource||null;
     if(!access?.isStaff||(access.accessSource==="twitch_moderator"&&!providerToken)){get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","Sign in with Twitch again. Current channel moderators receive Staff Control automatically.");return;}
     get("staff-role").textContent=`Signed in as ${access.role==="owner"?"Owner":"Moderator"}`;await refreshDashboard();
   }
 
-  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
 
   const serviceDialog=get("toggle-service-dialog");get("toggle-request-service").addEventListener("click",()=>{const turningOn=!serviceEnabled;get("toggle-service-error").textContent="";get("toggle-service-title").textContent=turningOn?"Turn new game requests on?":"Turn new game requests off?";get("toggle-service-copy").textContent=turningOn?"This restores new request submissions. Any active global cooldown still applies.":"This immediately blocks only new request submissions. Existing requests can still be reviewed, paid, confirmed, or expired normally.";const confirm=get("confirm-service-toggle");confirm.textContent=turningOn?"Turn Services On":"Turn Services Off";confirm.classList.toggle("review-button-deny",!turningOn);serviceDialog.showModal()});get("keep-service-state").addEventListener("click",()=>serviceDialog.close());serviceDialog.querySelector(".request-dialog-close").addEventListener("click",()=>serviceDialog.close());
   get("toggle-service-form").addEventListener("submit",async(event)=>{event.preventDefault();const nextState=!serviceEnabled;const confirm=get("confirm-service-toggle");confirm.disabled=true;const {error}=await client.rpc("set_request_service_enabled",{enabled:nextState});confirm.disabled=false;if(error){get("toggle-service-error").textContent="The service state could not be changed.";return}serviceDialog.close();await refreshDashboard()});
@@ -129,7 +134,9 @@
   get("schedule-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!scheduleRequest)return;const localValue=get("schedule-local").value;if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return}const save=get("save-schedule");save.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:localValue});save.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":"This schedule could not be saved. Confirm that payment is complete.";return}scheduleDialog.close();await refreshDashboard()});
   get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null});button.disabled=false;if(error){get("schedule-error").textContent="This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
 
-  if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
+  if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(oauthReturnPending&&nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
   initialize();
   window.setInterval(async()=>{if(providerToken&&!document.hidden){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}},55*60*1000);
+  document.addEventListener("visibilitychange",async()=>{if(!document.hidden&&providerToken&&staffAccessSource==="twitch_moderator"){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}});
+  window.addEventListener("pageshow",(event)=>{if(event.persisted&&staffAccessSource==="twitch_moderator"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","You left Staff Control. Sign in with Twitch again to re-establish moderator access.");}});
 })();

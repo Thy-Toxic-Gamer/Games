@@ -9,6 +9,7 @@ This v10.0 upgrade gives current Twitch moderators automatic Staff Control acces
 - The Edge Function validates the Twitch token, matches it to the signed-in Supabase identity, and checks the immutable ThyToxicGamer broadcaster ID.
 - Confirmed moderators receive temporary Staff Control access. The page rechecks Twitch every 55 minutes, and automatic access expires after 65 minutes without successful verification.
 - Removing someone as a Twitch moderator removes their automatic access at the next verification.
+- Automatic moderators must sign in again whenever they leave Staff Control and return. Returning to the tab also triggers an immediate Twitch status check.
 - Paid and approved requests can optionally receive an exact Eastern date and time. Approval and payment do not require scheduling.
 - Future scheduled games remain in Recent Requests until 30 days after the game time, then follow the existing Archive retention rules.
 - Viewers see the recorded time on their Request Status page.

@@ -12,6 +12,11 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - Discord can announce schedule, reschedule, and schedule-cleared updates without duplicating payment approval notices.
 - See AUTO-MODS-SCHEDULING-SETUP.md and run RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql before publishing the v10.0 website files.
 
+### Version 10.1 Staff Session Hardening
+
+- Automatic moderators must reauthorize after leaving Staff Control and returning.
+- Returning focus to an open Staff Control tab immediately rechecks Twitch moderator status.
+
 ## Version 7.0 — Game Request Phase 1 Test
 
 - Added a test-mode request center and status display to the catalog.
