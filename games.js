@@ -2,10 +2,6 @@ function portraitArtwork(source) {
   return `https://images.weserv.nl/?url=${encodeURIComponent(source)}&w=600&h=900&fit=contain&bg=090c09&output=jpg`;
 }
 
-function fullPortraitArtwork(source) {
-  return `https://images.weserv.nl/?url=${encodeURIComponent(source)}&w=600&h=900&fit=cover&output=jpg`;
-}
-
 const pcRows = [
   ["30XX", 1029210],
   ["Albion Online", 761890],
@@ -199,7 +195,7 @@ const ps4Rows = [
   ["Batman: Arkham Knight", "https://cdn.cloudflare.steamstatic.com/steam/apps/208650/library_600x900.jpg"],
   ["Batman: Return to Arkham - Arkham City", "https://cdn.cloudflare.steamstatic.com/steam/apps/200260/library_600x900.jpg"],
   ["Batman: Return to Arkham - Arkham Asylum", "https://cdn.cloudflare.steamstatic.com/steam/apps/35140/library_600x900.jpg"],
-  ["Dragon's Crown Pro", fullPortraitArtwork("https://down-tw.img.susercontent.com/file/tw-11134207-81zto-mj4fr4w9f85j82")],
+  ["Dragon's Crown Pro", "assets/covers/ps4/dragons-crown-pro.jpg"],
   ["Monster Hunter World: Iceborne", portraitArtwork("https://gpstatic.com/acache/37/06/4/us/packshot-a7ba6f165f7d613db4b7874a73dca256.jpg")],
   ["Tom Clancy's The Division", "https://cdn.cloudflare.steamstatic.com/steam/apps/365590/library_600x900.jpg"],
   ["Dark Souls III", "https://cdn.cloudflare.steamstatic.com/steam/apps/374320/library_600x900.jpg"],
@@ -233,13 +229,13 @@ const ps4Rows = [
   ["Tom Clancy's Rainbow Six Siege", "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/library_600x900.jpg"],
   ["Tom Clancy's Ghost Recon Wildlands", "https://cdn.cloudflare.steamstatic.com/steam/apps/460930/library_600x900.jpg"],
   ["For Honor", "https://cdn.cloudflare.steamstatic.com/steam/apps/304390/library_600x900.jpg"],
-  ["Blacklight: Retribution", portraitArtwork("https://cdn-uploads.gameblog.fr/images/jeux/10811/BlacklightRetribution_Multi_Jaquette_002.jpg?ver=1")],
+  ["Blacklight: Retribution", "assets/covers/ps4/blacklight-retribution.jpg"],
   ["Warframe", "https://cdn.cloudflare.steamstatic.com/steam/apps/230410/library_600x900.jpg"],
   ["Paragon", "assets/covers/ps4/paragon.jpg"],
   ["Resident Evil 6", "https://cdn.cloudflare.steamstatic.com/steam/apps/221040/library_600x900.jpg"],
   ["Resident Evil 5", "https://cdn.cloudflare.steamstatic.com/steam/apps/21690/library_600x900.jpg"],
   ["STAR OCEAN: Integrity and Faithlessness", "assets/covers/ps4/star-ocean-integrity-and-faithlessness.jpg"],
-  ["ONE PIECE: PIRATE WARRIORS 3", portraitArtwork("https://www.chilesteam.cl/337-large_default/one-piece-pirate-warriors-3.jpg")],
+  ["ONE PIECE: PIRATE WARRIORS 3", "assets/covers/ps4/one-piece-pirate-warriors-3.jpg"],
   ["Dark Cloud", "assets/covers/ps4/dark-cloud.jpg"],
   ["Dark Cloud 2", portraitArtwork("https://i.3djuegos.com/juegos/12684/dark_cloud_2/fotos/ficha/dark_cloud_2-3274310.webp")],
 ];
