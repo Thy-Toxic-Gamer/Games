@@ -9,11 +9,11 @@
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Switch + Nintendo Collection", icon: "◫", limit: 5, accent: "#ff392b" },
+    switch: { label: "Nintendo Switch + Nintendo Collection", icon: "◫", limit: 4, accent: "#ff392b" },
     pc: { label: "PC", icon: "▣", limit: 12, accent: "#ffe600" },
-    ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
+    ps5: { label: "PS5", icon: "△", limit: 4, accent: "#159cff" },
     ps4: { label: "PS4", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "SNES Emulation", icon: "✚", limit: 2, accent: "#d766ff" },
+    snes: { label: "SNES Emulation", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#343a36" },
     nes: { label: "NES Emulation", accent: "#f5f5f5" },
     xbox: { label: "Xbox", accent: "#0d7a2f" },
