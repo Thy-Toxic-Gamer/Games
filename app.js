@@ -131,6 +131,9 @@
 
   const GAME_INFO = Object.freeze({
     "30XX": Object.freeze({ genre: "Action Roguelike / Platformer", description: "Two android heroes fight through a constantly changing future, battling machines and powerful Guardians." }),
+    "Blaster Master Zero": Object.freeze({ genre: "Action Platformer / Metroidvania", description: "Jason explores a dangerous subterranean world in the battle tank SOPHIA III while searching for a mysterious creature." }),
+    "Brave Dungeon": Object.freeze({ genre: "Dungeon-Crawling JRPG", description: "Adventurer Al explores Belfer Island's dungeons, gathers Syega crystals, crafts equipment, and searches for powerful Magic Items." }),
+    "Dark Witch's Story: COMBAT": Object.freeze({ genre: "Card Battler / Strategy", description: "Build a three-card team from the Dark Witch series, equip Magic Items, and fight through strategic best-of-three battles." }),
     "Albion Online": Object.freeze({ genre: "Sandbox MMORPG", description: "Build your own path in a player-driven medieval fantasy world shaped by gathering, crafting, trade, and conflict." }),
     "Apex Legends": Object.freeze({ genre: "Battle Royale / Hero Shooter", description: "Legends with unique abilities compete in deadly arena games across the Outlands." }),
     "ArcheAge: Unchained": Object.freeze({ genre: "Fantasy MMORPG", description: "Adventurers explore a vast fantasy world of rival nations, ancient powers, trade, and open-world conflict." }),
@@ -336,6 +339,68 @@
     "Secret of Evermore": Object.freeze({ genre: "Action RPG", description: "A boy and his dog are transported to the strange world of Evermore and search for a way home." }),
   });
 
+  const SWITCH_GENRES = Object.freeze({
+    ".hack//G.U. Last Recode": "Action RPG",
+    "Actraiser Renaissance": "Action Platformer / City-Building",
+    "Atelier Ryza: Ever Darkness & the Secret Hideout DX": "JRPG / Alchemy",
+    "Atelier Ryza 2: Lost Legends & the Secret Fairy DX": "JRPG / Alchemy",
+    "Atelier Ryza 3: Alchemist of the End & the Secret Key DX": "JRPG / Alchemy",
+    "Blaster Master Zero": "Action Platformer / Metroidvania",
+    "Blossom Tales: The Sleeping King": "Action Adventure",
+    "Brave Dungeon": "Dungeon-Crawling JRPG",
+    "Children of Morta": "Action Roguelite",
+    "Code of Princess EX": "Beat 'em Up / Action RPG",
+    "Crypt of the NecroDancer: Nintendo Switch Edition": "Rhythm Roguelike",
+    "Dark Witch's Story: COMBAT": "Card Battler / Strategy",
+    "Darksiders Genesis": "Action RPG / Hack and Slash",
+    "Dead Cells": "Roguelite / Metroidvania",
+    "Diablo III: Eternal Collection": "Action RPG",
+    "DRAGON BALL XENOVERSE 2": "Fighting / Action RPG",
+    "DRAGON BALL Z: KAKAROT + A NEW POWER AWAKENS SET": "Action RPG",
+    "DRAGON QUEST XI S: Echoes of an Elusive Age - Definitive Edition": "JRPG",
+    "DragonFangZ - The Rose & Dungeon of Time": "Roguelike / Dungeon Crawler",
+    "FANTASY LIFE i: The Girl Who Steals Time Nintendo Switch 2 Edition": "Life Sim / Action RPG",
+    "FINAL FANTASY": "JRPG",
+    "FINAL FANTASY II": "JRPG",
+    "FINAL FANTASY III": "JRPG",
+    "FINAL FANTASY IV": "JRPG",
+    "FINAL FANTASY V": "JRPG",
+    "FINAL FANTASY VI": "JRPG",
+    "FINAL FANTASY VII": "JRPG",
+    "Goblin Sword": "Action Platformer",
+    "Guardian Tales": "Action RPG / Adventure",
+    "Hello Neighbor": "Stealth Horror / Puzzle",
+    "Hyrule Warriors: Definitive Edition": "Hack and Slash / Action",
+    "I Am Setsuna": "JRPG",
+    "Langrisser I & II": "Tactical RPG",
+    "Mario + Rabbids Kingdom Battle": "Tactical RPG",
+    "Mega Man Zero/ZX Legacy Collection": "Action Platformer / Collection",
+    "Miden Tower": "JRPG",
+    "MIGHTY GUNVOLT BURST": "Action Platformer",
+    "Minecraft": "Sandbox / Survival",
+    "Minecraft Dungeons": "Action RPG / Dungeon Crawler",
+    "Nine Parchments": "Action RPG / Twin-Stick Shooter",
+    "OCTOPATH TRAVELER": "JRPG",
+    "Paper Mario: The Origami King": "Adventure / RPG",
+    "PixARK": "Survival / Sandbox",
+    "Pokémon Shield": "JRPG / Creature Collection",
+    "Record of Lodoss War-Deedlit in Wonder Labyrinth-": "Metroidvania",
+    "Resident Evil Revelations": "Survival Horror / Action",
+    "Resident Evil Revelations 2": "Survival Horror / Action",
+    "Rogue Legacy 2": "Roguelite / Platformer",
+    "Romancing SaGa 2": "JRPG",
+    "Ruinverse": "JRPG",
+    "Shovel Knight: Treasure Trove": "Action Platformer / Collection",
+    "Sonic Mania": "Platformer",
+    "Super Mario 64": "3D Platformer",
+    "Super Mario Galaxy": "3D Platformer",
+    "Super Mario Maker 2": "Platformer / Creation",
+    "Super Mario Sunshine": "3D Platformer",
+    "Tetris 99": "Puzzle / Battle Royale",
+    "Valthirian Arc: Hero School Story": "Simulation / Action RPG",
+    "Xenoblade Chronicles 2": "JRPG",
+  });
+
   function coverUrl(game, alternate) {
     if (game.image) {
       return game.image;
@@ -402,10 +467,18 @@
 
 
   function getGameInfo(game) {
-    return GAME_INFO[game.title] || {
+    const info = GAME_INFO[game.title] || {
       genre: "Game",
       description: `Explore the world, characters, and challenges of ${game.title}.`,
     };
+
+    const switchGenre = game.sourcePlatformId === "switch"
+      ? SWITCH_GENRES[game.title]
+      : null;
+
+    return switchGenre
+      ? { ...info, genre: switchGenre }
+      : info;
   }
 
   function isGameUpcoming(game, now) {
