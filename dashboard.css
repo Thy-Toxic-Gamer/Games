@@ -3,7 +3,7 @@
   --pc-accent: #ffe600;
   --switch-accent: #ff392b;
   --ps5-accent: #159cff;
-  --nes-accent: #ff4b3e;
+  --nes-accent: #f5f5f5;
   --snes-accent: #d766ff;
   --xbox-accent: #0d7a2f;
 }
@@ -194,6 +194,18 @@ main {
   color: #080900;
 }
 
+.platform-tab[data-platform="nes"].active {
+  border-color: #fff;
+  background: linear-gradient(180deg, #fff, #e7e7e7);
+  color: #080908;
+  box-shadow: 0 0 18px rgba(255,255,255,0.18);
+}
+
+.platform-tab[data-platform="nes"].active::before,
+.platform-tab[data-platform="nes"].active .tab-count {
+  color: #080908;
+}
+
 .platform-tab[data-platform="xbox"].active {
   border-color: #1ca94a;
   background: linear-gradient(180deg, #125b2c, #082a15);
@@ -270,7 +282,7 @@ main {
 
 #platform-panel[data-dashboard-platform="nes"] .coming-soon-panel {
   border-color: color-mix(in srgb, var(--nes-accent) 58%, var(--border));
-  background: radial-gradient(circle at center, rgba(255,75,62,0.12), transparent 48%), var(--surface);
+  background: radial-gradient(circle at center, rgba(255,255,255,0.1), transparent 48%), var(--surface);
 }
 
 #platform-panel[data-dashboard-platform="nes"] .coming-soon-panel .eyebrow {

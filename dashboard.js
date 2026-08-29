@@ -14,7 +14,7 @@
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
     snes: { label: "SNES Emulation", icon: "✚", limit: 2, accent: "#d766ff" },
     all: { label: "All", accent: "#343a36" },
-    nes: { label: "NES Emulation", accent: "#ff4b3e" },
+    nes: { label: "NES Emulation", accent: "#f5f5f5" },
     xbox: { label: "Xbox", accent: "#0d7a2f" },
     updates: { label: "Updates", accent: "#ffb000" },
   });
