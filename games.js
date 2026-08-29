@@ -174,6 +174,73 @@ const ps5Rows = [
   ["Marvel's Spider-Man Remastered", "https://cdn.cloudflare.steamstatic.com/steam/apps/1817070/library_600x900.jpg"],
 ];
 
+const ps4Rows = [
+  ["Phantasy Star Online 2 New Genesis", "assets/covers/ps4/ps4-002.jpeg"],
+  ["FINAL FANTASY VII", "assets/covers/ps4/ps4-004.jpeg"],
+  ["Bleach: Brave Souls", "assets/covers/ps4/ps4-013.jpeg"],
+  ["The Last of Us Part II", "assets/covers/ps4/ps4-021.jpeg"],
+  ["Resident Evil 3", "assets/covers/ps4/ps4-023.jpeg"],
+  ["Resident Evil Resistance", "assets/covers/ps4/ps4-024.jpeg"],
+  ["Mega Man Zero/ZX Legacy Collection", "assets/covers/ps4/ps4-026.jpeg"],
+  ["DOOM Eternal", "assets/covers/ps4/ps4-027.jpeg"],
+  ["FINAL FANTASY XV", "assets/covers/ps4/ps4-028.jpeg"],
+  ["Apex Legends", "assets/covers/ps4/ps4-030.jpeg"],
+  ["Resident Evil 2", "assets/covers/ps4/ps4-031.jpeg"],
+  ["Mega Man X Legacy Collection", "assets/covers/ps4/ps4-033.jpeg"],
+  ["Mega Man X Legacy Collection 2", "assets/covers/ps4/ps4-034.jpeg"],
+  ["Onigiri", "assets/covers/ps4/ps4-035.jpeg"],
+  ["Neverwinter", "assets/covers/ps4/ps4-036.jpeg"],
+  ["SMITE", "assets/covers/ps4/ps4-037.jpeg"],
+  ["Knights of Valour", "assets/covers/ps4/ps4-038.jpeg"],
+  ["TERA", "assets/covers/ps4/ps4-039.jpeg"],
+  ["Batman: Arkham Knight", "assets/covers/ps4/ps4-040.jpeg"],
+  ["Batman: Return to Arkham - Arkham City", "assets/covers/ps4/ps4-041.jpeg"],
+  ["Batman: Return to Arkham - Arkham Asylum", "assets/covers/ps4/ps4-042.jpeg"],
+  ["Dragon's Crown Pro", "assets/covers/ps4/ps4-043.jpeg"],
+  ["Monster Hunter World: Iceborne", "assets/covers/ps4/ps4-045.jpeg"],
+  ["Tom Clancy's The Division", "assets/covers/ps4/ps4-046.jpeg"],
+  ["Dark Souls III", "assets/covers/ps4/ps4-047.jpeg"],
+  ["Agents of Mayhem", "assets/covers/ps4/ps4-048.jpeg"],
+  ["Bloodborne", "assets/covers/ps4/ps4-049.jpeg"],
+  ["Fortnite", "assets/covers/ps4/ps4-050.jpeg"],
+  ["Dragon's Dogma: Dark Arisen", "assets/covers/ps4/ps4-051.jpeg"],
+  ["Ys VIII: Lacrimosa of Dana", "assets/covers/ps4/ps4-052.jpeg"],
+  ["Pillars of Eternity: Complete Edition", "assets/covers/ps4/ps4-053.jpeg"],
+  ["Battle Chasers: Nightwar", "assets/covers/ps4/ps4-054.jpeg"],
+  ["Grand Kingdom", "assets/covers/ps4/ps4-055.jpeg"],
+  ["Nioh: Complete Edition", "assets/covers/ps4/ps4-058.jpeg"],
+  ["Star Wars Battlefront II", "assets/covers/ps4/ps4-059.jpeg"],
+  ["Horizon Zero Dawn", "assets/covers/ps4/ps4-060.jpeg"],
+  ["Overwatch", "assets/covers/ps4/ps4-061.jpeg"],
+  ["Knack 2", "assets/covers/ps4/ps4-062.jpeg"],
+  ["Psychonauts in the Rhombus of Ruin", "assets/covers/ps4/ps4-064.jpeg"],
+  ["LEGO Marvel Super Heroes 2", "assets/covers/ps4/ps4-065.jpeg"],
+  ["KINGDOM HEARTS HD 2.8 FINAL CHAPTER PROLOGUE", "assets/covers/ps4/ps4-066.jpeg"],
+  ["KINGDOM HEARTS - HD 1.5+2.5 ReMIX -", "assets/covers/ps4/ps4-067.jpeg"],
+  ["Destiny", "assets/covers/ps4/ps4-070.jpeg"],
+  ["Darksiders II Deathinitive Edition", "assets/covers/ps4/ps4-071.jpeg"],
+  ["Metro 2033 Redux", "assets/covers/ps4/ps4-072.jpeg"],
+  ["Resident Evil Revelations 2", "assets/covers/ps4/ps4-073.jpeg"],
+  ["Terraria", "assets/covers/ps4/ps4-074.jpeg"],
+  ["Middle-earth: Shadow of Mordor", "assets/covers/ps4/ps4-075.jpeg"],
+  ["Lords of the Fallen", "assets/covers/ps4/ps4-076.jpeg"],
+  ["The Last of Us Remastered", "assets/covers/ps4/ps4-078.jpeg"],
+  ["Diablo III: Reaper of Souls - Ultimate Evil Edition", "assets/covers/ps4/ps4-079.jpeg"],
+  ["Injustice: Gods Among Us Ultimate Edition", "assets/covers/ps4/ps4-080.jpeg"],
+  ["Tom Clancy's Rainbow Six Siege", "assets/covers/ps4/ps4-081.jpeg"],
+  ["Tom Clancy's Ghost Recon Wildlands", "assets/covers/ps4/ps4-082.jpeg"],
+  ["For Honor", "assets/covers/ps4/ps4-083.jpeg"],
+  ["Blacklight: Retribution", "assets/covers/ps4/ps4-084.jpeg"],
+  ["Warframe", "assets/covers/ps4/ps4-085.jpeg"],
+  ["Paragon", "assets/covers/ps4/ps4-086.jpeg"],
+  ["Resident Evil 6", "assets/covers/ps4/ps4-089.jpeg"],
+  ["Resident Evil 5", "assets/covers/ps4/ps4-090.jpeg"],
+  ["STAR OCEAN: Integrity and Faithlessness", "assets/covers/ps4/ps4-093.jpeg"],
+  ["ONE PIECE: PIRATE WARRIORS 3", "assets/covers/ps4/ps4-094.jpeg"],
+  ["Dark Cloud", "assets/covers/ps4/ps4-095.jpeg"],
+  ["Dark Cloud 2", "assets/covers/ps4/ps4-096.jpeg"],
+];
+
 const snesRows = [
   ["Breath of Fire", "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Breath%20of%20Fire%20(USA).png"],
   ["Breath of Fire II", "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Breath%20of%20Fire%20II%20(USA).png"],
@@ -259,22 +326,34 @@ function freezePcGames(rows) {
   );
 }
 
-function freezeConsoleGames(rows) {
+function freezeConsoleGames(rows, sourcePlatformId) {
   return Object.freeze(
     sortGameRows(rows).map(([title, image], index) =>
       Object.freeze({
         number: index + 1,
         title,
         image,
+        sourcePlatformId: sourcePlatformId || null,
       }),
     ),
   );
 }
 
+const ps5Games = freezeConsoleGames(ps5Rows, "ps5");
+const ps4Games = freezeConsoleGames(ps4Rows, "ps4");
+
 const platforms = Object.freeze([
   Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
   Object.freeze({ id: "switch", label: "Nintendo Switch", games: freezeConsoleGames(switchRows) }),
-  Object.freeze({ id: "ps5", label: "PS5", games: freezeConsoleGames(ps5Rows) }),
+  Object.freeze({
+    id: "ps5",
+    label: "PS5 + PS4",
+    games: Object.freeze([...ps5Games, ...ps4Games]),
+    sections: Object.freeze([
+      Object.freeze({ id: "ps5", label: "PS5", games: ps5Games }),
+      Object.freeze({ id: "ps4", label: "PS4", games: ps4Games }),
+    ]),
+  }),
   Object.freeze({
     id: "nes",
     label: "NES Emulation",

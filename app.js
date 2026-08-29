@@ -5,7 +5,10 @@
   const platforms = Array.isArray(library.platforms) ? library.platforms : [];
   const allGames = platforms
     .filter((platform) => !platform.comingSoon)
-    .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId: platform.id })))
+    .flatMap((platform) => platform.games.map((game) => ({
+      ...game,
+      sourcePlatformId: game.sourcePlatformId || platform.id,
+    })))
     .sort((left, right) => left.title.localeCompare(right.title, "en", {
       numeric: true,
       sensitivity: "base",
@@ -18,6 +21,7 @@
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
   const tabs = document.querySelector("#platform-tabs");
+  const platformSubtabs = document.querySelector("#platform-subtabs");
   const panel = document.querySelector("#platform-panel");
   const platformName = document.querySelector("#platform-name");
   const libraryCount = document.querySelector("#library-count");
@@ -27,6 +31,7 @@
   const updatesPanel = document.querySelector("#updates-panel");
   const siteUpdatesButton = document.querySelector("#site-updates-button");
   let activePlatformId = "all";
+  const activeSectionByPlatform = new Map();
 
   const currentHeaderImages = Object.freeze({
     1029210: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1029210/4e755d52979ed36dd7a7bfef3ad98d93f07922d0/header.jpg?t=1781208599",
@@ -564,10 +569,93 @@
     return card;
   }
 
+  function renderGameCollection(games, cardPlatform) {
+    const fragment = document.createDocumentFragment();
+    games.forEach((game, index) => {
+      fragment.append(createGameCard(game, index, cardPlatform));
+    });
+
+    grid.replaceChildren(fragment);
+  }
+
+  function hidePlatformSubtabs() {
+    platformSubtabs.hidden = true;
+    platformSubtabs.replaceChildren();
+  }
+
+  function renderSectionedPlatform(platform) {
+    const sections = platform.sections;
+    const savedSectionId = activeSectionByPlatform.get(platform.id);
+    const initialSection = sections.find((section) => section.id === savedSectionId) || sections[0];
+    const fragment = document.createDocumentFragment();
+
+    sections.forEach((section, index) => {
+      const button = document.createElement("button");
+      button.className = "platform-subtab";
+      button.id = `subtab-${platform.id}-${section.id}`;
+      button.type = "button";
+      button.dataset.section = section.id;
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", "game-grid");
+
+      const label = document.createElement("span");
+      label.textContent = `${section.label} Games`;
+
+      const count = document.createElement("span");
+      count.className = "subtab-count";
+      count.textContent = String(section.games.length);
+
+      button.append(label, count);
+      button.addEventListener("click", () => selectSection(section.id, true));
+      button.addEventListener("keydown", (event) => {
+        let targetIndex = index;
+
+        if (event.key === "ArrowRight") {
+          targetIndex = (index + 1) % sections.length;
+        } else if (event.key === "ArrowLeft") {
+          targetIndex = (index - 1 + sections.length) % sections.length;
+        } else if (event.key === "Home") {
+          targetIndex = 0;
+        } else if (event.key === "End") {
+          targetIndex = sections.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        selectSection(sections[targetIndex].id, true);
+      });
+      fragment.append(button);
+    });
+
+    platformSubtabs.replaceChildren(fragment);
+    platformSubtabs.hidden = false;
+
+    function selectSection(sectionId, focusButton) {
+      const section = sections.find((entry) => entry.id === sectionId) || sections[0];
+      activeSectionByPlatform.set(platform.id, section.id);
+
+      platformSubtabs.querySelectorAll('[role="tab"]').forEach((button) => {
+        const selected = button.dataset.section === section.id;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-selected", String(selected));
+        button.tabIndex = selected ? 0 : -1;
+        if (selected && focusButton) button.focus();
+      });
+
+      platformName.textContent = `${section.label} Library`;
+      libraryCount.textContent = `${section.games.length} Games`;
+      renderGameCollection(section.games, section);
+    }
+
+    selectSection(initialSection.id, false);
+  }
+
   function renderPlatform(platform) {
     panel.setAttribute("aria-labelledby", `tab-${platform.id}`);
 
     if (platform.updates) {
+      hidePlatformSubtabs();
       platformName.textContent = "System Updates";
       libraryCount.textContent = "Ver. 1.0";
       grid.hidden = true;
@@ -582,6 +670,7 @@
       : `${platform.label} Library`;
 
     if (platform.comingSoon) {
+      hidePlatformSubtabs();
       libraryCount.textContent = "Coming Soon";
       comingSoonLibrary.textContent = `${platform.label} Library`;
       comingSoonMessage.textContent = platform.comingSoonMessage
@@ -592,16 +681,17 @@
       return;
     }
 
-    libraryCount.textContent = `${platform.games.length} Games`;
     grid.hidden = false;
     comingSoon.hidden = true;
 
-    const fragment = document.createDocumentFragment();
-    platform.games.forEach((game, index) => {
-      fragment.append(createGameCard(game, index, platform));
-    });
+    if (Array.isArray(platform.sections) && platform.sections.length) {
+      renderSectionedPlatform(platform);
+      return;
+    }
 
-    grid.replaceChildren(fragment);
+    hidePlatformSubtabs();
+    libraryCount.textContent = `${platform.games.length} Games`;
+    renderGameCollection(platform.games, platform);
   }
 
   function activatePlatform(id, focusTab) {
@@ -681,6 +771,7 @@
       !grid
       || !headerCount
       || !tabs
+      || !platformSubtabs
       || !panel
       || !platformName
       || !libraryCount

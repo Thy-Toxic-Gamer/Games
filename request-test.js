@@ -21,7 +21,7 @@
   let session = null;
   let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
 
-  function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
+  function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",ps4:"PS4",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
   function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog · $10 Minimum" : `${prettyPlatform(selection.gamePlatform)} · Owned Game · $5 Minimum`; }
   function twitchName(user) {
     const data = user?.user_metadata || {};
