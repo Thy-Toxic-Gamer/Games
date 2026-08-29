@@ -659,6 +659,17 @@ main {
   object-fit: contain;
 }
 
+.featured-detail-cover .hybrid-detail-cover,
+.game-detail-cover .hybrid-detail-cover {
+  width: 100%;
+  height: 100%;
+  background-color: #050505;
+  background-image: var(--sprite-image);
+  background-position: var(--sprite-position);
+  background-repeat: no-repeat;
+  background-size: 500% 400%;
+}
+
 .game-detail-copy {
   min-width: 0;
 }

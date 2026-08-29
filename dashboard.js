@@ -130,6 +130,38 @@
     return card.querySelector(".game-details h3")?.textContent?.trim() || "";
   }
 
+  function renderDetailCover(container, sourceCover, title) {
+    container.replaceChildren();
+
+    if (!sourceCover) return;
+
+    if (sourceCover.classList.contains("hybrid-sprite-cover")) {
+      const sprite = document.createElement("div");
+      sprite.className = "hybrid-detail-cover";
+      sprite.setAttribute("role", "img");
+      sprite.setAttribute("aria-label", `${title} cover art`);
+      sprite.style.setProperty(
+        "--sprite-image",
+        sourceCover.style.getPropertyValue("--sprite-image"),
+      );
+      sprite.style.setProperty(
+        "--sprite-position",
+        sourceCover.style.getPropertyValue("--sprite-position"),
+      );
+      container.append(sprite);
+      return;
+    }
+
+    const image = document.createElement("img");
+    image.src = sourceCover.currentSrc || sourceCover.src;
+    image.alt = `${title} cover art`;
+    image.classList.toggle(
+      "full-cover-art",
+      sourceCover.classList.contains("full-cover-art"),
+    );
+    container.append(image);
+  }
+
   function orderedPreviewCards(platformId, cards) {
     const shuffled = shuffleCards(cards);
     const featuredTitle = previewRotationRound === 0
@@ -191,14 +223,11 @@
     detail.querySelector(".featured-detail-genre").textContent = genre;
     detail.querySelector(".featured-detail-story").textContent = story;
 
-    const image = detail.querySelector("img");
-    if (sourceImage) {
-      image.src = sourceImage.currentSrc || sourceImage.src;
-      image.alt = `${title} cover art`;
-    } else {
-      image.removeAttribute("src");
-      image.alt = "";
-    }
+    renderDetailCover(
+      detail.querySelector(".featured-detail-cover"),
+      sourceImage,
+      title,
+    );
 
     const container = detail.closest(".dashboard-platform") || detail.parentElement;
     container
@@ -355,16 +384,11 @@
     popover.querySelector(".game-detail-genre").textContent = genre;
     popover.querySelector(".game-detail-story").textContent = story;
 
-    const image = popover.querySelector("img");
-    if (sourceImage) {
-      image.src = sourceImage.currentSrc || sourceImage.src;
-      image.alt = `${title} cover art`;
-      image.classList.toggle("full-cover-art", sourceImage.classList.contains("full-cover-art"));
-    } else {
-      image.removeAttribute("src");
-      image.alt = "";
-      image.classList.remove("full-cover-art");
-    }
+    renderDetailCover(
+      popover.querySelector(".game-detail-cover"),
+      sourceImage,
+      title,
+    );
 
     positionPopover(card);
     popover.classList.add("visible");
