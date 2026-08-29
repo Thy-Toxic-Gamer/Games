@@ -23,6 +23,7 @@
   const libraryCount = document.querySelector("#library-count");
   const comingSoon = document.querySelector("#xbox-coming-soon");
   const updatesPanel = document.querySelector("#updates-panel");
+  const siteUpdatesButton = document.querySelector("#site-updates-button");
   let activePlatformId = "all";
 
   const currentHeaderImages = Object.freeze({
@@ -525,7 +526,7 @@
 
     if (platform.updates) {
       platformName.textContent = "System Updates";
-      libraryCount.textContent = "v10.3";
+      libraryCount.textContent = "v10.4";
       grid.hidden = true;
       comingSoon.hidden = true;
       updatesPanel.hidden = false;
@@ -639,6 +640,7 @@
       || !libraryCount
       || !comingSoon
       || !updatesPanel
+      || !siteUpdatesButton
       || platforms.length === 0
     ) {
       return;
@@ -649,6 +651,10 @@
 
     headerCount.textContent = String(totalGames);
     createTabs();
+    siteUpdatesButton.addEventListener("click", function () {
+      activatePlatform("updates", false);
+      panel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     activatePlatform(activePlatformId, false);
   }
 

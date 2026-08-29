@@ -27,6 +27,8 @@
 .unlisted-request button:disabled { border-color:#4b514c; color:#777f79; background:#111; cursor:not-allowed; }
 .request-link-button,.request-game-button,.request-submit,.review-button { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:.55rem .8rem; border:1px solid var(--toxic); background:rgba(124,255,0,.08); color:var(--toxic); font:inherit; font-size:.72rem; font-weight:900; letter-spacing:.05em; text-decoration:none; text-transform:uppercase; cursor:pointer; }
 .request-link-admin { border-color:#aeb8b0; color:#e5ebe7; background:#111512; }
+.request-link-updates { border-color:#ffb000; color:#ffca4d; background:rgba(255,176,0,.08); }
+.request-link-updates:hover,.request-link-updates:focus-visible { border-color:#ffd36b; color:#fff0bd; outline:none; box-shadow:0 0 18px rgba(255,176,0,.14); }
 .request-game-button { width:calc(100% - 1rem); margin:.5rem; margin-top:auto; position:relative; z-index:7; }
 .request-game-button[aria-disabled="true"] { border-color:#4b514c; color:#777f79; background:#111; cursor:not-allowed; }
 .dashboard-card .request-game-button { min-height:28px; padding:.3rem; font-size:.56rem; }

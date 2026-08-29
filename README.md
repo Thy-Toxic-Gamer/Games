@@ -2,6 +2,11 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 10.4 — Site Updates Shortcut
+
+- Added a prominent Site Updates button beside the Twitch sign-in and sign-out controls.
+- The button opens the existing Updates tab and scrolls it into view.
+
 ## Version 10.3 — Updates Tab + Stream Window
 
 - Added a viewer-facing Updates tab covering the major request-system improvements.
