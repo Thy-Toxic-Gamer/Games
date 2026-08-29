@@ -1670,7 +1670,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Golf",
-    "assets/covers/virtual-boy/golf.webp?v=2",
+    "assets/covers/virtual-boy/golf.webp?v=3",
     "Sports"
   ],
   [
