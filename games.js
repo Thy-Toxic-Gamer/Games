@@ -351,12 +351,16 @@ function freezePcGames(rows) {
 function freezeConsoleGames(rows, sourcePlatformId) {
   const hybridCovers = window.HYBRID_SPRITES || window.HYBRID_COVERS || {};
   const ps5Covers = window.PS5_COVERS || {};
+  const approvedCovers = Object.freeze({
+    "Chrono Trigger": "assets/covers/snes/chrono-trigger.webp",
+  });
   return Object.freeze(
     sortGameRows(rows).map(([title, image, genre], index) =>
       Object.freeze({
         number: index + 1,
         title,
         image:
+          approvedCovers[title] ||
           (sourcePlatformId === "ps5" ? ps5Covers[title] : null) ||
           hybridCovers[title] ||
           image,
