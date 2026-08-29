@@ -1695,7 +1695,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Mario Clash",
-    "assets/covers/virtual-boy/mario-clash.webp?v=3",
+    "assets/covers/virtual-boy/mario-clash.webp?v=4",
     "Platformer"
   ],
   [
