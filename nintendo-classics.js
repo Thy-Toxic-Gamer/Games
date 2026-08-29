@@ -1660,82 +1660,82 @@ window.NINTENDO_CLASSICS = Object.freeze({
   virtualBoy: Object.freeze([
   [
     "3D Tetris",
-    "assets/covers/virtual-boy/3d-tetris.webp",
+    "assets/covers/virtual-boy/3d-tetris.webp?v=2",
     "Puzzle"
   ],
   [
     "Galactic Pinball",
-    "assets/covers/virtual-boy/galactic-pinball.webp",
+    "assets/covers/virtual-boy/galactic-pinball.webp?v=2",
     "Pinball"
   ],
   [
     "Golf",
-    "assets/covers/virtual-boy/golf.webp",
+    "assets/covers/virtual-boy/golf.webp?v=2",
     "Sports"
   ],
   [
     "The Mansion of Innsmouth",
-    "assets/covers/virtual-boy/mansion-of-innsmouth.webp",
+    "assets/covers/virtual-boy/mansion-of-innsmouth.webp?v=2",
     "Survival Horror"
   ],
   [
     "Red Alarm",
-    "assets/covers/virtual-boy/red-alarm.webp",
+    "assets/covers/virtual-boy/red-alarm.webp?v=2",
     "Shooter"
   ],
   [
     "Teleroboxer",
-    "assets/covers/virtual-boy/teleroboxer.webp",
+    "assets/covers/virtual-boy/teleroboxer.webp?v=2",
     "Fighting"
   ],
   [
     "Virtual Boy Wario Land",
-    "assets/covers/virtual-boy/virtual-boy-wario-land.webp",
+    "assets/covers/virtual-boy/virtual-boy-wario-land.webp?v=2",
     "Platformer"
   ],
   [
     "Mario Clash",
-    "assets/covers/virtual-boy/mario-clash.webp",
+    "assets/covers/virtual-boy/mario-clash.webp?v=2",
     "Platformer"
   ],
   [
     "Mario's Tennis",
-    "assets/covers/virtual-boy/marios-tennis.webp",
+    "assets/covers/virtual-boy/marios-tennis.webp?v=2",
     "Sports"
   ],
   [
     "Jack Bros.",
-    "assets/covers/virtual-boy/jack-bros.webp",
+    "assets/covers/virtual-boy/jack-bros.webp?v=2",
     "Action / Puzzle"
   ],
   [
     "Space Invaders Virtual Collection",
-    "assets/covers/virtual-boy/space-invaders-virtual-collection.webp",
+    "assets/covers/virtual-boy/space-invaders-virtual-collection.webp?v=2",
     "Shooter"
   ],
   [
     "V-Tetris",
-    "assets/covers/virtual-boy/v-tetris.webp",
+    "assets/covers/virtual-boy/v-tetris.webp?v=2",
     "Puzzle"
   ],
   [
     "Vertical Force",
-    "assets/covers/virtual-boy/vertical-force.webp",
+    "assets/covers/virtual-boy/vertical-force.webp?v=2",
     "Shooter"
   ],
   [
     "Virtual Bowling",
-    "assets/covers/virtual-boy/virtual-bowling.webp",
+    "assets/covers/virtual-boy/virtual-bowling.webp?v=2",
     "Sports"
   ],
   [
     "Dragon Hopper",
-    "assets/covers/virtual-boy/dragon-hopper.webp",
+    "assets/covers/virtual-boy/dragon-hopper.webp?v=2",
     "Action / Adventure"
   ],
   [
     "Zero Racers",
-    "assets/covers/virtual-boy/zero-racers.webp",
+    "assets/covers/virtual-boy/zero-racers.webp?v=2",
     "Racing"
   ]
 ]),
