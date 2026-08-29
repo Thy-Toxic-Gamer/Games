@@ -1680,7 +1680,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Red Alarm",
-    "assets/covers/virtual-boy/red-alarm.webp?v=2",
+    "assets/covers/virtual-boy/red-alarm.webp?v=3",
     "Shooter"
   ],
   [
