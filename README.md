@@ -7,6 +7,7 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - Added the viewer-facing Site Updates center and prominent shortcut.
 - Clarified the Friday evening or Saturday morning 18–24 hour stream window.
 - Kept SNES in its compact front-page section while giving two rotating games the same wide picture, number/title, and request-button presentation as the PC cards.
+- Expanded the SNES library from 4 to 27 alphabetized games using the verified collection supplied by the owner.
 - Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.
 - Existing owner and manually assigned staff access is preserved.
 - Automatic moderators must reauthorize after leaving Staff Control, and removed moderators lose access.
