@@ -10,7 +10,7 @@ window.PS5_COVERS = Object.freeze({
   "DRAGON BALL Z: KAKAROT": "assets/covers/ps5/dragon-ball-z-kakarot.webp",
   "CRISIS CORE -FINAL FANTASY VII- REUNION": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:8",
   "The Callisto Protocol": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:9",
-  "Sonic Frontiers": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:10",
+  "Sonic Frontiers": "assets/covers/ps5/sonic-frontiers.webp",
   "The Last of Us Part I": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:11",
   "STRANGER OF PARADISE FINAL FANTASY ORIGIN": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:12",
   "Horizon Forbidden West Digital Deluxe": "assets/covers/ps5/horizon-forbidden-west-digital-deluxe.webp",
