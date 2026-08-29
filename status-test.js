@@ -15,8 +15,10 @@
   let currentRequest = null;
   let loading = false;
   let paymentCheckRunning = false;
+  const easternZone = "America/New_York";
   function authRedirect() { return new URL("status.html", window.location.href).href; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
+  function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function showEmpty(title,message) {
     get("status-empty").hidden = false; get("status-card").hidden = true;
     get("status-empty-title").textContent = title; get("status-empty-message").textContent = message;
@@ -52,13 +54,16 @@
     get("status-state").textContent = labels[request.status] || request.status;
     get("status-state").dataset.status = request.status;
     const globalCooldownActive = systemState?.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now();
-    get("status-message").textContent = request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status] || "Request status updated.";
+    const approvedMessage = request.scheduled_for ? `Your payment is confirmed. Your game is scheduled for ${formatEastern(request.scheduled_for)}.` : request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status];
+    get("status-message").textContent = approvedMessage || "Request status updated.";
     const recordedReason = request.denial_reason || request.cancellation_reason;
     get("status-reason-row").hidden = !recordedReason;
     get("status-reason-label").textContent = request.cancellation_reason ? "Cancellation explanation" : "Decision explanation";
     get("status-reason").textContent = recordedReason || "";
     get("status-deadline-row").hidden = !request.payment_deadline || request.status !== "awaiting_payment";
     get("status-deadline").textContent = request.payment_deadline ? new Date(request.payment_deadline).toLocaleString() : "";
+    get("status-schedule-row").hidden = request.status !== "approved";
+    get("status-schedule").textContent = request.scheduled_for ? formatEastern(request.scheduled_for) : "Not scheduled yet. The streamer or moderators will record the time after everyone agrees.";
     get("cancel-request-button").hidden = request.status !== "pending";
     get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
     const awaitingPayment = request.status === "awaiting_payment";

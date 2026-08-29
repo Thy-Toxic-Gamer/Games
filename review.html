@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
-  <link rel="stylesheet" href="styles.css?v=9.1" />
-  <link rel="stylesheet" href="request-test.css?v=9.1" />
+  <link rel="stylesheet" href="styles.css?v=10.0" />
+  <link rel="stylesheet" href="request-test.css?v=10.0" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-  <script src="supabase-config.js?v=9.1" defer></script>
-  <script src="review-live.js?v=9.2" defer></script>
+  <script src="supabase-config.js?v=10.0" defer></script>
+  <script src="review-live.js?v=10.0" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
   <main class="request-page-shell">
     <section class="request-page-heading">
       <p class="eyebrow">Private Staff Control</p><h1>Game Request Control</h1>
-      <p>Review live requests, control new submissions, and manage the global cooldown.</p>
+      <p>Review requests, record agreed game dates, and manage request availability.</p>
       <div class="request-center-actions"><button class="request-link-button" id="staff-sign-in" type="button">Sign in with Twitch</button><button class="request-link-button request-link-admin" id="staff-sign-out" type="button" hidden>Sign Out</button><a class="request-link-button request-link-admin" href="index.html">Back to Catalog</a></div>
     </section>
 
@@ -69,5 +69,23 @@
   <dialog class="request-dialog" id="deny-dialog"><form id="deny-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close denial form">×</button><p class="eyebrow">Denial Record</p><h2>Deny Game Request</h2><label>Explanation required<textarea class="review-reason" id="deny-reason" maxlength="500" rows="5" required placeholder="Explain why this request was denied."></textarea></label><p class="request-dialog-rules">The viewer will see this explanation on their request-status page.</p><p class="request-form-error" id="deny-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Denial</button></form></dialog>
 
   <dialog class="request-dialog" id="cancel-awaiting-dialog"><form id="cancel-awaiting-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close awaiting-request cancellation form">×</button><p class="eyebrow">Staff Cancellation</p><h2>Cancel Awaiting Request</h2><label>Explanation required<textarea class="review-reason" id="cancel-awaiting-reason" maxlength="500" rows="5" required placeholder="Explain why this awaiting request is being cancelled."></textarea></label><p class="request-dialog-rules">This immediately reopens the request slot. The viewer will see the explanation on their status page.</p><p class="request-form-error" id="cancel-awaiting-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Cancellation</button></form></dialog>
+
+  <dialog class="request-dialog" id="schedule-dialog">
+    <form id="schedule-form" method="dialog">
+      <button class="request-dialog-close" type="button" aria-label="Close game scheduling form">×</button>
+      <p class="eyebrow">Optional Schedule</p>
+      <h2 id="schedule-title">Schedule Game</h2>
+      <p class="request-dialog-rules">Use this only after you, the viewer, and any other staff have agreed on a date. Approval and payment do not require a schedule.</p>
+      <label>Date and time (Eastern Time)
+        <input id="schedule-local" type="datetime-local" required />
+      </label>
+      <p class="schedule-zone-note">Eastern Time automatically follows EST/EDT daylight-saving changes.</p>
+      <p class="request-form-error" id="schedule-error" role="alert"></p>
+      <div class="request-center-actions">
+        <button class="review-button review-button-deny" id="clear-schedule" type="button">Clear Schedule</button>
+        <button class="review-button" id="save-schedule" type="submit">Save Schedule</button>
+      </div>
+    </form>
+  </dialog>
 </body>
 </html>

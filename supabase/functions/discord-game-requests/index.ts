@@ -9,6 +9,7 @@ type GameRequest = {
   viewer_note: string | null;
   denial_reason: string | null;
   cancellation_reason: string | null;
+  scheduled_for: string | null;
   created_at: string;
 };
 
@@ -25,6 +26,16 @@ const shorten = (value: unknown, maximum = 1000) => {
   const valueText = String(value ?? "").trim();
   return valueText ? valueText.slice(0, maximum) : "Not provided";
 };
+const formatEastern = (value: string) => new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZoneName: "short",
+}).format(new Date(value));
 
 Deno.serve(async (request) => {
   if (request.method !== "POST") return Response.json({ error: "Method not allowed" }, { status: 405 });
@@ -46,6 +57,8 @@ Deno.serve(async (request) => {
   const isNewDenial = payload.type === "UPDATE" && gameRequest.status === "denied" && previous?.status !== "denied";
   const isNewCancellation = payload.type === "UPDATE" && gameRequest.status === "cancelled" && previous?.status !== "cancelled";
   const isNewExpiration = payload.type === "UPDATE" && gameRequest.status === "expired" && previous?.status !== "expired";
+  const isNewSchedule = payload.type === "UPDATE" && gameRequest.status === "approved" && Boolean(gameRequest.scheduled_for) && gameRequest.scheduled_for !== previous?.scheduled_for;
+  const isScheduleCleared = payload.type === "UPDATE" && gameRequest.status === "approved" && !gameRequest.scheduled_for && Boolean(previous?.scheduled_for);
 
   let webhook: string | undefined;
   let title = "";
@@ -83,6 +96,18 @@ Deno.serve(async (request) => {
     title = "⌛ Game Request Expired";
     description = "The 48-hour deadline passed without completion. The request slot is open again.";
     color = 0x707070;
+  } else if (isNewSchedule) {
+    webhook = Deno.env.get("DISCORD_SCHEDULE_WEBHOOK") ?? Deno.env.get("DISCORD_APPROVED_WEBHOOK");
+    title = previous?.scheduled_for ? "📅 Game Request Rescheduled" : "📅 Game Request Scheduled";
+    description = `The agreed game time is ${formatEastern(gameRequest.scheduled_for as string)}.`;
+    color = 0x35d06f;
+    includeReviewLink = true;
+  } else if (isScheduleCleared) {
+    webhook = Deno.env.get("DISCORD_SCHEDULE_WEBHOOK") ?? Deno.env.get("DISCORD_APPROVED_WEBHOOK");
+    title = "📅 Game Schedule Cleared";
+    description = "Staff removed the recorded game time. The request remains paid and approved.";
+    color = 0xffb000;
+    includeReviewLink = true;
   } else return Response.json({ ignored: true });
 
   if (!webhook) return Response.json({ error: "Required Discord webhook secret is missing" }, { status: 500 });
@@ -95,6 +120,7 @@ Deno.serve(async (request) => {
     { name: "Request ID", value: shorten(gameRequest.id), inline: false },
   ];
   if (includeReviewLink) fields.push({ name: "Staff Review", value: `[Open Staff Control](${staffPage})`, inline: false });
+  if (gameRequest.scheduled_for) fields.push({ name: "Game Time (Eastern)", value: formatEastern(gameRequest.scheduled_for), inline: false });
 
   const discordResponse = await fetch(webhook, {
     method: "POST",

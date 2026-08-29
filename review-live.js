@@ -4,13 +4,38 @@
   const get = (id) => document.getElementById(id);
   const statusLabels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
   let session = null;
+  let providerToken = window.sessionStorage.getItem("toxic-twitch-provider-token") || "";
   let pendingRequest = null;
+  let scheduleRequest = null;
   let serviceEnabled = true;
+  const easternZone = "America/New_York";
 
   function authRedirect() { return new URL("review.html",window.location.href).href; }
   function message(title,copy) { get("staff-message").hidden=false;get("staff-dashboard").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
-  async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
+  async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
+  function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
+  function easternInputValue(value) {
+    if(!value)return "";
+    const parts=new Intl.DateTimeFormat("en-CA",{timeZone:easternZone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(value));
+    const part=(type)=>parts.find((item)=>item.type===type)?.value||"";
+    return `${part("year")}-${part("month")}-${part("day")}T${part("hour")}:${part("minute")}`;
+  }
+  async function verifyAutomaticStaff() {
+    if(!providerToken)return null;
+    const {data,error}=await client.functions.invoke("verify-request-staff",{body:{providerToken}});
+    if(error)return null;
+    return data;
+  }
+  function openScheduleDialog(request) {
+    scheduleRequest=request;
+    get("schedule-title").textContent=`Schedule ${request.game_title}`;
+    get("schedule-local").value=easternInputValue(request.scheduled_for);
+    get("schedule-error").textContent="";
+    get("clear-schedule").hidden=!request.scheduled_for;
+    get("schedule-dialog").showModal();
+    get("schedule-local").focus();
+  }
 
   function renderPending(request) {
     pendingRequest=request;
@@ -40,6 +65,13 @@
       if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
       if(request.cancellation_reason)card.append(make("p","request-history-reason",`Cancellation explanation: ${request.cancellation_reason}`));
       if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
+      if(request.scheduled_for)card.append(make("p","request-history-schedule",`Scheduled: ${formatEastern(request.scheduled_for)}`));
+      if(!options.archived&&request.status==="approved"&&request.paid_at){
+        const schedulePanel=make("div","request-schedule-panel");
+        schedulePanel.append(make("p",null,request.scheduled_for?"The agreed game time is recorded below.":"Payment is complete. Add a date only after everyone agrees."));
+        const scheduleButton=make("button","review-button review-button-muted",request.scheduled_for?"Reschedule Game":"Schedule Game");
+        scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);card.append(schedulePanel);
+      }
       if(options.archived&&request.archived_at){
         const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
         card.append(make("p","request-history-details",`Archived ${archivedAt.toLocaleString()} · Scheduled deletion after ${deleteAt.toLocaleDateString()}`));
@@ -67,15 +99,16 @@
   }
   async function initialize() {
     if(!client){message("Connection error","The staff service could not load.");return;}
-    const {data}=await client.auth.getSession();session=data.session;get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
+    const {data}=await client.auth.getSession();session=data.session;if(session?.provider_token){providerToken=session.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}get("staff-sign-in").hidden=Boolean(session);get("staff-sign-out").hidden=!session;
     if(!session){message("Staff sign-in required","Sign in with an authorized Twitch account to open the private controls.");return;}
+    await verifyAutomaticStaff();
     const {data:access,error}=await client.rpc("my_request_staff_access");
     if(error){message("Staff controls unavailable","The staff access check could not be completed.");return;}
-    if(!access?.isStaff){message("Access denied","This Twitch account has not been assigned as the owner or authorized staff.");return;}
+    if(!access?.isStaff||(access.accessSource==="twitch_moderator"&&!providerToken)){get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","Sign in with Twitch again. Current channel moderators receive Staff Control automatically.");return;}
     get("staff-role").textContent=`Signed in as ${access.role==="owner"?"Owner":"Moderator"}`;await refreshDashboard();
   }
 
-  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
 
   const serviceDialog=get("toggle-service-dialog");get("toggle-request-service").addEventListener("click",()=>{const turningOn=!serviceEnabled;get("toggle-service-error").textContent="";get("toggle-service-title").textContent=turningOn?"Turn new game requests on?":"Turn new game requests off?";get("toggle-service-copy").textContent=turningOn?"This restores new request submissions. Any active global cooldown still applies.":"This immediately blocks only new request submissions. Existing requests can still be reviewed, paid, confirmed, or expired normally.";const confirm=get("confirm-service-toggle");confirm.textContent=turningOn?"Turn Services On":"Turn Services Off";confirm.classList.toggle("review-button-deny",!turningOn);serviceDialog.showModal()});get("keep-service-state").addEventListener("click",()=>serviceDialog.close());serviceDialog.querySelector(".request-dialog-close").addEventListener("click",()=>serviceDialog.close());
   get("toggle-service-form").addEventListener("submit",async(event)=>{event.preventDefault();const nextState=!serviceEnabled;const confirm=get("confirm-service-toggle");confirm.disabled=true;const {error}=await client.rpc("set_request_service_enabled",{enabled:nextState});confirm.disabled=false;if(error){get("toggle-service-error").textContent="The service state could not be changed.";return}serviceDialog.close();await refreshDashboard()});
@@ -92,5 +125,11 @@
   const cancelAwaitingDialog=get("cancel-awaiting-dialog");get("cancel-awaiting-request").addEventListener("click",()=>{get("cancel-awaiting-reason").value="";get("cancel-awaiting-error").textContent="";cancelAwaitingDialog.showModal();get("cancel-awaiting-reason").focus()});cancelAwaitingDialog.querySelector(".request-dialog-close").addEventListener("click",()=>cancelAwaitingDialog.close());
   get("cancel-awaiting-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!pendingRequest||pendingRequest.status!=="awaiting_payment")return;const reason=get("cancel-awaiting-reason").value.trim();if(!reason){get("cancel-awaiting-error").textContent="A cancellation explanation is required.";return}const {error}=await client.rpc("staff_cancel_awaiting_request",{request_id:pendingRequest.id,cancellation_explanation:reason});if(error){get("cancel-awaiting-error").textContent="This awaiting request could not be cancelled. Its status may have changed.";return}cancelAwaitingDialog.close();await refreshDashboard()});
 
+  const scheduleDialog=get("schedule-dialog");scheduleDialog.querySelector(".request-dialog-close").addEventListener("click",()=>scheduleDialog.close());
+  get("schedule-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!scheduleRequest)return;const localValue=get("schedule-local").value;if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return}const save=get("save-schedule");save.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:localValue});save.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":"This schedule could not be saved. Confirm that payment is complete.";return}scheduleDialog.close();await refreshDashboard()});
+  get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null});button.disabled=false;if(error){get("schedule-error").textContent="This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
+
+  if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
   initialize();
+  window.setInterval(async()=>{if(providerToken&&!document.hidden){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}},55*60*1000);
 })();

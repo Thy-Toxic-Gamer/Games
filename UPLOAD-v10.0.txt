@@ -1,0 +1,26 @@
+ThyToxicGamer Games v10.0 Upgrade and Backup
+
+Run in Supabase SQL Editor first:
+- RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql
+
+Deploy with JWT verification enabled:
+- supabase/functions/verify-request-staff/index.ts
+
+Redeploy for schedule notices:
+- supabase/functions/discord-game-requests/index.ts
+
+Publish to the repository root:
+- review.html
+- review-live.js
+- status.html
+- status-test.js
+- request-test.css
+- README.md
+- AUTO-MODS-SCHEDULING-SETUP.md
+
+Add Supabase Edge Function secrets:
+- TWITCH_BROADCASTER_ID
+- SITE_ORIGIN=https://thy-toxic-gamer.github.io
+
+Do not upload OAuth tokens, service-role keys, Twitch client secrets, Discord webhook
+URLs, StreamElements JWTs, or any other secret values. None are included here.

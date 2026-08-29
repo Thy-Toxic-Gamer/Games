@@ -2,6 +2,16 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 10.0 — Automatic Twitch Staff + Optional Scheduling
+
+- Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.
+- Existing owner and manually assigned staff access is preserved.
+- Automatic moderator access is reverified hourly and expires when Twitch can no longer confirm it.
+- Paid and approved requests can optionally be scheduled for an exact Eastern date and time after everyone agrees.
+- Viewers see the recorded schedule on their request-status page.
+- Discord can announce schedule, reschedule, and schedule-cleared updates without duplicating payment approval notices.
+- See AUTO-MODS-SCHEDULING-SETUP.md and run RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql before publishing the v10.0 website files.
+
 ## Version 7.0 — Game Request Phase 1 Test
 
 - Added a test-mode request center and status display to the catalog.
