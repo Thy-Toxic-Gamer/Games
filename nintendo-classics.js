@@ -1675,7 +1675,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "The Mansion of Innsmouth",
-    "assets/covers/virtual-boy/mansion-of-innsmouth.webp?v=2",
+    "assets/covers/virtual-boy/mansion-of-innsmouth.webp?v=3",
     "Survival Horror"
   ],
   [
