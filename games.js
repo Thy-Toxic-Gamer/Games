@@ -348,7 +348,7 @@ function freezePcGames(rows) {
   );
 }
 
-function freezeConsoleGames(rows, sourcePlatformId) {
+function freezeConsoleGames(rows, sourcePlatformId, useOriginalCover = false) {
   const hybridCovers = window.HYBRID_SPRITES || window.HYBRID_COVERS || {};
   const ps5Covers = window.PS5_COVERS || {};
   const approvedCovers = Object.freeze({
@@ -359,11 +359,12 @@ function freezeConsoleGames(rows, sourcePlatformId) {
       Object.freeze({
         number: index + 1,
         title,
-        image:
-          approvedCovers[title] ||
-          (sourcePlatformId === "ps5" ? ps5Covers[title] : null) ||
-          hybridCovers[title] ||
-          image,
+        image: useOriginalCover
+          ? image
+          : approvedCovers[title] ||
+            (sourcePlatformId === "ps5" ? ps5Covers[title] : null) ||
+            hybridCovers[title] ||
+            image,
         genre: genre || null,
         sourcePlatformId: sourcePlatformId || null,
       }),
@@ -379,7 +380,7 @@ const gameBoyClassicsGames = freezeConsoleGames(nintendoClassics.gb || [], "swit
 const n64ClassicsGames = freezeConsoleGames(nintendoClassics.n64 || [], "switch");
 const gbaClassicsGames = freezeConsoleGames(nintendoClassics.gba || [], "switch");
 const genesisClassicsGames = freezeConsoleGames(nintendoClassics.genesis || [], "switch");
-const virtualBoyClassicsGames = freezeConsoleGames(nintendoClassics.virtualBoy || [], "switch");
+const virtualBoyClassicsGames = freezeConsoleGames(nintendoClassics.virtualBoy || [], "switch", true);
 const gameCubeClassicsGames = freezeConsoleGames(nintendoClassics.gamecube || [], "switch");
 const allSwitchGames = Object.freeze([
   ...regularSwitchGames,
