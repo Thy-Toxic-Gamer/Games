@@ -532,11 +532,11 @@
       description: `Explore the world, characters, and challenges of ${game.title}.`,
     };
 
-    const catalogGenre = game.sourcePlatformId === "switch"
+    const catalogGenre = game.genre || (game.sourcePlatformId === "switch"
       ? SWITCH_GENRES[game.title]
       : ["ps5", "ps4"].includes(game.sourcePlatformId)
         ? PLAYSTATION_GENRES[game.title]
-        : null;
+        : null);
 
     return catalogGenre
       ? { ...info, genre: catalogGenre }
@@ -723,6 +723,7 @@
 
   function renderSectionedPlatform(platform) {
     const sections = platform.sections;
+    platformSubtabs.dataset.platform = platform.id;
     const savedSectionId = activeSectionByPlatform.get(platform.id);
     const initialSection = sections.find((section) => section.id === savedSectionId) || sections[0];
     const fragment = document.createDocumentFragment();

@@ -212,6 +212,26 @@ main {
   box-shadow: inset 0 0 34px rgba(28,169,74,0.13), 0 0 16px rgba(13,122,47,0.1);
 }
 
+.platform-subtabs[data-platform="switch"] {
+  border-color: color-mix(in srgb, var(--switch-accent) 42%, #2a302b);
+  background: color-mix(in srgb, var(--switch-accent) 6%, #050706);
+}
+
+.platform-subtabs[data-platform="switch"] .platform-subtab {
+  border-color: color-mix(in srgb, var(--switch-accent) 46%, #2a302b);
+}
+
+.platform-subtabs[data-platform="switch"] .platform-subtab:hover,
+.platform-subtabs[data-platform="switch"] .platform-subtab:focus-visible,
+.platform-subtabs[data-platform="switch"] .platform-subtab.active {
+  border-color: var(--switch-accent);
+}
+
+.platform-subtabs[data-platform="switch"] .platform-subtab.active {
+  background: var(--switch-accent);
+  color: #100100;
+}
+
 /* Hide the old large heading only when showing the All dashboard. */
 #platform-panel[data-dashboard-platform="all"] > .section-heading {
   display: none;

@@ -350,23 +350,66 @@ function freezePcGames(rows) {
 
 function freezeConsoleGames(rows, sourcePlatformId) {
   return Object.freeze(
-    sortGameRows(rows).map(([title, image], index) =>
+    sortGameRows(rows).map(([title, image, genre], index) =>
       Object.freeze({
         number: index + 1,
         title,
         image,
+        genre: genre || null,
         sourcePlatformId: sourcePlatformId || null,
       }),
     ),
   );
 }
 
+const nintendoClassics = window.NINTENDO_CLASSICS || {};
+const regularSwitchGames = freezeConsoleGames(switchRows, "switch");
+const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "switch");
+const snesClassicsGames = freezeConsoleGames(nintendoClassics.snes || [], "switch");
+const gameBoyClassicsGames = freezeConsoleGames(nintendoClassics.gb || [], "switch");
+const n64ClassicsGames = freezeConsoleGames(nintendoClassics.n64 || [], "switch");
+const gbaClassicsGames = freezeConsoleGames(nintendoClassics.gba || [], "switch");
+const genesisClassicsGames = freezeConsoleGames(nintendoClassics.genesis || [], "switch");
+const virtualBoyClassicsGames = freezeConsoleGames(nintendoClassics.virtualBoy || [], "switch");
+const gameCubeClassicsGames = freezeConsoleGames(nintendoClassics.gamecube || [], "switch");
+const allSwitchGames = Object.freeze([
+  ...regularSwitchGames,
+  ...nesClassicsGames,
+  ...snesClassicsGames,
+  ...gameBoyClassicsGames,
+  ...n64ClassicsGames,
+  ...gbaClassicsGames,
+  ...genesisClassicsGames,
+  ...virtualBoyClassicsGames,
+  ...gameCubeClassicsGames,
+]);
+const snesClassicsTitles = new Set(
+  (nintendoClassics.snes || []).map(([title]) => title.toLocaleLowerCase("en")),
+);
+const snesEmulationRows = snesRows.filter(
+  ([title]) => !snesClassicsTitles.has(title.toLocaleLowerCase("en")),
+);
 const ps5Games = freezeConsoleGames(ps5Rows, "ps5");
 const ps4Games = freezeConsoleGames(ps4Rows, "ps4");
 
 const platforms = Object.freeze([
   Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
-  Object.freeze({ id: "switch", label: "Nintendo Switch", games: freezeConsoleGames(switchRows, "switch") }),
+  Object.freeze({
+    id: "switch",
+    label: "Nintendo Switch",
+    games: allSwitchGames,
+    sections: Object.freeze([
+      Object.freeze({ id: "switch-games", label: "Nintendo Switch", games: regularSwitchGames }),
+      Object.freeze({ id: "nes-classics", label: "NES", games: nesClassicsGames }),
+      Object.freeze({ id: "snes-classics", label: "SNES", games: snesClassicsGames }),
+      Object.freeze({ id: "game-boy-classics", label: "Game Boy / Game Boy Color", games: gameBoyClassicsGames }),
+      Object.freeze({ id: "n64-classics", label: "Nintendo 64", games: n64ClassicsGames }),
+      Object.freeze({ id: "gba-classics", label: "Game Boy Advance", games: gbaClassicsGames }),
+      Object.freeze({ id: "genesis-classics", label: "Sega Genesis", games: genesisClassicsGames }),
+      Object.freeze({ id: "virtual-boy-classics", label: "Virtual Boy", games: virtualBoyClassicsGames }),
+      Object.freeze({ id: "gamecube-classics", label: "GameCube", games: gameCubeClassicsGames }),
+    ]),
+  }),
   Object.freeze({
     id: "ps5",
     label: "PS5 + PS4",
@@ -383,7 +426,7 @@ const platforms = Object.freeze([
     comingSoon: true,
     comingSoonMessage: "NES emulation games will be added here. No original NES hardware is used.",
   }),
-  Object.freeze({ id: "snes", label: "SNES Emulation", games: freezeConsoleGames(snesRows) }),
+  Object.freeze({ id: "snes", label: "SNES Emulation", games: freezeConsoleGames(snesEmulationRows, "snes") }),
   Object.freeze({
     id: "xbox",
     label: "Xbox",
