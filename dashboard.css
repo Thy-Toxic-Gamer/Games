@@ -769,6 +769,7 @@ main {
 
 /* PS4 covers already include their titles, so show the complete artwork once. */
 #platform-panel .game-card.platform-ps4 .cover-shell {
+  width: 100%;
   aspect-ratio: 2 / 3;
   background: #070908;
 }
@@ -788,12 +789,8 @@ main {
   object-position: center !important;
 }
 
+#platform-panel .game-card.platform-ps4 .cover-fallback,
 #platform-panel .game-card.platform-ps4 .game-details {
-  min-height: 40px;
-  padding: 0.55rem 0.75rem;
-}
-
-#platform-panel .game-card.platform-ps4 .game-details h3 {
   display: none;
 }
 
