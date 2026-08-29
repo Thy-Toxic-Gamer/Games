@@ -1700,7 +1700,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Mario's Tennis",
-    "assets/covers/virtual-boy/marios-tennis.webp?v=2",
+    "assets/covers/virtual-boy/marios-tennis.webp?v=3",
     "Sports"
   ],
   [
