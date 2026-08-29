@@ -1710,7 +1710,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Space Invaders Virtual Collection",
-    "assets/covers/virtual-boy/space-invaders-virtual-collection.webp?v=2",
+    "assets/covers/virtual-boy/space-invaders-virtual-collection.webp?v=3",
     "Shooter"
   ],
   [
