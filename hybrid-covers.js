@@ -513,7 +513,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Tom and Jerry": "assets/covers/hybrid/catalog/tom-and-jerry-generated.webp",
   "Wolverine: Adamantium Rage": "assets/covers/hybrid/catalog/wolverine-adamantium-rage-aurora-generated.webp",
   "X-Men: Mutant Apocalypse": "assets/covers/hybrid/catalog/x-men-mutant-apocalypse-generated.webp",
-  "Ys III: Wanderers from Ys": "assets/covers/hybrid/catalog/ys-iii-wanderers-from-ys.webp"
+  "Ys III: Wanderers from Ys": "assets/covers/hybrid/catalog/ys-iii-wanderers-from-ys-generated.webp"
 });
 
 // The deployed catalog uses compact cover atlases so the full non-PC artwork
