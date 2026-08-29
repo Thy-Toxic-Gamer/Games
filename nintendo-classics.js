@@ -1665,7 +1665,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Galactic Pinball",
-    "assets/covers/virtual-boy/galactic-pinball.webp?v=2",
+    "assets/covers/virtual-boy/galactic-pinball.webp?v=3",
     "Pinball"
   ],
   [
