@@ -7,7 +7,7 @@ window.PS5_COVERS = Object.freeze({
   "Resident Evil 4": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:4",
   "The Legend of Dragoon": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:5",
   "Dead Space": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:6",
-  "DRAGON BALL Z: KAKAROT": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:7",
+  "DRAGON BALL Z: KAKAROT": "assets/covers/ps5/dragon-ball-z-kakarot.webp",
   "CRISIS CORE -FINAL FANTASY VII- REUNION": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:8",
   "The Callisto Protocol": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:9",
   "Sonic Frontiers": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:10",
