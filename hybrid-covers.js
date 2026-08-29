@@ -494,7 +494,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Illusion of Gaia": "assets/covers/hybrid/catalog/illusion-of-gaia-generated.webp",
   "Judge Dredd": "assets/covers/hybrid/catalog/judge-dredd-generated.webp",
   "Lufia & the Fortress of Doom": "assets/covers/hybrid/catalog/lufia-the-fortress-of-doom-generated.webp",
-  "Lufia II: Rise of the Sinistrals": "assets/covers/hybrid/catalog/lufia-ii-rise-of-the-sinistrals.webp",
+  "Lufia II: Rise of the Sinistrals": "assets/covers/hybrid/catalog/lufia-ii-rise-of-the-sinistrals-generated.webp",
   "Mega Man 7": "assets/covers/hybrid/catalog/mega-man-7.webp",
   "Mega Man Soccer": "assets/covers/hybrid/catalog/mega-man-soccer.webp",
   "Mega Man X": "assets/covers/hybrid/catalog/mega-man-x.webp",
