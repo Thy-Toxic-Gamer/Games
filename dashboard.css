@@ -232,6 +232,29 @@ main {
   color: #100100;
 }
 
+/* Ver. 1.0 — hybrid covers are already composed at the exact portrait ratio. */
+.dashboard-card .game-cover.hybrid-cover,
+.game-card.console-game .game-cover.console-cover.hybrid-cover,
+#platform-panel[data-dashboard-platform="snes"] .game-card.console-game .game-cover.console-cover.hybrid-cover,
+.dashboard-snes .dashboard-card .system-box .game-cover.console-cover.hybrid-cover {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+.game-cover.hybrid-sprite-cover,
+.dashboard-card .game-cover.hybrid-sprite-cover,
+.game-card.console-game .game-cover.hybrid-sprite-cover,
+.system-box .game-cover.hybrid-sprite-cover {
+  background-color: #050505 !important;
+  background-image: var(--sprite-image) !important;
+  background-position: var(--sprite-position) !important;
+  background-repeat: no-repeat !important;
+  background-size: 500% 400% !important;
+}
+
 /* Hide the old large heading only when showing the All dashboard. */
 #platform-panel[data-dashboard-platform="all"] > .section-heading {
   display: none;
@@ -1471,4 +1494,19 @@ main {
   background: #050505 !important;
   object-fit: contain !important;
   object-position: center center !important;
+}
+
+/* Hybrid atlas artwork is the final cover layer for every non-PC card. */
+.game-cover.hybrid-sprite-cover,
+.dashboard-card .game-cover.hybrid-sprite-cover,
+.game-card.console-game .game-cover.hybrid-sprite-cover,
+.system-box .game-cover.hybrid-sprite-cover {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  background-color: #050505 !important;
+  background-image: var(--sprite-image) !important;
+  background-position: var(--sprite-position) !important;
+  background-repeat: no-repeat !important;
+  background-size: 500% 400% !important;
 }

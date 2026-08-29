@@ -349,12 +349,13 @@ function freezePcGames(rows) {
 }
 
 function freezeConsoleGames(rows, sourcePlatformId) {
+  const hybridCovers = window.HYBRID_SPRITES || window.HYBRID_COVERS || {};
   return Object.freeze(
     sortGameRows(rows).map(([title, image, genre], index) =>
       Object.freeze({
         number: index + 1,
         title,
-        image,
+        image: hybridCovers[title] || image,
         genre: genre || null,
         sourcePlatformId: sourcePlatformId || null,
       }),
