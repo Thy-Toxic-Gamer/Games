@@ -21,6 +21,7 @@ Run RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql in the Supabase SQL Editor.
 The script:
 
 - preserves existing request_staff rows as manual access;
+- grants only the protected Supabase service role permission to maintain automatic staff rows;
 - adds Twitch verification metadata;
 - enforces fresh verification for automatic moderator grants;
 - adds nullable scheduling fields to game_requests; and

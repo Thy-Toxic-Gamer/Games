@@ -32,6 +32,12 @@ create unique index if not exists request_staff_user_id_unique
 create index if not exists request_staff_twitch_user_id_idx
   on public.request_staff (twitch_user_id);
 
+-- The verification Edge Function uses the protected service role to maintain
+-- automatic grants. No browser or authenticated viewer receives table access.
+grant select, insert, update, delete
+  on table public.request_staff
+  to service_role;
+
 -- Automatic moderator grants must have been confirmed by Twitch within the
 -- last 65 minutes. The Staff Control page re-verifies on load and hourly.
 create or replace function public.can_review_game_requests()
