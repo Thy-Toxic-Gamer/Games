@@ -1190,6 +1190,56 @@ main {
   object-position: center !important;
 }
 
+/* Ver. 1.0 — front-page SNES cards use the PC card presentation. */
+.dashboard-snes .dashboard-card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.dashboard-snes .dashboard-card {
+  border-radius: 0;
+  border-color: var(--border);
+  background: var(--surface);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-snes .dashboard-card:hover,
+.dashboard-snes .dashboard-card:focus-visible {
+  border-color: var(--snes-accent);
+  transform: translateY(-4px);
+}
+
+.dashboard-snes .dashboard-card .cover-shell {
+  aspect-ratio: 460 / 215;
+  background: var(--surface-bright);
+}
+
+.dashboard-snes .dashboard-card .cover-shell.has-cover-image::before {
+  opacity: 0.72;
+}
+
+.dashboard-snes .dashboard-card .game-cover.console-cover {
+  padding: 0.35rem !important;
+  background: transparent !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+.dashboard-snes .dashboard-card .game-details {
+  min-height: 112px;
+  padding: 0.9rem;
+  text-align: left;
+}
+
+.dashboard-snes .dashboard-card .game-number {
+  display: block;
+}
+
+.dashboard-snes .dashboard-card .game-details h3 {
+  font-size: 0.93rem;
+  line-height: 1.3;
+}
+
 /* Show the complete supplied Code of Princess EX box art inside its card. */
 .game-cover[src$="code-of-princess-ex.png"] {
   padding: 0 !important;

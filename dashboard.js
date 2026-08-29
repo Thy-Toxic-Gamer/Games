@@ -12,7 +12,7 @@
     switch: { label: "Nintendo Switch", icon: "◫", limit: 5, accent: "#ff392b" },
     pc: { label: "PC", icon: "▣", limit: 12, accent: "#79b51f" },
     ps5: { label: "PS5", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "SNES", icon: "✚", limit: 3, accent: "#d766ff" },
+    snes: { label: "SNES", icon: "✚", limit: 2, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
     xbox: { label: "Xbox", accent: "#a2aaa5" },
     updates: { label: "Updates", accent: "#ffb000" },
@@ -99,7 +99,7 @@
     const details = clone.querySelector(".game-details");
     const genre = clone.querySelector(".game-genre")?.textContent?.trim() || "Game";
 
-    if (details && platformId !== "pc") {
+    if (details && !["pc", "snes"].includes(platformId)) {
       const metadata = document.createElement("div");
       metadata.className = "dashboard-card-meta";
 
