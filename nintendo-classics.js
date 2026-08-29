@@ -1730,7 +1730,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Dragon Hopper",
-    "assets/covers/virtual-boy/dragon-hopper.webp?v=2",
+    "assets/covers/virtual-boy/dragon-hopper.webp?v=3",
     "Action / Adventure"
   ],
   [
