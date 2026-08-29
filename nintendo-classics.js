@@ -1660,82 +1660,82 @@ window.NINTENDO_CLASSICS = Object.freeze({
   virtualBoy: Object.freeze([
   [
     "3D Tetris",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/3-D%20Tetris%20%28USA%29.png",
+    "assets/covers/virtual-boy/3d-tetris.webp",
     "Puzzle"
   ],
   [
     "Galactic Pinball",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Galactic%20Pinball%20%28Japan%2C%20USA%29.png",
+    "assets/covers/virtual-boy/galactic-pinball.webp",
     "Pinball"
   ],
   [
     "Golf",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Golf%20%28USA%29.png",
+    "assets/covers/virtual-boy/golf.webp",
     "Sports"
   ],
   [
     "The Mansion of Innsmouth",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Innsmouth%20no%20Yakata%20%28Japan%29.png",
+    "assets/covers/virtual-boy/mansion-of-innsmouth.webp",
     "Survival Horror"
   ],
   [
     "Red Alarm",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Red%20Alarm%20%28USA%29.png",
+    "assets/covers/virtual-boy/red-alarm.webp",
     "Shooter"
   ],
   [
     "Teleroboxer",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Teleroboxer%20%28Japan%2C%20USA%29.png",
+    "assets/covers/virtual-boy/teleroboxer.webp",
     "Fighting"
   ],
   [
     "Virtual Boy Wario Land",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Virtual%20Boy%20Wario%20Land%20%28Japan%2C%20USA%29.png",
+    "assets/covers/virtual-boy/virtual-boy-wario-land.webp",
     "Platformer"
   ],
   [
     "Mario Clash",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Mario%20Clash%20%28Japan%2C%20USA%29.png",
+    "assets/covers/virtual-boy/mario-clash.webp",
     "Platformer"
   ],
   [
     "Mario's Tennis",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Mario%27s%20Tennis%20%28Japan%2C%20USA%29.png",
+    "assets/covers/virtual-boy/marios-tennis.webp",
     "Sports"
   ],
   [
     "Jack Bros.",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Jack%20Bros.%20%28USA%29.png",
+    "assets/covers/virtual-boy/jack-bros.webp",
     "Action / Puzzle"
   ],
   [
     "Space Invaders Virtual Collection",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Space%20Invaders%20-%20Virtual%20Collection%20%28Japan%29.png",
+    "assets/covers/virtual-boy/space-invaders-virtual-collection.webp",
     "Shooter"
   ],
   [
     "V-Tetris",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/V-Tetris%20%28USA%29.png",
+    "assets/covers/virtual-boy/v-tetris.webp",
     "Puzzle"
   ],
   [
     "Vertical Force",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Vertical%20Force%20%28USA%29.png",
+    "assets/covers/virtual-boy/vertical-force.webp",
     "Shooter"
   ],
   [
     "Virtual Bowling",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Virtual_Boy/master/Named_Boxarts/Virtual%20Bowling%20%28Japan%29.png",
+    "assets/covers/virtual-boy/virtual-bowling.webp",
     "Sports"
   ],
   [
     "Dragon Hopper",
-    "https://upload.wikimedia.org/wikipedia/en/thumb/2/2c/Virtual_Boy_Dragon_Hopper_cover_art.jpg/250px-Virtual_Boy_Dragon_Hopper_cover_art.jpg",
+    "assets/covers/virtual-boy/dragon-hopper.webp",
     "Action / Adventure"
   ],
   [
     "Zero Racers",
-    "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Zero_Racers_title_screen.png/250px-Zero_Racers_title_screen.png",
+    "assets/covers/virtual-boy/zero-racers.webp",
     "Racing"
   ]
 ]),
