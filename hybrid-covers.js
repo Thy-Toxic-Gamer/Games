@@ -503,7 +503,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Secret of Evermore": "assets/covers/hybrid/catalog/secret-of-evermore-generated.webp",
   "Secret of Mana": "assets/covers/hybrid/catalog/secret-of-mana-generated.webp",
   "Soul Blazer": "assets/covers/hybrid/catalog/soul-blazer-generated.webp",
-  "Sparkster": "assets/covers/hybrid/catalog/sparkster.webp",
+  "Sparkster": "assets/covers/hybrid/catalog/sparkster-generated.webp",
   "Super Mario RPG: Legend of the Seven Stars": "assets/covers/hybrid/catalog/super-mario-rpg-legend-of-the-seven-stars.webp",
   "SWAT Kats: The Radical Squadron": "assets/covers/hybrid/catalog/swat-kats-the-radical-squadron.webp",
   "Tales of Phantasia": "assets/covers/hybrid/catalog/tales-of-phantasia.webp",
