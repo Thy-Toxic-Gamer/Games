@@ -1,0 +1,18 @@
+ThyToxicGamer Games v10.2 Schedule Change Explanations
+
+Run in Supabase SQL Editor:
+- RUN-THIS-v10.2-SCHEDULE-REASONS.sql
+
+Redeploy:
+- supabase/functions/discord-game-requests/index.ts
+
+Publish to the repository root:
+- review.html
+- review-live.js
+- status.html
+- status-test.js
+- README.md
+- AUTO-MODS-SCHEDULING-SETUP.md
+
+No new secrets are required. Do not upload OAuth tokens, service-role keys,
+Discord webhook URLs, StreamElements JWTs, or any other secret values.

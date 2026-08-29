@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="request-test.css?v=10.0" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="review-live.js?v=10.1" defer></script>
+  <script src="review-live.js?v=10.2" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -78,6 +78,9 @@
       <p class="request-dialog-rules">Use this only after you, the viewer, and any other staff have agreed on a date. Approval and payment do not require a schedule.</p>
       <label>Date and time (Eastern Time)
         <input id="schedule-local" type="datetime-local" required />
+      </label>
+      <label id="schedule-reason-row" hidden>Reason for changing the schedule
+        <textarea id="schedule-reason" maxlength="500" rows="4" placeholder="Tell the viewer why the agreed time must change."></textarea>
       </label>
       <p class="schedule-zone-note">Eastern Time automatically follows EST/EDT daylight-saving changes.</p>
       <p class="request-form-error" id="schedule-error" role="alert"></p>

@@ -10,6 +10,7 @@ type GameRequest = {
   denial_reason: string | null;
   cancellation_reason: string | null;
   scheduled_for: string | null;
+  schedule_change_reason: string | null;
   created_at: string;
 };
 
@@ -99,13 +100,17 @@ Deno.serve(async (request) => {
   } else if (isNewSchedule) {
     webhook = Deno.env.get("DISCORD_SCHEDULE_WEBHOOK") ?? Deno.env.get("DISCORD_APPROVED_WEBHOOK");
     title = previous?.scheduled_for ? "📅 Game Request Rescheduled" : "📅 Game Request Scheduled";
-    description = `The agreed game time is ${formatEastern(gameRequest.scheduled_for as string)}.`;
+    description = previous?.scheduled_for && gameRequest.schedule_change_reason
+      ? `The agreed game time is now ${formatEastern(gameRequest.scheduled_for as string)}. Reason: ${shorten(gameRequest.schedule_change_reason)}`
+      : `The agreed game time is ${formatEastern(gameRequest.scheduled_for as string)}.`;
     color = 0x35d06f;
     includeReviewLink = true;
   } else if (isScheduleCleared) {
     webhook = Deno.env.get("DISCORD_SCHEDULE_WEBHOOK") ?? Deno.env.get("DISCORD_APPROVED_WEBHOOK");
     title = "📅 Game Schedule Cleared";
-    description = "Staff removed the recorded game time. The request remains paid and approved.";
+    description = gameRequest.schedule_change_reason
+      ? `Staff removed the recorded game time. Reason: ${shorten(gameRequest.schedule_change_reason)}`
+      : "Staff removed the recorded game time. The request remains paid and approved.";
     color = 0xffb000;
     includeReviewLink = true;
   } else return Response.json({ ignored: true });
@@ -121,6 +126,7 @@ Deno.serve(async (request) => {
   ];
   if (includeReviewLink) fields.push({ name: "Staff Review", value: `[Open Staff Control](${staffPage})`, inline: false });
   if (gameRequest.scheduled_for) fields.push({ name: "Game Time (Eastern)", value: formatEastern(gameRequest.scheduled_for), inline: false });
+  if (gameRequest.schedule_change_reason) fields.push({ name: "Schedule Change Reason", value: shorten(gameRequest.schedule_change_reason), inline: false });
 
   const discordResponse = await fetch(webhook, {
     method: "POST",

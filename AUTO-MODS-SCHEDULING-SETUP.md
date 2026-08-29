@@ -100,6 +100,8 @@ ThyToxicBot should receive access if Twitch currently lists it as a moderator. A
 5. Staff enters the agreed Eastern date and time and saves it.
 6. Staff can reschedule or clear it later without cancelling the paid request.
 
+Run RUN-THIS-v10.2-SCHEDULE-REASONS.sql to require a written explanation whenever staff reschedules or clears an existing game time. The viewer sees the latest explanation and Discord includes it in the schedule update.
+
 The database stores the instant safely as UTC and the website displays it as EST or EDT, depending on daylight-saving time.
 
 ## Verification checklist

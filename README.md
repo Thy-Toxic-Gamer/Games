@@ -17,6 +17,12 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - Automatic moderators must reauthorize after leaving Staff Control and returning.
 - Returning focus to an open Staff Control tab immediately rechecks Twitch moderator status.
 
+### Version 10.2 Schedule Change Explanations
+
+- Initial scheduling remains optional and does not require an explanation.
+- Rescheduling or clearing an existing game time requires a written reason.
+- The viewer status page and Discord schedule update display the reason.
+
 ## Version 7.0 — Game Request Phase 1 Test
 
 - Added a test-mode request center and status display to the catalog.

@@ -64,6 +64,8 @@
     get("status-deadline").textContent = request.payment_deadline ? new Date(request.payment_deadline).toLocaleString() : "";
     get("status-schedule-row").hidden = request.status !== "approved";
     get("status-schedule").textContent = request.scheduled_for ? formatEastern(request.scheduled_for) : "Not scheduled yet. The streamer or moderators will record the time after everyone agrees.";
+    get("status-schedule-reason-row").hidden = !request.schedule_change_reason;
+    get("status-schedule-reason").textContent = request.schedule_change_reason || "";
     get("cancel-request-button").hidden = request.status !== "pending";
     get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
     const awaitingPayment = request.status === "awaiting_payment";
