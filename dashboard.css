@@ -767,6 +767,36 @@ main {
   border-color: var(--snes-accent);
 }
 
+/* PS4 covers already include their titles, so show the complete artwork once. */
+#platform-panel .game-card.platform-ps4 .cover-shell {
+  aspect-ratio: 2 / 3;
+  background: #070908;
+}
+
+#platform-panel .game-card.platform-ps4 .cover-shell.has-cover-image::before {
+  opacity: 0;
+}
+
+#platform-panel .game-card.platform-ps4 .game-cover.console-cover,
+#platform-panel .game-card.platform-ps4 .game-cover.console-cover.hybrid-cover {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  background: #070908 !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+
+#platform-panel .game-card.platform-ps4 .game-details {
+  min-height: 40px;
+  padding: 0.55rem 0.75rem;
+}
+
+#platform-panel .game-card.platform-ps4 .game-details h3 {
+  display: none;
+}
+
 /* Viewer-facing release notes */
 .updates-panel {
   border: 1px solid color-mix(in srgb, #ffb000 48%, var(--border));
