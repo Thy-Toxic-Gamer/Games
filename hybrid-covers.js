@@ -519,11 +519,17 @@ window.HYBRID_COVERS = Object.freeze({
 // The deployed catalog uses compact cover atlases so the full non-PC artwork
 // library can be published and cached efficiently. Object key order matches
 // the atlas build order below (20 covers per 5-by-4 sheet).
-window.HYBRID_SPRITES = Object.freeze(
-  Object.fromEntries(
-    Object.keys(window.HYBRID_COVERS).map((title, index) => [
-      title,
-      `hybrid-sprite:assets/covers/hybrid/atlases/catalog-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`,
-    ]),
-  ),
+const hybridSpriteCovers = Object.fromEntries(
+  Object.keys(window.HYBRID_COVERS).map((title, index) => [
+    title,
+    `hybrid-sprite:assets/covers/hybrid/atlases/catalog-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`,
+  ]),
 );
+
+// Individually generated covers override their legacy atlas slots. Naming new
+// files with the `-generated.webp` suffix makes future replacements automatic.
+Object.entries(window.HYBRID_COVERS).forEach(([title, coverPath]) => {
+  if (coverPath.endsWith("-generated.webp")) hybridSpriteCovers[title] = coverPath;
+});
+
+window.HYBRID_SPRITES = Object.freeze(hybridSpriteCovers);
