@@ -4,7 +4,7 @@ window.PS5_COVERS = Object.freeze({
   "Assassin's Creed Valhalla": "assets/covers/ps5/assassins-creed-valhalla.webp",
   "The First Descendant": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:2",
   "FINAL FANTASY VII REBIRTH": "assets/covers/ps5/final-fantasy-vii-rebirth.webp",
-  "Resident Evil 4": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:4",
+  "Resident Evil 4": "assets/covers/ps5/resident-evil-4.webp",
   "The Legend of Dragoon": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:5",
   "Dead Space": "hybrid-sprite:assets/covers/ps5/atlases/ps5-01.webp:6",
   "DRAGON BALL Z: KAKAROT": "assets/covers/ps5/dragon-ball-z-kakarot.webp",
