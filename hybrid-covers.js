@@ -402,7 +402,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Soulcalibur II": "assets/covers/hybrid/catalog/soulcalibur-ii-generated.webp",
   "Super Mario Strikers": "assets/covers/hybrid/catalog/super-mario-strikers-generated.webp",
   "The Legend of Zelda: The Wind Waker": "assets/covers/hybrid/catalog/zelda-wind-waker-user-generated.webp",
-  "Wario World": "assets/covers/hybrid/catalog/wario-world.webp",
+  "Wario World": "assets/covers/hybrid/catalog/wario-world-user-generated.webp",
   "Assassin's Creed Valhalla": "assets/covers/hybrid/catalog/assassin-s-creed-valhalla.webp",
   "CRISIS CORE -FINAL FANTASY VII- REUNION": "assets/covers/hybrid/catalog/crisis-core-final-fantasy-vii-reunion.webp",
   "Dead Space": "assets/covers/hybrid/catalog/dead-space.webp",
