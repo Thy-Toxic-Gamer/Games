@@ -2,6 +2,12 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Version 10.3 — Updates Tab + Stream Window
+
+- Added a viewer-facing Updates tab covering the major request-system improvements.
+- Clarified that paid and approved games are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.
+- Added a highlighted stream-window notice to the request center.
+
 ## Version 10.0 — Automatic Twitch Staff + Optional Scheduling
 
 - Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.

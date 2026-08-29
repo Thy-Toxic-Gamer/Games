@@ -3,6 +3,8 @@
 .request-center { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(250px,.7fr); gap:1rem; margin-bottom:1rem; padding:clamp(1rem,3vw,1.6rem); border:1px solid var(--toxic); background:radial-gradient(circle at 90% 0,rgba(124,255,0,.11),transparent 35%),#080b09; box-shadow:0 0 30px rgba(124,255,0,.08); }
 .request-center-copy h1 { margin:.2rem 0 .65rem; font-size:clamp(1.45rem,3vw,2.5rem); line-height:1.05; }
 .request-center-copy p:last-child { max-width:850px; margin:0; color:var(--muted); }
+.request-center-copy .request-stream-notice { max-width:850px; margin:.75rem 0 0; padding:.7rem .85rem; border-left:3px solid #ffb000; background:rgba(255,176,0,.07); color:#dce2de; line-height:1.55; }
+.request-stream-notice strong { color:#ffca4d; }
 .request-status-card { display:flex; align-items:center; gap:.75rem; padding:.9rem; border:1px solid var(--toxic); background:#050706; }
 .request-status-card[data-state="locked"] { border-color:var(--request-amber); }
 .request-status-card[data-state="cooldown"] { border-color:var(--request-red); }

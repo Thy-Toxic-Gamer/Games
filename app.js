@@ -13,6 +13,7 @@
   const viewPlatforms = [
     { id: "all", label: "All", games: allGames },
     ...platforms,
+    { id: "updates", label: "Updates", games: [], updates: true },
   ];
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
@@ -21,6 +22,7 @@
   const platformName = document.querySelector("#platform-name");
   const libraryCount = document.querySelector("#library-count");
   const comingSoon = document.querySelector("#xbox-coming-soon");
+  const updatesPanel = document.querySelector("#updates-panel");
   let activePlatformId = "all";
 
   const currentHeaderImages = Object.freeze({
@@ -520,6 +522,17 @@
 
   function renderPlatform(platform) {
     panel.setAttribute("aria-labelledby", `tab-${platform.id}`);
+
+    if (platform.updates) {
+      platformName.textContent = "System Updates";
+      libraryCount.textContent = "v10.3";
+      grid.hidden = true;
+      comingSoon.hidden = true;
+      updatesPanel.hidden = false;
+      return;
+    }
+
+    updatesPanel.hidden = true;
     platformName.textContent = platform.id === "all"
       ? "All Games"
       : `${platform.label} Library`;
@@ -583,7 +596,11 @@
 
       const count = document.createElement("span");
       count.className = "tab-count";
-      count.textContent = platform.comingSoon ? "Soon" : String(platform.games.length);
+      count.textContent = platform.updates
+        ? "Latest"
+        : platform.comingSoon
+          ? "Soon"
+          : String(platform.games.length);
 
       button.append(label, count);
       button.addEventListener("click", () => activatePlatform(platform.id, false));
@@ -621,6 +638,7 @@
       || !platformName
       || !libraryCount
       || !comingSoon
+      || !updatesPanel
       || platforms.length === 0
     ) {
       return;

@@ -15,6 +15,7 @@
     snes: { label: "SNES", icon: "✚", limit: 5, accent: "#d766ff" },
     all: { label: "All", accent: "#7cff00" },
     xbox: { label: "Xbox", accent: "#a2aaa5" },
+    updates: { label: "Updates", accent: "#ffb000" },
   });
 
   const previewPriority = Object.freeze({
@@ -257,6 +258,14 @@
   function buildDashboard() {
     const selected = activePlatform();
     panel.dataset.dashboardPlatform = selected;
+
+    if (selected === "updates") {
+      if (dashboard) dashboard.hidden = true;
+      grid.hidden = true;
+      if (sectionHeading) sectionHeading.hidden = false;
+      hidePopover();
+      return;
+    }
 
     if (selected !== "all") {
       if (dashboard) dashboard.hidden = true;

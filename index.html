@@ -9,15 +9,15 @@
     />
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
-    <link rel="stylesheet" href="styles.css?v=9.1" />
-    <link rel="stylesheet" href="dashboard.css?v=9.1" />
-    <link rel="stylesheet" href="request-test.css?v=9.1" />
+    <link rel="stylesheet" href="styles.css?v=10.3" />
+    <link rel="stylesheet" href="dashboard.css?v=10.3" />
+    <link rel="stylesheet" href="request-test.css?v=10.3" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="supabase-config.js?v=9.1" defer></script>
-    <script src="games.js?v=9.1" defer></script>
-    <script src="app.js?v=9.1" defer></script>
-    <script src="dashboard.js?v=9.1" defer></script>
-    <script src="request-test.js?v=9.1" defer></script>
+    <script src="supabase-config.js?v=10.3" defer></script>
+    <script src="games.js?v=10.3" defer></script>
+    <script src="app.js?v=10.3" defer></script>
+    <script src="dashboard.js?v=10.3" defer></script>
+    <script src="request-test.js?v=10.3" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -47,6 +47,7 @@
             <p class="eyebrow">Game Request System · Twitch Connected</p>
             <h1 id="request-center-title">Choose the next game from the Toxic Vault</h1>
             <p>Request a game you see in this catalog for a $5 minimum, or request a game not listed for a $10 minimum. Only one viewer request can be active at a time. The secure StreamElements payment option appears only after staff approval.</p>
+            <p class="request-stream-notice"><strong>Scheduled stream window:</strong> Paid and approved games are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.</p>
           </div>
           <div class="request-status-card" id="request-status-card" data-state="open">
             <span class="request-status-light" aria-hidden="true"></span>
@@ -101,6 +102,38 @@
             <h3>Coming Soon</h3>
             <p>Xbox games will be added here.</p>
           </div>
+          <section class="updates-panel" id="updates-panel" aria-labelledby="updates-heading" hidden>
+            <header class="updates-hero">
+              <p class="eyebrow">What’s New · Version 10.3</p>
+              <h3 id="updates-heading">The Toxic Vault keeps getting smarter</h3>
+              <p>Here are the latest improvements to game requests, staff review, payments, scheduling, and moderator security.</p>
+            </header>
+
+            <div class="updates-feature-grid">
+              <article><span aria-hidden="true">🎮</span><h4>Game Requests</h4><p>Request a catalog game for $5+ or an unlisted game for $10+. One viewer request slot is available at a time.</p></article>
+              <article><span aria-hidden="true">🛡️</span><h4>Staff Review</h4><p>The channel owner and verified Twitch moderators can approve, deny, schedule, and manage request availability.</p></article>
+              <article><span aria-hidden="true">🔒</span><h4>Secure Payments</h4><p>The StreamElements payment option appears only after staff approval, and payment confirmation happens automatically.</p></article>
+              <article><span aria-hidden="true">📅</span><h4>Game Scheduling</h4><p>Paid games are scheduled in Eastern Time as an 18–24 hour stream beginning Friday evening or Saturday morning.</p></article>
+              <article><span aria-hidden="true">✎</span><h4>Schedule Changes</h4><p>Rescheduling or clearing a game time requires a reason, which is shown to the viewer and included in Discord updates.</p></article>
+              <article><span aria-hidden="true">✓</span><h4>Moderator Security</h4><p>Twitch moderator access is checked automatically. Staff must reverify after leaving, and removed moderators lose access.</p></article>
+            </div>
+
+            <div class="updates-history" aria-label="Major update history">
+              <h4>Major Updates</h4>
+              <ol>
+                <li><time>v10.3</time><div><strong>Updates Tab + Stream Window</strong><p>Added this update center and clarified the Friday evening or Saturday morning 18–24 hour stream schedule.</p></div></li>
+                <li><time>v10.2</time><div><strong>Schedule Change Explanations</strong><p>Rescheduling and schedule clearing now require a viewer-visible reason.</p></div></li>
+                <li><time>v10.1</time><div><strong>Staff Session Security</strong><p>Automatic moderators must reverify whenever they return to Staff Control.</p></div></li>
+                <li><time>v10.0</time><div><strong>Automatic Moderators + Scheduling</strong><p>Twitch moderator verification and optional post-payment scheduling went live.</p></div></li>
+                <li><time>v9.3</time><div><strong>Donation Notifications</strong><p>Regular StreamElements donations gained automatic Discord notifications.</p></div></li>
+                <li><time>v9.1</time><div><strong>Request Service Controls</strong><p>Staff gained controls for request availability and cooldown management.</p></div></li>
+                <li><time>v9.0</time><div><strong>Automatic Payment Confirmation</strong><p>Approved requests began confirming StreamElements payments automatically.</p></div></li>
+                <li><time>v8.3–8.5</time><div><strong>Request Lifecycle</strong><p>Review, expiration, cancellation, and retention safeguards were added.</p></div></li>
+                <li><time>v8.0–8.2</time><div><strong>Live Twitch Request System</strong><p>The test flow became a secure live system with Twitch sign-in and Discord status updates.</p></div></li>
+                <li><time>v5–7</time><div><strong>Catalog Foundation</strong><p>The multi-platform library, artwork, dashboard, and original request experience were built.</p></div></li>
+              </ol>
+            </div>
+          </section>
         </div>
         <noscript>
           <p class="noscript-message">
