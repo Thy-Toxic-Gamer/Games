@@ -361,6 +361,8 @@ function freezeConsoleGames(rows, sourcePlatformId, useOriginalCover = false) {
         title,
         image: useOriginalCover
           ? image
+          : sourcePlatformId === "ps4" && title === "Dark Cloud 2"
+            ? "assets/covers/ps4/dark-cloud-2-borderless-generated.webp"
           : sourcePlatformId === "ps4"
             ? `hybrid-sprite:assets/covers/ps4/atlases/ps4-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
           : approvedCovers[title] ||
