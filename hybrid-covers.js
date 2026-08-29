@@ -504,7 +504,7 @@ window.HYBRID_COVERS = Object.freeze({
   "Secret of Mana": "assets/covers/hybrid/catalog/secret-of-mana-generated.webp",
   "Soul Blazer": "assets/covers/hybrid/catalog/soul-blazer-generated.webp",
   "Sparkster": "assets/covers/hybrid/catalog/sparkster-generated.webp",
-  "Super Mario RPG: Legend of the Seven Stars": "assets/covers/hybrid/catalog/super-mario-rpg-legend-of-the-seven-stars.webp",
+  "Super Mario RPG: Legend of the Seven Stars": "assets/covers/hybrid/catalog/super-mario-rpg-legend-of-the-seven-stars-generated.webp",
   "SWAT Kats: The Radical Squadron": "assets/covers/hybrid/catalog/swat-kats-the-radical-squadron.webp",
   "Tales of Phantasia": "assets/covers/hybrid/catalog/tales-of-phantasia.webp",
   "Teenage Mutant Ninja Turtles IV: Turtles in Time": "assets/covers/hybrid/catalog/teenage-mutant-ninja-turtles-iv-turtles-in-time.webp",
