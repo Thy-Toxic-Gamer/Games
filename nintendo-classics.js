@@ -1690,7 +1690,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Virtual Boy Wario Land",
-    "assets/covers/virtual-boy/virtual-boy-wario-land.webp?v=2",
+    "assets/covers/virtual-boy/virtual-boy-wario-land.webp?v=3",
     "Platformer"
   ],
   [
