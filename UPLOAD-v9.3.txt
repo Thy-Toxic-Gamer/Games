@@ -1,0 +1,18 @@
+ThyToxicGamer Games v9.3 GitHub Backup
+
+Upload these files to the same paths shown below and replace files when prompted:
+
+Repository root:
+- README.md
+- RUN-THIS-v9.3-REGULAR-DONATIONS.sql
+- FIX-v9.3-DONATION-TABLE-PERMISSIONS.sql
+- REGULAR-DONATIONS-SETUP.md
+
+Nested function path:
+- supabase/functions/notify-regular-donations/index.ts
+
+Do not upload Discord webhook URLs, StreamElements JWTs, Supabase service-role keys,
+or any other secret values. None are included in this package.
+
+Uploading these files backs up the working setup. It does not redeploy or change the
+already-running Supabase Edge Function or Cron job.

@@ -1,106 +1,291 @@
-type GameRequest = {
-  id: string;
-  status: string;
-  game_title: string;
-  twitch_name: string;
-  request_type: string;
-  minimum_amount: number;
-  platform: string | null;
-  viewer_note: string | null;
-  denial_reason: string | null;
-  cancellation_reason: string | null;
-  created_at: string;
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+type StreamElementsTip = {
+  _id?: string;
+  id?: string;
+  provider?: string;
+  status?: string;
+  approved?: string;
+  deleted?: boolean;
+  createdAt?: string;
+  username?: string;
+  name?: string;
+  user?: {
+    username?: string;
+    displayName?: string;
+    name?: string;
+  };
+  donation?: {
+    message?: string;
+    amount?: number;
+    currency?: string;
+    user?: {
+      username?: string;
+      displayName?: string;
+      name?: string;
+    };
+  };
 };
 
-type WebhookPayload = {
-  type: "INSERT" | "UPDATE" | "DELETE";
-  table: string;
-  schema: string;
-  record: GameRequest | null;
-  old_record: GameRequest | null;
-};
+const gameRequestCode = /\bTG-[A-Z0-9]{8,16}\b/i;
 
-const staffPage = "https://thy-toxic-gamer.github.io/Games/review.html";
-const shorten = (value: unknown, maximum = 1000) => {
-  const valueText = String(value ?? "").trim();
-  return valueText ? valueText.slice(0, maximum) : "Not provided";
-};
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+function cleanText(value: unknown, fallback: string, maximum: number) {
+  const text = String(value || "").trim();
+  return (text || fallback).slice(0, maximum);
+}
+
+function donorName(tip: StreamElementsTip) {
+  return cleanText(
+    tip.donation?.user?.displayName ||
+      tip.donation?.user?.username ||
+      tip.donation?.user?.name ||
+      tip.user?.displayName ||
+      tip.user?.username ||
+      tip.user?.name ||
+      tip.username ||
+      tip.name,
+    "Anonymous",
+    256,
+  );
+}
+
+function formattedAmount(amount: number, currency: string) {
+  try {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency,
+    }).format(amount);
+  } catch {
+    return `${amount.toFixed(2)} ${currency}`;
+  }
+}
 
 Deno.serve(async (request) => {
-  if (request.method !== "POST") return Response.json({ error: "Method not allowed" }, { status: 405 });
-  const expectedToken = Deno.env.get("DATABASE_WEBHOOK_TOKEN");
-  const suppliedToken = request.headers.get("x-webhook-token");
-  if (!expectedToken || suppliedToken !== expectedToken) return Response.json({ error: "Unauthorized webhook request" }, { status: 401 });
+  if (request.method !== "POST") {
+    return json({ error: "Method not allowed" }, 405);
+  }
 
-  let payload: WebhookPayload;
-  try { payload = await request.json(); }
-  catch { return Response.json({ error: "Invalid JSON payload" }, { status: 400 }); }
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const accountId = Deno.env.get("STREAMELEMENTS_ACCOUNT_ID");
+  const streamElementsJwt = Deno.env.get("STREAMELEMENTS_JWT");
+  const discordWebhook = Deno.env.get("DISCORD_DONATIONS_WEBHOOK");
 
-  const gameRequest = payload.record;
-  const previous = payload.old_record;
-  if (payload.schema !== "public" || payload.table !== "game_requests" || !gameRequest) return Response.json({ ignored: true });
+  if (
+    !supabaseUrl ||
+    !serviceRoleKey ||
+    !accountId ||
+    !streamElementsJwt ||
+    !discordWebhook
+  ) {
+    return json({ error: "Regular donation notifier is not configured" }, 503);
+  }
 
-  const isNewPending = payload.type === "INSERT" && gameRequest.status === "pending";
-  const isAwaitingPayment = payload.type === "UPDATE" && gameRequest.status === "awaiting_payment" && previous?.status !== "awaiting_payment";
-  const isNewApproval = payload.type === "UPDATE" && gameRequest.status === "approved" && previous?.status !== "approved";
-  const isNewDenial = payload.type === "UPDATE" && gameRequest.status === "denied" && previous?.status !== "denied";
-  const isNewCancellation = payload.type === "UPDATE" && gameRequest.status === "cancelled" && previous?.status !== "cancelled";
-  const isNewExpiration = payload.type === "UPDATE" && gameRequest.status === "expired" && previous?.status !== "expired";
+  const suppliedApiKey = request.headers.get("apikey");
+  const authorization = request.headers.get("Authorization") || "";
+  const suppliedBearer = authorization.startsWith("Bearer ")
+    ? authorization.slice(7)
+    : "";
 
-  let webhook: string | undefined;
-  let title = "";
-  let description = "";
-  let color = 0x7cff00;
-  let includeReviewLink = false;
+  if (
+    suppliedApiKey !== serviceRoleKey &&
+    suppliedBearer !== serviceRoleKey
+  ) {
+    return json({ error: "Unauthorized scheduled request" }, 401);
+  }
 
-  if (isNewPending) {
-    webhook = Deno.env.get("DISCORD_PENDING_WEBHOOK");
-    title = "🎮 Awaiting Staff Approval";
-    description = "A new game request is waiting for staff review.";
-    includeReviewLink = true;
-  } else if (isAwaitingPayment) {
-    webhook = Deno.env.get("DISCORD_AWAITING_PAYMENT_WEBHOOK");
-    title = "⏳ Awaiting Payment";
-    description = "Staff approved this request. It is waiting for payment confirmation.";
-    color = 0xffb000;
-  } else if (isNewApproval) {
-    webhook = Deno.env.get("DISCORD_APPROVED_WEBHOOK");
-    title = "✅ Game Request Approved";
-    description = "Payment was confirmed and this request is fully approved.";
-    color = 0x35d06f;
-  } else if (isNewDenial) {
-    webhook = Deno.env.get("DISCORD_DENIED_WEBHOOK");
-    title = "❌ Game Request Denied";
-    description = shorten(gameRequest.denial_reason);
-    color = 0xff3b30;
-  } else if (isNewCancellation) {
-    webhook = Deno.env.get("DISCORD_CANCELLED_WEBHOOK");
-    title = gameRequest.cancellation_reason ? "🚫 Cancelled by Staff" : "🚫 Cancelled by Viewer";
-    description = gameRequest.cancellation_reason ? shorten(gameRequest.cancellation_reason) : "The viewer cancelled this request before staff approval.";
-    color = 0x8a9490;
-  } else if (isNewExpiration) {
-    webhook = Deno.env.get("DISCORD_EXPIRED_WEBHOOK");
-    title = "⌛ Game Request Expired";
-    description = "The 48-hour deadline passed without completion. The request slot is open again.";
-    color = 0x707070;
-  } else return Response.json({ ignored: true });
-
-  if (!webhook) return Response.json({ error: "Required Discord webhook secret is missing" }, { status: 500 });
-  const fields = [
-    { name: "Game", value: shorten(gameRequest.game_title), inline: false },
-    { name: "Twitch Viewer", value: shorten(gameRequest.twitch_name), inline: true },
-    { name: "Request Tier", value: gameRequest.request_type === "catalog" ? `Owned Catalog Game · $${gameRequest.minimum_amount}+` : `Not in Catalog · $${gameRequest.minimum_amount}+`, inline: true },
-    { name: "Platform", value: shorten(gameRequest.platform), inline: true },
-    { name: "Viewer Message", value: shorten(gameRequest.viewer_note), inline: false },
-    { name: "Request ID", value: shorten(gameRequest.id), inline: false },
-  ];
-  if (includeReviewLink) fields.push({ name: "Staff Review", value: `[Open Staff Control](${staffPage})`, inline: false });
-
-  const discordResponse = await fetch(webhook, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
+  const admin = createClient(supabaseUrl, serviceRoleKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
   });
-  if (!discordResponse.ok) return Response.json({ error: `Discord returned ${discordResponse.status}`, details: (await discordResponse.text()).slice(0, 500) }, { status: 502 });
-  return Response.json({ delivered: true, requestStatus: gameRequest.status });
+
+  const { data: state, error: stateError } = await admin
+    .from("regular_donation_notifier_state")
+    .select("started_at")
+    .eq("id", true)
+    .maybeSingle();
+
+  if (stateError || !state?.started_at) {
+    console.error("Donation notifier state lookup failed", stateError);
+    return json({ error: "Donation notifier database is not configured" }, 500);
+  }
+
+  const channelResponse = await fetch(
+    "https://api.streamelements.com/kappa/v2/channels/me",
+    {
+      headers: {
+        Authorization: `Bearer ${streamElementsJwt}`,
+        Accept: "application/json",
+      },
+    },
+  );
+
+  if (!channelResponse.ok) {
+    return json({ error: "StreamElements channel lookup failed" }, 502);
+  }
+
+  const channelPayload = await channelResponse.json();
+  const channel = channelPayload?.channel || channelPayload;
+  const channelId = String(channel?._id || channel?.id || "");
+
+  if (!channelId || channelId !== String(accountId)) {
+    return json({ error: "StreamElements payment channel does not match" }, 503);
+  }
+
+  const tipsResponse = await fetch(
+    `https://api.streamelements.com/kappa/v2/tips/${
+      encodeURIComponent(channelId)
+    }/moderation`,
+    {
+      headers: {
+        Authorization: `Bearer ${streamElementsJwt}`,
+        Accept: "application/json",
+      },
+    },
+  );
+
+  if (!tipsResponse.ok) {
+    return json({ error: "StreamElements tip lookup failed" }, 502);
+  }
+
+  const tipsPayload = await tipsResponse.json();
+  const tips: StreamElementsTip[] = Array.isArray(tipsPayload?.recent)
+    ? tipsPayload.recent
+    : [];
+  const startedAt = new Date(state.started_at).getTime();
+
+  const eligibleTips = tips
+    .filter((tip) => {
+      const createdAt = tip.createdAt
+        ? new Date(tip.createdAt).getTime()
+        : 0;
+      const amount = Number(tip.donation?.amount);
+      const message = String(tip.donation?.message || "");
+      const successful = String(tip.status || "").toLowerCase() === "success";
+      const notRejected =
+        String(tip.approved || "").toLowerCase() !== "rejected";
+
+      return (
+        Boolean(tip._id || tip.id) &&
+        successful &&
+        notRejected &&
+        tip.deleted !== true &&
+        Number.isFinite(amount) &&
+        amount > 0 &&
+        createdAt >= startedAt &&
+        !gameRequestCode.test(message)
+      );
+    })
+    .sort((left, right) =>
+      new Date(left.createdAt || 0).getTime() -
+      new Date(right.createdAt || 0).getTime()
+    );
+
+  let announced = 0;
+  let alreadyProcessed = 0;
+  let failed = 0;
+
+  for (const tip of eligibleTips) {
+    const tipId = String(tip._id || tip.id || "");
+    const amount = Number(tip.donation?.amount);
+    const currency = cleanText(tip.donation?.currency, "USD", 10).toUpperCase();
+    const name = donorName(tip);
+    const message = cleanText(
+      tip.donation?.message,
+      "No message provided.",
+      1000,
+    );
+    const tipCreatedAt = new Date(tip.createdAt || Date.now()).toISOString();
+
+    const { error: claimError } = await admin
+      .from("regular_donation_notifications")
+      .insert({
+        tip_id: tipId,
+        donor_name: name,
+        amount,
+        currency,
+        donation_message: message,
+        tip_created_at: tipCreatedAt,
+      });
+
+    if (claimError?.code === "23505") {
+      alreadyProcessed += 1;
+      continue;
+    }
+
+    if (claimError) {
+      console.error("Donation claim failed", {
+        tipId,
+        code: claimError.code,
+        message: claimError.message,
+      });
+      failed += 1;
+      continue;
+    }
+
+    const discordResponse = await fetch(discordWebhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: "ThyToxicGamer Donations",
+        allowed_mentions: { parse: [] },
+        embeds: [
+          {
+            title: "☣️ New StreamElements Donation",
+            description: message,
+            color: 6750208,
+            fields: [
+              { name: "Donor", value: name, inline: true },
+              {
+                name: "Amount",
+                value: formattedAmount(amount, currency),
+                inline: true,
+              },
+              { name: "Platform", value: "StreamElements", inline: true },
+            ],
+            footer: { text: "Regular donation · Not a game request" },
+            timestamp: tipCreatedAt,
+          },
+        ],
+      }),
+    });
+
+    if (!discordResponse.ok) {
+      const detail = await discordResponse.text().catch(() => "");
+      console.error("Discord donation notification failed", {
+        tipId,
+        status: discordResponse.status,
+        detail: detail.slice(0, 300),
+      });
+
+      await admin
+        .from("regular_donation_notifications")
+        .delete()
+        .eq("tip_id", tipId);
+
+      failed += 1;
+      continue;
+    }
+
+    await admin
+      .from("regular_donation_notifications")
+      .update({ discord_sent_at: new Date().toISOString() })
+      .eq("tip_id", tipId);
+
+    announced += 1;
+  }
+
+  return json({
+    checked: tips.length,
+    eligible: eligibleTips.length,
+    announced,
+    alreadyProcessed,
+    failed,
+  });
 });

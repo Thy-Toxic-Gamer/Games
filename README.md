@@ -309,3 +309,12 @@ This pass corrects the remaining visual mismatch:
 - Restored the production `$5` catalog and `$10` unlisted-game minimums after the live `$1` verification test.
 - Staff-approved requests display **Approved · Awaiting Payment** until payment is confirmed.
 - Confirmed requests display **Paid & Approved** on both staff review and viewer status pages.
+
+## Version 9.3 — Regular Donations to Discord
+
+- Added a separate scheduled notifier for successful StreamElements donations that are not game-request payments.
+- Regular donations post the donor display name, amount, message, platform, and time to a dedicated Discord webhook.
+- Tips containing a `TG-` game-request code remain in the existing game-request Discord route and are not posted twice.
+- Added private tip-ID tracking so each donation is announced only once and failed Discord posts can retry safely.
+- Older donations made before setup are ignored.
+- Included `RUN-THIS-v9.3-REGULAR-DONATIONS.sql` and `REGULAR-DONATIONS-SETUP.md`.
