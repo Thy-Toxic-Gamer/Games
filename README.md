@@ -10,6 +10,7 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - Expanded the SNES library from 4 to 27 alphabetized games using the verified collection supplied by the owner.
 - Changed the All tab to black, PC to bright yellow, and Xbox to dark green.
 - Applied the bright-yellow PC scheme to its dashboard panel, full library, cards, and request controls.
+- Matched every Full Collection label and game-count badge to its platform color.
 - Added a white NES Emulation tab marked Coming Soon and labeled both NES and SNES as emulation libraries.
 - Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.
 - Existing owner and manually assigned staff access is preserved.

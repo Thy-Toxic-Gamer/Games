@@ -217,6 +217,29 @@ main {
   display: none;
 }
 
+/* Keep the collection label and game count synchronized with the selected platform. */
+#platform-panel { --active-platform-accent: #f5f5f5; }
+#platform-panel[data-dashboard-platform="pc"] { --active-platform-accent: var(--pc-accent); }
+#platform-panel[data-dashboard-platform="switch"] { --active-platform-accent: var(--switch-accent); }
+#platform-panel[data-dashboard-platform="ps5"] { --active-platform-accent: var(--ps5-accent); }
+#platform-panel[data-dashboard-platform="nes"] { --active-platform-accent: var(--nes-accent); }
+#platform-panel[data-dashboard-platform="snes"] { --active-platform-accent: var(--snes-accent); }
+#platform-panel[data-dashboard-platform="xbox"] { --active-platform-accent: var(--xbox-accent); }
+#platform-panel[data-dashboard-platform="updates"] { --active-platform-accent: #ffb000; }
+
+#platform-panel > .section-heading .eyebrow,
+#platform-panel > .section-heading .count-chip {
+  color: var(--active-platform-accent);
+}
+
+#platform-panel > .section-heading .count-chip {
+  border-color: color-mix(in srgb, var(--active-platform-accent) 72%, var(--border));
+}
+
+#platform-panel:focus-visible {
+  outline-color: var(--active-platform-accent);
+}
+
 /* All-tab system dashboard */
 .platform-dashboard {
   display: grid;
