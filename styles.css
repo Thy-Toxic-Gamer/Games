@@ -478,10 +478,6 @@ footer p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .platform-tab:last-child {
-    grid-column: 1 / -1;
-  }
-
   .game-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

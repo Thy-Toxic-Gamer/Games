@@ -2,12 +2,15 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
-## Ver. 1.0 — First Public Release — August 28, 2026
+## Ver. 1.0 — First Public Release — Updated August 29, 2026
 
 - Added the viewer-facing Site Updates center and prominent shortcut.
 - Clarified the Friday evening or Saturday morning 18–24 hour stream window.
 - Kept SNES in its compact front-page section while giving two rotating games the same wide picture, number/title, and request-button presentation as the PC cards.
 - Expanded the SNES library from 4 to 27 alphabetized games using the verified collection supplied by the owner.
+- Changed the All tab to black, PC to bright yellow, and Xbox to dark green.
+- Applied the bright-yellow PC scheme to its dashboard panel, full library, cards, and request controls.
+- Added an NES Emulation tab marked Coming Soon and labeled both NES and SNES as emulation libraries.
 - Current Twitch moderators can receive Staff Control automatically after secure server-side Twitch verification.
 - Existing owner and manually assigned staff access is preserved.
 - Automatic moderators must reauthorize after leaving Staff Control, and removed moderators lose access.
@@ -65,12 +68,13 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
 - Professional multi-platform dashboard on the **All** tab
 - Platform-specific visual accents:
-  - All: toxic green
-  - PC: green
+  - All: black
+  - PC: bright yellow
   - Nintendo Switch: red
   - PS5: blue
-  - SNES: purple
-  - Xbox: neutral / Coming Soon
+  - NES Emulation: red / Coming Soon
+  - SNES Emulation: purple
+  - Xbox: dark green / Coming Soon
 - Nintendo Switch preview panel across the top
 - PC, PS5, and SNES preview panels below it
 - Compact proportional box art so console covers fit without oversized cropping

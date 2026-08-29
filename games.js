@@ -257,8 +257,21 @@ const platforms = Object.freeze([
   Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
   Object.freeze({ id: "switch", label: "Nintendo Switch", games: freezeConsoleGames(switchRows) }),
   Object.freeze({ id: "ps5", label: "PS5", games: freezeConsoleGames(ps5Rows) }),
-  Object.freeze({ id: "snes", label: "SNES", games: freezeConsoleGames(snesRows) }),
-  Object.freeze({ id: "xbox", label: "Xbox", games: Object.freeze([]), comingSoon: true }),
+  Object.freeze({
+    id: "nes",
+    label: "NES Emulation",
+    games: Object.freeze([]),
+    comingSoon: true,
+    comingSoonMessage: "NES emulation games will be added here. No original NES hardware is used.",
+  }),
+  Object.freeze({ id: "snes", label: "SNES Emulation", games: freezeConsoleGames(snesRows) }),
+  Object.freeze({
+    id: "xbox",
+    label: "Xbox",
+    games: Object.freeze([]),
+    comingSoon: true,
+    comingSoonMessage: "Xbox games will be added here.",
+  }),
 ]);
 
 window.GAME_LIBRARY = Object.freeze({

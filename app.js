@@ -21,7 +21,9 @@
   const panel = document.querySelector("#platform-panel");
   const platformName = document.querySelector("#platform-name");
   const libraryCount = document.querySelector("#library-count");
-  const comingSoon = document.querySelector("#xbox-coming-soon");
+  const comingSoon = document.querySelector("#coming-soon-panel");
+  const comingSoonLibrary = document.querySelector("#coming-soon-library");
+  const comingSoonMessage = document.querySelector("#coming-soon-message");
   const updatesPanel = document.querySelector("#updates-panel");
   const siteUpdatesButton = document.querySelector("#site-updates-button");
   let activePlatformId = "all";
@@ -563,6 +565,9 @@
 
     if (platform.comingSoon) {
       libraryCount.textContent = "Coming Soon";
+      comingSoonLibrary.textContent = `${platform.label} Library`;
+      comingSoonMessage.textContent = platform.comingSoonMessage
+        || `${platform.label} games will be added here.`;
       grid.hidden = true;
       comingSoon.hidden = false;
       grid.replaceChildren();
@@ -662,6 +667,8 @@
       || !platformName
       || !libraryCount
       || !comingSoon
+      || !comingSoonLibrary
+      || !comingSoonMessage
       || !updatesPanel
       || !siteUpdatesButton
       || platforms.length === 0
