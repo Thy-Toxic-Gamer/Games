@@ -161,14 +161,12 @@
   box-shadow:inset 3px 0 0 var(--catalog-system-accent,var(--request-hot-pink));
 }
 
-/* Positive request and request-change actions always use Toxic green. */
-.review-button-edit,
+/* Standard catalog request actions remain Toxic green. */
 .request-game-button {
   border-color:var(--toxic)!important;
   background:rgba(124,255,0,.08)!important;
   color:var(--toxic)!important;
 }
-.review-button-edit:is(:hover,:focus-visible),
 .request-game-button:is(:hover,:focus-visible) {
   border-color:var(--toxic)!important;
   background:var(--toxic)!important;
@@ -182,4 +180,20 @@
   background:#111!important;
   color:#777f79!important;
   box-shadow:none;
+}
+
+/* Game-change workflow controls use hot pink so they remain visually distinct. */
+.review-button-edit,
+#deny-viewer-change {
+  border-color:var(--request-hot-pink)!important;
+  background:rgba(255,43,214,.08)!important;
+  color:#ff85e8!important;
+}
+.review-button-edit:is(:hover,:focus-visible),
+#deny-viewer-change:is(:hover,:focus-visible) {
+  border-color:#ff73e4!important;
+  background:var(--request-hot-pink)!important;
+  color:#050706!important;
+  box-shadow:0 0 16px rgba(255,43,214,.22);
+  outline:none;
 }
