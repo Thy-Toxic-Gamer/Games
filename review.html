@@ -42,6 +42,7 @@
           <button class="staff-tab" id="staff-tab-controls" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-controls" tabindex="-1" data-staff-tab="controls">Request Controls</button>
           <button class="staff-tab" id="staff-tab-active" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-active" tabindex="-1" data-staff-tab="active">Active Request <span class="staff-tab-badge" id="staff-active-count" hidden>0</span></button>
           <button class="staff-tab" id="staff-tab-records" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-records" tabindex="-1" data-staff-tab="records">Request Records <span class="staff-tab-badge" id="staff-records-count" hidden>0</span></button>
+          <button class="staff-tab" id="staff-tab-archive" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-archive" tabindex="-1" data-staff-tab="archive">Archive</button>
           <button class="staff-tab" id="staff-tab-health" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-health" tabindex="-1" data-staff-tab="health">System Health <span class="staff-tab-signal" id="staff-health-signal" aria-label="Health status"></span></button>
         </div>
       </nav>
@@ -60,7 +61,7 @@
             <li><strong>Check the status summary</strong><span>Confirm that request services, the viewer slot, and Discord delivery show the expected state.</span></li>
             <li><strong>Review the active request</strong><span>Verify the viewer, game, system, request choice, price, and note before approving or changing anything.</span></li>
             <li><strong>Record the decision accurately</strong><span>Use the correct control and provide a clear reason for denials, cancellations, corrections, or schedule changes.</span></li>
-            <li><strong>Confirm the result</strong><span>Check Request Records and System Health to ensure the database and Discord received the update.</span></li>
+            <li><strong>Confirm the result</strong><span>Check Request Records, Archive, and System Health to ensure the database and Discord received the update.</span></li>
           </ol>
         </section>
 
@@ -82,6 +83,7 @@
             <button class="review-button review-button-edit" type="button" data-staff-tab-target="active">Open Active Request</button>
             <button class="review-button review-button-muted" type="button" data-staff-tab-target="controls">Open Request Controls</button>
             <button class="review-button review-button-muted" type="button" data-staff-tab-target="records">Open Request Records</button>
+            <button class="review-button review-button-muted" type="button" data-staff-tab-target="archive">Open Archive</button>
             <button class="review-button review-button-edit" type="button" data-staff-tab-target="health">Open System Health</button>
           </div>
         </section>
@@ -121,7 +123,10 @@
           <div class="review-section-title"><div><p class="eyebrow">Audit Trail</p><h2>Recent Requests</h2></div></div>
           <div class="request-history" id="request-history"></div>
         </section>
-        <section class="review-live-section">
+      </section>
+
+      <section class="staff-tab-panel" id="staff-panel-archive" role="tabpanel" aria-labelledby="staff-tab-archive" tabindex="0" data-staff-panel="archive" hidden>
+        <section class="review-live-section staff-panel-section">
           <div class="review-section-title"><div><p class="eyebrow">Retention</p><h2>Archive</h2></div></div>
           <p class="archive-retention-note">Completed requests move here after 30 days. Each archived request is permanently deleted after six months in the Archive.</p>
           <div class="request-history" id="request-archive"></div>

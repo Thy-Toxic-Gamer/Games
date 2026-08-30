@@ -2,6 +2,13 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.4 — Dedicated Staff Archive — Updated August 30, 2026
+
+- Added a dedicated Archive tab to Staff Control.
+- Moved all archived requests out of Request Records so recent activity and retained records are easier to review.
+- Preserved the existing 30-day archive transfer and six-month archive retention information.
+- Added Archive to the Staff Control home-page workflow and quick navigation.
+
 ## Ver. 1.3 — Staff Control Home and Navigation — Updated August 30, 2026
 
 - Added a dedicated Staff Control Home page explaining the private dashboard's purpose and authorized use.
