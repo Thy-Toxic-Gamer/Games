@@ -135,3 +135,51 @@
 .archive-retention-note{margin:.1rem 0 1rem;color:var(--muted);font-size:.78rem}.request-history-card.is-archived{border-color:#334235;background:#060906}
 .request-live-state{display:flex;align-items:center;gap:.45rem;margin:0 0 1rem;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}.request-live-state strong{color:var(--toxic)}.request-live-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--toxic);box-shadow:0 0 .7rem var(--toxic);animation:request-live-pulse 1.8s ease-in-out infinite}.status-countdown{display:block;margin-top:.35rem;color:var(--toxic);font-family:var(--font-display);font-size:.72rem;letter-spacing:.04em}@keyframes request-live-pulse{50%{opacity:.35;box-shadow:0 0 .2rem var(--toxic)}}
 @media(max-width:620px){.review-card-head,.request-history-head,.request-schedule-panel{display:grid}.review-details,.request-edit-grid{grid-template-columns:1fr}.review-status{width:fit-content}.status-request-tools{justify-items:start}.review-section-title{align-items:flex-start}.back-to-catalog-floating,.catalog-staff-control{right:.7rem;top:max(4.5rem,calc(env(safe-area-inset-top) + .5rem));bottom:auto;padding:.65rem .8rem}.catalog-suggestions{width:min(31rem,calc(100vw - 52px))}}
+
+/* Owned-catalog lookup keeps its hot-pink frame while each result identifies its actual system. */
+.catalog-autocomplete:focus-within input {
+  border-color:var(--request-hot-pink);
+  outline:2px solid rgba(255,43,214,.2);
+  outline-offset:1px;
+}
+.catalog-suggestions button[data-system] {
+  border-left:3px solid var(--catalog-system-accent,var(--request-hot-pink));
+  border-bottom-color:color-mix(in srgb,var(--catalog-system-accent,var(--request-hot-pink)) 25%,#252126);
+  background:linear-gradient(90deg,color-mix(in srgb,var(--catalog-system-accent,var(--request-hot-pink)) 5%,#070807),#070807 68%);
+}
+.catalog-suggestions button[data-system]:hover,
+.catalog-suggestions button[data-system].active {
+  background:linear-gradient(90deg,color-mix(in srgb,var(--catalog-system-accent,var(--request-hot-pink)) 15%,#070807),rgba(255,43,214,.08));
+}
+.catalog-suggestions button[data-system] strong,
+.catalog-suggestions button[data-system] small {
+  color:var(--catalog-system-accent,var(--request-hot-pink));
+}
+.request-dialog input[data-catalog-system] {
+  border-color:var(--catalog-system-accent,var(--request-hot-pink));
+  color:var(--catalog-system-accent,var(--request-hot-pink));
+  box-shadow:inset 3px 0 0 var(--catalog-system-accent,var(--request-hot-pink));
+}
+
+/* Positive request and request-change actions always use Toxic green. */
+.review-button-edit,
+.request-game-button {
+  border-color:var(--toxic)!important;
+  background:rgba(124,255,0,.08)!important;
+  color:var(--toxic)!important;
+}
+.review-button-edit:is(:hover,:focus-visible),
+.request-game-button:is(:hover,:focus-visible) {
+  border-color:var(--toxic)!important;
+  background:var(--toxic)!important;
+  color:#050706!important;
+  box-shadow:0 0 16px rgba(124,255,0,.2);
+  outline:none;
+}
+.request-game-button[aria-disabled="true"],
+.request-game-button[aria-disabled="true"]:is(:hover,:focus-visible) {
+  border-color:#4b514c!important;
+  background:#111!important;
+  color:#777f79!important;
+  box-shadow:none;
+}

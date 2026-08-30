@@ -141,6 +141,9 @@
       delete titleInput.dataset.catalogId;
       delete titleInput.dataset.catalogSystem;
       delete titleInput.dataset.catalogTitle;
+      delete platformInput.dataset.catalogSystem;
+      titleInput.style.removeProperty("--catalog-system-accent");
+      platformInput.style.removeProperty("--catalog-system-accent");
     }
     function close() {
       list.hidden = true;
@@ -149,11 +152,15 @@
       titleInput.removeAttribute("aria-activedescendant");
     }
     function choose(entry) {
+      const system = systems[entry.systemId];
       titleInput.value = entry.title;
       titleInput.dataset.catalogId = entry.catalogId;
       titleInput.dataset.catalogSystem = entry.systemId;
       titleInput.dataset.catalogTitle = entry.title;
       platformInput.value = entry.systemLabel;
+      platformInput.dataset.catalogSystem = entry.systemId;
+      titleInput.style.setProperty("--catalog-system-accent", system?.accent || "#FF2BD6");
+      platformInput.style.setProperty("--catalog-system-accent", system?.accent || "#FF2BD6");
       if (errorElement) errorElement.textContent = "";
       close();
       titleInput.dispatchEvent(new Event("change", { bubbles:true }));
@@ -176,9 +183,13 @@
       matches = search(query, 10);
       list.replaceChildren();
       matches.forEach((entry, index) => {
+        const system = systems[entry.systemId];
         const option = document.createElement("button");
         option.id = `${listId}-option-${index}`;
         option.type = "button";
+        option.dataset.system = entry.systemId;
+        option.style.setProperty("--catalog-system-accent", system?.accent || "#FF2BD6");
+        option.style.setProperty("--catalog-system-ink", system?.ink || "#050706");
         option.setAttribute("role", "option");
         option.innerHTML = `<strong>${entry.catalogId}</strong><span>${entry.title}</span><small>${entry.systemLabel}</small>`;
         option.addEventListener("mousedown", (event) => event.preventDefault());

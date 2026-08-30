@@ -29,6 +29,16 @@
     updates: { label: "Updates", accent: "#ffb000" },
   });
 
+  document.querySelectorAll(".updates-id-grid span").forEach((item) => {
+    const code = item.querySelector("code")?.textContent?.split("#")[0];
+    const systemId = window.TOXIC_CATALOG?.systemIdFor(code);
+    const system = systems[systemId];
+    if (!system) return;
+    item.dataset.system = systemId;
+    item.style.setProperty("--system-accent", system.accent);
+    item.style.setProperty("--system-ink", system.ink);
+  });
+
   const previewPriority = Object.freeze({
     switch: Object.freeze([
       "FINAL FANTASY",

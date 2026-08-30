@@ -110,6 +110,11 @@ main {
     #080a09;
 }
 
+.owned-game-search:focus-within {
+  border-color: rgba(255, 43, 214, 0.88);
+  box-shadow: 0 0 0 1px rgba(255, 43, 214, 0.18), 0 0 22px rgba(255, 43, 214, 0.08);
+}
+
 .owned-game-search-copy {
   min-width: 0;
 }
@@ -165,8 +170,8 @@ main {
 }
 
 .owned-game-search input:focus {
-  border-color: var(--all-accent);
-  outline: 2px solid color-mix(in srgb, var(--all-accent) 24%, transparent);
+  border-color: #ff2bd6;
+  outline: 2px solid rgba(255, 43, 214, 0.22);
   outline-offset: 1px;
 }
 
@@ -1174,8 +1179,9 @@ main {
 .updates-id-grid span {
   min-width: 0;
   padding: 0.65rem 0.7rem;
-  border: 1px solid rgba(255, 43, 214, 0.25);
-  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid color-mix(in srgb, var(--system-accent, #ff2bd6) 48%, #202321);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--system-accent, #ff2bd6) 7%, #050706), #050706 68%);
   color: #eef2ef;
   font-size: 0.72rem;
 }
@@ -1183,7 +1189,7 @@ main {
 .updates-id-grid code {
   display: block;
   margin-bottom: 0.2rem;
-  color: #ff64df;
+  color: var(--system-accent, #ff64df);
   font-size: 0.78rem;
   font-weight: 900;
 }
@@ -1987,16 +1993,16 @@ main {
 }
 
 #platform-panel .game-card .request-game-button {
-  border-color: var(--system-accent, var(--toxic));
-  background: color-mix(in srgb, var(--system-accent, var(--toxic)) 8%, transparent);
-  color: var(--system-accent, var(--toxic));
+  border-color: var(--toxic);
+  background: color-mix(in srgb, var(--toxic) 8%, transparent);
+  color: var(--toxic);
 }
 
 #platform-panel .game-card .request-game-button:is(:hover, :focus-visible) {
-  border-color: var(--system-accent, var(--toxic));
-  background: var(--system-accent, var(--toxic));
-  color: var(--system-ink, #050706);
-  box-shadow: 0 0 15px color-mix(in srgb, var(--system-accent, var(--toxic)) 22%, transparent);
+  border-color: var(--toxic);
+  background: var(--toxic);
+  color: #050706;
+  box-shadow: 0 0 15px color-mix(in srgb, var(--toxic) 22%, transparent);
 }
 
 #platform-panel .game-card .request-game-button[aria-disabled="true"],
