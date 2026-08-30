@@ -6,25 +6,26 @@
   const panel = document.querySelector("#platform-panel");
   const sectionHeading = panel?.querySelector(".section-heading");
   const comingSoon = document.querySelector("#coming-soon-panel");
+  const systems = window.TOXIC_CATALOG?.systems || {};
 
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Games", icon: "◫", limit: 12, accent: "#ff392b" },
-    pc: { label: "PC Games", icon: "▣", limit: 12, accent: "#ffe600" },
-    ps5: { label: "PlayStation 5", icon: "△", limit: 4, accent: "#159cff" },
-    ps4: { label: "PlayStation 4", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "Super Nintendo", icon: "✚", limit: 4, accent: "#f5f5f5" },
-    nes: { label: "Nintendo Entertainment System", accent: "#f5f5f5" },
-    gb: { label: "Game Boy", accent: "#b8d2ac" },
-    gbc: { label: "Game Boy Color", accent: "#9d72ff" },
-    gba: { label: "Game Boy Advance", accent: "#7667d8" },
-    n64: { label: "Nintendo 64", accent: "#2fa94f" },
-    gamecube: { label: "Nintendo GameCube", accent: "#7055c7" },
-    genesis: { label: "Sega Genesis", accent: "#e33b35" },
-    "virtual-boy": { label: "Virtual Boy", accent: "#ff3030" },
+    switch: { label: "Nintendo Games", icon: "◫", limit: 12, accent: systems.switch?.accent || "#E60012" },
+    pc: { label: "PC Games", icon: "▣", limit: 12, accent: systems.pc?.accent || "#FFE600" },
+    ps5: { label: "PlayStation 5", icon: "△", limit: 4, accent: systems.ps5?.accent || "#2D9CFF" },
+    ps4: { label: "PlayStation 4", icon: "△", limit: 5, accent: systems.ps4?.accent || "#006FCD" },
+    snes: { label: "Super Nintendo", icon: "✚", limit: 4, accent: systems.snes?.accent || "#9B72CF" },
+    nes: { label: "Nintendo Entertainment System", accent: systems.nes?.accent || "#D8D8D8" },
+    gb: { label: "Game Boy", accent: systems.gb?.accent || "#9BBC0F" },
+    gbc: { label: "Game Boy Color", accent: systems.gbc?.accent || "#A855F7" },
+    gba: { label: "Game Boy Advance", accent: systems.gba?.accent || "#7567D9" },
+    n64: { label: "Nintendo 64", accent: systems.n64?.accent || "#35C759" },
+    gamecube: { label: "Nintendo GameCube", accent: systems.gamecube?.accent || "#6A5ACD" },
+    genesis: { label: "Sega Genesis", accent: systems.genesis?.accent || "#2384E8" },
+    "virtual-boy": { label: "Virtual Boy", accent: systems["virtual-boy"]?.accent || "#FF3030" },
     all: { label: "All", accent: "#343a36" },
-    xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: "#0d7a2f" },
+    xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: systems.xbox?.accent || "#107C10" },
     updates: { label: "Updates", accent: "#ffb000" },
   });
 

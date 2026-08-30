@@ -33,6 +33,46 @@
   let activePlatformId = "all";
   let activeSearchQuery = "";
   const activeSectionByPlatform = new Map();
+  const sectionSystemIds = Object.freeze({
+    "switch-games":"switch",
+    "nes-classics":"nes",
+    "snes-classics":"snes",
+    "game-boy-classics":"gb",
+    "game-boy-color-classics":"gbc",
+    "n64-classics":"n64",
+    "gba-classics":"gba",
+    "genesis-classics":"genesis",
+    "virtual-boy-classics":"virtual-boy",
+    "gamecube-classics":"gamecube",
+    ps5:"ps5",
+    ps4:"ps4",
+    "nes-emulation":"nes",
+    "snes-emulation":"snes",
+  });
+
+  function systemPresentation(systemValue) {
+    const systemId = catalog?.systemIdFor(systemValue) || systemValue;
+    const system = catalog?.systems?.[systemId];
+    return {
+      systemId,
+      accent:system?.accent || "#7CFF00",
+      ink:system?.ink || "#050706",
+    };
+  }
+
+  function sectionPresentation(section) {
+    const systemValue = sectionSystemIds[section.id]
+      || section.games?.[0]?.sourcePlatformId
+      || section.id;
+    return systemPresentation(systemValue);
+  }
+
+  function setPanelPresentation(systemValue) {
+    const presentation = systemPresentation(systemValue);
+    panel.dataset.activeSystem = presentation.systemId || "all";
+    panel.style.setProperty("--active-platform-accent", presentation.accent);
+    panel.style.setProperty("--active-platform-ink", presentation.ink);
+  }
 
   const currentHeaderImages = Object.freeze({
     1029210: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1029210/4e755d52979ed36dd7a7bfef3ad98d93f07922d0/header.jpg?t=1781208599",
@@ -663,6 +703,9 @@
     card.dataset.gameSystemLabel = catalogMeta.systemLabel;
     card.dataset.gameCatalogId = catalogMeta.catalogId;
     card.dataset.collectionPlatform = game.collectionPlatformId || platform.id;
+    const cardPresentation = systemPresentation(sourcePlatformId);
+    card.style.setProperty("--system-accent", cardPresentation.accent);
+    card.style.setProperty("--system-ink", cardPresentation.ink);
     if (sourcePlatformId !== "pc") {
       card.classList.add("console-game");
       card.tabIndex = 0;
@@ -789,6 +832,9 @@
 
     panel.dataset.searchActive = "true";
     panel.dataset.dashboardPlatform = "search";
+    panel.dataset.activeSystem = "search";
+    panel.style.removeProperty("--active-platform-accent");
+    panel.style.removeProperty("--active-platform-ink");
     panel.setAttribute("aria-labelledby", "owned-game-search-label");
     hidePlatformSubtabs();
     updatesPanel.hidden = true;
@@ -814,11 +860,15 @@
     const fragment = document.createDocumentFragment();
 
     sections.forEach((section, index) => {
+      const presentation = sectionPresentation(section);
       const button = document.createElement("button");
       button.className = "platform-subtab";
       button.id = `subtab-${platform.id}-${section.id}`;
       button.type = "button";
       button.dataset.section = section.id;
+      button.dataset.system = presentation.systemId;
+      button.style.setProperty("--subtab-accent", presentation.accent);
+      button.style.setProperty("--subtab-ink", presentation.ink);
       button.setAttribute("role", "tab");
       button.setAttribute("aria-controls", "game-grid");
 
@@ -858,6 +908,11 @@
     function selectSection(sectionId, focusButton) {
       const section = sections.find((entry) => entry.id === sectionId) || sections[0];
       activeSectionByPlatform.set(platform.id, section.id);
+      const presentation = sectionPresentation(section);
+      setPanelPresentation(presentation.systemId);
+      platformSubtabs.dataset.activeSystem = presentation.systemId;
+      platformSubtabs.style.setProperty("--subtabs-accent", presentation.accent);
+      platformSubtabs.style.setProperty("--subtabs-ink", presentation.ink);
 
       platformSubtabs.querySelectorAll('[role="tab"]').forEach((button) => {
         const selected = button.dataset.section === section.id;
@@ -890,6 +945,14 @@
 
   function renderPlatform(platform) {
     panel.setAttribute("aria-labelledby", `tab-${platform.id}`);
+
+    const platformSystemId = platform.id === "emulation" ? "snes" : platform.id;
+    if (catalog?.systems?.[platformSystemId]) setPanelPresentation(platformSystemId);
+    else {
+      panel.dataset.activeSystem = platform.id;
+      panel.style.removeProperty("--active-platform-accent");
+      panel.style.removeProperty("--active-platform-ink");
+    }
 
     if (platform.updates) {
       hidePlatformSubtabs();

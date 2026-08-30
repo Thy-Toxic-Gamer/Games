@@ -2,20 +2,20 @@
   "use strict";
 
   const systems = Object.freeze({
-    pc: Object.freeze({ code:"PC", label:"PC Games", aliases:["pc","computer"] }),
-    ps5: Object.freeze({ code:"PS5", label:"PlayStation 5", aliases:["ps5","playstation 5","playstation"] }),
-    ps4: Object.freeze({ code:"PS4", label:"PlayStation 4", aliases:["ps4","playstation 4","playstation"] }),
-    switch: Object.freeze({ code:"SW", label:"Nintendo Switch", aliases:["sw","switch","nintendo switch"] }),
-    gamecube: Object.freeze({ code:"GC", label:"Nintendo GameCube", aliases:["gc","gamecube","nintendo gamecube"] }),
-    gba: Object.freeze({ code:"GBA", label:"Game Boy Advance", aliases:["gba","game boy advance"] }),
-    gb: Object.freeze({ code:"GB", label:"Game Boy", aliases:["gb","game boy"] }),
-    gbc: Object.freeze({ code:"GBC", label:"Game Boy Color", aliases:["gbc","game boy color"] }),
-    n64: Object.freeze({ code:"N64", label:"Nintendo 64", aliases:["n64","nintendo 64"] }),
-    nes: Object.freeze({ code:"NES", label:"Nintendo Entertainment System", aliases:["nes","nintendo entertainment system"] }),
-    snes: Object.freeze({ code:"SNES", label:"Super Nintendo", aliases:["snes","super nintendo","super nintendo entertainment system"] }),
-    xbox: Object.freeze({ code:"XB", label:"Xbox", aliases:["xb","xbox"] }),
-    "virtual-boy": Object.freeze({ code:"VB", label:"Virtual Boy", aliases:["vb","virtual boy"] }),
-    genesis: Object.freeze({ code:"SG", label:"Sega Genesis", aliases:["sg","sega genesis","genesis"] }),
+    pc: Object.freeze({ code:"PC", label:"PC Games", accent:"#FFE600", ink:"#050706", aliases:["pc","computer"] }),
+    ps5: Object.freeze({ code:"PS5", label:"PlayStation 5", accent:"#2D9CFF", ink:"#050706", aliases:["ps5","playstation 5","playstation"] }),
+    ps4: Object.freeze({ code:"PS4", label:"PlayStation 4", accent:"#006FCD", ink:"#FFFFFF", aliases:["ps4","playstation 4","playstation"] }),
+    switch: Object.freeze({ code:"SW", label:"Nintendo Switch", accent:"#E60012", ink:"#FFFFFF", aliases:["sw","switch","nintendo switch"] }),
+    gamecube: Object.freeze({ code:"GC", label:"Nintendo GameCube", accent:"#6A5ACD", ink:"#FFFFFF", aliases:["gc","gamecube","nintendo gamecube"] }),
+    gba: Object.freeze({ code:"GBA", label:"Game Boy Advance", accent:"#7567D9", ink:"#FFFFFF", aliases:["gba","game boy advance"] }),
+    gb: Object.freeze({ code:"GB", label:"Game Boy", accent:"#9BBC0F", ink:"#050706", aliases:["gb","game boy"] }),
+    gbc: Object.freeze({ code:"GBC", label:"Game Boy Color", accent:"#A855F7", ink:"#FFFFFF", aliases:["gbc","game boy color"] }),
+    n64: Object.freeze({ code:"N64", label:"Nintendo 64", accent:"#35C759", ink:"#050706", aliases:["n64","nintendo 64"] }),
+    nes: Object.freeze({ code:"NES", label:"Nintendo Entertainment System", accent:"#D8D8D8", ink:"#050706", aliases:["nes","nintendo entertainment system"] }),
+    snes: Object.freeze({ code:"SNES", label:"Super Nintendo", accent:"#9B72CF", ink:"#050706", aliases:["snes","super nintendo","super nintendo entertainment system"] }),
+    xbox: Object.freeze({ code:"XB", label:"Xbox", accent:"#107C10", ink:"#FFFFFF", aliases:["xb","xbox"] }),
+    "virtual-boy": Object.freeze({ code:"VB", label:"Virtual Boy", accent:"#FF3030", ink:"#FFFFFF", aliases:["vb","virtual boy"] }),
+    genesis: Object.freeze({ code:"SG", label:"Sega Genesis", accent:"#2384E8", ink:"#FFFFFF", aliases:["sg","sega genesis","genesis"] }),
   });
 
   function normalize(value) {
