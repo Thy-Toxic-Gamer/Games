@@ -16,6 +16,12 @@
   let currentRequest = null;
   let loading = false;
   let paymentCheckRunning = false;
+  const catalog = window.TOXIC_CATALOG;
+  const viewerChangePicker = catalog?.enhanceOwnedGameInput({
+    titleInput:get("viewer-change-title"),
+    platformInput:get("viewer-change-platform"),
+    errorElement:get("viewer-change-error"),
+  });
   const easternZone = "America/New_York";
   function authRedirect() { return new URL("status.html", window.location.href).href; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
@@ -169,8 +175,11 @@
   const changeDialog = get("request-game-change-dialog");
   get("request-game-change-button").addEventListener("click",()=>{
     if(!currentRequest || get("request-game-change-button").disabled)return;
+    const catalogRequest=currentRequest.request_type==="catalog";
+    viewerChangePicker?.setEnabled(catalogRequest);
+    viewerChangePicker?.reset();
     get("viewer-change-title").value="";
-    get("viewer-change-platform").value=currentRequest.platform||"";
+    get("viewer-change-platform").value="";
     get("viewer-change-reason-input").value="";
     get("viewer-change-error").textContent="";
     changeDialog.showModal();
@@ -181,9 +190,12 @@
   get("request-game-change-form").addEventListener("submit",async(event)=>{
     event.preventDefault();
     if(!currentRequest)return;
-    const title=get("viewer-change-title").value.trim();
-    const platform=get("viewer-change-platform").value.trim();
+    const catalogRequest=currentRequest.request_type==="catalog";
+    const catalogSelection=catalogRequest?viewerChangePicker?.selected():null;
+    const title=catalogSelection?.title||get("viewer-change-title").value.trim();
+    const platform=catalogSelection?.systemLabel||get("viewer-change-platform").value.trim();
     const reason=get("viewer-change-reason-input").value.trim();
+    if(catalogRequest&&!catalogSelection){get("viewer-change-error").textContent="Select an owned game from the catalog suggestions.";return;}
     if(!title){get("viewer-change-error").textContent="Enter the replacement game title.";return;}
     if(!platform){get("viewer-change-error").textContent="Enter the replacement console or system.";return;}
     if(reason.length<10){get("viewer-change-error").textContent="Explain the requested change in at least 10 characters.";return;}

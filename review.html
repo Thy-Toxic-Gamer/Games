@@ -6,10 +6,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.6" />
+  <link rel="stylesheet" href="request-test.css?v=10.7" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="review-live.js?v=10.5" defer></script>
+  <script src="nintendo-classics.js?v=1.0.45" defer></script>
+  <script src="games.js?v=1.0.45" defer></script>
+  <script src="catalog-utils.js?v=1.0.0" defer></script>
+  <script src="review-live.js?v=10.6" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -88,7 +91,7 @@
       <label>Reason for this change
         <textarea id="edit-reason" maxlength="500" minlength="10" rows="5" required placeholder="Explain what was corrected and why."></textarea>
       </label>
-      <p class="request-dialog-rules">The request type, play style, payment amount, payment reference, and current status cannot be changed here. The replacement game must remain in the same catalog category and payment bracket. The viewer status page and Discord staff channel will receive the update.</p>
+      <p class="request-dialog-rules">Choose an owned catalog result so its exact system is recorded automatically. The request type, play style, payment amount, payment reference, and current status remain locked. The replacement must stay in the same payment bracket; the viewer status page and Discord staff channel will receive the update.</p>
       <p class="request-form-error" id="edit-request-error" role="alert"></p>
       <div class="request-center-actions">
         <button class="review-button review-button-muted" id="cancel-request-edit" type="button">Keep Original</button>

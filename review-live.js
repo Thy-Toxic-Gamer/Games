@@ -15,6 +15,12 @@
   let viewerChangeReviewRequest = null;
   let staffAccessSource = null;
   let serviceEnabled = true;
+  const catalog = window.TOXIC_CATALOG;
+  const editGamePicker = catalog?.enhanceOwnedGameInput({
+    titleInput:get("edit-game-title"),
+    platformInput:get("edit-platform"),
+    errorElement:get("edit-request-error"),
+  });
   const easternZone = "America/New_York";
 
   function authRedirect() { return new URL("review.html",window.location.href).href; }
@@ -63,8 +69,14 @@
     if(!canEditRequest(request))return;
     editRequest=request;
     get("edit-request-tier").textContent=requestTierLabel(request);
-    get("edit-game-title").value=useViewerChange?request.viewer_change_game_title||"":request.game_title||"";
-    get("edit-platform").value=useViewerChange?request.viewer_change_platform||"":request.platform||"";
+    const title=useViewerChange?request.viewer_change_game_title||"":request.game_title||"";
+    const platform=useViewerChange?request.viewer_change_platform||"":request.platform||"";
+    const catalogRequest=request.request_type==="catalog";
+    editGamePicker?.setEnabled(catalogRequest);
+    editGamePicker?.reset();
+    get("edit-game-title").value=title;
+    get("edit-platform").value=platform;
+    if(catalogRequest)editGamePicker?.select(catalog?.findExact(title,platform));
     get("edit-reason").value=useViewerChange?`Approved viewer change request: ${request.viewer_change_reason||"Replacement approved by staff."}`.slice(0,500):"";
     get("save-request-edit").textContent=useViewerChange?"Approve and Apply Change":"Save Request Update";
     get("edit-request-error").textContent="";
@@ -192,7 +204,9 @@
   get("edit-request-form").addEventListener("submit",async(event)=>{
     event.preventDefault();
     if(!canEditRequest(editRequest)){get("edit-request-error").textContent="This request can no longer be edited.";return;}
-    const title=get("edit-game-title").value.trim();const platform=get("edit-platform").value.trim();const reason=get("edit-reason").value.trim();
+    const catalogRequest=editRequest.request_type==="catalog";const catalogSelection=catalogRequest?editGamePicker?.selected():null;
+    const title=catalogSelection?.title||get("edit-game-title").value.trim();const platform=catalogSelection?.systemLabel||get("edit-platform").value.trim();const reason=get("edit-reason").value.trim();
+    if(catalogRequest&&!catalogSelection){get("edit-request-error").textContent="Select an owned game from the catalog suggestions.";return;}
     if(!title){get("edit-request-error").textContent="Enter the corrected game title.";return;}
     if(!platform){get("edit-request-error").textContent="Enter the corrected console or system.";return;}
     if(reason.length<10){get("edit-request-error").textContent="Explain the change in at least 10 characters.";return;}

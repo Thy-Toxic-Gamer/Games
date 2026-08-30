@@ -1146,6 +1146,81 @@ main {
   line-height: 1.55;
 }
 
+.updates-catalog-guide {
+  display: grid;
+  gap: 1rem;
+  margin: 0 clamp(1rem, 2vw, 1.5rem) clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border: 1px solid rgba(255, 43, 214, 0.78);
+  border-left: 4px solid #ff2bd6;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(255, 43, 214, 0.09), rgba(5, 7, 6, 0.96) 42%);
+  box-shadow: inset 0 0 36px rgba(255, 43, 214, 0.035);
+}
+
+.updates-catalog-guide header {
+  max-width: 940px;
+}
+
+.updates-catalog-guide .eyebrow {
+  margin: 0 0 0.35rem;
+  color: #ff64df;
+}
+
+.updates-catalog-guide h4 {
+  margin: 0 0 0.45rem;
+  color: #fff;
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
+}
+
+.updates-catalog-guide header > p:last-child,
+.updates-catalog-instructions p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.updates-id-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.updates-id-grid span {
+  min-width: 0;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid rgba(255, 43, 214, 0.25);
+  background: rgba(0, 0, 0, 0.24);
+  color: #eef2ef;
+  font-size: 0.72rem;
+}
+
+.updates-id-grid code {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #ff64df;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.updates-catalog-instructions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.updates-catalog-instructions article {
+  padding: 0.85rem;
+  border-left: 2px solid #ff2bd6;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.updates-catalog-instructions strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #fff;
+}
+
 .updates-history {
   padding: clamp(1rem, 3vw, 2rem);
   border-top: 1px solid var(--border);
@@ -1207,6 +1282,10 @@ main {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .updates-id-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .dashboard-featured .dashboard-card-grid {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
@@ -1234,6 +1313,10 @@ main {
   }
 
   .updates-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .updates-catalog-instructions {
     grid-template-columns: 1fr;
   }
 

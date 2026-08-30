@@ -342,6 +342,7 @@ function freezePcGames(rows) {
         number: index + 1,
         title,
         appId,
+        sourcePlatformId: "pc",
         releaseDate: releaseDate || null,
         releaseLabel: releaseLabel || null,
       }),
@@ -354,6 +355,7 @@ function freezeConsoleGames(
   sourcePlatformId,
   useOriginalCover = false,
   cleanArtworkId = null,
+  cleanArtworkIndexByTitle = null,
 ) {
   const hybridCovers = window.HYBRID_SPRITES || window.HYBRID_COVERS || {};
   const ps5Covers = window.PS5_COVERS || {};
@@ -372,8 +374,9 @@ function freezeConsoleGames(
     "Xevious": "assets/covers/nes/overrides/xevious.webp",
   });
   return Object.freeze(
-    sortGameRows(rows).map(([title, image, genre], index) =>
-      Object.freeze({
+    sortGameRows(rows).map(([title, image, genre], index) => {
+      const artworkIndex = cleanArtworkIndexByTitle?.get(title) ?? index;
+      return Object.freeze({
         number: index + 1,
         title,
         image: useOriginalCover
@@ -381,7 +384,7 @@ function freezeConsoleGames(
           : cleanArtworkId === "nes" && cleanArtworkOverrides[title]
             ? cleanArtworkOverrides[title]
           : cleanArtworkId
-            ? `hybrid-sprite:assets/covers/${cleanArtworkId}/atlases/${cleanArtworkId}-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
+            ? `hybrid-sprite:assets/covers/${cleanArtworkId}/atlases/${cleanArtworkId}-clean-${String(Math.floor(artworkIndex / 20) + 1).padStart(2, "0")}.webp:${artworkIndex % 20}`
           : sourcePlatformId === "ps4" && title === "Dark Cloud 2"
             ? "assets/covers/ps4/dark-cloud-2-borderless-generated.webp"
           : sourcePlatformId === "ps4"
@@ -392,53 +395,67 @@ function freezeConsoleGames(
             image,
         genre: genre || null,
         sourcePlatformId: sourcePlatformId || null,
-      }),
-    ),
+      });
+    }),
   );
 }
 
 const nintendoClassics = window.NINTENDO_CLASSICS || {};
 const regularSwitchGames = freezeConsoleGames(switchRows, "switch", false, "switch");
-const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "switch", false, "nes");
+const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "nes", false, "nes");
 const snesClassicsGames = freezeConsoleGames(
   nintendoClassics.snes || [],
-  "switch",
+  "snes",
   false,
   "snes-collection",
 );
+const gameBoyRows = nintendoClassics.gb || [];
+const gameBoyArtworkIndexes = new Map(
+  sortGameRows(gameBoyRows).map(([title], index) => [title, index]),
+);
+const originalGameBoyRows = gameBoyRows.filter(([, image]) => !String(image).includes("Game_Boy_Color"));
+const gameBoyColorRows = gameBoyRows.filter(([, image]) => String(image).includes("Game_Boy_Color"));
 const gameBoyClassicsGames = freezeConsoleGames(
-  nintendoClassics.gb || [],
-  "switch",
+  originalGameBoyRows,
+  "gb",
   false,
   "gameboy-collection",
+  gameBoyArtworkIndexes,
+);
+const gameBoyColorClassicsGames = freezeConsoleGames(
+  gameBoyColorRows,
+  "gbc",
+  false,
+  "gameboy-collection",
+  gameBoyArtworkIndexes,
 );
 const n64ClassicsGames = freezeConsoleGames(
   nintendoClassics.n64 || [],
-  "switch",
+  "n64",
   false,
   "n64-collection",
 );
 const gbaClassicsGames = freezeConsoleGames(
   nintendoClassics.gba || [],
-  "switch",
+  "gba",
   false,
   "gba-collection",
 );
 const genesisClassicsGames = freezeConsoleGames(
   nintendoClassics.genesis || [],
-  "switch",
+  "genesis",
   false,
   "genesis-collection",
 );
 const virtualBoyClassicsGames = freezeConsoleGames(
   nintendoClassics.virtualBoy || [],
-  "switch",
+  "virtual-boy",
   false,
   "virtual-boy-original",
 );
 const gameCubeClassicsGames = freezeConsoleGames(
   nintendoClassics.gamecube || [],
-  "switch",
+  "gamecube",
   false,
   "gamecube-collection",
 );
@@ -447,6 +464,7 @@ const allSwitchGames = Object.freeze([
   ...nesClassicsGames,
   ...snesClassicsGames,
   ...gameBoyClassicsGames,
+  ...gameBoyColorClassicsGames,
   ...n64ClassicsGames,
   ...gbaClassicsGames,
   ...genesisClassicsGames,
@@ -493,7 +511,8 @@ const platforms = Object.freeze([
       Object.freeze({ id: "switch-games", label: "Nintendo Switch", games: regularSwitchGames }),
       Object.freeze({ id: "nes-classics", label: "NES", games: nesClassicsGames }),
       Object.freeze({ id: "snes-classics", label: "SNES", games: snesClassicsGames }),
-      Object.freeze({ id: "game-boy-classics", label: "Game Boy / Game Boy Color", games: gameBoyClassicsGames }),
+      Object.freeze({ id: "game-boy-classics", label: "Game Boy", games: gameBoyClassicsGames }),
+      Object.freeze({ id: "game-boy-color-classics", label: "Game Boy Color", games: gameBoyColorClassicsGames }),
       Object.freeze({ id: "n64-classics", label: "Nintendo 64", games: n64ClassicsGames }),
       Object.freeze({ id: "gba-classics", label: "Game Boy Advance", games: gbaClassicsGames }),
       Object.freeze({ id: "genesis-classics", label: "Sega Genesis", games: genesisClassicsGames }),

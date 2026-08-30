@@ -10,18 +10,19 @@
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
-    <link rel="stylesheet" href="dashboard.css?v=1.0.41" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.34" />
+    <link rel="stylesheet" href="dashboard.css?v=1.0.42" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.35" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
     <script src="hybrid-covers.js?v=1.0.67" defer></script>
     <script src="ps5-covers.js?v=1.0.35" defer></script>
-    <script src="games.js?v=1.0.44" defer></script>
+    <script src="games.js?v=1.0.45" defer></script>
+    <script src="catalog-utils.js?v=1.0.0" defer></script>
     <script src="game-summaries.js?v=1.0.1" defer></script>
-    <script src="app.js?v=1.0.32" defer></script>
-    <script src="dashboard.js?v=1.0.31" defer></script>
-    <script src="request-test.js?v=1.0.24" defer></script>
+    <script src="app.js?v=1.0.33" defer></script>
+    <script src="dashboard.js?v=1.0.32" defer></script>
+    <script src="request-test.js?v=1.0.25" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -90,7 +91,7 @@
                   <h3 id="vod-policy-title">VOD Availability</h3>
                   <ul class="request-policy-list">
                     <li><strong>YouTube:</strong> Completed streams remain permanently available.</li>
-                    <li><strong>Twitch:</strong> VODs are retained for 7 days for standard users, 14 days for Affiliates, and 60 days for Partners, Turbo, and Prime users.</li>
+                    <li><strong>Twitch:</strong> VODs are retained for 60 days.</li>
                   </ul>
                 </section>
                 <section class="request-policy-group" aria-labelledby="slot-policy-title">
@@ -144,7 +145,7 @@
           <div class="owned-game-search-copy">
             <p class="eyebrow">Owned Game Search</p>
             <label id="owned-game-search-label" for="owned-game-search-input">Find a game in the Toxic Vault</label>
-            <p>Search every currently owned game by title.</p>
+            <p>Search every currently owned game by title, game ID, number, abbreviation, or system.</p>
           </div>
           <div class="owned-game-search-control">
             <span class="owned-game-search-icon" aria-hidden="true">⌕</span>
@@ -153,7 +154,7 @@
               type="search"
               autocomplete="off"
               spellcheck="false"
-              placeholder="Search owned games…"
+              placeholder="Search by game, PC#001, #001, or system…"
               aria-describedby="owned-game-search-status"
             />
             <button id="owned-game-search-clear" type="button" hidden>Clear</button>
@@ -217,6 +218,36 @@
               <article><span aria-hidden="true">✎</span><h4>Schedule Changes</h4><p>Rescheduling or clearing a game time requires a reason, which is shown to the viewer and included in Discord updates.</p></article>
               <article><span aria-hidden="true">✓</span><h4>Moderator Security</h4><p>Twitch moderator access is checked automatically. Staff must reverify after leaving, and removed moderators lose access.</p></article>
             </div>
+
+            <section class="updates-catalog-guide" aria-labelledby="catalog-guide-title">
+              <header>
+                <p class="eyebrow">Catalog Reference</p>
+                <h4 id="catalog-guide-title">Game IDs &amp; Catalog Search Guide</h4>
+                <p>Every owned game has a system-specific ID. Numbering begins at 001 within each system, making games easy to identify even when the same title exists on multiple platforms.</p>
+              </header>
+              <div class="updates-id-grid" aria-label="Game ID prefixes by system">
+                <span><code>PC#001</code> PC Games</span>
+                <span><code>PS5#001</code> PlayStation 5</span>
+                <span><code>PS4#001</code> PlayStation 4</span>
+                <span><code>SW#001</code> Nintendo Switch</span>
+                <span><code>GC#001</code> Nintendo GameCube</span>
+                <span><code>GBA#001</code> Game Boy Advance</span>
+                <span><code>GB#001</code> Game Boy</span>
+                <span><code>GBC#001</code> Game Boy Color</span>
+                <span><code>N64#001</code> Nintendo 64</span>
+                <span><code>NES#001</code> Nintendo Entertainment System</span>
+                <span><code>SNES#001</code> Super Nintendo</span>
+                <span><code>XB#001</code> Xbox</span>
+                <span><code>VB#001</code> Virtual Boy</span>
+                <span><code>SG#001</code> Sega Genesis</span>
+              </div>
+              <div class="updates-catalog-instructions">
+                <article><strong>1. Search the owned catalog</strong><p>Enter a game title, complete ID, number such as #001, system abbreviation, or system name. A system search displays every owned game for that system.</p></article>
+                <article><strong>2. Request a viewer change</strong><p>Open View Request Status, select Request a Game Change, and begin typing the replacement. Choose an owned result to fill in its exact system automatically.</p></article>
+                <article><strong>3. Apply a staff correction</strong><p>In Staff Control, use Edit Request or Apply Viewer Change. Select the owned game from the suggestions before saving so the correct title and system are recorded.</p></article>
+                <article><strong>4. Keep unlisted games separate</strong><p>The Request a Game Not Listed field remains freeform because those titles are not part of the owned catalog.</p></article>
+              </div>
+            </section>
 
             <div class="updates-history" aria-label="Major update history">
               <h4>Major Updates</h4>

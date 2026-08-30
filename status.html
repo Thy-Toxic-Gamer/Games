@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.6" />
+  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.7" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="status-test.js?v=10.5" defer></script>
+  <script src="nintendo-classics.js?v=1.0.45" defer></script>
+  <script src="games.js?v=1.0.45" defer></script>
+  <script src="catalog-utils.js?v=1.0.0" defer></script>
+  <script src="status-test.js?v=10.6" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -51,7 +54,7 @@
       <button class="request-dialog-close" type="button" aria-label="Close game change form">×</button>
       <p class="eyebrow">Viewer Game Change</p>
       <h2>Request a Different Game</h2>
-      <p class="request-dialog-rules">Submit the exact replacement game and console or system. Staff will review the change before anything is updated.</p>
+      <p class="request-dialog-rules">Search the owned catalog by game title, ID, number, abbreviation, or system, then choose the correct result. Its precise system will be filled in automatically before the change is sent to staff and Discord.</p>
       <div class="request-edit-grid">
         <label>Replacement game title<input id="viewer-change-title" type="text" maxlength="160" autocomplete="off" required /></label>
         <label>Console or system<input id="viewer-change-platform" type="text" maxlength="80" autocomplete="off" required /></label>

@@ -34,7 +34,12 @@
   let session = null;
   let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
 
-  function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",ps4:"PS4",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
+  function prettyPlatform(value) {
+    if (value === "unlisted") return "Not in Catalog";
+    const catalog = window.TOXIC_CATALOG;
+    const systemId = catalog?.systemIdFor(value);
+    return catalog?.systems?.[systemId]?.label || ({pc:"PC Games",switch:"Nintendo Switch",ps5:"PlayStation 5",ps4:"PlayStation 4",snes:"Super Nintendo"})[value] || value;
+  }
   function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog" : `${prettyPlatform(selection.gamePlatform)} · Owned Catalog Game`; }
   function selectRequestGoal(goal, focusTab=false) {
     if (!selected) return;

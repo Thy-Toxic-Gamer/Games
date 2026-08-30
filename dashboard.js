@@ -12,11 +12,18 @@
   const platformMeta = Object.freeze({
     switch: { label: "Nintendo Games", icon: "◫", limit: 12, accent: "#ff392b" },
     pc: { label: "PC Games", icon: "▣", limit: 12, accent: "#ffe600" },
-    ps5: { label: "Playstation Games", icon: "△", limit: 4, accent: "#159cff" },
-    ps4: { label: "PS4", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "Emulator Games", icon: "✚", limit: 4, accent: "#f5f5f5" },
+    ps5: { label: "PlayStation 5", icon: "△", limit: 4, accent: "#159cff" },
+    ps4: { label: "PlayStation 4", icon: "△", limit: 5, accent: "#159cff" },
+    snes: { label: "Super Nintendo", icon: "✚", limit: 4, accent: "#f5f5f5" },
+    nes: { label: "Nintendo Entertainment System", accent: "#f5f5f5" },
+    gb: { label: "Game Boy", accent: "#b8d2ac" },
+    gbc: { label: "Game Boy Color", accent: "#9d72ff" },
+    gba: { label: "Game Boy Advance", accent: "#7667d8" },
+    n64: { label: "Nintendo 64", accent: "#2fa94f" },
+    gamecube: { label: "Nintendo GameCube", accent: "#7055c7" },
+    genesis: { label: "Sega Genesis", accent: "#e33b35" },
+    "virtual-boy": { label: "Virtual Boy", accent: "#ff3030" },
     all: { label: "All", accent: "#343a36" },
-    nes: { label: "NES Emulation", accent: "#f5f5f5" },
     xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: "#0d7a2f" },
     updates: { label: "Updates", accent: "#ffb000" },
   });
@@ -88,11 +95,14 @@
   }
 
   function getCards(platformId) {
+    if (platformId === "switch") return Array.from(grid.querySelectorAll('[data-collection-platform="switch"]'));
+    if (platformId === "ps5") return Array.from(grid.querySelectorAll('[data-collection-platform="ps5"]'));
+    if (platformId === "snes") return Array.from(grid.querySelectorAll('[data-collection-platform="emulation"]'));
     return Array.from(grid.querySelectorAll(`.game-card.platform-${platformId}`));
   }
 
   function platformFromCard(card) {
-    return Object.keys(platformMeta).find((id) => card.classList.contains(`platform-${id}`)) || activePlatform();
+    return card.dataset.gameSystemId || Object.keys(platformMeta).find((id) => card.classList.contains(`platform-${id}`)) || activePlatform();
   }
 
   function preparePreviewCard(card, platformId) {
@@ -219,8 +229,8 @@
 
     detail.querySelector("h3").textContent = title;
     detail.querySelector(".featured-detail-edition").textContent = pixelRemaster
-      ? "Pixel Remaster"
-      : "Nintendo Switch";
+      ? `${card.dataset.gameSystemLabel || "Nintendo Switch"} · Pixel Remaster`
+      : card.dataset.gameSystemLabel || "Nintendo Switch";
     detail.querySelector(".featured-detail-genre").textContent = genre;
     detail.querySelector(".featured-detail-story").textContent = story;
 
@@ -406,7 +416,7 @@
 
     popover.style.setProperty("--detail-accent", meta.accent);
     popover.querySelector("h3").textContent = title;
-    popover.querySelector(".game-detail-platform").textContent = meta.label;
+    popover.querySelector(".game-detail-platform").textContent = card.dataset.gameSystemLabel || meta.label;
     popover.querySelector(".game-detail-genre").textContent = genre;
     popover.querySelector(".game-detail-story").textContent = story;
 

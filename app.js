@@ -3,16 +3,11 @@
 
   const library = window.GAME_LIBRARY || { platforms: [], totalGames: 0 };
   const platforms = Array.isArray(library.platforms) ? library.platforms : [];
-  const allGames = platforms
+  const catalog = window.TOXIC_CATALOG;
+  const allGames = Array.isArray(catalog?.entries) ? [...catalog.entries] : platforms
     .filter((platform) => !platform.comingSoon)
-    .flatMap((platform) => platform.games.map((game) => ({
-      ...game,
-      sourcePlatformId: game.sourcePlatformId || platform.id,
-    })))
-    .sort((left, right) => left.title.localeCompare(right.title, "en", {
-      numeric: true,
-      sensitivity: "base",
-    }));
+    .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId:game.sourcePlatformId || platform.id, collectionPlatformId:platform.id })))
+    .sort((left, right) => left.title.localeCompare(right.title, "en", { numeric:true, sensitivity:"base" }));
   const viewPlatforms = [
     { id: "all", label: "ALL games", games: allGames },
     ...platforms,
@@ -658,15 +653,20 @@
 
   function createGameCard(game, index, platform) {
     const upcoming = isGameUpcoming(game, new Date());
-    const isPcGame = (platform.id === "pc" || game.sourcePlatformId === "pc") && game.appId;
+    const catalogMeta = catalog?.metadataFor(game, platform.id) || { systemId:game.sourcePlatformId || platform.id, systemLabel:platform.label, catalogId:`#${String(game.number).padStart(3,"0")}` };
+    const isPcGame = catalogMeta.systemId === "pc" && game.appId;
     const card = document.createElement(isPcGame ? "a" : "article");
     card.className = "game-card";
-    const sourcePlatformId = game.sourcePlatformId || platform.id;
+    const sourcePlatformId = catalogMeta.systemId;
     card.classList.add(`platform-${sourcePlatformId}`);
+    card.dataset.gameSystemId = sourcePlatformId;
+    card.dataset.gameSystemLabel = catalogMeta.systemLabel;
+    card.dataset.gameCatalogId = catalogMeta.catalogId;
+    card.dataset.collectionPlatform = game.collectionPlatformId || platform.id;
     if (sourcePlatformId !== "pc") {
       card.classList.add("console-game");
       card.tabIndex = 0;
-      card.setAttribute("aria-label", `${game.title}. Hover or focus for game details.`);
+      card.setAttribute("aria-label", `${catalogMeta.catalogId}, ${game.title}, ${catalogMeta.systemLabel}. Hover or focus for game details.`);
     }
 
     if (isPcGame) {
@@ -687,7 +687,7 @@
 
     const number = document.createElement("span");
     number.className = "game-number";
-    number.textContent = `#${String(game.number).padStart(3, "0")}`;
+    number.textContent = catalogMeta.catalogId;
 
     const title = document.createElement("h3");
     title.textContent = game.title;
@@ -711,6 +711,7 @@
     requestButton.textContent = "Request Game";
     requestButton.dataset.gameTitle = game.title;
     requestButton.dataset.gamePlatform = sourcePlatformId;
+    requestButton.dataset.gameCatalogId = catalogMeta.catalogId;
     if (isPcGame) {
       requestButton.setAttribute("role", "button");
       requestButton.tabIndex = 0;
@@ -766,7 +767,7 @@
     gameSearchClear.hidden = true;
     gameSearchEmpty.hidden = true;
     panel.dataset.searchActive = "false";
-    updateSearchStatus(`Search all ${allGames.length} currently owned games by title.`);
+    updateSearchStatus(`Search all ${allGames.length} currently owned games by title, game ID, number, or system.`);
   }
 
   function renderSearchResults() {
@@ -780,8 +781,8 @@
     }
 
     activeSearchQuery = query;
-    const searchTerms = normalizeSearchValue(query).split(/\s+/).filter(Boolean);
-    const matches = allGames.filter((game) => {
+    const matches = catalog?.search ? catalog.search(query) : allGames.filter((game) => {
+      const searchTerms = normalizeSearchValue(query).split(/\s+/).filter(Boolean);
       const normalizedTitle = normalizeSearchValue(game.title);
       return searchTerms.every((term) => normalizedTitle.includes(term));
     });
@@ -1034,7 +1035,7 @@
       || platforms.reduce((total, platform) => total + platform.games.length, 0);
 
     headerCount.textContent = String(totalGames);
-    updateSearchStatus(`Search all ${allGames.length} currently owned games by title.`);
+    updateSearchStatus(`Search all ${allGames.length} currently owned games by title, game ID, number, or system.`);
     gameSearchForm.addEventListener("submit", function (event) {
       event.preventDefault();
       renderSearchResults();
