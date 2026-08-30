@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.40" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.24" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.25" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -81,6 +81,7 @@
                 <li>Enter the complete game title below for staff review.</li>
                 <li>Payment options are provided only if the request is approved.</li>
               </ul>
+              <a class="request-link-button unlisted-status-link" href="status.html">View Request Status</a>
             </div>
             <label class="unlisted-request-title" for="unlisted-game-title">Unlisted game title</label>
             <div class="unlisted-request-entry">
@@ -88,10 +89,7 @@
               <button id="unlisted-request-button" type="submit">Choose Request Type</button>
             </div>
           </form>
-          <div class="request-center-actions">
-            <a class="request-link-button" href="status.html">View Request Status</a>
-            <a class="request-link-button request-link-admin" href="review.html">Staff Control</a>
-          </div>
+          <a class="request-link-button request-link-admin catalog-staff-control" href="review.html">Staff Control</a>
         </section>
         <form class="owned-game-search" id="owned-game-search" role="search">
           <div class="owned-game-search-copy">
