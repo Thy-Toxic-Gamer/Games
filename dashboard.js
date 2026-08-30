@@ -5,6 +5,7 @@
   const tabs = document.querySelector("#platform-tabs");
   const panel = document.querySelector("#platform-panel");
   const sectionHeading = panel?.querySelector(".section-heading");
+  const comingSoon = document.querySelector("#coming-soon-panel");
 
   if (!grid || !tabs || !panel) return;
 
@@ -246,7 +247,11 @@
     button.type = "button";
     button.textContent = `View all ${count} ${meta.label} games ›`;
     button.addEventListener("click", function () {
-      tabs.querySelector(`[data-platform="${platformId}"]`)?.click();
+      const targetPlatformId = platformId === "snes" ? "emulation" : platformId;
+      tabs.querySelector(`[data-platform="${targetPlatformId}"]`)?.click();
+      if (platformId === "snes") {
+        document.querySelector('[data-section="snes-emulation"]')?.click();
+      }
       panel.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     return button;
@@ -307,7 +312,7 @@
 
     if (selected !== "all") {
       if (dashboard) dashboard.hidden = true;
-      grid.hidden = false;
+      grid.hidden = comingSoon ? !comingSoon.hidden : false;
       if (sectionHeading) sectionHeading.hidden = false;
       hidePopover();
       return;

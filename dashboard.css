@@ -243,7 +243,7 @@ main {
 /* Platform navigation */
 .platform-tabs {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.55rem;
   margin-bottom: 0.72rem;
   scroll-margin-top: 84px;
@@ -297,6 +297,8 @@ main {
 .platform-tab[data-platform="switch"]::before { content: "◫"; }
 .platform-tab[data-platform="ps5"] { --tab-accent: var(--ps5-accent); }
 .platform-tab[data-platform="ps5"]::before { content: "△"; }
+.platform-tab[data-platform="emulation"] { --tab-accent: var(--snes-accent); }
+.platform-tab[data-platform="emulation"]::before { content: "✚"; }
 .platform-tab[data-platform="nes"] { --tab-accent: var(--nes-accent); }
 .platform-tab[data-platform="nes"]::before { content: "✦"; }
 .platform-tab[data-platform="snes"] { --tab-accent: var(--snes-accent); }
@@ -392,6 +394,32 @@ main {
   color: #100100;
 }
 
+.platform-subtabs[data-platform="emulation"] {
+  border-color: color-mix(in srgb, var(--snes-accent) 42%, #2a302b);
+  background: color-mix(in srgb, var(--snes-accent) 6%, #050706);
+}
+
+.platform-subtabs[data-platform="emulation"] .platform-subtab {
+  border-color: color-mix(in srgb, var(--snes-accent) 46%, #2a302b);
+}
+
+.platform-subtabs[data-platform="emulation"] .platform-subtab:hover,
+.platform-subtabs[data-platform="emulation"] .platform-subtab:focus-visible {
+  border-color: var(--snes-accent);
+}
+
+.platform-subtabs[data-platform="emulation"] .platform-subtab[data-section="nes-emulation"].active {
+  border-color: #fff;
+  background: #f2f2f2;
+  color: #080908;
+}
+
+.platform-subtabs[data-platform="emulation"] .platform-subtab[data-section="snes-emulation"].active {
+  border-color: var(--snes-accent);
+  background: var(--snes-accent);
+  color: #120217;
+}
+
 /* Ver. 1.0 — hybrid covers are already composed at the exact portrait ratio. */
 .dashboard-card .game-cover.hybrid-cover,
 .game-card.console-game .game-cover.console-cover.hybrid-cover,
@@ -425,6 +453,7 @@ main {
 #platform-panel[data-dashboard-platform="pc"] { --active-platform-accent: var(--pc-accent); }
 #platform-panel[data-dashboard-platform="switch"] { --active-platform-accent: var(--switch-accent); }
 #platform-panel[data-dashboard-platform="ps5"] { --active-platform-accent: var(--ps5-accent); }
+#platform-panel[data-dashboard-platform="emulation"] { --active-platform-accent: var(--snes-accent); }
 #platform-panel[data-dashboard-platform="nes"] { --active-platform-accent: var(--nes-accent); }
 #platform-panel[data-dashboard-platform="snes"] { --active-platform-accent: var(--snes-accent); }
 #platform-panel[data-dashboard-platform="xbox"] { --active-platform-accent: var(--xbox-accent); }
@@ -891,6 +920,7 @@ main {
 /* Full console tabs: compact cards with the entire cover visible. */
 #platform-panel[data-dashboard-platform="switch"] .game-grid,
 #platform-panel[data-dashboard-platform="ps5"] .game-grid,
+#platform-panel[data-dashboard-platform="emulation"] .game-grid,
 #platform-panel[data-dashboard-platform="snes"] .game-grid {
   grid-template-columns: repeat(auto-fill, minmax(145px, 175px));
   gap: 0.75rem;
@@ -924,6 +954,11 @@ main {
 
 #platform-panel[data-dashboard-platform="snes"] .game-card:hover,
 #platform-panel[data-dashboard-platform="snes"] .game-card:focus-visible {
+  border-color: var(--snes-accent);
+}
+
+#platform-panel[data-dashboard-platform="emulation"] .game-card.platform-snes:hover,
+#platform-panel[data-dashboard-platform="emulation"] .game-card.platform-snes:focus-visible {
   border-color: var(--snes-accent);
 }
 

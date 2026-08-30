@@ -458,6 +458,13 @@ const snesClassicsTitles = new Set(
 const snesEmulationRows = snesRows.filter(
   ([title]) => !snesClassicsTitles.has(title.toLocaleLowerCase("en")),
 );
+const nesEmulationGames = Object.freeze([]);
+const snesEmulationGames = freezeConsoleGames(
+  snesEmulationRows,
+  "snes",
+  false,
+  "snes-emulation-original",
+);
 const ps5Games = freezeConsoleGames(
   ps5Rows,
   "ps5",
@@ -494,16 +501,23 @@ const platforms = Object.freeze([
     ]),
   }),
   Object.freeze({
-    id: "nes",
-    label: "NES Emulation",
-    games: Object.freeze([]),
-    comingSoon: true,
-    comingSoonMessage: "NES emulation games will be added here. No original NES hardware is used.",
-  }),
-  Object.freeze({
-    id: "snes",
-    label: "SNES Emulation",
-    games: freezeConsoleGames(snesEmulationRows, "snes", false, "snes-emulation-original"),
+    id: "emulation",
+    label: "Emulation",
+    games: snesEmulationGames,
+    sections: Object.freeze([
+      Object.freeze({
+        id: "nes-emulation",
+        label: "NES",
+        games: nesEmulationGames,
+        comingSoon: true,
+        comingSoonMessage: "NES emulation games will be added here. No original NES hardware is used.",
+      }),
+      Object.freeze({
+        id: "snes-emulation",
+        label: "SNES",
+        games: snesEmulationGames,
+      }),
+    ]),
   }),
   Object.freeze({
     id: "xbox",

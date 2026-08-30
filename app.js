@@ -824,7 +824,7 @@
 
       const count = document.createElement("span");
       count.className = "subtab-count";
-      count.textContent = String(section.games.length);
+      count.textContent = section.comingSoon ? "Soon" : String(section.games.length);
 
       button.append(label, count);
       button.addEventListener("click", () => selectSection(section.id, true));
@@ -865,6 +865,19 @@
       });
 
       platformName.textContent = `${section.label} Library`;
+      if (section.comingSoon) {
+        libraryCount.textContent = "Coming Soon";
+        comingSoonLibrary.textContent = `${section.label} Emulation Library`;
+        comingSoonMessage.textContent = section.comingSoonMessage
+          || `${section.label} emulation games will be added here.`;
+        grid.hidden = true;
+        comingSoon.hidden = false;
+        grid.replaceChildren();
+        return;
+      }
+
+      grid.hidden = false;
+      comingSoon.hidden = true;
       libraryCount.textContent = `${section.games.length} Games`;
       renderGameCollection(section.games, section);
     }
