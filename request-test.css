@@ -4,9 +4,9 @@
 .request-center-copy h1 { margin:.2rem 0 .65rem; font-size:clamp(1.45rem,3vw,2.5rem); line-height:1.05; }
 .request-center-copy p:last-child { max-width:850px; margin:0; color:var(--muted); }
 .request-center-intro { max-width:none; margin:0; color:#eef3ef; line-height:1.55; }
-.request-overview-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem 1rem; max-width:none; margin:.8rem 0 0; padding-left:1.25rem; color:#dce2de; line-height:1.5; }
-.request-overview-list > li { padding:.65rem .75rem; border:1px solid #273128; background:rgba(5,7,6,.72); }
-.request-overview-list li::marker { color:var(--toxic); }
+.request-overview-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem 1rem; max-width:none; margin:.8rem 0 0; padding:0; list-style:none; color:#dce2de; line-height:1.5; }
+.request-overview-list > li { position:relative; padding:.65rem .75rem .65rem 1.65rem; border:1px solid #273128; background:rgba(5,7,6,.72); }
+.request-overview-list > li::before { content:""; position:absolute; top:1rem; left:.72rem; width:6px; height:6px; border-radius:50%; background:var(--toxic); box-shadow:0 0 8px rgba(124,255,0,.45); }
 .request-overview-list > li > strong { color:var(--toxic); }
 .request-types-overview { grid-column:1/-1; }
 .request-type-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.65rem; margin-top:.65rem; }
