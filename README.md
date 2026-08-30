@@ -2,6 +2,16 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.2 — Discord Request-System Health — Updated August 30, 2026
+
+- Added a private Discord Notifications health panel to Staff Control.
+- Verified staff can send a safe test notification to `#request-system-logs`.
+- Successful and failed request notifications now create a protected server-side delivery record.
+- Unresolved failures can be retried without exposing webhook addresses or private delivery payloads to the browser.
+- The system-log channel receives delivery confirmations and failure alerts for game-request activity.
+- Resolved retry payloads are cleared, and delivery records older than 90 days are removed during health checks.
+- Included `RUN-THIS-v10.7-DISCORD-HEALTH.sql` and `DISCORD-HEALTH-SETUP.md`.
+
 ## Ver. 1.1 — Viewer Game Change Requests — Updated August 30, 2026
 
 - Added a Request a Game Change button to each eligible viewer Request Status card.
