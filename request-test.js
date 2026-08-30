@@ -17,12 +17,51 @@
   const unlistedForm = document.querySelector("#unlisted-request-form");
   const unlistedTitle = document.querySelector("#unlisted-game-title");
   const unlistedButton = document.querySelector("#unlisted-request-button");
+  const requestChoiceTabs = Array.from(document.querySelectorAll(".request-choice-tab"));
+  const requestChoices = Object.freeze({
+    catalog: Object.freeze({
+      play: Object.freeze({ label:"Play Game", amount:5 }),
+      speed_run: Object.freeze({ label:"Speed Run Game", amount:10 }),
+      completion: Object.freeze({ label:"100% Completion", amount:15 }),
+    }),
+    unlisted: Object.freeze({
+      play: Object.freeze({ label:"Play Game", amount:10 }),
+      speed_run: Object.freeze({ label:"Speed Run Game", amount:15 }),
+      completion: Object.freeze({ label:"100% Completion", amount:20 }),
+    }),
+  });
   let selected = null;
   let session = null;
   let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
 
   function prettyPlatform(value) { return ({pc:"PC",switch:"Nintendo Switch",ps5:"PS5",ps4:"PS4",snes:"SNES",unlisted:"Not in Catalog"})[value] || value; }
-  function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog · $10 Minimum" : `${prettyPlatform(selection.gamePlatform)} · Owned Game · $5 Minimum`; }
+  function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog" : `${prettyPlatform(selection.gamePlatform)} · Owned Catalog Game`; }
+  function selectRequestGoal(goal, focusTab=false) {
+    if (!selected) return;
+    const choices = requestChoices[selected.requestType];
+    const nextGoal = choices[goal] ? goal : "play";
+    selected.requestGoal = nextGoal;
+    requestChoiceTabs.forEach((tab) => {
+      const tabGoal = tab.dataset.requestGoal;
+      const choice = choices[tabGoal];
+      const active = tabGoal === nextGoal;
+      tab.querySelector("[data-choice-price]").textContent = `$${choice.amount}`;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+      tab.tabIndex = active ? 0 : -1;
+      if (active && focusTab) tab.focus();
+    });
+  }
+  function prepareRequest(selection) {
+    selected = { ...selection, requestGoal:"play" };
+    title.textContent = selected.gameTitle;
+    platform.textContent = requestLabel(selected);
+    accountName.textContent = twitchName(session.user);
+    error.textContent = "";
+    selectRequestGoal("play");
+    dialog.showModal();
+    requestChoiceTabs[0]?.focus();
+  }
   function twitchName(user) {
     const data = user?.user_metadata || {};
     return data.preferred_username || data.user_name || data.login || data.name || data.full_name || "Twitch Viewer";
@@ -48,11 +87,11 @@
     signOutButton.hidden = !signedIn;
     document.querySelectorAll(".request-game-button").forEach((button) => {
       button.setAttribute("aria-disabled", String(locked));
-      button.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request for $5+" : "Sign in to Request";
+      button.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request Game" : "Sign in to Request";
     });
     if (unlistedButton) {
       unlistedButton.disabled = locked;
-      unlistedButton.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request for $10+" : "Sign in to Request";
+      unlistedButton.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Choose Request Type" : "Sign in to Request";
     }
     if (unlistedTitle) unlistedTitle.disabled = locked;
     if (systemState.serviceEnabled === false) {
@@ -72,9 +111,7 @@
   async function openRequest(button) {
     if (!session?.user) { await signIn(); return; }
     if (requestLocked()) { updateInterface(); return; }
-    selected = {gameTitle:button.dataset.gameTitle,gamePlatform:button.dataset.gamePlatform,requestType:"catalog"};
-    title.textContent = selected.gameTitle; platform.textContent = requestLabel(selected);
-    accountName.textContent = twitchName(session.user); error.textContent = ""; dialog.showModal(); note.focus();
+    prepareRequest({gameTitle:button.dataset.gameTitle,gamePlatform:button.dataset.gamePlatform,requestType:"catalog"});
   }
 
   document.addEventListener("click", (event) => {
@@ -87,6 +124,19 @@
     if (button && (event.key === "Enter" || event.key === " ")) { event.preventDefault(); openRequest(button); }
   });
   document.querySelector(".request-dialog-close")?.addEventListener("click", () => dialog.close());
+  requestChoiceTabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectRequestGoal(tab.dataset.requestGoal));
+    tab.addEventListener("keydown", (event) => {
+      let targetIndex = index;
+      if (event.key === "ArrowRight") targetIndex = (index + 1) % requestChoiceTabs.length;
+      else if (event.key === "ArrowLeft") targetIndex = (index - 1 + requestChoiceTabs.length) % requestChoiceTabs.length;
+      else if (event.key === "Home") targetIndex = 0;
+      else if (event.key === "End") targetIndex = requestChoiceTabs.length - 1;
+      else return;
+      event.preventDefault();
+      selectRequestGoal(requestChoiceTabs[targetIndex].dataset.requestGoal, true);
+    });
+  });
   signInButton?.addEventListener("click", signIn);
   signOutButton?.addEventListener("click", async () => { await client.auth.signOut(); window.location.reload(); });
   unlistedForm?.addEventListener("submit", async (event) => {
@@ -95,9 +145,7 @@
     if (requestLocked()) { updateInterface(); return; }
     const gameTitle = unlistedTitle.value.trim();
     if (!gameTitle) return;
-    selected = {gameTitle,gamePlatform:"unlisted",requestType:"unlisted"};
-    title.textContent = gameTitle; platform.textContent = requestLabel(selected);
-    accountName.textContent = twitchName(session.user); error.textContent = ""; dialog.showModal(); note.focus();
+    prepareRequest({gameTitle,gamePlatform:"unlisted",requestType:"unlisted"});
   });
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -106,6 +154,7 @@
       viewer_id:session.user.id,
       twitch_name:twitchName(session.user).slice(0,25),
       request_type:selected.requestType,
+      request_goal:selected.requestGoal,
       game_title:selected.gameTitle,
       platform:prettyPlatform(selected.gamePlatform),
       viewer_note:note.value.trim() || null

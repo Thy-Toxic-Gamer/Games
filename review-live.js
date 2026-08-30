@@ -3,6 +3,7 @@
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
   const statusLabels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
+  const requestGoalLabels = {play:"Play Game",speed_run:"Speed Run Game",completion:"100% Completion"};
   const navigationType=performance.getEntriesByType("navigation")[0]?.type||"navigate";
   const oauthReturnPending=window.sessionStorage.getItem("toxic-staff-oauth-pending")==="true";
   if(!oauthReturnPending&&navigationType!=="reload")window.sessionStorage.removeItem("toxic-twitch-provider-token");
@@ -19,6 +20,7 @@
   async function signIn() { window.sessionStorage.setItem("toxic-staff-oauth-pending","true");await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
+  function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
   function easternInputValue(value) {
     if(!value)return "";
     const parts=new Intl.DateTimeFormat("en-CA",{timeZone:easternZone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(value));
@@ -51,8 +53,9 @@
     const awaiting=request.status==="awaiting_payment";
     get("live-request-heading").textContent=awaiting?"Awaiting Request":"Pending Request";
     get("pending-id").textContent=request.id;get("pending-title").textContent=request.game_title;
-    get("pending-tier").textContent=`${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · $${request.minimum_amount} Minimum`;
+    get("pending-tier").textContent=`${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`;
     get("pending-viewer").textContent=request.twitch_name;get("pending-time").textContent=new Date(request.created_at).toLocaleString();
+    get("pending-goal").textContent=requestGoalLabel(request.request_goal);get("pending-price").textContent=`$${Number(request.minimum_amount).toFixed(2)}`;
     get("pending-platform").textContent=request.platform||"Not specified";get("pending-note").textContent=request.viewer_note||"No note provided.";
     get("pending-status").textContent=statusLabels[request.status]||request.status;get("pending-status").dataset.status=request.status;
     get("pending-deadline-row").hidden=!awaiting||!request.payment_deadline;get("pending-deadline").textContent=request.payment_deadline?new Date(request.payment_deadline).toLocaleString():"";
@@ -65,7 +68,7 @@
     history.forEach((request)=>{
       const card=make("article",`request-history-card${options.archived?" is-archived":""}`);
       const head=make("div","request-history-head");
-      const copy=make("div");copy.append(make("small",null,request.id),make("h3",null,request.game_title),make("p",null,`${request.twitch_name} · $${request.minimum_amount} minimum`));
+      const copy=make("div");copy.append(make("small",null,request.id),make("h3",null,request.game_title),make("p",null,`${request.twitch_name} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`));
       const status=make("span","review-status",statusLabels[request.status]||request.status);status.dataset.status=request.status;
       head.append(copy,status);card.append(head);
       const details=make("p","request-history-details",`Submitted ${new Date(request.created_at).toLocaleString()} · ${request.platform||"Game"}`);card.append(details);

@@ -11,16 +11,16 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.36" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.22" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.23" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
     <script src="hybrid-covers.js?v=1.0.67" defer></script>
     <script src="ps5-covers.js?v=1.0.35" defer></script>
     <script src="games.js?v=1.0.44" defer></script>
-    <script src="app.js?v=1.0.30" defer></script>
+    <script src="app.js?v=1.0.31" defer></script>
     <script src="dashboard.js?v=1.0.29" defer></script>
-    <script src="request-test.js?v=1.0.22" defer></script>
+    <script src="request-test.js?v=1.0.23" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -49,7 +49,7 @@
           <div class="request-center-copy">
             <p class="eyebrow">Game Request System · Twitch Connected</p>
             <h1 id="request-center-title">Choose the next game from the Toxic Vault</h1>
-            <p>Request a game you see in this catalog for a $5 minimum, or request a game not listed for a $10 minimum. Only one viewer request can be active at a time. The secure StreamElements payment option appears only after staff approval.</p>
+            <p>Choose an owned or unlisted game, then select Play Game, Speed Run Game, or 100% Completion. Only one viewer request can be active at a time. The secure StreamElements payment option appears only after staff approval.</p>
             <p class="request-stream-notice"><strong>Scheduled stream window:</strong> Paid and approved games are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.</p>
           </div>
           <div class="request-status-card" id="request-status-card" data-state="open">
@@ -63,13 +63,15 @@
             <button class="request-link-button request-link-updates" id="site-updates-button" type="button">Site Updates</button>
           </div>
           <form class="unlisted-request" id="unlisted-request-form">
-            <div>
+            <div class="unlisted-request-copy">
               <strong>Can't find the game?</strong>
-              <span>Request a game not in the catalog for a $10 minimum. You will only receive the payment option after approval.</span>
+              <span>Request a game not in the catalog for a $$$. You will only receive the payment option after approval of the game you chose.</span>
             </div>
-            <label class="sr-only" for="unlisted-game-title">Unlisted game title</label>
-            <input id="unlisted-game-title" maxlength="120" required placeholder="Type the game title" />
-            <button id="unlisted-request-button" type="submit">Request for $10+</button>
+            <label class="unlisted-request-title" for="unlisted-game-title">Unlisted game title</label>
+            <div class="unlisted-request-entry">
+              <input id="unlisted-game-title" maxlength="120" required placeholder="Type the game title" />
+              <button id="unlisted-request-button" type="submit">Choose Request Type</button>
+            </div>
           </form>
           <div class="request-center-actions">
             <a class="request-link-button" href="status.html">View Request Status</a>
@@ -146,7 +148,7 @@
             </header>
 
             <div class="updates-feature-grid">
-              <article><span aria-hidden="true">🎮</span><h4>Game Requests</h4><p>Request a catalog game for $5+ or an unlisted game for $10+. One viewer request slot is available at a time.</p></article>
+              <article><span aria-hidden="true">🎮</span><h4>Game Requests</h4><p>Request an owned or unlisted game, choose how it will be played, and receive the payment option only after approval.</p></article>
               <article><span aria-hidden="true">🛡️</span><h4>Staff Review</h4><p>The channel owner and verified Twitch moderators can approve, deny, schedule, and manage request availability.</p></article>
               <article><span aria-hidden="true">🔒</span><h4>Secure Payments</h4><p>The StreamElements payment option appears only after staff approval, and payment confirmation happens automatically.</p></article>
               <article><span aria-hidden="true">📅</span><h4>Game Scheduling</h4><p>Paid games are scheduled in Eastern Time as an 18–24 hour stream beginning Friday evening or Saturday morning.</p></article>
@@ -199,6 +201,23 @@
         <p class="eyebrow">Submit for Review</p>
         <h2 id="request-game-title">Game Request</h2>
         <p id="request-game-platform" class="request-dialog-platform"></p>
+        <fieldset class="request-choice-fieldset">
+          <legend>Choose your request</legend>
+          <div class="request-choice-tabs" role="tablist" aria-label="Game request choice">
+            <button class="request-choice-tab active" type="button" role="tab" aria-selected="true" data-request-goal="play">
+              <strong>Play Game</strong>
+              <span data-choice-price>$5</span>
+            </button>
+            <button class="request-choice-tab" type="button" role="tab" aria-selected="false" data-request-goal="speed_run">
+              <strong>Speed Run Game</strong>
+              <span data-choice-price>$10</span>
+            </button>
+            <button class="request-choice-tab" type="button" role="tab" aria-selected="false" data-request-goal="completion">
+              <strong>100% Completion</strong>
+              <span data-choice-price>$15</span>
+            </button>
+          </div>
+        </fieldset>
         <p class="request-account-line">Submitting as <strong id="request-account-name">your Twitch account</strong></p>
         <label>
           Optional note

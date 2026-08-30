@@ -707,7 +707,7 @@
 
     const requestButton = document.createElement(isPcGame ? "span" : "button");
     requestButton.className = "request-game-button";
-    requestButton.textContent = "Request for $5+";
+    requestButton.textContent = "Request Game";
     requestButton.dataset.gameTitle = game.title;
     requestButton.dataset.gamePlatform = sourcePlatformId;
     if (isPcGame) {

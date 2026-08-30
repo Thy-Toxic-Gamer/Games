@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.0" />
+  <link rel="stylesheet" href="request-test.css?v=10.3" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="review-live.js?v=10.2" defer></script>
+  <script src="review-live.js?v=10.3" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -42,7 +42,7 @@
         <section class="review-empty" id="pending-empty"><span>☣</span><h2>No request is waiting</h2><p>The request slot is currently open.</p></section>
         <article class="review-card" id="pending-request" hidden>
           <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status" id="pending-status"></span></div>
-          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
+          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
           <div class="review-actions"><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
         </article>
       </section>

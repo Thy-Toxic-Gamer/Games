@@ -3,6 +3,7 @@
   const client = window.toxicSupabase;
   const get = (id) => document.getElementById(id);
   const labels = {pending:"Pending Review",awaiting_payment:"Approved · Awaiting Payment",approved:"Paid & Approved",denied:"Denied",expired:"Expired",cancelled:"Cancelled"};
+  const requestGoalLabels = {play:"Play Game",speed_run:"Speed Run Game",completion:"100% Completion"};
   const messages = {
     pending:"Your game request is waiting for review. No payment is requested yet.",
     awaiting_payment:"Your request was approved for payment. Use the secure StreamElements option below before the deadline.",
@@ -19,6 +20,7 @@
   function authRedirect() { return new URL("status.html", window.location.href).href; }
   async function signIn() { await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect()}}); }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
+  function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
   function showEmpty(title,message) {
     get("status-empty").hidden = false; get("status-card").hidden = true;
     get("status-empty-title").textContent = title; get("status-empty-message").textContent = message;
@@ -48,9 +50,11 @@
     get("status-empty").hidden = true; get("status-card").hidden = false;
     get("status-id").textContent = request.id;
     get("status-title").textContent = request.game_title;
-    get("status-platform").textContent = `${request.platform || "Game"} · $${request.minimum_amount} Minimum`;
+    get("status-platform").textContent = `${request.platform || "Game"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`;
     get("status-viewer").textContent = request.twitch_name;
     get("status-time").textContent = new Date(request.created_at).toLocaleString();
+    get("status-goal").textContent = requestGoalLabel(request.request_goal);
+    get("status-price").textContent = `$${Number(request.minimum_amount).toFixed(2)}`;
     get("status-state").textContent = labels[request.status] || request.status;
     get("status-state").dataset.status = request.status;
     const globalCooldownActive = systemState?.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now();

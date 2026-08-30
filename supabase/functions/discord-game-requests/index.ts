@@ -4,6 +4,7 @@ type GameRequest = {
   game_title: string;
   twitch_name: string;
   request_type: string;
+  request_goal: string | null;
   minimum_amount: number;
   platform: string | null;
   viewer_note: string | null;
@@ -27,6 +28,11 @@ const shorten = (value: unknown, maximum = 1000) => {
   const valueText = String(value ?? "").trim();
   return valueText ? valueText.slice(0, maximum) : "Not provided";
 };
+const requestGoalLabel = (value: string | null) => ({
+  play: "Play Game",
+  speed_run: "Speed Run Game",
+  completion: "100% Completion",
+})[value || "play"] || "Play Game";
 const formatEastern = (value: string) => new Intl.DateTimeFormat("en-US", {
   timeZone: "America/New_York",
   weekday: "long",
@@ -119,7 +125,8 @@ Deno.serve(async (request) => {
   const fields = [
     { name: "Game", value: shorten(gameRequest.game_title), inline: false },
     { name: "Twitch Viewer", value: shorten(gameRequest.twitch_name), inline: true },
-    { name: "Request Tier", value: gameRequest.request_type === "catalog" ? `Owned Catalog Game · $${gameRequest.minimum_amount}+` : `Not in Catalog · $${gameRequest.minimum_amount}+`, inline: true },
+    { name: "Request Type", value: gameRequest.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog", inline: true },
+    { name: "Request Choice", value: `${requestGoalLabel(gameRequest.request_goal)} · $${gameRequest.minimum_amount}`, inline: true },
     { name: "Platform", value: shorten(gameRequest.platform), inline: true },
     { name: "Viewer Message", value: shorten(gameRequest.viewer_note), inline: false },
     { name: "Request ID", value: shorten(gameRequest.id), inline: false },
