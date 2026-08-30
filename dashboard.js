@@ -10,14 +10,14 @@
   if (!grid || !tabs || !panel) return;
 
   const platformMeta = Object.freeze({
-    switch: { label: "Nintendo Switch + Nintendo Collection", icon: "◫", limit: 4, accent: "#ff392b" },
-    pc: { label: "PC", icon: "▣", limit: 12, accent: "#ffe600" },
-    ps5: { label: "PS5", icon: "△", limit: 4, accent: "#159cff" },
+    switch: { label: "Nintendo Games", icon: "◫", limit: 12, accent: "#ff392b" },
+    pc: { label: "PC Games", icon: "▣", limit: 12, accent: "#ffe600" },
+    ps5: { label: "Playstation Games", icon: "△", limit: 4, accent: "#159cff" },
     ps4: { label: "PS4", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "SNES Emulation", icon: "✚", limit: 4, accent: "#d766ff" },
+    snes: { label: "Emulator Games", icon: "✚", limit: 4, accent: "#d766ff" },
     all: { label: "All", accent: "#343a36" },
     nes: { label: "NES Emulation", accent: "#f5f5f5" },
-    xbox: { label: "Xbox", accent: "#0d7a2f" },
+    xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: "#0d7a2f" },
     updates: { label: "Updates", accent: "#ffb000" },
   });
 
@@ -245,7 +245,9 @@
     button.className = "dashboard-view-all";
     button.style.setProperty("--panel-accent", meta.accent);
     button.type = "button";
-    button.textContent = `View all ${count} ${meta.label} games ›`;
+    button.textContent = count > 0
+      ? `View all ${count} ${meta.label} ›`
+      : `Open ${meta.label} ›`;
     button.addEventListener("click", function () {
       const targetPlatformId = platformId === "snes" ? "emulation" : platformId;
       tabs.querySelector(`[data-platform="${targetPlatformId}"]`)?.click();
@@ -267,7 +269,7 @@
     heading.innerHTML = `
       <div class="dashboard-platform-title">
         <span class="dashboard-platform-icon" aria-hidden="true">${meta.icon}</span>
-        <h2>${meta.label} Library</h2>
+        <h2>${meta.label}</h2>
         <span class="dashboard-platform-count">${cards.length} Games</span>
       </div>
     `;
@@ -281,6 +283,14 @@
     previewCards.forEach((card) => {
       cardGrid.append(card);
     });
+
+    if (!previewCards.length) {
+      cardGrid.classList.add("dashboard-card-grid-empty");
+      const emptyState = document.createElement("p");
+      emptyState.className = "dashboard-empty-state";
+      emptyState.textContent = `${meta.label} are coming soon.`;
+      cardGrid.append(emptyState);
+    }
 
     // A featured section is only a wider preview grid.
     // Game details are shown consistently by the hover/focus popover for every platform.
@@ -322,6 +332,7 @@
       switch: getCards("switch"),
       pc: getCards("pc"),
       ps5: getCards("ps5"),
+      xbox: getCards("xbox"),
       snes: getCards("snes"),
     };
 
@@ -335,10 +346,11 @@
 
     const fragment = document.createDocumentFragment();
     fragment.append(platformSection("pc", cardsByPlatform.pc, true));
+    fragment.append(platformSection("switch", cardsByPlatform.switch, true));
 
     const lower = document.createElement("div");
     lower.className = "dashboard-lower-grid";
-    ["switch", "ps5", "snes"].forEach((id) => {
+    ["ps5", "xbox", "snes"].forEach((id) => {
       lower.append(platformSection(id, cardsByPlatform[id], false));
     });
     fragment.append(lower);

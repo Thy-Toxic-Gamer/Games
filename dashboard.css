@@ -476,6 +476,7 @@ main {
 .dashboard-switch { --panel-accent: var(--switch-accent); }
 .dashboard-pc { --panel-accent: var(--pc-accent); }
 .dashboard-ps5 { --panel-accent: var(--ps5-accent); }
+.dashboard-xbox { --panel-accent: var(--xbox-accent); }
 .dashboard-snes { --panel-accent: var(--snes-accent); }
 
 /* Give every full platform library the framed PC-style treatment in its own accent color. */
@@ -613,6 +614,23 @@ main {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
+}
+
+.dashboard-card-grid-empty {
+  display: block;
+}
+
+.dashboard-empty-state {
+  display: grid;
+  min-height: 15rem;
+  margin: 0;
+  place-items: center;
+  border: 1px dashed color-mix(in srgb, var(--panel-accent) 48%, transparent);
+  background: color-mix(in srgb, var(--panel-accent) 5%, #050706);
+  color: color-mix(in srgb, var(--panel-accent) 72%, #fff);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: center;
 }
 
 .dashboard-card {
@@ -1725,7 +1743,8 @@ main {
 
 
 /* V6.3 — the front PC panel uses the same cards as the full PC tab. */
-.dashboard-pc.dashboard-featured .dashboard-card-grid {
+.dashboard-pc.dashboard-featured .dashboard-card-grid,
+.dashboard-switch.dashboard-featured .dashboard-card-grid {
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: clamp(0.9rem, 2vw, 1.4rem);
 }
@@ -1775,19 +1794,22 @@ main {
 }
 
 @media (max-width: 1180px) {
-  .dashboard-pc.dashboard-featured .dashboard-card-grid {
+  .dashboard-pc.dashboard-featured .dashboard-card-grid,
+  .dashboard-switch.dashboard-featured .dashboard-card-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 820px) {
-  .dashboard-pc.dashboard-featured .dashboard-card-grid {
+  .dashboard-pc.dashboard-featured .dashboard-card-grid,
+  .dashboard-switch.dashboard-featured .dashboard-card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 600px) {
-  .dashboard-pc.dashboard-featured .dashboard-card-grid {
+  .dashboard-pc.dashboard-featured .dashboard-card-grid,
+  .dashboard-switch.dashboard-featured .dashboard-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
