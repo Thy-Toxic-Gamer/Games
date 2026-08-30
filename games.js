@@ -495,7 +495,11 @@ const platforms = Object.freeze([
     comingSoon: true,
     comingSoonMessage: "NES emulation games will be added here. No original NES hardware is used.",
   }),
-  Object.freeze({ id: "snes", label: "SNES Emulation", games: freezeConsoleGames(snesEmulationRows, "snes") }),
+  Object.freeze({
+    id: "snes",
+    label: "SNES Emulation",
+    games: freezeConsoleGames(snesEmulationRows, "snes", false, "snes-emulation-original"),
+  }),
   Object.freeze({
     id: "xbox",
     label: "Xbox",
