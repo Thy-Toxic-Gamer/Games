@@ -399,7 +399,12 @@ function freezeConsoleGames(
 const nintendoClassics = window.NINTENDO_CLASSICS || {};
 const regularSwitchGames = freezeConsoleGames(switchRows, "switch", false, "switch");
 const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "switch", false, "nes");
-const snesClassicsGames = freezeConsoleGames(nintendoClassics.snes || [], "switch");
+const snesClassicsGames = freezeConsoleGames(
+  nintendoClassics.snes || [],
+  "switch",
+  false,
+  "snes-collection",
+);
 const gameBoyClassicsGames = freezeConsoleGames(nintendoClassics.gb || [], "switch");
 const n64ClassicsGames = freezeConsoleGames(nintendoClassics.n64 || [], "switch");
 const gbaClassicsGames = freezeConsoleGames(nintendoClassics.gba || [], "switch");
