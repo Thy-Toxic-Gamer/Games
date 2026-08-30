@@ -1311,7 +1311,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Fire Emblem: The Blazing Blade",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Fire%20Emblem%20-%20The%20Binding%20Blade%20%28USA%29.png",
+    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Fire%20Emblem%20%28USA%2C%20Australia%29.png",
     "Strategy RPG"
   ],
   [
@@ -1366,7 +1366,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "F-Zero Climax",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/F-Zero%20-%20Climax%20%28USA%29.png",
+    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/F-Zero%20-%20Climax%20%28Japan%29.png",
     "Racing"
   ],
   [
