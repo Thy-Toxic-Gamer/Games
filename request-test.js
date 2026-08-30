@@ -96,7 +96,7 @@
     if (unlistedTitle) unlistedTitle.disabled = locked;
     if (systemState.serviceEnabled === false) {
       slotCard.dataset.state = "cooldown"; slotLabel.textContent = "New Requests Temporarily Off";
-      slotDetail.textContent = "Staff paused new submissions. Existing requests continue normally.";
+      slotDetail.textContent = "Staff paused new submissions.";
     } else if (cooldownActive()) {
       slotCard.dataset.state = "cooldown"; slotLabel.textContent = "14-Day Cooldown";
       slotDetail.textContent = `Requests reopen ${new Date(systemState.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`;
