@@ -1548,7 +1548,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Zero Wing",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Zero%20Wing%20%28World%29%20%28Retro-Bit%29.png",
+    "https://images.launchbox-app.com/4e747779-bdd1-4719-b5ad-bf8b419b44dd.jpg",
     "Shooter"
   ],
   [
