@@ -680,38 +680,13 @@ main {
 }
 
 .dashboard-card .game-number {
-  display: none;
+  display: block;
+  margin-bottom: 0.3rem;
 }
 
 .dashboard-card .game-details h3 {
   font-size: 0.67rem;
   line-height: 1.22;
-}
-
-.dashboard-card-meta {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  margin-top: auto;
-  padding-top: 0.35rem;
-  color: #aeb7b0;
-  font-size: 0.52rem;
-  line-height: 1.15;
-}
-
-.dashboard-card-store {
-  flex: 0 0 auto;
-  color: #dfe6e1;
-  text-transform: uppercase;
-}
-
-.dashboard-card-category {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .dashboard-featured > .dashboard-view-all {
@@ -1008,7 +983,7 @@ main {
 
 #platform-panel .game-card.console-game .game-details {
   display: flex;
-  min-height: 58px;
+  min-height: 76px;
   flex: 0 0 auto;
   justify-content: center;
   padding: 0.45rem 0.4rem;
@@ -1018,7 +993,8 @@ main {
 }
 
 #platform-panel .game-card.console-game .game-number {
-  display: none;
+  display: block;
+  margin: 0 0 0.3rem;
 }
 
 #platform-panel .game-card.console-game .game-details h3 {
@@ -1053,7 +1029,7 @@ main {
 
 #platform-panel .game-card.platform-ps4 .game-details {
   display: flex;
-  min-height: 58px;
+  min-height: 76px;
   flex: 0 0 auto;
   justify-content: center;
   padding: 0.45rem 0.4rem;
@@ -1063,7 +1039,8 @@ main {
 }
 
 #platform-panel .game-card.platform-ps4 .game-number {
-  display: none;
+  display: block;
+  margin: 0 0 0.3rem;
 }
 
 #platform-panel .game-card.platform-ps4 .game-details h3 {

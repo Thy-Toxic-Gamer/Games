@@ -105,24 +105,9 @@
     return card.dataset.gameSystemId || Object.keys(platformMeta).find((id) => card.classList.contains(`platform-${id}`)) || activePlatform();
   }
 
-  function preparePreviewCard(card, platformId) {
+  function preparePreviewCard(card) {
     const clone = card.cloneNode(true);
     clone.classList.add("dashboard-card");
-
-    const details = clone.querySelector(".game-details");
-    const genre = clone.querySelector(".game-genre")?.textContent?.trim() || "Game";
-
-    if (details && !["pc", "snes"].includes(platformId)) {
-      const metadata = document.createElement("div");
-      metadata.className = "dashboard-card-meta";
-
-      const category = document.createElement("span");
-      category.className = "dashboard-card-category";
-      category.textContent = genre;
-      metadata.append(category);
-      details.append(metadata);
-    }
-
     return clone;
   }
 
@@ -288,7 +273,7 @@
     cardGrid.className = "dashboard-card-grid";
 
     const previewCards = orderedPreviewCards(platformId, cards).slice(0, meta.limit).map((card) =>
-      preparePreviewCard(card, platformId));
+      preparePreviewCard(card));
 
     previewCards.forEach((card) => {
       cardGrid.append(card);
