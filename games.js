@@ -429,7 +429,12 @@ const genesisClassicsGames = freezeConsoleGames(
   false,
   "genesis-collection",
 );
-const virtualBoyClassicsGames = freezeConsoleGames(nintendoClassics.virtualBoy || [], "switch", true);
+const virtualBoyClassicsGames = freezeConsoleGames(
+  nintendoClassics.virtualBoy || [],
+  "switch",
+  false,
+  "virtual-boy-original",
+);
 const gameCubeClassicsGames = freezeConsoleGames(
   nintendoClassics.gamecube || [],
   "switch",
