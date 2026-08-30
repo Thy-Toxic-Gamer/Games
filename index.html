@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.40" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.23" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.24" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -49,13 +49,20 @@
         <section class="request-center" aria-labelledby="request-center-title">
           <div class="request-center-copy">
             <p class="eyebrow">Game Request System · Twitch Connected</p>
-            <h1 id="request-center-title">Choose the next game from the Toxic Vault</h1>
-            <p>Choose an owned or unlisted game, then select Play Game, Speed Run Game, or 100% Completion. Only one viewer request can be active at a time. The secure StreamElements payment option appears only after staff approval.</p>
-            <p class="request-stream-notice">
-              <strong>Scheduled stream window:</strong> Paid and approved games are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.<br />
-              <strong>Payment deadline:</strong> After staff approval, you have 48 hours to complete payment before the request automatically expires.<br />
-              <strong>Approval policy:</strong> ThyToxicGamer reserves the right to deny any game request.
-            </p>
+            <h1 id="request-center-title">Request the Next Game from the Toxic Vault</h1>
+            <p class="request-center-intro">Select a title from the catalog or submit an unlisted game, then choose the request type that best matches your preferred stream goal.</p>
+            <ul class="request-overview-list">
+              <li>Available request types include Play Game, Speed Run Game, and 100% Completion.</li>
+              <li>Only one viewer request may be active at a time.</li>
+              <li>A secure StreamElements payment option is provided only after staff approval.</li>
+            </ul>
+            <div class="request-stream-notice" role="note" aria-label="Important game request policies">
+              <ul class="request-policy-list">
+                <li><strong>Stream scheduling:</strong> Paid and approved requests are scheduled as an 18–24 hour stream beginning Friday evening or Saturday morning.</li>
+                <li class="request-policy-critical"><strong>Payment deadline:</strong> Payment must be completed within 48 hours of staff approval or the request will automatically expire.</li>
+                <li class="request-policy-critical"><strong>Approval discretion:</strong> ThyToxicGamer reserves the right to approve or deny any game request.</li>
+              </ul>
+            </div>
           </div>
           <div class="request-status-card" id="request-status-card" data-state="open">
             <span class="request-status-light" aria-hidden="true"></span>
@@ -69,8 +76,11 @@
           </div>
           <form class="unlisted-request" id="unlisted-request-form">
             <div class="unlisted-request-copy">
-              <strong>Can't find the game?</strong>
-              <span>Request a game not in the catalog for a $$$. You will only receive the payment option after approval of the game you chose.</span>
+              <strong>Request a Game Not Listed</strong>
+              <ul class="unlisted-request-rules">
+                <li>Enter the complete game title below for staff review.</li>
+                <li>Payment options are provided only if the request is approved.</li>
+              </ul>
             </div>
             <label class="unlisted-request-title" for="unlisted-game-title">Unlisted game title</label>
             <div class="unlisted-request-entry">
