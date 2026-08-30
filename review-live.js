@@ -11,6 +11,7 @@
   let providerToken = window.sessionStorage.getItem("toxic-twitch-provider-token") || "";
   let pendingRequest = null;
   let scheduleRequest = null;
+  let editRequest = null;
   let staffAccessSource = null;
   let serviceEnabled = true;
   const easternZone = "America/New_York";
@@ -21,6 +22,17 @@
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
+  function requestTierLabel(request) { return `${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`; }
+  function canEditRequest(request) {
+    return Boolean(request)
+      && ["pending","awaiting_payment","approved"].includes(request.status)
+      && (!request.scheduled_for || new Date(request.scheduled_for).getTime() > Date.now());
+  }
+  function requestChangeSummary(request) {
+    const oldGame=request.previous_game_title||"Previous game";
+    const oldPlatform=request.previous_platform||"Not specified";
+    return `${oldGame} (${oldPlatform}) → ${request.game_title} (${request.platform||"Not specified"}). Reason: ${request.request_change_reason}`;
+  }
   function easternInputValue(value) {
     if(!value)return "";
     const parts=new Intl.DateTimeFormat("en-CA",{timeZone:easternZone,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(value));
@@ -45,6 +57,17 @@
     get("schedule-dialog").showModal();
     get("schedule-local").focus();
   }
+  function openEditDialog(request) {
+    if(!canEditRequest(request))return;
+    editRequest=request;
+    get("edit-request-tier").textContent=requestTierLabel(request);
+    get("edit-game-title").value=request.game_title||"";
+    get("edit-platform").value=request.platform||"";
+    get("edit-reason").value="";
+    get("edit-request-error").textContent="";
+    get("edit-request-dialog").showModal();
+    get("edit-game-title").focus();
+  }
 
   function renderPending(request) {
     pendingRequest=request;
@@ -53,13 +76,14 @@
     const awaiting=request.status==="awaiting_payment";
     get("live-request-heading").textContent=awaiting?"Awaiting Request":"Pending Request";
     get("pending-id").textContent=request.id;get("pending-title").textContent=request.game_title;
-    get("pending-tier").textContent=`${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`;
+    get("pending-tier").textContent=requestTierLabel(request);
     get("pending-viewer").textContent=request.twitch_name;get("pending-time").textContent=new Date(request.created_at).toLocaleString();
     get("pending-goal").textContent=requestGoalLabel(request.request_goal);get("pending-price").textContent=`$${Number(request.minimum_amount).toFixed(2)}`;
     get("pending-platform").textContent=request.platform||"Not specified";get("pending-note").textContent=request.viewer_note||"No note provided.";
+    get("pending-change-row").hidden=!request.request_change_reason;get("pending-change").textContent=request.request_change_reason?requestChangeSummary(request):"";
     get("pending-status").textContent=statusLabels[request.status]||request.status;get("pending-status").dataset.status=request.status;
     get("pending-deadline-row").hidden=!awaiting||!request.payment_deadline;get("pending-deadline").textContent=request.payment_deadline?new Date(request.payment_deadline).toLocaleString():"";
-    get("approve-request").hidden=awaiting;get("deny-request").hidden=awaiting;get("cancel-awaiting-request").hidden=!awaiting;
+    get("edit-request").hidden=!canEditRequest(request);get("approve-request").hidden=awaiting;get("deny-request").hidden=awaiting;get("cancel-awaiting-request").hidden=!awaiting;
   }
   function renderHistory(requests,options={}) {
     const container=get(options.containerId||"request-history");container.replaceChildren();
@@ -74,11 +98,16 @@
       const details=make("p","request-history-details",`Submitted ${new Date(request.created_at).toLocaleString()} · ${request.platform||"Game"}`);card.append(details);
       if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
       if(request.cancellation_reason)card.append(make("p","request-history-reason",`Cancellation explanation: ${request.cancellation_reason}`));
+      if(request.request_change_reason)card.append(make("p","request-history-change",`Latest request update: ${requestChangeSummary(request)}`));
       if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
       if(request.scheduled_for)card.append(make("p","request-history-schedule",`Scheduled: ${formatEastern(request.scheduled_for)}`));
       if(!options.archived&&request.status==="approved"&&request.paid_at){
         const schedulePanel=make("div","request-schedule-panel");
         schedulePanel.append(make("p",null,request.scheduled_for?"The agreed game time is recorded below.":"Payment is complete. Add a date only after everyone agrees."));
+        if(canEditRequest(request)){
+          const editButton=make("button","review-button review-button-edit","Edit Request");
+          editButton.type="button";editButton.addEventListener("click",()=>openEditDialog(request));schedulePanel.append(editButton);
+        }
         const scheduleButton=make("button","review-button review-button-muted",request.scheduled_for?"Reschedule Game":"Schedule Game");
         scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);card.append(schedulePanel);
       }
@@ -135,6 +164,22 @@
 
   const cancelAwaitingDialog=get("cancel-awaiting-dialog");get("cancel-awaiting-request").addEventListener("click",()=>{get("cancel-awaiting-reason").value="";get("cancel-awaiting-error").textContent="";cancelAwaitingDialog.showModal();get("cancel-awaiting-reason").focus()});cancelAwaitingDialog.querySelector(".request-dialog-close").addEventListener("click",()=>cancelAwaitingDialog.close());
   get("cancel-awaiting-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!pendingRequest||pendingRequest.status!=="awaiting_payment")return;const reason=get("cancel-awaiting-reason").value.trim();if(!reason){get("cancel-awaiting-error").textContent="A cancellation explanation is required.";return}const {error}=await client.rpc("staff_cancel_awaiting_request",{request_id:pendingRequest.id,cancellation_explanation:reason});if(error){get("cancel-awaiting-error").textContent="This awaiting request could not be cancelled. Its status may have changed.";return}cancelAwaitingDialog.close();await refreshDashboard()});
+
+  const editDialog=get("edit-request-dialog");get("edit-request").addEventListener("click",()=>openEditDialog(pendingRequest));get("cancel-request-edit").addEventListener("click",()=>editDialog.close());editDialog.querySelector(".request-dialog-close").addEventListener("click",()=>editDialog.close());
+  get("edit-request-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    if(!canEditRequest(editRequest)){get("edit-request-error").textContent="This request can no longer be edited.";return;}
+    const title=get("edit-game-title").value.trim();const platform=get("edit-platform").value.trim();const reason=get("edit-reason").value.trim();
+    if(!title){get("edit-request-error").textContent="Enter the corrected game title.";return;}
+    if(!platform){get("edit-request-error").textContent="Enter the corrected console or system.";return;}
+    if(reason.length<10){get("edit-request-error").textContent="Explain the change in at least 10 characters.";return;}
+    if(title===editRequest.game_title&&platform===(editRequest.platform||"")){get("edit-request-error").textContent="Change the game title or console before saving.";return;}
+    const save=get("save-request-edit");save.disabled=true;
+    const {error}=await client.rpc("staff_edit_game_request",{request_id:editRequest.id,new_game_title:title,new_platform:platform,change_explanation:reason});
+    save.disabled=false;
+    if(error){get("edit-request-error").textContent=error.message||"This request could not be updated.";return;}
+    editDialog.close();editRequest=null;await refreshDashboard();
+  });
 
   const scheduleDialog=get("schedule-dialog");scheduleDialog.querySelector(".request-dialog-close").addEventListener("click",()=>scheduleDialog.close());
   get("schedule-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!scheduleRequest)return;const localValue=get("schedule-local").value;const reason=get("schedule-reason").value.trim();if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return}if(scheduleRequest.scheduled_for&&!reason){get("schedule-error").textContent="Explain why the scheduled time is changing.";return}const save=get("save-schedule");save.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:localValue,schedule_explanation:reason||null});save.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";return}scheduleDialog.close();await refreshDashboard()});

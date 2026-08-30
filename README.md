@@ -338,3 +338,12 @@ This pass corrects the remaining visual mismatch:
 - Added private tip-ID tracking so each donation is announced only once and failed Discord posts can retry safely.
 - Older donations made before setup are ignored.
 - Included `RUN-THIS-v9.3-REGULAR-DONATIONS.sql` and `REGULAR-DONATIONS-SETUP.md`.
+
+## Version 10.4 — Staff Request Corrections
+
+- Added a staff-only **Edit Request** control for pending, awaiting-payment, and paid/approved requests before the scheduled stream begins.
+- Staff can correct the game title or console/system while the original request category, play style, payment amount, payment reference, and status remain locked.
+- Every correction requires an explanation and is stored in a permanent request-change audit table.
+- The viewer request-status page shows the previous game/system, corrected selection, explanation, and update time.
+- Discord receives a **Game Request Updated** notice with the previous and corrected request details.
+- Included the one-time `RUN-THIS-v10.4-REQUEST-EDITS.sql` database upgrade.

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.3" />
+  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.5" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="status-test.js?v=10.3" defer></script>
+  <script src="status-test.js?v=10.4" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -17,6 +17,7 @@
       <div class="request-live-state"><span class="request-live-dot" aria-hidden="true"></span><strong>Live status</strong><span id="status-last-checked">Connecting…</span></div>
       <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><span class="review-status" id="status-state"></span></div>
       <div class="status-message" id="status-message" aria-live="polite"></div>
+      <section class="request-change-notice" id="status-change-row" hidden><p class="eyebrow">Staff Update</p><h3>Your game request was updated</h3><p id="status-change"></p><p><strong>Reason:</strong> <span id="status-change-reason"></span></p><small id="status-change-time"></small></section>
       <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div><dt>Request choice</dt><dd id="status-goal"></dd></div><div><dt>Request price</dt><dd id="status-price"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Payment deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div><div id="status-schedule-row" hidden><dt>Game schedule</dt><dd id="status-schedule"></dd></div><div id="status-schedule-reason-row" hidden><dt>Schedule change explanation</dt><dd id="status-schedule-reason"></dd></div></dl>
       <section class="payment-panel" id="payment-panel" hidden aria-labelledby="payment-title">
         <p class="eyebrow">Secure Payment</p>

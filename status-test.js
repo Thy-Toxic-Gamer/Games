@@ -60,6 +60,15 @@
     const globalCooldownActive = systemState?.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now();
     const approvedMessage = request.scheduled_for ? `Your payment is confirmed. Your game is scheduled for ${formatEastern(request.scheduled_for)}.` : request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status];
     get("status-message").textContent = approvedMessage || "Request status updated.";
+    const requestChanged = Boolean(request.request_changed_at && request.request_change_reason);
+    get("status-change-row").hidden = !requestChanged;
+    if (requestChanged) {
+      const oldGame = request.previous_game_title || "Previous game";
+      const oldPlatform = request.previous_platform || "Not specified";
+      get("status-change").textContent = `${oldGame} (${oldPlatform}) was changed to ${request.game_title} (${request.platform || "Not specified"}). Your request choice, price, payment reference, and current status were not changed.`;
+      get("status-change-reason").textContent = request.request_change_reason;
+      get("status-change-time").textContent = `Updated ${new Date(request.request_changed_at).toLocaleString()}`;
+    }
     const recordedReason = request.denial_reason || request.cancellation_reason;
     get("status-reason-row").hidden = !recordedReason;
     get("status-reason-label").textContent = request.cancellation_reason ? "Cancellation explanation" : "Decision explanation";

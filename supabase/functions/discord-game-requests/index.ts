@@ -12,6 +12,10 @@ type GameRequest = {
   cancellation_reason: string | null;
   scheduled_for: string | null;
   schedule_change_reason: string | null;
+  previous_game_title: string | null;
+  previous_platform: string | null;
+  request_change_reason: string | null;
+  request_changed_at: string | null;
   created_at: string;
 };
 
@@ -66,6 +70,9 @@ Deno.serve(async (request) => {
   const isNewExpiration = payload.type === "UPDATE" && gameRequest.status === "expired" && previous?.status !== "expired";
   const isNewSchedule = payload.type === "UPDATE" && gameRequest.status === "approved" && Boolean(gameRequest.scheduled_for) && gameRequest.scheduled_for !== previous?.scheduled_for;
   const isScheduleCleared = payload.type === "UPDATE" && gameRequest.status === "approved" && !gameRequest.scheduled_for && Boolean(previous?.scheduled_for);
+  const isRequestUpdated = payload.type === "UPDATE"
+    && ["pending", "awaiting_payment", "approved"].includes(gameRequest.status)
+    && (gameRequest.game_title !== previous?.game_title || gameRequest.platform !== previous?.platform);
 
   let webhook: string | undefined;
   let title = "";
@@ -103,6 +110,16 @@ Deno.serve(async (request) => {
     title = "⌛ Game Request Expired";
     description = "The 48-hour deadline passed without completion. The request slot is open again.";
     color = 0x707070;
+  } else if (isRequestUpdated) {
+    webhook = gameRequest.status === "pending"
+      ? Deno.env.get("DISCORD_PENDING_WEBHOOK")
+      : gameRequest.status === "awaiting_payment"
+        ? Deno.env.get("DISCORD_AWAITING_PAYMENT_WEBHOOK")
+        : Deno.env.get("DISCORD_APPROVED_WEBHOOK");
+    title = "✏️ Game Request Updated";
+    description = "Staff corrected the requested game or platform. The request choice, price, payment reference, and current status remain unchanged.";
+    color = 0xff2bd6;
+    includeReviewLink = true;
   } else if (isNewSchedule) {
     webhook = Deno.env.get("DISCORD_SCHEDULE_WEBHOOK") ?? Deno.env.get("DISCORD_APPROVED_WEBHOOK");
     title = previous?.scheduled_for ? "📅 Game Request Rescheduled" : "📅 Game Request Scheduled";
@@ -134,11 +151,18 @@ Deno.serve(async (request) => {
   if (includeReviewLink) fields.push({ name: "Staff Review", value: `[Open Staff Control](${staffPage})`, inline: false });
   if (gameRequest.scheduled_for) fields.push({ name: "Game Time (Eastern)", value: formatEastern(gameRequest.scheduled_for), inline: false });
   if (gameRequest.schedule_change_reason) fields.push({ name: "Schedule Change Reason", value: shorten(gameRequest.schedule_change_reason), inline: false });
+  if (isRequestUpdated) {
+    fields.push(
+      { name: "Previous Game", value: shorten(previous?.game_title ?? gameRequest.previous_game_title), inline: true },
+      { name: "Previous Platform", value: shorten(previous?.platform ?? gameRequest.previous_platform), inline: true },
+      { name: "Change Reason", value: shorten(gameRequest.request_change_reason), inline: false },
+    );
+  }
 
   const discordResponse = await fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
+    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
   });
   if (!discordResponse.ok) return Response.json({ error: `Discord returned ${discordResponse.status}`, details: (await discordResponse.text()).slice(0, 500) }, { status: 502 });
   return Response.json({ delivered: true, requestStatus: gameRequest.status });

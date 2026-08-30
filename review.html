@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.4" />
+  <link rel="stylesheet" href="request-test.css?v=10.5" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="review-live.js?v=10.3" defer></script>
+  <script src="review-live.js?v=10.4" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -42,8 +42,8 @@
         <section class="review-empty" id="pending-empty"><span>☣</span><h2>No request is waiting</h2><p>The request slot is currently open.</p></section>
         <article class="review-card" id="pending-request" hidden>
           <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status" id="pending-status"></span></div>
-          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
-          <div class="review-actions"><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
+          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-change-row" hidden><dt>Latest staff update</dt><dd id="pending-change"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
+          <div class="review-actions"><button class="review-button review-button-edit" id="edit-request" type="button">Edit Request</button><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
         </article>
       </section>
 
@@ -69,6 +69,32 @@
   <dialog class="request-dialog" id="deny-dialog"><form id="deny-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close denial form">×</button><p class="eyebrow">Denial Record</p><h2>Deny Game Request</h2><label>Explanation required<textarea class="review-reason" id="deny-reason" maxlength="500" rows="5" required placeholder="Explain why this request was denied."></textarea></label><p class="request-dialog-rules">The viewer will see this explanation on their request-status page.</p><p class="request-form-error" id="deny-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Denial</button></form></dialog>
 
   <dialog class="request-dialog" id="cancel-awaiting-dialog"><form id="cancel-awaiting-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close awaiting-request cancellation form">×</button><p class="eyebrow">Staff Cancellation</p><h2>Cancel Awaiting Request</h2><label>Explanation required<textarea class="review-reason" id="cancel-awaiting-reason" maxlength="500" rows="5" required placeholder="Explain why this awaiting request is being cancelled."></textarea></label><p class="request-dialog-rules">This immediately reopens the request slot. The viewer will see the explanation on their status page.</p><p class="request-form-error" id="cancel-awaiting-error" role="alert"></p><button class="request-submit review-button-deny" type="submit">Confirm Cancellation</button></form></dialog>
+
+  <dialog class="request-dialog request-edit-dialog" id="edit-request-dialog">
+    <form id="edit-request-form" method="dialog">
+      <button class="request-dialog-close" type="button" aria-label="Close request editor">×</button>
+      <p class="eyebrow">Staff Request Correction</p>
+      <h2>Edit Game Request</h2>
+      <div class="request-edit-locked"><strong>Price bracket remains locked</strong><span id="edit-request-tier"></span></div>
+      <div class="request-edit-grid">
+        <label>Correct game title
+          <input id="edit-game-title" type="text" maxlength="160" autocomplete="off" required />
+        </label>
+        <label>Correct console or system
+          <input id="edit-platform" type="text" maxlength="80" autocomplete="off" required />
+        </label>
+      </div>
+      <label>Reason for this change
+        <textarea id="edit-reason" maxlength="500" minlength="10" rows="5" required placeholder="Explain what was corrected and why."></textarea>
+      </label>
+      <p class="request-dialog-rules">The request type, play style, payment amount, payment reference, and current status cannot be changed here. The replacement game must remain in the same catalog category and payment bracket. The viewer status page and Discord staff channel will receive the update.</p>
+      <p class="request-form-error" id="edit-request-error" role="alert"></p>
+      <div class="request-center-actions">
+        <button class="review-button review-button-muted" id="cancel-request-edit" type="button">Keep Original</button>
+        <button class="review-button review-button-edit" id="save-request-edit" type="submit">Save Request Update</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog class="request-dialog" id="schedule-dialog">
     <form id="schedule-form" method="dialog">
