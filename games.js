@@ -453,7 +453,12 @@ const snesClassicsTitles = new Set(
 const snesEmulationRows = snesRows.filter(
   ([title]) => !snesClassicsTitles.has(title.toLocaleLowerCase("en")),
 );
-const ps5Games = freezeConsoleGames(ps5Rows, "ps5");
+const ps5Games = freezeConsoleGames(
+  ps5Rows,
+  "ps5",
+  false,
+  "ps5-original",
+);
 const ps4Games = freezeConsoleGames(ps4Rows, "ps4");
 
 const platforms = Object.freeze([
