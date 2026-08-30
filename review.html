@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.10" />
+  <link rel="stylesheet" href="request-test.css?v=10.11" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.6" defer></script>
+  <script src="review-live.js?v=10.7" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -39,6 +39,25 @@
         <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
         <p class="request-dialog-rules">Resetting clears the cooldown immediately. New submissions reopen only when Game Request Services are also ON.</p>
       </article>
+
+      <section class="review-live-section discord-health-panel" aria-labelledby="discord-health-heading">
+        <div class="review-section-title">
+          <div><p class="eyebrow">System Health</p><h2 id="discord-health-heading">Discord Notifications</h2><p class="discord-health-intro">Private delivery monitoring for game requests and staff updates.</p></div>
+          <span class="review-status" id="discord-health-state" data-status="cancelled">Checking</span>
+        </div>
+        <div class="discord-health-summary">
+          <article><small>System-log connection</small><strong id="discord-health-connection">Checking configuration…</strong><span id="discord-health-connection-copy">The webhook address remains protected inside Supabase.</span></article>
+          <article><small>Last successful delivery</small><strong id="discord-last-success">No delivery recorded</strong><span id="discord-last-success-copy">New activity will appear after the health upgrade is active.</span></article>
+          <article><small>Last failed delivery</small><strong id="discord-last-failure">No failure recorded</strong><span id="discord-last-failure-copy">Unresolved failures can be retried by verified staff.</span></article>
+        </div>
+        <div class="review-actions discord-health-actions">
+          <button class="review-button review-button-edit" id="test-discord-notification" type="button">Send Test Notification</button>
+          <button class="review-button review-button-edit" id="retry-discord-notification" type="button" hidden>Retry Failed Notification</button>
+          <button class="review-button review-button-muted" id="refresh-discord-health" type="button">Refresh Health</button>
+        </div>
+        <p class="discord-health-feedback" id="discord-health-feedback" role="status" aria-live="polite"></p>
+        <div class="discord-health-log" id="discord-health-log" aria-label="Recent Discord delivery activity"></div>
+      </section>
 
       <section class="review-live-section">
         <div class="review-section-title"><div><p class="eyebrow">Live Queue</p><h2 id="live-request-heading">Active Request</h2></div><button class="review-button review-button-muted" id="refresh-requests" type="button">Refresh</button></div>
