@@ -572,7 +572,7 @@
       const slot = Number(slotText);
       const column = slot % 5;
       const row = Math.floor(slot / 5);
-      const versionedAtlasUrl = `${atlasUrl}${atlasUrl.includes("?") ? "&" : "?"}v=1.0.23`;
+      const versionedAtlasUrl = `${atlasUrl}${atlasUrl.includes("?") ? "&" : "?"}v=1.0.24`;
       const sprite = document.createElement("div");
       sprite.className = "game-cover console-cover hybrid-cover hybrid-sprite-cover portrait-art";
       sprite.setAttribute("role", "img");
