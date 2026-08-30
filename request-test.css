@@ -8,7 +8,7 @@
 .request-overview-list li::marker { color:var(--toxic); }
 .request-completion-warning { display:block; margin:.45rem 0 .2rem; padding:.5rem .65rem; border-left:3px solid var(--request-red); background:rgba(255,59,48,.07); color:#ffc4bf; font-size:.78rem; line-height:1.45; }
 .request-completion-warning strong { color:#ff6b61; }
-.request-center-copy .request-stream-notice { max-width:850px; margin:.75rem 0 0; padding:.7rem .85rem; border-left:3px solid #ffb000; background:rgba(255,176,0,.07); color:#dce2de; line-height:1.55; }
+.request-center-copy .request-stream-notice { width:calc(100% - 1.25rem); max-width:calc(850px - 1.25rem); margin:.75rem 0 0 1.25rem; padding:.7rem .85rem; border-left:3px solid #ffb000; background:rgba(255,176,0,.07); color:#dce2de; line-height:1.55; }
 .request-policy-list { display:grid; gap:.35rem; margin:0; padding-left:1.15rem; }
 .request-policy-list li::marker { color:#ffb000; }
 .request-policy-list strong { color:#f4f7f5; }
