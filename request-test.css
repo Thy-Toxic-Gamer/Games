@@ -39,10 +39,10 @@
 .request-policy-list .request-policy-critical strong { color:#ffca4d; }
 .request-status-card { display:flex; width:min(100%,230px); align-self:start; justify-self:end; align-items:center; gap:.55rem; padding:.6rem .7rem; border:1px solid var(--toxic); background:#050706; }
 .header-right { display:flex; justify-self:end; align-items:center; gap:clamp(.75rem,1.5vw,1.5rem); }
-.site-header .request-status-card { width:clamp(170px,15vw,220px); align-self:center; padding:.42rem .6rem; }
+.site-header .request-status-card { width:clamp(250px,19vw,310px); align-self:center; padding:.42rem .7rem; }
 .site-header .request-status-card small { font-size:.56rem; }
 .site-header .request-status-card strong { font-size:.82rem; line-height:1.05; }
-.site-header .request-status-card span:last-child { font-size:.6rem; white-space:nowrap; }
+.site-header .request-status-card span:last-child { font-size:.6rem; line-height:1.25; white-space:normal; overflow-wrap:anywhere; }
 .request-center-copy { grid-column:1/-1; }
 .request-status-card[data-state="locked"] { border-color:var(--request-amber); }
 .request-status-card[data-state="cooldown"] { border-color:var(--request-red); }
