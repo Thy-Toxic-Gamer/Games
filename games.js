@@ -359,6 +359,17 @@ function freezeConsoleGames(
   const approvedCovers = Object.freeze({
     "Chrono Trigger": "assets/covers/snes/chrono-trigger.webp",
   });
+  const cleanArtworkOverrides = Object.freeze({
+    "Daiva Story 6: Imperial of Nirsartia": "assets/covers/nes/overrides/daiva-story-6.webp",
+    "Dig Dug II": "assets/covers/nes/overrides/dig-dug-ii.webp",
+    "Downtown Nekketsu March: Super-Awesome Field Day!": "assets/covers/nes/overrides/downtown-nekketsu-march.webp",
+    "Mystery Tower": "assets/covers/nes/overrides/mystery-tower.webp",
+    "Ninja JaJaMaru-kun": "assets/covers/nes/overrides/ninja-jajamaru-kun.webp",
+    "The Mystery of Atlantis": "assets/covers/nes/overrides/the-mystery-of-atlantis.webp",
+    "The Tower of Druaga": "assets/covers/nes/overrides/the-tower-of-druaga.webp",
+    "TwinBee": "assets/covers/nes/overrides/twinbee.webp",
+    "Xevious": "assets/covers/nes/overrides/xevious.webp",
+  });
   return Object.freeze(
     sortGameRows(rows).map(([title, image, genre], index) =>
       Object.freeze({
@@ -366,6 +377,8 @@ function freezeConsoleGames(
         title,
         image: useOriginalCover
           ? image
+          : cleanArtworkId === "nes" && cleanArtworkOverrides[title]
+            ? cleanArtworkOverrides[title]
           : cleanArtworkId
             ? `hybrid-sprite:assets/covers/${cleanArtworkId}/atlases/${cleanArtworkId}-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
           : sourcePlatformId === "ps4" && title === "Dark Cloud 2"
