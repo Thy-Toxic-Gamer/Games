@@ -286,7 +286,16 @@
 
   function buildDashboard() {
     const selected = activePlatform();
-    panel.dataset.dashboardPlatform = selected;
+    const searching = panel.dataset.searchActive === "true";
+    panel.dataset.dashboardPlatform = searching ? "search" : selected;
+
+    if (searching) {
+      if (dashboard) dashboard.hidden = true;
+      grid.hidden = false;
+      if (sectionHeading) sectionHeading.hidden = false;
+      hidePopover();
+      return;
+    }
 
     if (selected === "updates") {
       if (dashboard) dashboard.hidden = true;

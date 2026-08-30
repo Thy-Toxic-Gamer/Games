@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
-    <link rel="stylesheet" href="dashboard.css?v=1.0.33" />
+    <link rel="stylesheet" href="dashboard.css?v=1.0.34" />
     <link rel="stylesheet" href="request-test.css?v=1.0.22" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
@@ -18,8 +18,8 @@
     <script src="hybrid-covers.js?v=1.0.67" defer></script>
     <script src="ps5-covers.js?v=1.0.35" defer></script>
     <script src="games.js?v=1.0.41" defer></script>
-    <script src="app.js?v=1.0.26" defer></script>
-    <script src="dashboard.js?v=1.0.27" defer></script>
+    <script src="app.js?v=1.0.27" defer></script>
+    <script src="dashboard.js?v=1.0.28" defer></script>
     <script src="request-test.js?v=1.0.22" defer></script>
   </head>
   <body>
@@ -76,6 +76,26 @@
             <a class="request-link-button request-link-admin" href="review.html">Staff Control</a>
           </div>
         </section>
+        <form class="owned-game-search" id="owned-game-search" role="search">
+          <div class="owned-game-search-copy">
+            <p class="eyebrow">Owned Game Search</p>
+            <label id="owned-game-search-label" for="owned-game-search-input">Find a game in the Toxic Vault</label>
+            <p>Search every currently owned game by title.</p>
+          </div>
+          <div class="owned-game-search-control">
+            <span class="owned-game-search-icon" aria-hidden="true">⌕</span>
+            <input
+              id="owned-game-search-input"
+              type="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Search owned games…"
+              aria-describedby="owned-game-search-status"
+            />
+            <button id="owned-game-search-clear" type="button" hidden>Clear</button>
+          </div>
+          <p class="owned-game-search-status" id="owned-game-search-status" aria-live="polite"></p>
+        </form>
         <div
           class="platform-tabs"
           id="platform-tabs"
@@ -109,6 +129,10 @@
           ></div>
 
           <div class="game-grid" id="game-grid" aria-live="polite"></div>
+          <div class="owned-game-search-empty" id="owned-game-search-empty" hidden>
+            <strong>No owned games found</strong>
+            <span>Try a shorter title or check the spelling.</span>
+          </div>
           <div class="coming-soon-panel" id="coming-soon-panel" hidden>
             <p class="eyebrow" id="coming-soon-library">Future Library</p>
             <h3>Coming Soon</h3>

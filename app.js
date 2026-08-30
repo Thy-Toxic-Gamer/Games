@@ -30,7 +30,13 @@
   const comingSoonMessage = document.querySelector("#coming-soon-message");
   const updatesPanel = document.querySelector("#updates-panel");
   const siteUpdatesButton = document.querySelector("#site-updates-button");
+  const gameSearchForm = document.querySelector("#owned-game-search");
+  const gameSearchInput = document.querySelector("#owned-game-search-input");
+  const gameSearchClear = document.querySelector("#owned-game-search-clear");
+  const gameSearchStatus = document.querySelector("#owned-game-search-status");
+  const gameSearchEmpty = document.querySelector("#owned-game-search-empty");
   let activePlatformId = "all";
+  let activeSearchQuery = "";
   const activeSectionByPlatform = new Map();
 
   const currentHeaderImages = Object.freeze({
@@ -741,6 +747,62 @@
     platformSubtabs.replaceChildren();
   }
 
+  function normalizeSearchValue(value) {
+    return value
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLocaleLowerCase("en");
+  }
+
+  function updateSearchStatus(message) {
+    gameSearchStatus.textContent = message;
+  }
+
+  function resetGameSearch() {
+    activeSearchQuery = "";
+    gameSearchInput.value = "";
+    gameSearchClear.hidden = true;
+    gameSearchEmpty.hidden = true;
+    panel.dataset.searchActive = "false";
+    updateSearchStatus(`Search all ${allGames.length} currently owned games by title.`);
+  }
+
+  function renderSearchResults() {
+    const query = gameSearchInput.value.trim();
+
+    if (!query) {
+      resetGameSearch();
+      const platform = viewPlatforms.find((entry) => entry.id === activePlatformId) || viewPlatforms[0];
+      renderPlatform(platform);
+      return;
+    }
+
+    activeSearchQuery = query;
+    const searchTerms = normalizeSearchValue(query).split(/\s+/).filter(Boolean);
+    const matches = allGames.filter((game) => {
+      const normalizedTitle = normalizeSearchValue(game.title);
+      return searchTerms.every((term) => normalizedTitle.includes(term));
+    });
+
+    panel.dataset.searchActive = "true";
+    panel.dataset.dashboardPlatform = "search";
+    panel.setAttribute("aria-labelledby", "owned-game-search-label");
+    hidePlatformSubtabs();
+    updatesPanel.hidden = true;
+    comingSoon.hidden = true;
+    grid.hidden = false;
+    gameSearchClear.hidden = false;
+    platformName.textContent = "Search Results";
+    libraryCount.textContent = `${matches.length} ${matches.length === 1 ? "Game" : "Games"}`;
+    gameSearchEmpty.hidden = matches.length !== 0;
+    updateSearchStatus(
+      matches.length
+        ? `${matches.length} owned ${matches.length === 1 ? "game matches" : "games match"} “${query}”.`
+        : `No owned games match “${query}”.`,
+    );
+    renderGameCollection(matches, { id: "all", label: "Search Results" });
+  }
+
   function renderSectionedPlatform(platform) {
     const sections = platform.sections;
     platformSubtabs.dataset.platform = platform.id;
@@ -857,6 +919,10 @@
     const platform = viewPlatforms.find((entry) => entry.id === id) || viewPlatforms[0];
     if (!platform) return;
 
+    if (activeSearchQuery || gameSearchInput.value) {
+      resetGameSearch();
+    }
+
     activePlatformId = platform.id;
 
     tabs.querySelectorAll('[role="tab"]').forEach((tab) => {
@@ -939,6 +1005,11 @@
       || !comingSoonMessage
       || !updatesPanel
       || !siteUpdatesButton
+      || !gameSearchForm
+      || !gameSearchInput
+      || !gameSearchClear
+      || !gameSearchStatus
+      || !gameSearchEmpty
       || platforms.length === 0
     ) {
       return;
@@ -948,6 +1019,25 @@
       || platforms.reduce((total, platform) => total + platform.games.length, 0);
 
     headerCount.textContent = String(totalGames);
+    updateSearchStatus(`Search all ${allGames.length} currently owned games by title.`);
+    gameSearchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      renderSearchResults();
+    });
+    gameSearchInput.addEventListener("input", renderSearchResults);
+    gameSearchInput.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !gameSearchInput.value) return;
+      event.preventDefault();
+      resetGameSearch();
+      const platform = viewPlatforms.find((entry) => entry.id === activePlatformId) || viewPlatforms[0];
+      renderPlatform(platform);
+    });
+    gameSearchClear.addEventListener("click", function () {
+      resetGameSearch();
+      const platform = viewPlatforms.find((entry) => entry.id === activePlatformId) || viewPlatforms[0];
+      renderPlatform(platform);
+      gameSearchInput.focus();
+    });
     createTabs();
     siteUpdatesButton.addEventListener("click", function () {
       const updatesTab = tabs.querySelector('[data-platform="updates"]');

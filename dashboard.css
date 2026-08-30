@@ -87,6 +87,159 @@ main {
   position: relative;
 }
 
+/* Catalog-wide owned game search. */
+.owned-game-search {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(320px, 1.28fr);
+  align-items: center;
+  gap: 0.45rem 1.1rem;
+  margin: 0 0 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--all-accent) 56%, #263027);
+  border-radius: 7px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--all-accent) 7%, #080a09), #080a09 45%),
+    #080a09;
+}
+
+.owned-game-search-copy {
+  min-width: 0;
+}
+
+.owned-game-search-copy .eyebrow {
+  margin: 0 0 0.18rem;
+  color: var(--all-accent);
+  font-size: 0.66rem;
+}
+
+.owned-game-search-copy label {
+  display: block;
+  color: #fff;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.owned-game-search-copy p:last-child {
+  margin: 0.18rem 0 0;
+  color: #9eaaa1;
+  font-size: 0.75rem;
+}
+
+.owned-game-search-control {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  min-width: 0;
+}
+
+.owned-game-search-icon {
+  position: absolute;
+  z-index: 1;
+  left: 0.82rem;
+  top: 50%;
+  color: var(--all-accent);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 1.35rem;
+  pointer-events: none;
+  transform: translateY(-52%);
+}
+
+.owned-game-search input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.7rem 0.85rem 0.7rem 2.65rem;
+  border: 1px solid #39423b;
+  border-radius: 5px 0 0 5px;
+  background: #020302;
+  color: #f4f7f4;
+  font: 400 0.92rem/1.2 "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.owned-game-search input:focus {
+  border-color: var(--all-accent);
+  outline: 2px solid color-mix(in srgb, var(--all-accent) 24%, transparent);
+  outline-offset: 1px;
+}
+
+.owned-game-search input::placeholder {
+  color: #758078;
+}
+
+.owned-game-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.owned-game-search button {
+  min-height: 46px;
+  padding: 0.65rem 0.95rem;
+  border: 1px solid var(--all-accent);
+  border-radius: 0 5px 5px 0;
+  background: color-mix(in srgb, var(--all-accent) 13%, #050705);
+  color: #dfffc7;
+  cursor: pointer;
+  font: 400 0.78rem/1 "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.owned-game-search button:hover,
+.owned-game-search button:focus-visible {
+  background: var(--all-accent);
+  color: #071000;
+  outline: none;
+}
+
+.owned-game-search-status {
+  grid-column: 2;
+  min-height: 1em;
+  margin: 0;
+  color: #8e9a91;
+  font-size: 0.7rem;
+}
+
+.owned-game-search-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  margin: 0.5rem 0;
+  padding: 2.5rem 1rem;
+  border: 1px dashed #39423b;
+  border-radius: 7px;
+  background: #050705;
+  color: #929e95;
+  text-align: center;
+}
+
+.owned-game-search-empty[hidden] {
+  display: none;
+}
+
+.owned-game-search-empty strong {
+  color: #f2f5f2;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+#platform-panel[data-dashboard-platform="search"] {
+  --active-platform-accent: var(--all-accent);
+}
+
+#platform-panel[data-dashboard-platform="search"] .game-grid {
+  grid-template-columns: repeat(auto-fill, minmax(175px, 220px));
+  gap: 0.75rem;
+  justify-content: start;
+}
+
+@media (max-width: 720px) {
+  .owned-game-search {
+    grid-template-columns: 1fr;
+  }
+
+  .owned-game-search-status {
+    grid-column: 1;
+  }
+}
+
 /* Platform navigation */
 .platform-tabs {
   display: grid;
