@@ -14,7 +14,7 @@
       sensitivity: "base",
     }));
   const viewPlatforms = [
-    { id: "all", label: "All", games: allGames },
+    { id: "all", label: "ALL games", games: allGames },
     ...platforms,
     { id: "updates", label: "Updates", games: [], updates: true },
   ];
@@ -900,7 +900,7 @@
 
     updatesPanel.hidden = true;
     platformName.textContent = platform.id === "all"
-      ? "All Games"
+      ? "ALL games"
       : `${platform.label} Library`;
 
     if (platform.comingSoon) {

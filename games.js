@@ -474,10 +474,19 @@ const ps5Games = freezeConsoleGames(
 const ps4Games = freezeConsoleGames(ps4Rows, "ps4");
 
 const platforms = Object.freeze([
-  Object.freeze({ id: "pc", label: "PC", games: freezePcGames(pcRows) }),
+  Object.freeze({ id: "pc", label: "PC Games", games: freezePcGames(pcRows) }),
+  Object.freeze({
+    id: "ps5",
+    label: "Playstation Games",
+    games: Object.freeze([...ps5Games, ...ps4Games]),
+    sections: Object.freeze([
+      Object.freeze({ id: "ps5", label: "PS5", games: ps5Games }),
+      Object.freeze({ id: "ps4", label: "PS4", games: ps4Games }),
+    ]),
+  }),
   Object.freeze({
     id: "switch",
-    label: "Nintendo Switch + Nintendo Collection",
+    label: "Nintendo Games",
     games: allSwitchGames,
     sections: Object.freeze([
       Object.freeze({ id: "switch-games", label: "Nintendo Switch", games: regularSwitchGames }),
@@ -492,17 +501,15 @@ const platforms = Object.freeze([
     ]),
   }),
   Object.freeze({
-    id: "ps5",
-    label: "PS5 + PS4",
-    games: Object.freeze([...ps5Games, ...ps4Games]),
-    sections: Object.freeze([
-      Object.freeze({ id: "ps5", label: "PS5", games: ps5Games }),
-      Object.freeze({ id: "ps4", label: "PS4", games: ps4Games }),
-    ]),
+    id: "xbox",
+    label: "Xbox Games",
+    games: Object.freeze([]),
+    comingSoon: true,
+    comingSoonMessage: "Xbox games will be added here.",
   }),
   Object.freeze({
     id: "emulation",
-    label: "Emulation",
+    label: "Emulator Games",
     games: snesEmulationGames,
     sections: Object.freeze([
       Object.freeze({
@@ -518,13 +525,6 @@ const platforms = Object.freeze([
         games: snesEmulationGames,
       }),
     ]),
-  }),
-  Object.freeze({
-    id: "xbox",
-    label: "Xbox",
-    games: Object.freeze([]),
-    comingSoon: true,
-    comingSoonMessage: "Xbox games will be added here.",
   }),
 ]);
 
