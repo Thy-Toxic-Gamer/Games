@@ -15,6 +15,7 @@
   let viewerChangeReviewRequest = null;
   let staffAccessSource = null;
   let serviceEnabled = true;
+  let unresolvedDiscordFailure = null;
   const catalog = window.TOXIC_CATALOG;
   const editGamePicker = catalog?.enhanceOwnedGameInput({
     titleInput:get("edit-game-title"),
@@ -27,6 +28,49 @@
   function message(title,copy) { get("staff-message").hidden=false;get("staff-dashboard").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
   async function signIn() { window.sessionStorage.setItem("toxic-staff-oauth-pending","true");await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
+  function discordEventLabel(value) { return String(value||"notification").replaceAll("_"," ").replace(/\b\w/g,(letter)=>letter.toUpperCase()); }
+  function discordDeliveryTime(value) { return value ? new Date(value).toLocaleString() : "Not recorded"; }
+  function renderDiscordHealth(health) {
+    unresolvedDiscordFailure=health?.unresolvedFailure||null;
+    const state=get("discord-health-state");
+    const connected=health?.configured===true;
+    const needsAttention=Boolean(unresolvedDiscordFailure);
+    state.textContent=!connected?"Setup Required":needsAttention?"Needs Attention":"Connected";
+    state.dataset.status=!connected||needsAttention?"denied":"approved";
+    get("discord-health-connection").textContent=connected?"Connected to #request-system-logs":"System-log webhook unavailable";
+    get("discord-health-connection-copy").textContent=connected?"The webhook is stored securely and can be tested below.":"Confirm that DISCORD_SYSTEM_LOG_WEBHOOK_URL is saved in Supabase.";
+    const success=health?.lastSuccess;
+    get("discord-last-success").textContent=success?discordDeliveryTime(success.deliveredAt||success.createdAt):"No delivery recorded";
+    get("discord-last-success-copy").textContent=success?`${discordEventLabel(success.eventType)} · ${success.target}`:"Send a test notification to create the first health record.";
+    const failure=health?.lastFailure;
+    get("discord-last-failure").textContent=failure?discordDeliveryTime(failure.createdAt):"No failure recorded";
+    get("discord-last-failure-copy").textContent=failure?`${discordEventLabel(failure.eventType)} · ${failure.resolvedAt?"Resolved":"Unresolved"}${failure.errorMessage?` · ${failure.errorMessage}`:""}`:"No Discord failures have been recorded.";
+    const retry=get("retry-discord-notification");retry.hidden=!unresolvedDiscordFailure;retry.disabled=!unresolvedDiscordFailure;
+    const log=get("discord-health-log");log.replaceChildren();
+    const items=Array.isArray(health?.logs)?health.logs:[];
+    if(!items.length){log.append(make("p","request-history-empty","No Discord delivery activity has been recorded yet."));return;}
+    items.slice(0,8).forEach((item)=>{
+      const row=make("article",`discord-health-log-item is-${item.status}`);
+      const copy=make("div");copy.append(make("strong",null,discordEventLabel(item.eventType)),make("span",null,`${item.target} · ${discordDeliveryTime(item.createdAt)}`));
+      if(item.errorMessage)copy.append(make("small",null,item.errorMessage));
+      const badge=make("span","review-status",item.status==="success"?"Delivered":item.resolvedAt?"Resolved":"Failed");badge.dataset.status=item.status==="success"||item.resolvedAt?"approved":"denied";
+      row.append(copy,badge);log.append(row);
+    });
+  }
+  async function refreshDiscordHealth() {
+    const feedback=get("discord-health-feedback");feedback.textContent="Checking Discord delivery health…";feedback.dataset.status="working";
+    const {data,error}=await client.functions.invoke("discord-notification-health",{body:{action:"status"}});
+    if(error||data?.error){unresolvedDiscordFailure=null;get("discord-health-state").textContent="Unavailable";get("discord-health-state").dataset.status="denied";feedback.textContent="Discord health is not available yet. Confirm the database upgrade and Edge Function deployment.";feedback.dataset.status="error";return false;}
+    renderDiscordHealth(data);feedback.textContent="Discord health is up to date.";feedback.dataset.status="success";return true;
+  }
+  async function runDiscordHealthAction(action,button,logId=null) {
+    const feedback=get("discord-health-feedback");button.disabled=true;feedback.textContent=action==="test"?"Sending a private test notification…":"Retrying the failed Discord notification…";feedback.dataset.status="working";
+    const {data,error}=await client.functions.invoke("discord-notification-health",{body:{action,...(logId?{logId}: {})}});
+    button.disabled=false;
+    if(error||data?.error){const errorCopy=data?.error||`The Discord ${action} could not be completed. Check the Edge Function logs for details.`;await refreshDiscordHealth();feedback.textContent=errorCopy;feedback.dataset.status="error";return;}
+    if(data?.health)renderDiscordHealth(data.health);else await refreshDiscordHealth();
+    feedback.textContent=action==="test"?"Test delivered to #request-system-logs.":"Failed notification delivered successfully.";feedback.dataset.status="success";
+  }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
   function requestTierLabel(request) { return `${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`; }
@@ -170,6 +214,7 @@
     get("global-cooldown-message").textContent=active?`Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`:serviceEnabled?"There is no active global cooldown. Viewers can submit a game request.":"There is no active global cooldown. New submissions remain closed by the manual service switch.";
     get("reset-global-cooldown").disabled=!active;
     renderPending(requests.find((request)=>["pending","awaiting_payment"].includes(request.status))||null);renderHistory(requests);renderHistory(archived,{containerId:"request-archive",archived:true,emptyMessage:"No requests have reached the Archive yet."});
+    await refreshDiscordHealth();
   }
   async function initialize() {
     if(!client){message("Connection error","The staff service could not load.");return;}
@@ -184,6 +229,9 @@
   }
 
   get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+  get("refresh-discord-health").addEventListener("click",refreshDiscordHealth);
+  get("test-discord-notification").addEventListener("click",()=>runDiscordHealthAction("test",get("test-discord-notification")));
+  get("retry-discord-notification").addEventListener("click",()=>{if(unresolvedDiscordFailure)runDiscordHealthAction("retry",get("retry-discord-notification"),unresolvedDiscordFailure.id);});
 
   const serviceDialog=get("toggle-service-dialog");get("toggle-request-service").addEventListener("click",()=>{const turningOn=!serviceEnabled;get("toggle-service-error").textContent="";get("toggle-service-title").textContent=turningOn?"Turn new game requests on?":"Turn new game requests off?";get("toggle-service-copy").textContent=turningOn?"This restores new request submissions. Any active global cooldown still applies.":"This immediately blocks only new request submissions. Existing requests can still be reviewed, paid, confirmed, or expired normally.";const confirm=get("confirm-service-toggle");confirm.textContent=turningOn?"Turn Services On":"Turn Services Off";confirm.classList.toggle("review-button-deny",!turningOn);serviceDialog.showModal()});get("keep-service-state").addEventListener("click",()=>serviceDialog.close());serviceDialog.querySelector(".request-dialog-close").addEventListener("click",()=>serviceDialog.close());
   get("toggle-service-form").addEventListener("submit",async(event)=>{event.preventDefault();const nextState=!serviceEnabled;const confirm=get("confirm-service-toggle");confirm.disabled=true;const {error}=await client.rpc("set_request_service_enabled",{enabled:nextState});confirm.disabled=false;if(error){get("toggle-service-error").textContent="The service state could not be changed.";return}serviceDialog.close();await refreshDashboard()});
