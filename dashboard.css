@@ -544,9 +544,9 @@ main {
   [data-dashboard-platform="xbox"]
 ) .request-game-button,
 .dashboard-pc .request-game-button {
-  border-color: var(--active-platform-accent, var(--pc-accent));
-  background: color-mix(in srgb, var(--active-platform-accent, var(--pc-accent)) 8%, transparent);
-  color: var(--active-platform-accent, var(--pc-accent));
+  border-color: var(--toxic);
+  background: color-mix(in srgb, var(--toxic) 8%, transparent);
+  color: var(--toxic);
 }
 
 #platform-panel[data-dashboard-platform="nes"] .coming-soon-panel {
