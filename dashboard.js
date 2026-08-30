@@ -14,7 +14,7 @@
     pc: { label: "PC Games", icon: "▣", limit: 12, accent: "#ffe600" },
     ps5: { label: "Playstation Games", icon: "△", limit: 4, accent: "#159cff" },
     ps4: { label: "PS4", icon: "△", limit: 5, accent: "#159cff" },
-    snes: { label: "Emulator Games", icon: "✚", limit: 4, accent: "#d766ff" },
+    snes: { label: "Emulator Games", icon: "✚", limit: 4, accent: "#f5f5f5" },
     all: { label: "All", accent: "#343a36" },
     nes: { label: "NES Emulation", accent: "#f5f5f5" },
     xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: "#0d7a2f" },

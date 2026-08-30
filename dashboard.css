@@ -4,7 +4,7 @@
   --switch-accent: #ff392b;
   --ps5-accent: #159cff;
   --nes-accent: #f5f5f5;
-  --snes-accent: #d766ff;
+  --snes-accent: #f5f5f5;
   --xbox-accent: #0d7a2f;
 }
 
@@ -598,6 +598,11 @@ main {
   color: #fff;
   font-size: 0.68rem;
   font-weight: 800;
+}
+
+.dashboard-snes .dashboard-platform-count {
+  background: #f5f5f5;
+  color: #050706;
 }
 
 .dashboard-card-grid {
@@ -1407,11 +1412,11 @@ main {
 /* A little extra platform polish on the card itself. */
 .dashboard-switch .dashboard-card { border-color: rgba(230,0,18,.34); }
 .dashboard-ps5 .dashboard-card { border-color: rgba(0,112,209,.38); }
-.dashboard-snes .dashboard-card { border-color: rgba(221,80,224,.32); }
+.dashboard-snes .dashboard-card { border-color: rgba(255,255,255,.32); }
 
 #platform-panel[data-dashboard-platform="switch"] .game-card { border-color: rgba(230,0,18,.25); }
 #platform-panel[data-dashboard-platform="ps5"] .game-card { border-color: rgba(0,112,209,.28); }
-#platform-panel[data-dashboard-platform="snes"] .game-card { border-color: rgba(221,80,224,.24); }
+#platform-panel[data-dashboard-platform="snes"] .game-card { border-color: rgba(255,255,255,.24); }
 
 @media (max-width: 640px) {
   .system-box {
