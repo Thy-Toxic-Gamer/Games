@@ -1762,7 +1762,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Chibi-Robo!",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Chibi-Robo%21%20%28Europe%29%20%28En%2CFr%2CDe%2CEs%2CIt%29.png",
+    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Chibi-Robo%21%20Plug%20into%20Adventure%21%20%28USA%29.png",
     "Adventure / Platformer"
   ],
   [
@@ -1782,7 +1782,7 @@ window.NINTENDO_CLASSICS = Object.freeze({
   ],
   [
     "Pokémon XD: Gale of Darkness",
-    "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_GameCube/master/Named_Boxarts/Pokemon%20XD_%20Gale%20of%20Darkness%20%28USA%29.png",
+    "https://www.thevideogamecompany.com/cdn/shop/products/pokemon-xd-gale-of-darkness-nintendo-gamecube-045496963033-cover-art.jpg?v=1656282059",
     "Role-Playing"
   ],
 ]),
