@@ -16,6 +16,7 @@
   let staffAccessSource = null;
   let serviceEnabled = true;
   let unresolvedDiscordFailure = null;
+  let activeStaffTab = "home";
   const catalog = window.TOXIC_CATALOG;
   const editGamePicker = catalog?.enhanceOwnedGameInput({
     titleInput:get("edit-game-title"),
@@ -28,6 +29,40 @@
   function message(title,copy) { get("staff-message").hidden=false;get("staff-dashboard").hidden=true;get("staff-message-title").textContent=title;get("staff-message-copy").textContent=copy; }
   async function signIn() { window.sessionStorage.setItem("toxic-staff-oauth-pending","true");await client.auth.signInWithOAuth({provider:"twitch",options:{redirectTo:authRedirect(),scopes:"user:read:moderated_channels",queryParams:{force_verify:"true"}}}); }
   function make(tag,className,text) { const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;return node; }
+  function activateStaffTab(name,focusPanel=false) {
+    const requested=get(`staff-tab-${name}`)?name:"home";activeStaffTab=requested;
+    document.querySelectorAll("[data-staff-tab]").forEach((tab)=>{const active=tab.dataset.staffTab===requested;tab.classList.toggle("active",active);tab.setAttribute("aria-selected",String(active));tab.tabIndex=active?0:-1;});
+    document.querySelectorAll("[data-staff-panel]").forEach((panel)=>{panel.hidden=panel.dataset.staffPanel!==requested;});
+    if(focusPanel){const panel=get(`staff-panel-${requested}`);panel?.focus({preventScroll:true});panel?.scrollIntoView({behavior:"smooth",block:"start"});}
+  }
+  function setupStaffTabs() {
+    const tabs=Array.from(document.querySelectorAll("[data-staff-tab]"));
+    tabs.forEach((tab,index)=>{
+      tab.addEventListener("click",()=>activateStaffTab(tab.dataset.staffTab));
+      tab.addEventListener("keydown",(event)=>{let next=null;if(event.key==="ArrowRight")next=(index+1)%tabs.length;if(event.key==="ArrowLeft")next=(index-1+tabs.length)%tabs.length;if(event.key==="Home")next=0;if(event.key==="End")next=tabs.length-1;if(next===null)return;event.preventDefault();activateStaffTab(tabs[next].dataset.staffTab);tabs[next].focus();});
+    });
+    document.querySelectorAll("[data-staff-tab-target]").forEach((button)=>button.addEventListener("click",()=>activateStaffTab(button.dataset.staffTabTarget,true)));
+    activateStaffTab("home");
+  }
+  function renderStaffReviewAlerts(requests) {
+    const container=get("staff-review-alerts");container.replaceChildren();
+    const pendingReview=requests.find((request)=>request.status==="pending")||null;
+    const pendingChanges=requests.filter((request)=>request.viewer_change_status==="pending"&&request.viewer_change_game_title);
+    const activeChangeCount=pendingChanges.filter((request)=>["pending","awaiting_payment"].includes(request.status)).length;
+    const recordsChangeCount=pendingChanges.length-activeChangeCount;
+    const activeCount=(pendingReview?1:0)+activeChangeCount;
+    const activeBadge=get("staff-active-count");activeBadge.textContent=String(activeCount);activeBadge.hidden=activeCount===0;
+    const recordsBadge=get("staff-records-count");recordsBadge.textContent=String(recordsChangeCount);recordsBadge.hidden=recordsChangeCount===0;
+    const appendAlert=(kind,title,copy,target,label)=>{
+      const card=make("article",`staff-review-alert is-${kind}`);const light=make("span","staff-review-light");light.setAttribute("aria-hidden","true");
+      const text=make("div");text.append(make("small",null,"Staff Review Queue"),make("strong",null,title),make("span",null,copy));
+      const action=make("button",kind==="change"?"review-button review-button-edit":"review-button",label);action.type="button";action.addEventListener("click",()=>activateStaffTab(target,true));
+      card.append(light,text,action);container.append(card);
+    };
+    if(pendingReview)appendAlert("request","Request Pending Review",`${pendingReview.game_title} · ${pendingReview.platform||"System not specified"} is waiting for approval or denial.`,"active","Review Request");
+    pendingChanges.forEach((request)=>appendAlert("change","Game Change Pending Review",`${request.game_title} → ${request.viewer_change_game_title} · ${request.viewer_change_platform||"System not specified"}.`,["pending","awaiting_payment"].includes(request.status)?"active":"records","Review Game Change"));
+    if(!pendingReview&&!pendingChanges.length){const card=make("article","staff-review-alert is-clear");const light=make("span","staff-review-light");light.setAttribute("aria-hidden","true");const text=make("div");text.append(make("small",null,"Staff Review Queue"),make("strong",null,"No Staff Review Pending"),make("span",null,"No new requests or game changes are waiting for a staff decision."));card.append(light,text);container.append(card);}
+  }
   function discordEventLabel(value) { return String(value||"notification").replaceAll("_"," ").replace(/\b\w/g,(letter)=>letter.toUpperCase()); }
   function discordDeliveryTime(value) { return value ? new Date(value).toLocaleString() : "Not recorded"; }
   function renderDiscordHealth(health) {
@@ -37,6 +72,10 @@
     const needsAttention=Boolean(unresolvedDiscordFailure);
     state.textContent=!connected?"Setup Required":needsAttention?"Needs Attention":"Connected";
     state.dataset.status=!connected||needsAttention?"denied":"approved";
+    get("staff-summary-discord").textContent=!connected?"Unavailable":needsAttention?"Attention":"Connected";
+    get("staff-summary-discord-copy").textContent=!connected?"The system-log connection needs setup.":needsAttention?"A failed notification is waiting for review.":"Discord delivery is operating normally.";
+    get("staff-summary-discord").closest("article").dataset.status=!connected||needsAttention?"attention":"normal";
+    get("staff-health-signal").dataset.status=!connected||needsAttention?"attention":"connected";
     get("discord-health-connection").textContent=connected?"Connected to #request-system-logs":"System-log webhook unavailable";
     get("discord-health-connection-copy").textContent=connected?"The webhook is stored securely and can be tested below.":"Confirm that DISCORD_SYSTEM_LOG_WEBHOOK_URL is saved in Supabase.";
     const success=health?.lastSuccess;
@@ -60,7 +99,7 @@
   async function refreshDiscordHealth() {
     const feedback=get("discord-health-feedback");feedback.textContent="Checking Discord delivery health…";feedback.dataset.status="working";
     const {data,error}=await client.functions.invoke("discord-notification-health",{body:{action:"status"}});
-    if(error||data?.error){unresolvedDiscordFailure=null;get("discord-health-state").textContent="Unavailable";get("discord-health-state").dataset.status="denied";feedback.textContent="Discord health is not available yet. Confirm the database upgrade and Edge Function deployment.";feedback.dataset.status="error";return false;}
+    if(error||data?.error){unresolvedDiscordFailure=null;get("discord-health-state").textContent="Unavailable";get("discord-health-state").dataset.status="denied";get("staff-summary-discord").textContent="Unavailable";get("staff-summary-discord-copy").textContent="Discord health could not be checked.";get("staff-summary-discord").closest("article").dataset.status="attention";get("staff-health-signal").dataset.status="attention";feedback.textContent="Discord health is not available yet. Confirm the database upgrade and Edge Function deployment.";feedback.dataset.status="error";return false;}
     renderDiscordHealth(data);feedback.textContent="Discord health is up to date.";feedback.dataset.status="success";return true;
   }
   async function runDiscordHealthAction(action,button,logId=null) {
@@ -147,6 +186,9 @@
 
   function renderPending(request) {
     pendingRequest=request;
+    get("staff-summary-slot").textContent=!request?"Open":request.status==="pending"?"Review Required":"In Use";
+    get("staff-summary-slot-copy").textContent=!request?"No request is waiting in the live queue.":request.status==="pending"?`${request.game_title} is waiting for staff review.`:`${request.game_title} is awaiting payment.`;
+    get("staff-summary-slot").closest("article").dataset.status=request?.status==="pending"?"attention":"normal";
     get("pending-empty").hidden=Boolean(request);get("pending-request").hidden=!request;
     if(!request)return;
     const awaiting=request.status==="awaiting_payment";
@@ -206,6 +248,8 @@
     if(stateError||requestsError||archiveError){message("Dashboard unavailable","Run the latest staff-control SQL upgrade, then refresh this page.");return;}
     get("staff-message").hidden=true;get("staff-dashboard").hidden=false;
     serviceEnabled=state.serviceEnabled!==false;
+    get("staff-summary-services").textContent=serviceEnabled?"ON":"OFF";get("staff-summary-services-copy").textContent=serviceEnabled?"New requests may be submitted when no other restriction applies.":"New submissions are paused; existing requests continue.";
+    get("staff-summary-services").closest("article").dataset.status=serviceEnabled?"normal":"attention";
     get("request-service-state").textContent=serviceEnabled?"Services ON":"Services OFF";get("request-service-state").dataset.status=serviceEnabled?"approved":"denied";
     get("request-service-message").textContent=serviceEnabled?"New game request submissions are available.":"New request submissions are closed until staff turns services on. Existing requests continue normally.";
     const serviceToggle=get("toggle-request-service");serviceToggle.textContent=serviceEnabled?"Turn Services Off":"Turn Services On";serviceToggle.setAttribute("aria-checked",String(serviceEnabled));serviceToggle.classList.toggle("review-button-deny",serviceEnabled);
@@ -213,7 +257,7 @@
     get("global-cooldown-state").textContent=active?"Cooldown Active":"Requests Open";get("global-cooldown-state").dataset.status=active?"denied":"approved";
     get("global-cooldown-message").textContent=active?`Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`:serviceEnabled?"There is no active global cooldown. Viewers can submit a game request.":"There is no active global cooldown. New submissions remain closed by the manual service switch.";
     get("reset-global-cooldown").disabled=!active;
-    renderPending(requests.find((request)=>["pending","awaiting_payment"].includes(request.status))||null);renderHistory(requests);renderHistory(archived,{containerId:"request-archive",archived:true,emptyMessage:"No requests have reached the Archive yet."});
+    renderPending(requests.find((request)=>["pending","awaiting_payment"].includes(request.status))||null);renderStaffReviewAlerts(requests);renderHistory(requests);renderHistory(archived,{containerId:"request-archive",archived:true,emptyMessage:"No requests have reached the Archive yet."});
     await refreshDiscordHealth();
   }
   async function initialize() {
@@ -284,7 +328,7 @@
   get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const reason=get("schedule-reason").value.trim();if(!reason){get("schedule-error").textContent="Explain why the scheduled time is being cleared.";return}const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null,schedule_explanation:reason});button.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("explanation")?"Explain why the scheduled time is being cleared.":"This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
 
   if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(oauthReturnPending&&nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
-  initialize();
+  setupStaffTabs();initialize();
   window.setInterval(async()=>{if(providerToken&&!document.hidden){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}},55*60*1000);
   document.addEventListener("visibilitychange",async()=>{if(!document.hidden&&providerToken&&staffAccessSource==="twitch_moderator"){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}});
   window.addEventListener("pageshow",(event)=>{if(event.persisted&&staffAccessSource==="twitch_moderator"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","You left Staff Control. Sign in with Twitch again to re-establish moderator access.");}});
