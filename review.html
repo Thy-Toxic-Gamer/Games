@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.11" />
+  <link rel="stylesheet" href="request-test.css?v=10.12" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.7" defer></script>
+  <script src="review-live.js?v=10.8" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -26,59 +26,127 @@
     <section class="review-empty" id="staff-message"><span>☣</span><h2 id="staff-message-title">Checking staff access</h2><p id="staff-message-copy">Connecting securely…</p></section>
 
     <div id="staff-dashboard" hidden>
-      <article class="review-card">
-        <div class="review-card-head"><div><p class="eyebrow">Emergency Control</p><h2>Game Request Services</h2><p>Manual staff switch</p></div><span class="review-status" id="request-service-state"></span></div>
-        <div class="status-message" id="request-service-message"></div>
-        <div class="review-actions"><button class="review-button" id="toggle-request-service" type="button" role="switch" aria-checked="true">Turn Services Off</button></div>
-        <p class="request-dialog-rules">Turning services off blocks only new request submissions. Existing requests keep their normal review, payment, and expiration flow. Services stay off until staff turns them back on.</p>
-      </article>
-
-      <article class="review-card">
-        <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
-        <div class="status-message" id="global-cooldown-message"></div>
-        <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
-        <p class="request-dialog-rules">Resetting clears the cooldown immediately. New submissions reopen only when Game Request Services are also ON.</p>
-      </article>
-
-      <section class="review-live-section discord-health-panel" aria-labelledby="discord-health-heading">
-        <div class="review-section-title">
-          <div><p class="eyebrow">System Health</p><h2 id="discord-health-heading">Discord Notifications</h2><p class="discord-health-intro">Private delivery monitoring for game requests and staff updates.</p></div>
-          <span class="review-status" id="discord-health-state" data-status="cancelled">Checking</span>
-        </div>
-        <div class="discord-health-summary">
-          <article><small>System-log connection</small><strong id="discord-health-connection">Checking configuration…</strong><span id="discord-health-connection-copy">The webhook address remains protected inside Supabase.</span></article>
-          <article><small>Last successful delivery</small><strong id="discord-last-success">No delivery recorded</strong><span id="discord-last-success-copy">New activity will appear after the health upgrade is active.</span></article>
-          <article><small>Last failed delivery</small><strong id="discord-last-failure">No failure recorded</strong><span id="discord-last-failure-copy">Unresolved failures can be retried by verified staff.</span></article>
-        </div>
-        <div class="review-actions discord-health-actions">
-          <button class="review-button review-button-edit" id="test-discord-notification" type="button">Send Test Notification</button>
-          <button class="review-button review-button-edit" id="retry-discord-notification" type="button" hidden>Retry Failed Notification</button>
-          <button class="review-button review-button-muted" id="refresh-discord-health" type="button">Refresh Health</button>
-        </div>
-        <p class="discord-health-feedback" id="discord-health-feedback" role="status" aria-live="polite"></p>
-        <div class="discord-health-log" id="discord-health-log" aria-label="Recent Discord delivery activity"></div>
+      <section class="staff-command-summary" aria-label="Current staff control status">
+        <article><small>Request services</small><strong id="staff-summary-services">Checking</strong><span id="staff-summary-services-copy">Loading service availability…</span></article>
+        <article><small>Viewer request slot</small><strong id="staff-summary-slot">Checking</strong><span id="staff-summary-slot-copy">Loading the active queue…</span></article>
+        <article><small>Discord delivery</small><strong id="staff-summary-discord">Checking</strong><span id="staff-summary-discord-copy">Loading notification health…</span></article>
       </section>
 
-      <section class="review-live-section">
-        <div class="review-section-title"><div><p class="eyebrow">Live Queue</p><h2 id="live-request-heading">Active Request</h2></div><button class="review-button review-button-muted" id="refresh-requests" type="button">Refresh</button></div>
-        <section class="review-empty" id="pending-empty"><span>☣</span><h2>No request is waiting</h2><p>The request slot is currently open.</p></section>
-        <article class="review-card" id="pending-request" hidden>
-          <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status" id="pending-status"></span></div>
-          <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-change-row" hidden><dt>Latest staff update</dt><dd id="pending-change"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
-          <section class="staff-viewer-change" id="pending-viewer-change" hidden><p class="eyebrow">Viewer Requested a Change</p><h3 id="pending-viewer-change-title"></h3><p id="pending-viewer-change-reason"></p><div class="review-actions"><button class="review-button review-button-edit" id="apply-viewer-change" type="button">Apply Viewer Change</button><button class="review-button review-button-deny" id="deny-viewer-change" type="button">Deny Viewer Change</button></div></section>
-          <div class="review-actions"><button class="review-button review-button-edit" id="edit-request" type="button">Edit Request</button><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
+      <section class="staff-review-alerts" id="staff-review-alerts" aria-label="Items waiting for staff review" aria-live="polite">
+        <article class="staff-review-alert is-checking"><span class="staff-review-light" aria-hidden="true"></span><div><small>Staff Review Queue</small><strong>Checking for pending actions</strong><span>Loading requests and game-change decisions…</span></div></article>
+      </section>
+
+      <nav class="staff-tabs-shell" aria-label="Staff Control sections">
+        <div class="staff-tabs" role="tablist" aria-label="Staff Control sections">
+          <button class="staff-tab active" id="staff-tab-home" type="button" role="tab" aria-selected="true" aria-controls="staff-panel-home" data-staff-tab="home">Home</button>
+          <button class="staff-tab" id="staff-tab-controls" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-controls" tabindex="-1" data-staff-tab="controls">Request Controls</button>
+          <button class="staff-tab" id="staff-tab-active" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-active" tabindex="-1" data-staff-tab="active">Active Request <span class="staff-tab-badge" id="staff-active-count" hidden>0</span></button>
+          <button class="staff-tab" id="staff-tab-records" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-records" tabindex="-1" data-staff-tab="records">Request Records <span class="staff-tab-badge" id="staff-records-count" hidden>0</span></button>
+          <button class="staff-tab" id="staff-tab-health" type="button" role="tab" aria-selected="false" aria-controls="staff-panel-health" tabindex="-1" data-staff-tab="health">System Health <span class="staff-tab-signal" id="staff-health-signal" aria-label="Health status"></span></button>
+        </div>
+      </nav>
+
+      <section class="staff-tab-panel" id="staff-panel-home" role="tabpanel" aria-labelledby="staff-tab-home" tabindex="0" data-staff-panel="home">
+        <section class="staff-home-intro">
+          <p class="eyebrow">Staff Control Home</p>
+          <h2>Private Game Request Operations Center</h2>
+          <p>This page is used by ThyToxicGamer and currently verified Twitch moderators to manage the complete game-request workflow. Staff can control availability, review requests, correct eligible game or system details, record agreed schedules, review history, and confirm that Discord notifications were delivered.</p>
+          <p class="staff-home-warning"><strong>Staff access is operational access.</strong> Every decision must follow the viewer-facing request rules, preserve the approved payment bracket, and include an accurate explanation whenever the system requires one.</p>
+        </section>
+
+        <section class="staff-home-section" aria-labelledby="staff-workflow-heading">
+          <div class="staff-home-heading"><div><p class="eyebrow">How to Use Staff Control</p><h2 id="staff-workflow-heading">Staff Workflow</h2></div></div>
+          <ol class="staff-workflow">
+            <li><strong>Check the status summary</strong><span>Confirm that request services, the viewer slot, and Discord delivery show the expected state.</span></li>
+            <li><strong>Review the active request</strong><span>Verify the viewer, game, system, request choice, price, and note before approving or changing anything.</span></li>
+            <li><strong>Record the decision accurately</strong><span>Use the correct control and provide a clear reason for denials, cancellations, corrections, or schedule changes.</span></li>
+            <li><strong>Confirm the result</strong><span>Check Request Records and System Health to ensure the database and Discord received the update.</span></li>
+          </ol>
+        </section>
+
+        <section class="staff-home-section" aria-labelledby="staff-rules-heading">
+          <div class="staff-home-heading"><div><p class="eyebrow">Required Conduct</p><h2 id="staff-rules-heading">Staff Rules</h2></div></div>
+          <div class="staff-rule-grid">
+            <article><h3>Access and privacy</h3><ul><li>Only the owner and currently verified Twitch moderators may use Staff Control.</li><li>Never share viewer information, payment references, webhook addresses, tokens, staff logs, or private screenshots.</li><li>Sign out when using a shared or unattended device.</li></ul></article>
+            <article><h3>Review integrity</h3><ul><li>Verify the requested game, system, play choice, and payment bracket before approval.</li><li>Leave a request pending and contact the owner when information is unclear.</li><li>Never approve a request simply to bypass eligibility, pricing, or service availability.</li></ul></article>
+            <article><h3>Changes and explanations</h3><ul><li>Game or system replacements must remain inside the original payment bracket.</li><li>Do not alter the request choice, required amount, payment reference, or approval state to force a change.</li><li>Provide a truthful, professional reason for every denial, cancellation, correction, reschedule, or cleared schedule.</li></ul></article>
+            <article><h3>Scheduling and service controls</h3><ul><li>Record a game time only after the viewer, owner, and involved staff agree.</li><li>Turning services off blocks new submissions only; existing requests continue normally.</li><li>Reset the global cooldown only when the owner has authorized reopening requests.</li></ul></article>
+            <article><h3>Notifications and audit trail</h3><ul><li>Use System Health to confirm important Discord updates were delivered.</li><li>Retry an unresolved failure only after checking the error so duplicate messages are avoided.</li><li>All staff actions should match the request record and the message shown to the viewer.</li></ul></article>
+            <article><h3>When uncertain</h3><ul><li>Do not guess, erase information, or make an undocumented exception.</li><li>Keep the request in its current state and contact ThyToxicGamer for a final decision.</li><li>Use the emergency service switch only when new requests genuinely need to be paused.</li></ul></article>
+          </div>
+        </section>
+
+        <section class="staff-home-section staff-quick-links" aria-labelledby="staff-quick-links-heading">
+          <div class="staff-home-heading"><div><p class="eyebrow">Navigation</p><h2 id="staff-quick-links-heading">Open a Staff Section</h2></div></div>
+          <div class="review-actions">
+            <button class="review-button review-button-edit" type="button" data-staff-tab-target="active">Open Active Request</button>
+            <button class="review-button review-button-muted" type="button" data-staff-tab-target="controls">Open Request Controls</button>
+            <button class="review-button review-button-muted" type="button" data-staff-tab-target="records">Open Request Records</button>
+            <button class="review-button review-button-edit" type="button" data-staff-tab-target="health">Open System Health</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="staff-tab-panel" id="staff-panel-controls" role="tabpanel" aria-labelledby="staff-tab-controls" tabindex="0" data-staff-panel="controls" hidden>
+        <div class="staff-panel-heading"><p class="eyebrow">Request Administration</p><h2>Request Controls</h2><p>Manage new-submission availability and the global community cooldown.</p></div>
+        <article class="review-card">
+          <div class="review-card-head"><div><p class="eyebrow">Emergency Control</p><h2>Game Request Services</h2><p>Manual staff switch</p></div><span class="review-status" id="request-service-state"></span></div>
+          <div class="status-message" id="request-service-message"></div>
+          <div class="review-actions"><button class="review-button" id="toggle-request-service" type="button" role="switch" aria-checked="true">Turn Services Off</button></div>
+          <p class="request-dialog-rules">Turning services off blocks only new request submissions. Existing requests keep their normal review, payment, and expiration flow. Services stay off until staff turns them back on.</p>
+        </article>
+        <article class="review-card">
+          <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
+          <div class="status-message" id="global-cooldown-message"></div>
+          <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
+          <p class="request-dialog-rules">Resetting clears the cooldown immediately. New submissions reopen only when Game Request Services are also ON.</p>
         </article>
       </section>
 
-      <section class="review-live-section">
-        <div class="review-section-title"><div><p class="eyebrow">Audit Trail</p><h2>Recent Requests</h2></div></div>
-        <div class="request-history" id="request-history"></div>
+      <section class="staff-tab-panel" id="staff-panel-active" role="tabpanel" aria-labelledby="staff-tab-active" tabindex="0" data-staff-panel="active" hidden>
+        <section class="review-live-section staff-panel-section">
+          <div class="review-section-title"><div><p class="eyebrow">Live Queue</p><h2 id="live-request-heading">Active Request</h2></div><button class="review-button review-button-muted" id="refresh-requests" type="button">Refresh</button></div>
+          <section class="review-empty" id="pending-empty"><span>☣</span><h2>No request is waiting</h2><p>The request slot is currently open.</p></section>
+          <article class="review-card" id="pending-request" hidden>
+            <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status" id="pending-status"></span></div>
+            <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-change-row" hidden><dt>Latest staff update</dt><dd id="pending-change"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
+            <section class="staff-viewer-change" id="pending-viewer-change" hidden><p class="eyebrow">Viewer Requested a Change</p><h3 id="pending-viewer-change-title"></h3><p id="pending-viewer-change-reason"></p><div class="review-actions"><button class="review-button review-button-edit" id="apply-viewer-change" type="button">Apply Viewer Change</button><button class="review-button review-button-deny" id="deny-viewer-change" type="button">Deny Viewer Change</button></div></section>
+            <div class="review-actions"><button class="review-button review-button-edit" id="edit-request" type="button">Edit Request</button><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
+          </article>
+        </section>
       </section>
 
-      <section class="review-live-section">
-        <div class="review-section-title"><div><p class="eyebrow">Retention</p><h2>Archive</h2></div></div>
-        <p class="archive-retention-note">Completed requests move here after 30 days. Each archived request is permanently deleted after six months in the Archive.</p>
-        <div class="request-history" id="request-archive"></div>
+      <section class="staff-tab-panel" id="staff-panel-records" role="tabpanel" aria-labelledby="staff-tab-records" tabindex="0" data-staff-panel="records" hidden>
+        <section class="review-live-section staff-panel-section">
+          <div class="review-section-title"><div><p class="eyebrow">Audit Trail</p><h2>Recent Requests</h2></div></div>
+          <div class="request-history" id="request-history"></div>
+        </section>
+        <section class="review-live-section">
+          <div class="review-section-title"><div><p class="eyebrow">Retention</p><h2>Archive</h2></div></div>
+          <p class="archive-retention-note">Completed requests move here after 30 days. Each archived request is permanently deleted after six months in the Archive.</p>
+          <div class="request-history" id="request-archive"></div>
+        </section>
+      </section>
+
+      <section class="staff-tab-panel" id="staff-panel-health" role="tabpanel" aria-labelledby="staff-tab-health" tabindex="0" data-staff-panel="health" hidden>
+        <section class="review-live-section discord-health-panel staff-panel-section" aria-labelledby="discord-health-heading">
+          <div class="review-section-title">
+            <div><p class="eyebrow">System Health</p><h2 id="discord-health-heading">Discord Notifications</h2><p class="discord-health-intro">Private delivery monitoring for game requests and staff updates.</p></div>
+            <span class="review-status" id="discord-health-state" data-status="cancelled">Checking</span>
+          </div>
+          <div class="discord-health-summary">
+            <article><small>System-log connection</small><strong id="discord-health-connection">Checking configuration…</strong><span id="discord-health-connection-copy">The webhook address remains protected inside Supabase.</span></article>
+            <article><small>Last successful delivery</small><strong id="discord-last-success">No delivery recorded</strong><span id="discord-last-success-copy">New activity will appear after the health upgrade is active.</span></article>
+            <article><small>Last failed delivery</small><strong id="discord-last-failure">No failure recorded</strong><span id="discord-last-failure-copy">Unresolved failures can be retried by verified staff.</span></article>
+          </div>
+          <div class="review-actions discord-health-actions">
+            <button class="review-button review-button-edit" id="test-discord-notification" type="button">Send Test Notification</button>
+            <button class="review-button review-button-edit" id="retry-discord-notification" type="button" hidden>Retry Failed Notification</button>
+            <button class="review-button review-button-muted" id="refresh-discord-health" type="button">Refresh Health</button>
+          </div>
+          <p class="discord-health-feedback" id="discord-health-feedback" role="status" aria-live="polite"></p>
+          <div class="discord-health-log" id="discord-health-log" aria-label="Recent Discord delivery activity"></div>
+        </section>
       </section>
     </div>
   </main>
