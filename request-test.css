@@ -14,6 +14,12 @@
 .request-policy-list strong { color:#f4f7f5; }
 .request-policy-list .request-policy-critical strong { color:#ffca4d; }
 .request-status-card { display:flex; width:min(100%,230px); align-self:start; justify-self:end; align-items:center; gap:.55rem; padding:.6rem .7rem; border:1px solid var(--toxic); background:#050706; }
+.header-right { display:flex; justify-self:end; align-items:center; gap:clamp(.75rem,1.5vw,1.5rem); }
+.site-header .request-status-card { width:clamp(170px,15vw,220px); align-self:center; padding:.42rem .6rem; }
+.site-header .request-status-card small { font-size:.56rem; }
+.site-header .request-status-card strong { font-size:.82rem; line-height:1.05; }
+.site-header .request-status-card span:last-child { font-size:.6rem; white-space:nowrap; }
+.request-center-copy { grid-column:1/-1; }
 .request-status-card[data-state="locked"] { border-color:var(--request-amber); }
 .request-status-card[data-state="cooldown"] { border-color:var(--request-red); }
 .request-status-light { width:9px; height:9px; flex:0 0 auto; border-radius:50%; background:var(--toxic); box-shadow:0 0 12px var(--toxic); }
@@ -72,7 +78,8 @@
 .payment-reference-row { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin:1rem 0; }
 .payment-reference-row code { padding:.75rem 1rem; border:1px solid rgba(116,255,74,.5); border-radius:10px; color:#a8ff8d; background:#030604; font:800 1.05rem/1.1 ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.08em; }
 .payment-help { color:#cbd6cb; }
-@media(max-width:760px){.request-center{grid-template-columns:1fr}.request-center-actions,.unlisted-request,.request-auth-card{grid-column:auto}.unlisted-request{grid-template-columns:1fr;grid-template-areas:"copy" "title" "entry"}.unlisted-request-entry{grid-template-columns:1fr}.request-choice-tabs{grid-template-columns:1fr}.request-choice-tab{min-height:58px}.request-game-button{font-size:.64rem;padding:.45rem}}
+@media(max-width:760px){.site-header{grid-template-columns:minmax(0,1fr) auto auto}.site-header .request-status-card{width:155px}.site-header .request-status-card span:last-child{display:none}.request-center{grid-template-columns:1fr}.request-center-actions,.unlisted-request,.request-auth-card{grid-column:auto}.unlisted-request{grid-template-columns:1fr;grid-template-areas:"copy" "title" "entry"}.unlisted-request-entry{grid-template-columns:1fr}.request-choice-tabs{grid-template-columns:1fr}.request-choice-tab{min-height:58px}.request-game-button{font-size:.64rem;padding:.45rem}}
+@media(max-width:520px){.site-header{grid-template-columns:minmax(0,1fr) auto}.library-count{display:none}.site-header .request-status-card{width:140px}.site-header .request-status-card small{font-size:.5rem;letter-spacing:.06em}.site-header .request-status-card strong{font-size:.78rem}}
 .request-page { min-height:100vh; background:radial-gradient(circle at 80% 5%,rgba(124,255,0,.08),transparent 28%),#050706; }
 .request-page-shell { width:min(1040px,calc(100% - 28px)); margin:0 auto; padding:clamp(1.2rem,4vw,3rem) 0; }
 .request-page-heading { margin-bottom:1rem; padding:1.2rem; border-left:4px solid var(--toxic); background:#0a0d0b; }

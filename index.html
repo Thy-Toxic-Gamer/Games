@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.40" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.28" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.29" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -38,9 +38,15 @@
         <strong id="header-count">208</strong>
         <span>Total Games</span>
       </div>
-      <div class="vault-mark" aria-label="The Toxic Vault">
-        <span aria-hidden="true">☣</span>
-        <strong>The Toxic Vault</strong>
+      <div class="header-right">
+        <div class="request-status-card" id="request-status-card" data-state="open">
+          <span class="request-status-light" aria-hidden="true"></span>
+          <div><small>Viewer request slot</small><strong id="request-slot-label">Open</strong><span id="request-slot-detail">Choose any game below.</span></div>
+        </div>
+        <div class="vault-mark" aria-label="The Toxic Vault">
+          <span aria-hidden="true">☣</span>
+          <strong>The Toxic Vault</strong>
+        </div>
       </div>
     </header>
 
@@ -68,10 +74,6 @@
                 <li class="request-policy-critical"><strong>Approval discretion:</strong> ThyToxicGamer reserves the right to approve, reschedule, or deny any game request.</li>
               </ul>
             </div>
-          </div>
-          <div class="request-status-card" id="request-status-card" data-state="open">
-            <span class="request-status-light" aria-hidden="true"></span>
-            <div><small>Viewer request slot</small><strong id="request-slot-label">Open</strong><span id="request-slot-detail">Choose any game below.</span></div>
           </div>
           <div class="request-auth-card">
             <div><small>Twitch account</small><strong id="request-auth-name">Not signed in</strong></div>
