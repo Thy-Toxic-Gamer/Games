@@ -1,3 +1,5 @@
+import { createClient } from "npm:@supabase/supabase-js@2";
+
 type GameRequest = {
   id: string;
   status: string;
@@ -68,6 +70,17 @@ Deno.serve(async (request) => {
   const gameRequest = payload.record;
   const previous = payload.old_record;
   if (payload.schema !== "public" || payload.table !== "game_requests" || !gameRequest) return Response.json({ ignored: true });
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const admin = supabaseUrl && serviceRoleKey
+    ? createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } })
+    : null;
+  const recordDelivery = async (values: Record<string, unknown>) => {
+    if (!admin) return;
+    const { error } = await admin.from("discord_notification_logs").insert(values);
+    if (error) console.error("Discord delivery log could not be saved", error);
+  };
 
   const isNewPending = payload.type === "INSERT" && gameRequest.status === "pending";
   const isAwaitingPayment = payload.type === "UPDATE" && gameRequest.status === "awaiting_payment" && previous?.status !== "awaiting_payment";
@@ -165,7 +178,28 @@ Deno.serve(async (request) => {
     includeReviewLink = true;
   } else return Response.json({ ignored: true });
 
-  if (!webhook) return Response.json({ error: "Required Discord webhook secret is missing" }, { status: 500 });
+  const eventType = isNewPending ? "new_request"
+    : isAwaitingPayment ? "awaiting_payment"
+    : isNewApproval ? "request_approved"
+    : isNewDenial ? "request_denied"
+    : isNewCancellation ? "request_cancelled"
+    : isNewExpiration ? "request_expired"
+    : isViewerChangeRequested ? "viewer_change_requested"
+    : isViewerChangeDenied ? "viewer_change_denied"
+    : isRequestUpdated ? "request_updated"
+    : isNewSchedule ? "request_scheduled"
+    : "schedule_cleared";
+  const webhookKey = isNewPending || isViewerChangeRequested || isViewerChangeDenied ? "pending"
+    : isAwaitingPayment ? "awaiting_payment"
+    : isNewApproval ? "approved"
+    : isNewDenial ? "denied"
+    : isNewCancellation ? "cancelled"
+    : isNewExpiration ? "expired"
+    : isNewSchedule || isScheduleCleared ? "schedule"
+    : gameRequest.status === "pending" ? "pending"
+    : gameRequest.status === "awaiting_payment" ? "awaiting_payment"
+    : "approved";
+  const target = webhookKey === "schedule" ? "schedule-updates" : webhookKey.replaceAll("_", "-");
   const isViewerChangeNotice = isViewerChangeRequested || isViewerChangeDenied;
   const fields = [
     { name: isViewerChangeNotice ? "Current Game" : "Game", value: shorten(gameRequest.game_title), inline: false },
@@ -194,11 +228,93 @@ Deno.serve(async (request) => {
     );
   }
 
-  const discordResponse = await fetch(webhook, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
-  });
-  if (!discordResponse.ok) return Response.json({ error: `Discord returned ${discordResponse.status}`, details: (await discordResponse.text()).slice(0, 500) }, { status: 502 });
+  const discordBody = {
+    username: "ThyToxicGamer Game Requests",
+    allowed_mentions: { parse: [] },
+    embeds: [{ title, description, color, fields, timestamp: isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }],
+  };
+
+  const sendSystemAudit = async (delivered: boolean, detail: string | null) => {
+    const systemWebhook = Deno.env.get("DISCORD_SYSTEM_LOG_WEBHOOK_URL");
+    if (!systemWebhook) return;
+    const auditBody = {
+      username: "ThyToxicBot System Health",
+      allowed_mentions: { parse: [] },
+      embeds: [{
+        title: delivered ? "✅ Request Notification Delivered" : "⚠️ Request Notification Failed",
+        description: delivered
+          ? `${title} was delivered to its assigned Discord channel.`
+          : `${title} could not be delivered. Staff Control can retry the unresolved failure.`,
+        color: delivered ? 0x7cff00 : 0xff3b30,
+        fields: [
+          { name: "Event", value: eventType.replaceAll("_", " "), inline: true },
+          { name: "Target", value: target, inline: true },
+          { name: "Request ID", value: shorten(gameRequest.id), inline: false },
+          ...(detail ? [{ name: "Error", value: shorten(detail, 500), inline: false }] : []),
+        ],
+        timestamp: new Date().toISOString(),
+        footer: { text: "ThyToxicGamer Request System" },
+      }],
+    };
+    try {
+      const response = await fetch(systemWebhook, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(auditBody),
+      });
+      if (!response.ok) {
+        await recordDelivery({
+          event_type: "system_log_alert",
+          request_id: gameRequest.id,
+          target: "request-system-logs",
+          webhook_key: "system",
+          status: "failed",
+          http_status: response.status,
+          error_message: (await response.text().catch(() => `Discord returned ${response.status}`)).slice(0, 500),
+          payload: auditBody,
+        });
+      }
+    } catch (error) {
+      await recordDelivery({
+        event_type: "system_log_alert",
+        request_id: gameRequest.id,
+        target: "request-system-logs",
+        webhook_key: "system",
+        status: "failed",
+        error_message: error instanceof Error ? error.message.slice(0, 500) : "System-log delivery failed",
+        payload: auditBody,
+      });
+    }
+  };
+
+  if (!webhook) {
+    const detail = "Required Discord webhook secret is missing";
+    await recordDelivery({ event_type: eventType, request_id: gameRequest.id, target, webhook_key: webhookKey, status: "failed", error_message: detail, payload: discordBody });
+    await sendSystemAudit(false, detail);
+    return Response.json({ error: detail }, { status: 500 });
+  }
+
+  let discordResponse: Response;
+  try {
+    discordResponse = await fetch(webhook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(discordBody),
+    });
+  } catch (error) {
+    const detail = error instanceof Error ? error.message.slice(0, 500) : "Discord request failed";
+    await recordDelivery({ event_type: eventType, request_id: gameRequest.id, target, webhook_key: webhookKey, status: "failed", error_message: detail, payload: discordBody });
+    await sendSystemAudit(false, detail);
+    return Response.json({ error: "Discord delivery failed", details: detail }, { status: 502 });
+  }
+  if (!discordResponse.ok) {
+    const detail = (await discordResponse.text().catch(() => `Discord returned ${discordResponse.status}`)).slice(0, 500);
+    await recordDelivery({ event_type: eventType, request_id: gameRequest.id, target, webhook_key: webhookKey, status: "failed", http_status: discordResponse.status, error_message: detail, payload: discordBody });
+    await sendSystemAudit(false, detail);
+    return Response.json({ error: `Discord returned ${discordResponse.status}`, details: detail }, { status: 502 });
+  }
+  const deliveredAt = new Date().toISOString();
+  await recordDelivery({ event_type: eventType, request_id: gameRequest.id, target, webhook_key: webhookKey, status: "success", http_status: discordResponse.status, delivered_at: deliveredAt });
+  await sendSystemAudit(true, null);
   return Response.json({ delivered: true, requestStatus: gameRequest.status });
 });
