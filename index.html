@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.22" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.40" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.31" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.32" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -56,7 +56,6 @@
           <div class="request-center-copy">
             <p class="eyebrow">Game Request System · Twitch Connected</p>
             <h1 id="request-center-title">Request the Next Game from the Toxic Vault</h1>
-            <p class="request-center-intro">Select a title from the catalog or submit an unlisted game, then choose the request type that best matches your preferred stream goal.</p>
             <ul class="request-overview-list" aria-label="How to submit a game request">
               <li><strong>Sign-in required:</strong> Sign in with your Twitch account before submitting a catalog or unlisted game request.</li>
               <li><strong>Payment after approval:</strong> A secure StreamElements payment option is provided only after staff approves your request.</li>
@@ -103,6 +102,20 @@
                 </section>
               </div>
             </div>
+            <section class="request-how-to" aria-labelledby="request-how-to-title">
+              <div class="request-how-to-heading">
+                <h2 id="request-how-to-title">How to Request a Game</h2>
+                <p>Review these steps, then sign in with Twitch in the account panel directly below to begin your request.</p>
+              </div>
+              <ol class="request-steps">
+                <li><strong>Sign in with Twitch</strong><span>Use the Twitch account panel directly below this guide. You must be signed in before any request can be submitted.</span></li>
+                <li><strong>Choose your request path</strong><span>For a catalog game, find the title and select Request Game. For an unlisted game, enter its complete title under Request a Game Not Listed and select Choose Request Type.</span></li>
+                <li><strong>Select the request type</strong><span>Choose Play Game, Speed Run Game, or 100% Completion and review the displayed price.</span></li>
+                <li><strong>Confirm and submit</strong><span>Verify the game, platform, request type, Twitch account, and optional note before submitting the request for staff review.</span></li>
+                <li><strong>Track staff approval</strong><span>Select View Request Status to monitor the request. If approved, the secure StreamElements payment option will appear.</span></li>
+                <li><strong>Complete payment</strong><span>Submit payment within 48 hours of approval. Once payment is confirmed, the request proceeds to scheduling.</span></li>
+              </ol>
+            </section>
           </div>
           <div class="request-auth-card">
             <div><small>Twitch account</small><strong id="request-auth-name">Not signed in</strong></div>

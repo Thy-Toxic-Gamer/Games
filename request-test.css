@@ -1,9 +1,19 @@
-:root { --request-red: #ff3b30; --request-amber: #ffb020; }
+:root { --request-red: #ff3b30; --request-amber: #ffb020; --request-hot-pink:#ff2bd6; }
 [hidden] { display:none !important; }
 .request-center { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(250px,.7fr); gap:1rem; margin-bottom:1rem; padding:clamp(1rem,3vw,1.6rem); border:1px solid var(--toxic); background:radial-gradient(circle at 90% 0,rgba(124,255,0,.11),transparent 35%),#080b09; box-shadow:0 0 30px rgba(124,255,0,.08); }
 .request-center-copy h1 { margin:.2rem 0 .65rem; font-size:clamp(1.45rem,3vw,2.5rem); line-height:1.05; }
 .request-center-copy p:last-child { max-width:850px; margin:0; color:var(--muted); }
 .request-center-intro { max-width:none; margin:0; color:#eef3ef; line-height:1.55; }
+.request-how-to { margin:.85rem 0 0; padding:.9rem 1rem 1rem; border:2px solid var(--request-hot-pink); background:linear-gradient(135deg,rgba(255,43,214,.08),rgba(5,7,6,.9) 42%); box-shadow:0 0 22px rgba(255,43,214,.08); }
+.request-how-to-heading { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:.75rem; }
+.request-how-to-heading h2 { margin:0; color:#ff73e4; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; }
+.request-how-to-heading p { max-width:none; margin:0; color:#e7cfe3; font-size:.75rem; text-align:right; }
+.request-steps { counter-reset:request-step; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:.65rem; margin:0; padding:0; list-style:none; }
+.request-steps li { counter-increment:request-step; position:relative; min-height:92px; padding:.7rem .75rem .7rem 2.8rem; border:1px solid rgba(255,43,214,.3); background:rgba(5,7,6,.78); }
+.request-steps li::before { content:counter(request-step); position:absolute; top:.72rem; left:.72rem; display:grid; width:1.45rem; height:1.45rem; place-items:center; border:1px solid var(--request-hot-pink); border-radius:50%; color:#ff93ea; font-size:.68rem; font-weight:900; box-shadow:0 0 10px rgba(255,43,214,.18); }
+.request-steps strong,.request-steps span { display:block; }
+.request-steps strong { color:#fff; font-size:.78rem; }
+.request-steps span { margin-top:.25rem; color:#d6cbd4; font-size:.7rem; line-height:1.45; }
 .request-overview-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem 1rem; max-width:none; margin:.8rem 0 0; padding:0; list-style:none; color:#dce2de; line-height:1.5; }
 .request-overview-list > li { position:relative; padding:.65rem .75rem .65rem 1.65rem; border:1px solid #273128; background:rgba(5,7,6,.72); }
 .request-overview-list > li::before { content:""; position:absolute; top:1rem; left:.72rem; width:6px; height:6px; border-radius:50%; background:var(--toxic); box-shadow:0 0 8px rgba(124,255,0,.45); }
@@ -94,6 +104,7 @@
 .payment-help { color:#cbd6cb; }
 @media(max-width:760px){.site-header{grid-template-columns:minmax(0,1fr) auto auto}.site-header .request-status-card{width:155px}.site-header .request-status-card span:last-child{display:none}.request-center{grid-template-columns:1fr}.request-overview-list,.request-type-grid,.request-policy-groups{grid-template-columns:1fr}.request-types-overview{grid-column:auto}.request-center-actions,.unlisted-request,.request-auth-card{grid-column:auto}.unlisted-request{grid-template-columns:1fr;grid-template-areas:"copy" "title" "entry"}.unlisted-request-entry{grid-template-columns:1fr}.request-choice-tabs{grid-template-columns:1fr}.request-choice-tab{min-height:58px}.request-game-button{font-size:.64rem;padding:.45rem}}
 @media(max-width:520px){.site-header{grid-template-columns:minmax(0,1fr) auto}.library-count{display:none}.site-header .request-status-card{width:140px}.site-header .request-status-card small{font-size:.5rem;letter-spacing:.06em}.site-header .request-status-card strong{font-size:.78rem}}
+@media(max-width:620px){.request-how-to-heading{display:block}.request-how-to-heading p{margin-top:.35rem;text-align:left}.request-steps{grid-template-columns:1fr}}
 .request-page { min-height:100vh; background:radial-gradient(circle at 80% 5%,rgba(124,255,0,.08),transparent 28%),#050706; }
 .request-page-shell { width:min(1040px,calc(100% - 28px)); margin:0 auto; padding:clamp(1.2rem,4vw,3rem) 0; }
 .request-page-heading { margin-bottom:1rem; padding:1.2rem; border-left:4px solid var(--toxic); background:#0a0d0b; }
