@@ -2,6 +2,16 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.3 — Staff Control Home and Navigation — Updated August 30, 2026
+
+- Added a dedicated Staff Control Home page explaining the private dashboard's purpose and authorized use.
+- Added professional staff rules covering privacy, review integrity, payment brackets, changes, scheduling, service controls, Discord delivery, and escalation to the owner.
+- Organized Staff Control into Home, Request Controls, Active Request, Request Records, and System Health tabs.
+- Added a persistent summary for request services, the viewer request slot, and Discord notification health.
+- Added compact staff-review alerts modeled after the viewer-slot status card.
+- New request reviews use amber alerts, viewer game-change reviews use hot-pink alerts, and a clear queue uses green.
+- Review alerts and tab badges send staff directly to the section containing the required action.
+
 ## Ver. 1.2 — Discord Request-System Health — Updated August 30, 2026
 
 - Added a private Discord Notifications health panel to Staff Control.
