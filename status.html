@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.5" />
+  <link rel="stylesheet" href="styles.css?v=10.0" /><link rel="stylesheet" href="request-test.css?v=10.6" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="status-test.js?v=10.4" defer></script>
+  <script src="status-test.js?v=10.5" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -15,9 +15,10 @@
     <section class="review-empty" id="status-empty"><span>☣</span><h2 id="status-empty-title">Checking request status</h2><p id="status-empty-message">Connecting securely…</p><a class="request-link-button" href="index.html">Open Catalog</a></section>
     <article class="review-card" id="status-card" hidden>
       <div class="request-live-state"><span class="request-live-dot" aria-hidden="true"></span><strong>Live status</strong><span id="status-last-checked">Connecting…</span></div>
-      <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><span class="review-status" id="status-state"></span></div>
+      <div class="review-card-head"><div><p class="eyebrow" id="status-id"></p><h2 id="status-title"></h2><p id="status-platform"></p></div><div class="status-request-tools"><span class="review-status" id="status-state"></span><button class="review-button review-button-edit" id="request-game-change-button" type="button">Request a Game Change</button></div></div>
       <div class="status-message" id="status-message" aria-live="polite"></div>
       <section class="request-change-notice" id="status-change-row" hidden><p class="eyebrow">Staff Update</p><h3>Your game request was updated</h3><p id="status-change"></p><p><strong>Reason:</strong> <span id="status-change-reason"></span></p><small id="status-change-time"></small></section>
+      <section class="viewer-change-notice" id="viewer-change-row" hidden><p class="eyebrow" id="viewer-change-eyebrow">Game Change Request</p><h3 id="viewer-change-heading"></h3><p id="viewer-change-summary"></p><p><strong>Reason:</strong> <span id="viewer-change-reason"></span></p><p id="viewer-change-decision-row" hidden><strong>Staff response:</strong> <span id="viewer-change-decision"></span></p><small id="viewer-change-time"></small></section>
       <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div><dt>Request choice</dt><dd id="status-goal"></dd></div><div><dt>Request price</dt><dd id="status-price"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Payment deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div><div id="status-schedule-row" hidden><dt>Game schedule</dt><dd id="status-schedule"></dd></div><div id="status-schedule-reason-row" hidden><dt>Schedule change explanation</dt><dd id="status-schedule-reason"></dd></div></dl>
       <section class="payment-panel" id="payment-panel" hidden aria-labelledby="payment-title">
         <p class="eyebrow">Secure Payment</p>
@@ -43,6 +44,22 @@
         <button class="review-button review-button-muted" id="keep-request-button" type="button">Keep My Request</button>
         <button class="review-button review-button-deny" type="submit">Yes, Cancel Request</button>
       </div>
+    </form>
+  </dialog>
+  <dialog class="request-dialog request-edit-dialog" id="request-game-change-dialog">
+    <form id="request-game-change-form" method="dialog">
+      <button class="request-dialog-close" type="button" aria-label="Close game change form">×</button>
+      <p class="eyebrow">Viewer Game Change</p>
+      <h2>Request a Different Game</h2>
+      <p class="request-dialog-rules">Submit the exact replacement game and console or system. Staff will review the change before anything is updated.</p>
+      <div class="request-edit-grid">
+        <label>Replacement game title<input id="viewer-change-title" type="text" maxlength="160" autocomplete="off" required /></label>
+        <label>Console or system<input id="viewer-change-platform" type="text" maxlength="80" autocomplete="off" required /></label>
+      </div>
+      <label>Why are you requesting this change?<textarea id="viewer-change-reason-input" maxlength="500" minlength="10" rows="5" required placeholder="Explain what should be changed and why."></textarea></label>
+      <div class="request-edit-locked"><strong>Your payment bracket stays locked</strong><span>The request type, play style, price, payment reference, and current approval status will not change. The replacement must remain in the same payment bracket.</span></div>
+      <p class="request-form-error" id="viewer-change-error" role="alert"></p>
+      <div class="request-center-actions"><button class="review-button review-button-muted" id="cancel-game-change" type="button">Keep Current Game</button><button class="review-button review-button-edit" id="submit-game-change" type="submit">Send Change Request</button></div>
     </form>
   </dialog>
 </body></html>

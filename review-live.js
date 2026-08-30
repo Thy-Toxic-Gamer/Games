@@ -12,6 +12,7 @@
   let pendingRequest = null;
   let scheduleRequest = null;
   let editRequest = null;
+  let viewerChangeReviewRequest = null;
   let staffAccessSource = null;
   let serviceEnabled = true;
   const easternZone = "America/New_York";
@@ -57,16 +58,35 @@
     get("schedule-dialog").showModal();
     get("schedule-local").focus();
   }
-  function openEditDialog(request) {
+  function hasPendingViewerChange(request) { return request?.viewer_change_status === "pending" && Boolean(request.viewer_change_game_title); }
+  function openEditDialog(request,useViewerChange=false) {
     if(!canEditRequest(request))return;
     editRequest=request;
     get("edit-request-tier").textContent=requestTierLabel(request);
-    get("edit-game-title").value=request.game_title||"";
-    get("edit-platform").value=request.platform||"";
-    get("edit-reason").value="";
+    get("edit-game-title").value=useViewerChange?request.viewer_change_game_title||"":request.game_title||"";
+    get("edit-platform").value=useViewerChange?request.viewer_change_platform||"":request.platform||"";
+    get("edit-reason").value=useViewerChange?`Approved viewer change request: ${request.viewer_change_reason||"Replacement approved by staff."}`.slice(0,500):"";
+    get("save-request-edit").textContent=useViewerChange?"Approve and Apply Change":"Save Request Update";
     get("edit-request-error").textContent="";
     get("edit-request-dialog").showModal();
     get("edit-game-title").focus();
+  }
+  function openViewerChangeDenyDialog(request) {
+    if(!hasPendingViewerChange(request))return;
+    viewerChangeReviewRequest=request;
+    get("deny-viewer-change-reason").value="";
+    get("deny-viewer-change-error").textContent="";
+    get("deny-viewer-change-dialog").showModal();
+    get("deny-viewer-change-reason").focus();
+  }
+  function makeViewerChangePanel(request) {
+    if(!hasPendingViewerChange(request))return null;
+    const panel=make("section","staff-viewer-change");
+    panel.append(make("p","eyebrow","Viewer Requested a Change"),make("h3",null,`${request.viewer_change_game_title} · ${request.viewer_change_platform||"System not specified"}`),make("p",null,request.viewer_change_reason||"No explanation provided."));
+    const actions=make("div","review-actions");
+    const apply=make("button","review-button review-button-edit","Apply Viewer Change");apply.type="button";apply.addEventListener("click",()=>openEditDialog(request,true));
+    const deny=make("button","review-button review-button-deny","Deny Viewer Change");deny.type="button";deny.addEventListener("click",()=>openViewerChangeDenyDialog(request));
+    actions.append(apply,deny);panel.append(actions);return panel;
   }
 
   function renderPending(request) {
@@ -83,6 +103,8 @@
     get("pending-change-row").hidden=!request.request_change_reason;get("pending-change").textContent=request.request_change_reason?requestChangeSummary(request):"";
     get("pending-status").textContent=statusLabels[request.status]||request.status;get("pending-status").dataset.status=request.status;
     get("pending-deadline-row").hidden=!awaiting||!request.payment_deadline;get("pending-deadline").textContent=request.payment_deadline?new Date(request.payment_deadline).toLocaleString():"";
+    const viewerChange=get("pending-viewer-change");viewerChange.hidden=!hasPendingViewerChange(request);
+    if(hasPendingViewerChange(request)){get("pending-viewer-change-title").textContent=`${request.viewer_change_game_title} · ${request.viewer_change_platform||"System not specified"}`;get("pending-viewer-change-reason").textContent=request.viewer_change_reason||"No explanation provided.";}
     get("edit-request").hidden=!canEditRequest(request);get("approve-request").hidden=awaiting;get("deny-request").hidden=awaiting;get("cancel-awaiting-request").hidden=!awaiting;
   }
   function renderHistory(requests,options={}) {
@@ -99,6 +121,7 @@
       if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
       if(request.cancellation_reason)card.append(make("p","request-history-reason",`Cancellation explanation: ${request.cancellation_reason}`));
       if(request.request_change_reason)card.append(make("p","request-history-change",`Latest request update: ${requestChangeSummary(request)}`));
+      const viewerChangePanel=!options.archived?makeViewerChangePanel(request):null;if(viewerChangePanel)card.append(viewerChangePanel);
       if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
       if(request.scheduled_for)card.append(make("p","request-history-schedule",`Scheduled: ${formatEastern(request.scheduled_for)}`));
       if(!options.archived&&request.status==="approved"&&request.paid_at){
@@ -165,7 +188,7 @@
   const cancelAwaitingDialog=get("cancel-awaiting-dialog");get("cancel-awaiting-request").addEventListener("click",()=>{get("cancel-awaiting-reason").value="";get("cancel-awaiting-error").textContent="";cancelAwaitingDialog.showModal();get("cancel-awaiting-reason").focus()});cancelAwaitingDialog.querySelector(".request-dialog-close").addEventListener("click",()=>cancelAwaitingDialog.close());
   get("cancel-awaiting-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!pendingRequest||pendingRequest.status!=="awaiting_payment")return;const reason=get("cancel-awaiting-reason").value.trim();if(!reason){get("cancel-awaiting-error").textContent="A cancellation explanation is required.";return}const {error}=await client.rpc("staff_cancel_awaiting_request",{request_id:pendingRequest.id,cancellation_explanation:reason});if(error){get("cancel-awaiting-error").textContent="This awaiting request could not be cancelled. Its status may have changed.";return}cancelAwaitingDialog.close();await refreshDashboard()});
 
-  const editDialog=get("edit-request-dialog");get("edit-request").addEventListener("click",()=>openEditDialog(pendingRequest));get("cancel-request-edit").addEventListener("click",()=>editDialog.close());editDialog.querySelector(".request-dialog-close").addEventListener("click",()=>editDialog.close());
+  const editDialog=get("edit-request-dialog");get("edit-request").addEventListener("click",()=>openEditDialog(pendingRequest));get("apply-viewer-change").addEventListener("click",()=>openEditDialog(pendingRequest,true));get("deny-viewer-change").addEventListener("click",()=>openViewerChangeDenyDialog(pendingRequest));get("cancel-request-edit").addEventListener("click",()=>editDialog.close());editDialog.querySelector(".request-dialog-close").addEventListener("click",()=>editDialog.close());
   get("edit-request-form").addEventListener("submit",async(event)=>{
     event.preventDefault();
     if(!canEditRequest(editRequest)){get("edit-request-error").textContent="This request can no longer be edited.";return;}
@@ -179,6 +202,19 @@
     save.disabled=false;
     if(error){get("edit-request-error").textContent=error.message||"This request could not be updated.";return;}
     editDialog.close();editRequest=null;await refreshDashboard();
+  });
+
+  const denyViewerChangeDialog=get("deny-viewer-change-dialog");denyViewerChangeDialog.querySelector(".request-dialog-close").addEventListener("click",()=>denyViewerChangeDialog.close());
+  get("deny-viewer-change-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    if(!hasPendingViewerChange(viewerChangeReviewRequest)){denyViewerChangeDialog.close();await refreshDashboard();return;}
+    const reason=get("deny-viewer-change-reason").value.trim();
+    if(reason.length<10){get("deny-viewer-change-error").textContent="Explain the denial in at least 10 characters.";return;}
+    const confirm=get("confirm-viewer-change-denial");confirm.disabled=true;
+    const {error}=await client.rpc("staff_deny_game_change_request",{request_id:viewerChangeReviewRequest.id,denial_explanation:reason});
+    confirm.disabled=false;
+    if(error){get("deny-viewer-change-error").textContent=error.message||"This game change request could not be denied.";return;}
+    denyViewerChangeDialog.close();viewerChangeReviewRequest=null;await refreshDashboard();
   });
 
   const scheduleDialog=get("schedule-dialog");scheduleDialog.querySelector(".request-dialog-close").addEventListener("click",()=>scheduleDialog.close());

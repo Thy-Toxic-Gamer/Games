@@ -2,6 +2,15 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.1 — Viewer Game Change Requests — Updated August 30, 2026
+
+- Added a Request a Game Change button to each eligible viewer Request Status card.
+- Viewers can request a replacement title and console or system while keeping the original request type, price bracket, payment reference, and approval state locked.
+- New change requests are sent to the pending Discord staff channel for review.
+- Staff Control can apply the requested replacement through the existing secure editor or deny it with a required explanation.
+- The viewer status page shows pending, approved, and denied change-request decisions.
+- Added secure database checks so only the original signed-in viewer can submit a change and only verified staff can approve or deny it.
+
 ## Ver. 1.0 — First Public Release — Updated August 29, 2026
 
 - Added the viewer-facing Site Updates center and prominent shortcut.

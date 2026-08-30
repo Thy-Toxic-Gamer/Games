@@ -69,6 +69,26 @@
       get("status-change-reason").textContent = request.request_change_reason;
       get("status-change-time").textContent = `Updated ${new Date(request.request_changed_at).toLocaleString()}`;
     }
+    const viewerChangeStatus = request.viewer_change_status;
+    const hasViewerChange = Boolean(viewerChangeStatus && request.viewer_change_game_title);
+    get("viewer-change-row").hidden = !hasViewerChange;
+    if (hasViewerChange) {
+      const changeLabels = {pending:"Waiting for Staff Review",approved:"Change Approved",denied:"Change Not Approved"};
+      get("viewer-change-eyebrow").textContent = changeLabels[viewerChangeStatus] || "Game Change Request";
+      get("viewer-change-heading").textContent = `${request.viewer_change_game_title} · ${request.viewer_change_platform || "System not specified"}`;
+      get("viewer-change-summary").textContent = viewerChangeStatus === "pending"
+        ? "Your requested replacement was sent to staff and Discord. Your current game remains unchanged until staff approves the change."
+        : viewerChangeStatus === "approved"
+          ? "Staff approved and applied this replacement. Your request choice, price, payment reference, and approval status stayed the same."
+          : "Staff did not apply this replacement. Your current game request remains unchanged.";
+      get("viewer-change-reason").textContent = request.viewer_change_reason || "Not provided";
+      const hasDecision = Boolean(request.viewer_change_decision_reason);
+      get("viewer-change-decision-row").hidden = !hasDecision;
+      get("viewer-change-decision").textContent = request.viewer_change_decision_reason || "";
+      const changeTime = request.viewer_change_reviewed_at || request.viewer_change_requested_at;
+      get("viewer-change-time").textContent = changeTime ? `${viewerChangeStatus === "pending" ? "Submitted" : "Reviewed"} ${new Date(changeTime).toLocaleString()}` : "";
+      get("viewer-change-row").dataset.status = viewerChangeStatus;
+    }
     const recordedReason = request.denial_reason || request.cancellation_reason;
     get("status-reason-row").hidden = !recordedReason;
     get("status-reason-label").textContent = request.cancellation_reason ? "Cancellation explanation" : "Decision explanation";
@@ -80,6 +100,12 @@
     get("status-schedule-reason-row").hidden = !request.schedule_change_reason;
     get("status-schedule-reason").textContent = request.schedule_change_reason || "";
     get("cancel-request-button").hidden = request.status !== "pending";
+    const activeRequest = ["pending","awaiting_payment","approved"].includes(request.status);
+    const streamStarted = request.scheduled_for && new Date(request.scheduled_for).getTime() <= Date.now();
+    const changeButton = get("request-game-change-button");
+    changeButton.hidden = !activeRequest || Boolean(streamStarted);
+    changeButton.disabled = viewerChangeStatus === "pending";
+    changeButton.textContent = viewerChangeStatus === "pending" ? "Change Request Pending" : "Request a Game Change";
     get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
     const awaitingPayment = request.status === "awaiting_payment";
     get("payment-panel").hidden = !awaitingPayment;
@@ -140,6 +166,37 @@
     window.setTimeout(()=>{get("copy-payment-reference").textContent="Copy Code"},1500);
   });
   get("check-payment-button").addEventListener("click",checkPayment);
+  const changeDialog = get("request-game-change-dialog");
+  get("request-game-change-button").addEventListener("click",()=>{
+    if(!currentRequest || get("request-game-change-button").disabled)return;
+    get("viewer-change-title").value="";
+    get("viewer-change-platform").value=currentRequest.platform||"";
+    get("viewer-change-reason-input").value="";
+    get("viewer-change-error").textContent="";
+    changeDialog.showModal();
+    get("viewer-change-title").focus();
+  });
+  get("cancel-game-change").addEventListener("click",()=>changeDialog.close());
+  changeDialog.querySelector(".request-dialog-close").addEventListener("click",()=>changeDialog.close());
+  get("request-game-change-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    if(!currentRequest)return;
+    const title=get("viewer-change-title").value.trim();
+    const platform=get("viewer-change-platform").value.trim();
+    const reason=get("viewer-change-reason-input").value.trim();
+    if(!title){get("viewer-change-error").textContent="Enter the replacement game title.";return;}
+    if(!platform){get("viewer-change-error").textContent="Enter the replacement console or system.";return;}
+    if(reason.length<10){get("viewer-change-error").textContent="Explain the requested change in at least 10 characters.";return;}
+    if(title.toLowerCase()===currentRequest.game_title.toLowerCase()&&platform.toLowerCase()===(currentRequest.platform||"").toLowerCase()){
+      get("viewer-change-error").textContent="Enter a different game title or console before submitting.";return;
+    }
+    const submit=get("submit-game-change");submit.disabled=true;
+    const {error}=await client.rpc("request_my_game_change",{request_id:currentRequest.id,requested_title:title,requested_platform:platform,change_explanation:reason});
+    submit.disabled=false;
+    if(error){get("viewer-change-error").textContent=error.message||"The game change request could not be sent.";return;}
+    changeDialog.close();
+    await loadRequest();
+  });
   const cancelDialog = get("cancel-request-dialog");
   get("cancel-request-button").addEventListener("click",()=>cancelDialog.showModal());
   get("keep-request-button").addEventListener("click",()=>cancelDialog.close());

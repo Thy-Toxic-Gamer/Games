@@ -16,6 +16,13 @@ type GameRequest = {
   previous_platform: string | null;
   request_change_reason: string | null;
   request_changed_at: string | null;
+  viewer_change_status: string | null;
+  viewer_change_game_title: string | null;
+  viewer_change_platform: string | null;
+  viewer_change_reason: string | null;
+  viewer_change_requested_at: string | null;
+  viewer_change_reviewed_at: string | null;
+  viewer_change_decision_reason: string | null;
   created_at: string;
 };
 
@@ -73,6 +80,14 @@ Deno.serve(async (request) => {
   const isRequestUpdated = payload.type === "UPDATE"
     && ["pending", "awaiting_payment", "approved"].includes(gameRequest.status)
     && (gameRequest.game_title !== previous?.game_title || gameRequest.platform !== previous?.platform);
+  const isViewerChangeRequested = payload.type === "UPDATE"
+    && gameRequest.viewer_change_status === "pending"
+    && (previous?.viewer_change_status !== "pending"
+      || gameRequest.viewer_change_game_title !== previous?.viewer_change_game_title
+      || gameRequest.viewer_change_platform !== previous?.viewer_change_platform);
+  const isViewerChangeDenied = payload.type === "UPDATE"
+    && gameRequest.viewer_change_status === "denied"
+    && previous?.viewer_change_status !== "denied";
 
   let webhook: string | undefined;
   let title = "";
@@ -110,6 +125,18 @@ Deno.serve(async (request) => {
     title = "⌛ Game Request Expired";
     description = "The 48-hour deadline passed without completion. The request slot is open again.";
     color = 0x707070;
+  } else if (isViewerChangeRequested) {
+    webhook = Deno.env.get("DISCORD_PENDING_WEBHOOK");
+    title = "🔁 Viewer Requested a Game Change";
+    description = "A viewer requested a replacement game or console. The current request remains unchanged until staff reviews it.";
+    color = 0xff2bd6;
+    includeReviewLink = true;
+  } else if (isViewerChangeDenied) {
+    webhook = Deno.env.get("DISCORD_PENDING_WEBHOOK");
+    title = "🚫 Viewer Game Change Denied";
+    description = shorten(gameRequest.viewer_change_decision_reason);
+    color = 0xff3b30;
+    includeReviewLink = true;
   } else if (isRequestUpdated) {
     webhook = gameRequest.status === "pending"
       ? Deno.env.get("DISCORD_PENDING_WEBHOOK")
@@ -139,12 +166,13 @@ Deno.serve(async (request) => {
   } else return Response.json({ ignored: true });
 
   if (!webhook) return Response.json({ error: "Required Discord webhook secret is missing" }, { status: 500 });
+  const isViewerChangeNotice = isViewerChangeRequested || isViewerChangeDenied;
   const fields = [
-    { name: "Game", value: shorten(gameRequest.game_title), inline: false },
+    { name: isViewerChangeNotice ? "Current Game" : "Game", value: shorten(gameRequest.game_title), inline: false },
     { name: "Twitch Viewer", value: shorten(gameRequest.twitch_name), inline: true },
     { name: "Request Type", value: gameRequest.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog", inline: true },
     { name: "Request Choice", value: `${requestGoalLabel(gameRequest.request_goal)} · $${gameRequest.minimum_amount}`, inline: true },
-    { name: "Platform", value: shorten(gameRequest.platform), inline: true },
+    { name: isViewerChangeNotice ? "Current Platform" : "Platform", value: shorten(gameRequest.platform), inline: true },
     { name: "Viewer Message", value: shorten(gameRequest.viewer_note), inline: false },
     { name: "Request ID", value: shorten(gameRequest.id), inline: false },
   ];
@@ -158,11 +186,18 @@ Deno.serve(async (request) => {
       { name: "Change Reason", value: shorten(gameRequest.request_change_reason), inline: false },
     );
   }
+  if (isViewerChangeRequested || isViewerChangeDenied) {
+    fields.push(
+      { name: "Requested Game", value: shorten(gameRequest.viewer_change_game_title), inline: true },
+      { name: "Requested Platform", value: shorten(gameRequest.viewer_change_platform), inline: true },
+      { name: "Viewer's Reason", value: shorten(gameRequest.viewer_change_reason), inline: false },
+    );
+  }
 
   const discordResponse = await fetch(webhook, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
+    body: JSON.stringify({ username: "ThyToxicGamer Game Requests", allowed_mentions: { parse: [] }, embeds: [{ title, description, color, fields, timestamp: isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }] }),
   });
   if (!discordResponse.ok) return Response.json({ error: `Discord returned ${discordResponse.status}`, details: (await discordResponse.text()).slice(0, 500) }, { status: 502 });
   return Response.json({ delivered: true, requestStatus: gameRequest.status });

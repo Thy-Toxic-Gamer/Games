@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=10.0" />
-  <link rel="stylesheet" href="request-test.css?v=10.5" />
+  <link rel="stylesheet" href="request-test.css?v=10.6" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
-  <script src="review-live.js?v=10.4" defer></script>
+  <script src="review-live.js?v=10.5" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -43,6 +43,7 @@
         <article class="review-card" id="pending-request" hidden>
           <div class="review-card-head"><div><p class="eyebrow" id="pending-id"></p><h2 id="pending-title"></h2><p id="pending-tier"></p></div><span class="review-status" id="pending-status"></span></div>
           <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="pending-viewer"></dd></div><div><dt>Submitted</dt><dd id="pending-time"></dd></div><div><dt>Request choice</dt><dd id="pending-goal"></dd></div><div><dt>Request price</dt><dd id="pending-price"></dd></div><div><dt>Platform</dt><dd id="pending-platform"></dd></div><div><dt>Viewer note</dt><dd id="pending-note"></dd></div><div id="pending-change-row" hidden><dt>Latest staff update</dt><dd id="pending-change"></dd></div><div id="pending-deadline-row" hidden><dt>Automatic expiration</dt><dd id="pending-deadline"></dd></div></dl>
+          <section class="staff-viewer-change" id="pending-viewer-change" hidden><p class="eyebrow">Viewer Requested a Change</p><h3 id="pending-viewer-change-title"></h3><p id="pending-viewer-change-reason"></p><div class="review-actions"><button class="review-button review-button-edit" id="apply-viewer-change" type="button">Apply Viewer Change</button><button class="review-button review-button-deny" id="deny-viewer-change" type="button">Deny Viewer Change</button></div></section>
           <div class="review-actions"><button class="review-button review-button-edit" id="edit-request" type="button">Edit Request</button><button class="review-button" id="approve-request" type="button">Approve for Payment</button><button class="review-button review-button-deny" id="deny-request" type="button">Deny Request</button><button class="review-button review-button-deny" id="cancel-awaiting-request" type="button" hidden>Cancel Awaiting Request</button></div>
         </article>
       </section>
@@ -95,6 +96,8 @@
       </div>
     </form>
   </dialog>
+
+  <dialog class="request-dialog" id="deny-viewer-change-dialog"><form id="deny-viewer-change-form" method="dialog"><button class="request-dialog-close" type="button" aria-label="Close viewer change denial form">×</button><p class="eyebrow">Viewer Change Review</p><h2>Deny Game Change</h2><label>Explanation required<textarea class="review-reason" id="deny-viewer-change-reason" maxlength="500" minlength="10" rows="5" required placeholder="Explain why the requested replacement cannot be approved."></textarea></label><p class="request-dialog-rules">The original game request remains unchanged. The viewer will see this explanation and may submit another eligible change request.</p><p class="request-form-error" id="deny-viewer-change-error" role="alert"></p><button class="request-submit review-button-deny" id="confirm-viewer-change-denial" type="submit">Deny Game Change</button></form></dialog>
 
   <dialog class="request-dialog" id="schedule-dialog">
     <form id="schedule-form" method="dialog">
