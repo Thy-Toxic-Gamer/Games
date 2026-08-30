@@ -352,7 +352,7 @@ function freezeConsoleGames(
   rows,
   sourcePlatformId,
   useOriginalCover = false,
-  useCleanSwitchArtwork = false,
+  cleanArtworkId = null,
 ) {
   const hybridCovers = window.HYBRID_SPRITES || window.HYBRID_COVERS || {};
   const ps5Covers = window.PS5_COVERS || {};
@@ -366,8 +366,8 @@ function freezeConsoleGames(
         title,
         image: useOriginalCover
           ? image
-          : useCleanSwitchArtwork
-            ? `hybrid-sprite:assets/covers/switch/atlases/switch-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
+          : cleanArtworkId
+            ? `hybrid-sprite:assets/covers/${cleanArtworkId}/atlases/${cleanArtworkId}-clean-${String(Math.floor(index / 20) + 1).padStart(2, "0")}.webp:${index % 20}`
           : sourcePlatformId === "ps4" && title === "Dark Cloud 2"
             ? "assets/covers/ps4/dark-cloud-2-borderless-generated.webp"
           : sourcePlatformId === "ps4"
@@ -384,8 +384,8 @@ function freezeConsoleGames(
 }
 
 const nintendoClassics = window.NINTENDO_CLASSICS || {};
-const regularSwitchGames = freezeConsoleGames(switchRows, "switch", false, true);
-const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "switch");
+const regularSwitchGames = freezeConsoleGames(switchRows, "switch", false, "switch");
+const nesClassicsGames = freezeConsoleGames(nintendoClassics.nes || [], "switch", false, "nes");
 const snesClassicsGames = freezeConsoleGames(nintendoClassics.snes || [], "switch");
 const gameBoyClassicsGames = freezeConsoleGames(nintendoClassics.gb || [], "switch");
 const n64ClassicsGames = freezeConsoleGames(nintendoClassics.n64 || [], "switch");
