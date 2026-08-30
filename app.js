@@ -157,7 +157,7 @@
     "Deep Rock Galactic: Survivor": Object.freeze({ genre: "Auto-Shooter / Roguelite", description: "A lone dwarf mines hostile caves, gathers resources, and survives swarms of alien creatures for Deep Rock Galactic." }),
     "Destiny 2": Object.freeze({ genre: "Online FPS / Action RPG", description: "Guardians wield the Light and Darkness to defend humanity against cosmic threats across the solar system." }),
     "Deus Ex: Mankind Divided": Object.freeze({ genre: "Action RPG / Immersive Sim", description: "Augmented agent Adam Jensen investigates a global conspiracy in a divided world hostile toward augmented people." }),
-    "DIVE or DIE - Children of Rain": Object.freeze({ genre: "Action / Adventure", description: "Survive a hostile world shaped by relentless danger and uncover the mystery surrounding the Children of Rain." }),
+    "DIVE or DIE - Children of Rain": Object.freeze({ genre: "Underwater Survival Roguelite", description: "Jack leads survivors into the flooded Abyssal Pool to recover eight lost idols and appease the Maker of Rain before the final Flood destroys humanity." }),
     "DOOM": Object.freeze({ genre: "FPS / Action", description: "The Doom Slayer tears through a demonic invasion of a Mars research facility and Hell itself." }),
     "DOOM + DOOM II": Object.freeze({ genre: "FPS / Action", description: "Battle the armies of Hell across the classic campaigns that defined fast, relentless first-person combat." }),
     "DOOM 3": Object.freeze({ genre: "FPS / Survival Horror", description: "A marine on Mars fights through a demonic outbreak after a UAC experiment opens a gateway to Hell." }),
@@ -209,7 +209,7 @@
     "Phantasy Star Online 2 New Genesis": Object.freeze({ genre: "Action MMORPG", description: "ARKS defenders explore the planet Halpha and fight mysterious DOLLS while uncovering the truth of their world." }),
     "Pyre": Object.freeze({ genre: "RPG / Sports Strategy", description: "Exiles travel across a mystical wasteland competing in ritual games for a chance to earn their freedom." }),
     "Remnant: From the Ashes": Object.freeze({ genre: "Soulslike / Shooter", description: "Survivors travel through shattered worlds to fight the Root and search for a way to save humanity." }),
-    "Romestead": Object.freeze({ genre: "RPG / Adventure", description: "Explore a fantasy world, grow stronger through adventure, and uncover the mysteries surrounding its people and lands." }),
+    "Romestead": Object.freeze({ genre: "Survival / Town Building", description: "Survivors rebuild Rome by gathering resources, constructing towns, farming, fighting legendary creatures, and earning favor from the Roman gods." }),
     "Royal Quest": Object.freeze({ genre: "Fantasy MMORPG", description: "Adventurers serve the kingdom of Aura by battling monsters, rival factions, and threats to the realm." }),
     "RuneScape": Object.freeze({ genre: "Fantasy MMORPG", description: "Forge your own story across Gielinor through quests, skills, gods, kingdoms, and decades of evolving adventures." }),
     "RuneScape: Dragonwilds": Object.freeze({ genre: "Survival / Open World", description: "Survivors enter the forgotten continent of Ashenfall, gather power, and prepare to challenge its dragons." }),
@@ -223,11 +223,11 @@
     "Under The Waves": Object.freeze({ genre: "Narrative Adventure", description: "A professional diver working deep beneath the North Sea confronts grief, isolation, and strange events underwater." }),
     "V Rising": Object.freeze({ genre: "Survival Action RPG", description: "A weakened vampire awakens after centuries, rebuilds a castle, hunts for blood, and challenges the living world." }),
     "Valheim": Object.freeze({ genre: "Survival / Adventure", description: "A slain warrior is sent to a Norse purgatory to defeat Odin's ancient enemies and prove worthy of Valhalla." }),
-    "Vampire Crawlers": Object.freeze({ genre: "Roguelike / Action", description: "A dark fantasy roguelike built around surviving dangerous encounters, growing stronger, and pushing deeper into hostile territory." }),
+    "Vampire Crawlers": Object.freeze({ genre: "Roguelike Deckbuilder", description: "Crawlers explore first-person dungeons and build decks that unleash escalating card combinations against familiar Vampire Survivors monsters." }),
     "Vindictus": Object.freeze({ genre: "Action MMORPG", description: "Mercenaries battle monsters and unravel a tragic conflict involving prophecy, gods, and the fate of their world." }),
     "Warframe": Object.freeze({ genre: "Online Action / Looter Shooter", description: "The Tenno awaken from cryosleep and wield Warframes while fighting for balance across a war-torn solar system." }),
     "Warhammer 40,000: Darktide": Object.freeze({ genre: "Co-op FPS / Action", description: "Rejects of the Imperium descend into Tertium Hive to stop a Chaos cult and a spreading Nurgle infestation." }),
-    "Windrose": Object.freeze({ genre: "Adventure / RPG", description: "Set sail through a dangerous fantasy world, explore new lands, and build your legend through discovery and conflict." }),
+    "Windrose": Object.freeze({ genre: "Pirate Survival / Action", description: "A shipwrecked pirate gathers a crew, builds a base, repairs a ship, and fights on land and sea across a procedurally generated open world." }),
     "The Witcher: Enhanced Edition": Object.freeze({ genre: "Action RPG", description: "Monster hunter Geralt of Rivia searches for his lost memories while becoming entangled in political and supernatural conflict." }),
     "The Witcher 2: Assassins of Kings Enhanced Edition": Object.freeze({ genre: "Action RPG", description: "Geralt hunts the assassin responsible for killing a king while navigating a brutal political struggle." }),
     "The Witcher 3: Wild Hunt - Complete Edition": Object.freeze({ genre: "Action RPG", description: "Geralt searches for Ciri while the supernatural Wild Hunt pursues her across a war-torn Continent." }),
@@ -534,9 +534,10 @@
 
 
   function getGameInfo(game) {
+    const additionalSummary = window.GAME_SUMMARIES?.[game.title];
     const info = GAME_INFO[game.title] || {
       genre: "Game",
-      description: `Explore the world, characters, and challenges of ${game.title}.`,
+      description: additionalSummary || "No verified game summary is available yet.",
     };
 
     const catalogGenre = game.genre || (game.sourcePlatformId === "switch"
