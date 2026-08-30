@@ -343,6 +343,7 @@
     "The Legend of Zelda: A Link to the Past": Object.freeze({ genre: "Action Adventure", description: "Link journeys between Hyrule and the Dark World to rescue Zelda and defeat the wizard Agahnim and Ganon." }),
     "Secret of Mana": Object.freeze({ genre: "Action RPG", description: "A young hero pulls the Mana Sword and joins allies on a quest to restore its power and stop an empire." }),
     "Secret of Evermore": Object.freeze({ genre: "Action RPG", description: "A boy and his dog are transported to the strange world of Evermore and search for a way home." }),
+    "Bahamut Lagoon": Object.freeze({ genre: "Tactical RPG", description: "Byuu leads the Dragon Squad across the floating lands of Orelus to resist the invading Granbelos Empire." }),
   });
 
   const SWITCH_GENRES = Object.freeze({
@@ -578,7 +579,7 @@
       const slot = Number(slotText);
       const column = slot % 5;
       const row = Math.floor(slot / 5);
-      const versionedAtlasUrl = `${atlasUrl}${atlasUrl.includes("?") ? "&" : "?"}v=1.0.26`;
+      const versionedAtlasUrl = `${atlasUrl}${atlasUrl.includes("?") ? "&" : "?"}v=1.0.27`;
       const sprite = document.createElement("div");
       sprite.className = "game-cover console-cover hybrid-cover hybrid-sprite-cover portrait-art";
       sprite.setAttribute("role", "img");

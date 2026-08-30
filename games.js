@@ -253,6 +253,7 @@ const ps4Rows = [
 ];
 
 const snesRows = [
+  ["Bahamut Lagoon", "https://www.gamingalexandria.com/highquality/sfc/Bahamut%20Lagoon/Bahamut%20Lagoon%20-%20Box%20Front.jpg", "Tactical RPG"],
   ["Breath of Fire", "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Breath%20of%20Fire%20(USA).png"],
   ["Breath of Fire II", "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Breath%20of%20Fire%20II%20(USA).png"],
   ["Chrono Trigger", "assets/covers/snes/chrono-trigger.webp"],
