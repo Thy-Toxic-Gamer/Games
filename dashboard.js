@@ -26,6 +26,7 @@
     "virtual-boy": { label: "Virtual Boy", accent: systems["virtual-boy"]?.accent || "#FF3030" },
     all: { label: "All", accent: "#343a36" },
     xbox: { label: "Xbox Games", icon: "◉", limit: 4, accent: systems.xbox?.accent || "#107C10" },
+    completed: { label: "Completed Requests", accent: "#ff2bd6" },
     updates: { label: "Updates", accent: "#ffb000" },
   });
 
@@ -318,7 +319,7 @@
       return;
     }
 
-    if (selected === "updates") {
+    if (selected === "updates" || selected === "completed") {
       if (dashboard) dashboard.hidden = true;
       grid.hidden = true;
       if (sectionHeading) sectionHeading.hidden = false;

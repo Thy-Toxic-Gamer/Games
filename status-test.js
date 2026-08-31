@@ -61,10 +61,10 @@
     get("status-time").textContent = new Date(request.created_at).toLocaleString();
     get("status-goal").textContent = requestGoalLabel(request.request_goal);
     get("status-price").textContent = `$${Number(request.minimum_amount).toFixed(2)}`;
-    get("status-state").textContent = labels[request.status] || request.status;
-    get("status-state").dataset.status = request.status;
+    get("status-state").textContent = request.completed_at ? "Completed" : labels[request.status] || request.status;
+    get("status-state").dataset.status = request.completed_at ? "completed" : request.status;
     const globalCooldownActive = systemState?.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now();
-    const approvedMessage = request.scheduled_for ? `Your payment is confirmed. Your game is scheduled for ${formatEastern(request.scheduled_for)}.` : request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status];
+    const approvedMessage = request.completed_at ? "Your requested stream has been completed. Use the links below to watch it from the beginning." : request.scheduled_for ? `Your payment is confirmed. Your game is scheduled for ${formatEastern(request.scheduled_for)}.` : request.status === "approved" && !globalCooldownActive ? "Your request remains approved. Staff reopened game requests early, so the global cooldown is no longer active." : messages[request.status];
     get("status-message").textContent = approvedMessage || "Request status updated.";
     const requestChanged = Boolean(request.request_changed_at && request.request_change_reason);
     get("status-change-row").hidden = !requestChanged;
@@ -105,8 +105,15 @@
     get("status-schedule").textContent = request.scheduled_for ? formatEastern(request.scheduled_for) : "Not scheduled yet. The streamer or moderators will record the time after everyone agrees.";
     get("status-schedule-reason-row").hidden = !request.schedule_change_reason;
     get("status-schedule-reason").textContent = request.schedule_change_reason || "";
+    const completionRow=get("status-completion-row");completionRow.hidden=!request.completed_at;
+    if(request.completed_at){
+      get("status-completion-date").textContent=`${request.platform||"Game"} · ${requestGoalLabel(request.request_goal)} · Completed ${formatEastern(request.completed_at)}`;
+      const youtube=get("status-youtube-vod");youtube.href=request.youtube_vod_url||"#";youtube.hidden=!request.youtube_vod_url;
+      const twitchActive=request.twitch_vod_url&&request.twitch_vod_expires_at&&new Date(request.twitch_vod_expires_at).getTime()>Date.now();
+      const twitch=get("status-twitch-vod");twitch.href=twitchActive?request.twitch_vod_url:"#";twitch.hidden=!twitchActive;get("status-twitch-separator").hidden=!request.youtube_vod_url||!twitchActive;
+    }
     get("cancel-request-button").hidden = request.status !== "pending";
-    const activeRequest = ["pending","awaiting_payment","approved"].includes(request.status);
+    const activeRequest = ["pending","awaiting_payment","approved"].includes(request.status) && !request.completed_at;
     const streamStarted = request.scheduled_for && new Date(request.scheduled_for).getTime() <= Date.now();
     const changeButton = get("request-game-change-button");
     changeButton.hidden = !activeRequest || Boolean(streamStarted);

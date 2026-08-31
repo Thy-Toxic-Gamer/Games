@@ -10,8 +10,8 @@
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.24" />
-    <link rel="stylesheet" href="dashboard.css?v=1.0.45" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.40" />
+    <link rel="stylesheet" href="dashboard.css?v=1.0.46" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.41" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -20,9 +20,10 @@
     <script src="games.js?v=1.0.45" defer></script>
     <script src="catalog-utils.js?v=1.0.2" defer></script>
     <script src="game-summaries.js?v=1.0.1" defer></script>
-    <script src="app.js?v=1.0.34" defer></script>
-    <script src="dashboard.js?v=1.0.35" defer></script>
+    <script src="app.js?v=1.0.35" defer></script>
+    <script src="dashboard.js?v=1.0.36" defer></script>
     <script src="request-test.js?v=1.0.27" defer></script>
+    <script src="completed-requests.js?v=1.0.0" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -231,9 +232,19 @@
             <h3>Coming Soon</h3>
             <p id="coming-soon-message">Games will be added here.</p>
           </div>
+          <section class="completed-requests-panel" id="completed-requests-panel" aria-labelledby="completed-requests-heading" hidden>
+            <header class="completed-requests-hero">
+              <p class="eyebrow">Requested Streams · VOD Archive</p>
+              <h3 id="completed-requests-heading">Completed Requests</h3>
+              <p>Watch completed viewer-requested streams from the beginning. YouTube links remain available permanently; Twitch links appear during their 60-day availability window.</p>
+            </header>
+            <div class="completed-requests-grid" id="completed-requests-grid" aria-live="polite">
+              <p class="completed-requests-empty">Loading completed requested streams…</p>
+            </div>
+          </section>
           <section class="updates-panel" id="updates-panel" aria-labelledby="updates-heading" hidden>
             <header class="updates-hero">
-              <p class="eyebrow">What’s New · Ver. 1.11</p>
+              <p class="eyebrow">What’s New · Ver. 1.12</p>
               <h3 id="updates-heading">The Toxic Vault keeps getting smarter</h3>
               <p>Here are the latest improvements to game requests, staff review, payments, scheduling, and moderator security.</p>
             </header>
@@ -246,6 +257,7 @@
               <article><span aria-hidden="true">✎</span><h4>Schedule Changes</h4><p>Rescheduling or clearing a game time requires a reason, which is shown to the viewer and included in Discord updates.</p></article>
               <article><span aria-hidden="true">✓</span><h4>Moderator Security</h4><p>Twitch moderator access is checked automatically. Staff must reverify after leaving, and removed moderators lose access.</p></article>
               <article><span aria-hidden="true">◉</span><h4>Next Viewer Request</h4><p>Once a request is paid, approved, and scheduled, the catalog announces the game, system, request type, and Eastern stream time without revealing viewer or payment information.</p></article>
+              <article><span aria-hidden="true">▶</span><h4>Completed Requested Streams</h4><p>Completed requests link directly to the permanent YouTube VOD and the Twitch VOD during its 60-day availability window.</p></article>
             </div>
 
             <section class="updates-catalog-guide" aria-labelledby="catalog-guide-title">
@@ -281,6 +293,10 @@
             <div class="updates-history" aria-label="Major update history">
               <h4>Major Updates</h4>
               <ol>
+                <li>
+                  <div class="updates-version"><span>Ver. 1.12</span><time datetime="2026-08-31">August 31, 2026</time></div>
+                  <div><strong>Completed Requests &amp; VODs</strong><p>Added a complete requested-stream closeout workflow, a public Completed Requests VOD section, permanent YouTube links, automatically expiring 60-day Twitch links, viewer-status completion details, and dedicated Discord completed-request announcements.</p></div>
+                </li>
                 <li>
                   <div class="updates-version"><span>Ver. 1.11</span><time datetime="2026-08-31">August 31, 2026</time></div>
                   <div><strong>Organized Staff Administration</strong><p>Consolidated request-service controls, cooldown administration, the safe public schedule preview, and Discord health monitoring into one dedicated Admin tab while keeping active reviews and request records separate.</p></div>

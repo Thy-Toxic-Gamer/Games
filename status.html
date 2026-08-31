@@ -4,13 +4,13 @@
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
   <meta name="theme-color" content="#050706" /><title>Game Request Status · ThyToxicGamer</title>
-  <link rel="stylesheet" href="styles.css?v=1.0.24" /><link rel="stylesheet" href="request-test.css?v=10.10" />
+  <link rel="stylesheet" href="styles.css?v=1.0.24" /><link rel="stylesheet" href="request-test.css?v=10.15" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="status-test.js?v=10.6" defer></script>
+  <script src="status-test.js?v=10.7" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Request Status</small></span></a></header>
@@ -23,6 +23,7 @@
       <div class="status-message" id="status-message" aria-live="polite"></div>
       <section class="request-change-notice" id="status-change-row" hidden><p class="eyebrow">Staff Update</p><h3>Your game request was updated</h3><p id="status-change"></p><p><strong>Reason:</strong> <span id="status-change-reason"></span></p><small id="status-change-time"></small></section>
       <section class="viewer-change-notice" id="viewer-change-row" hidden><p class="eyebrow" id="viewer-change-eyebrow">Game Change Request</p><h3 id="viewer-change-heading"></h3><p id="viewer-change-summary"></p><p><strong>Reason:</strong> <span id="viewer-change-reason"></span></p><p id="viewer-change-decision-row" hidden><strong>Staff response:</strong> <span id="viewer-change-decision"></span></p><small id="viewer-change-time"></small></section>
+      <section class="request-completion-notice" id="status-completion-row" hidden><p class="eyebrow">Requested Stream Completed</p><h3>Your requested stream is ready to watch</h3><p id="status-completion-date"></p><p class="request-completion-links"><a class="completed-vod-link vod-youtube" id="status-youtube-vod" target="_blank" rel="noopener noreferrer">Watch on YouTube</a><span id="status-twitch-separator"> · </span><a class="completed-vod-link vod-twitch" id="status-twitch-vod" target="_blank" rel="noopener noreferrer">Watch on Twitch</a></p></section>
       <dl class="review-details"><div><dt>Twitch viewer</dt><dd id="status-viewer"></dd></div><div><dt>Submitted</dt><dd id="status-time"></dd></div><div><dt>Request choice</dt><dd id="status-goal"></dd></div><div><dt>Request price</dt><dd id="status-price"></dd></div><div id="status-reason-row"><dt id="status-reason-label">Decision explanation</dt><dd id="status-reason"></dd></div><div id="status-deadline-row"><dt>Payment deadline</dt><dd id="status-deadline"></dd><small class="status-countdown" id="status-countdown"></small></div><div id="status-schedule-row" hidden><dt>Game schedule</dt><dd id="status-schedule"></dd></div><div id="status-schedule-reason-row" hidden><dt>Schedule change explanation</dt><dd id="status-schedule-reason"></dd></div></dl>
       <section class="payment-panel" id="payment-panel" hidden aria-labelledby="payment-title">
         <p class="eyebrow">Secure Payment</p>

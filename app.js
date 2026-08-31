@@ -11,6 +11,7 @@
   const viewPlatforms = [
     { id: "all", label: "ALL games", games: allGames },
     ...platforms,
+    { id: "completed", label: "Completed Requests", games: [], completed: true },
     { id: "updates", label: "Updates", games: [], updates: true },
   ];
   const grid = document.querySelector("#game-grid");
@@ -24,6 +25,7 @@
   const comingSoonLibrary = document.querySelector("#coming-soon-library");
   const comingSoonMessage = document.querySelector("#coming-soon-message");
   const updatesPanel = document.querySelector("#updates-panel");
+  const completedPanel = document.querySelector("#completed-requests-panel");
   const siteUpdatesButton = document.querySelector("#site-updates-button");
   const gameSearchForm = document.querySelector("#owned-game-search");
   const gameSearchInput = document.querySelector("#owned-game-search-input");
@@ -838,6 +840,7 @@
     panel.setAttribute("aria-labelledby", "owned-game-search-label");
     hidePlatformSubtabs();
     updatesPanel.hidden = true;
+    completedPanel.hidden = true;
     comingSoon.hidden = true;
     grid.hidden = false;
     gameSearchClear.hidden = false;
@@ -961,10 +964,23 @@
       grid.hidden = true;
       comingSoon.hidden = true;
       updatesPanel.hidden = false;
+      completedPanel.hidden = true;
+      return;
+    }
+
+    if (platform.completed) {
+      hidePlatformSubtabs();
+      platformName.textContent = "Completed Requests";
+      libraryCount.textContent = "VOD Archive";
+      grid.hidden = true;
+      comingSoon.hidden = true;
+      updatesPanel.hidden = true;
+      completedPanel.hidden = false;
       return;
     }
 
     updatesPanel.hidden = true;
+    completedPanel.hidden = true;
     platformName.textContent = platform.id === "all"
       ? "ALL games"
       : `${platform.label} Library`;
@@ -1039,9 +1055,11 @@
       count.className = "tab-count";
       count.textContent = platform.updates
         ? "Latest"
-        : platform.comingSoon
-          ? "Soon"
-          : String(platform.games.length);
+        : platform.completed
+          ? "VODs"
+          : platform.comingSoon
+            ? "Soon"
+            : String(platform.games.length);
 
       button.append(label, count);
       button.addEventListener("click", () => activatePlatform(platform.id, false));
