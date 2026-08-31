@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.24" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.45" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.39" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.40" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -22,7 +22,7 @@
     <script src="game-summaries.js?v=1.0.1" defer></script>
     <script src="app.js?v=1.0.34" defer></script>
     <script src="dashboard.js?v=1.0.35" defer></script>
-    <script src="request-test.js?v=1.0.26" defer></script>
+    <script src="request-test.js?v=1.0.27" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -149,7 +149,7 @@
               <p class="eyebrow">Paid · Approved · Scheduled</p>
               <h2 id="next-request-title">Next Viewer Request</h2>
             </div>
-            <span class="next-request-status">Coming Up</span>
+            <span class="next-request-status" id="next-request-status">Coming Up</span>
           </header>
           <div class="next-request-details">
             <article>
@@ -233,7 +233,7 @@
           </div>
           <section class="updates-panel" id="updates-panel" aria-labelledby="updates-heading" hidden>
             <header class="updates-hero">
-              <p class="eyebrow">What’s New · Ver. 1.9</p>
+              <p class="eyebrow">What’s New · Ver. 1.10</p>
               <h3 id="updates-heading">The Toxic Vault keeps getting smarter</h3>
               <p>Here are the latest improvements to game requests, staff review, payments, scheduling, and moderator security.</p>
             </header>
@@ -281,6 +281,10 @@
             <div class="updates-history" aria-label="Major update history">
               <h4>Major Updates</h4>
               <ol>
+                <li>
+                  <div class="updates-version"><span>Ver. 1.10</span><time datetime="2026-08-31">August 31, 2026</time></div>
+                  <div><strong>Staff Schedule Preview</strong><p>Added a safe Staff Control preview for the public Next Viewer Request panel. It uses fictional information, expires automatically, and does not alter requests, payments, schedules, cooldowns, or Discord notifications.</p></div>
+                </li>
                 <li>
                   <div class="updates-version"><span>Ver. 1.9</span><time datetime="2026-08-31">August 31, 2026</time></div>
                   <div><strong>Public Schedule Preview</strong><p>Added a privacy-safe Next Viewer Request panel above the game tabs. It remains hidden until a paid and approved request has a future schedule, then displays only the game title, system, request type, and Eastern date and time.</p></div>
