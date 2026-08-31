@@ -75,7 +75,7 @@
     get("staff-summary-discord").textContent=!connected?"Unavailable":needsAttention?"Attention":"Connected";
     get("staff-summary-discord-copy").textContent=!connected?"The system-log connection needs setup.":needsAttention?"A failed notification is waiting for review.":"Discord delivery is operating normally.";
     get("staff-summary-discord").closest("article").dataset.status=!connected||needsAttention?"attention":"normal";
-    get("staff-health-signal").dataset.status=!connected||needsAttention?"attention":"connected";
+    get("staff-admin-signal").dataset.status=!connected||needsAttention?"attention":"connected";
     get("discord-health-connection").textContent=connected?"Connected to #request-system-logs":"System-log webhook unavailable";
     get("discord-health-connection-copy").textContent=connected?"The webhook is stored securely and can be tested below.":"Confirm that DISCORD_SYSTEM_LOG_WEBHOOK_URL is saved in Supabase.";
     const success=health?.lastSuccess;
@@ -99,7 +99,7 @@
   async function refreshDiscordHealth() {
     const feedback=get("discord-health-feedback");feedback.textContent="Checking Discord delivery health…";feedback.dataset.status="working";
     const {data,error}=await client.functions.invoke("discord-notification-health",{body:{action:"status"}});
-    if(error||data?.error){unresolvedDiscordFailure=null;get("discord-health-state").textContent="Unavailable";get("discord-health-state").dataset.status="denied";get("staff-summary-discord").textContent="Unavailable";get("staff-summary-discord-copy").textContent="Discord health could not be checked.";get("staff-summary-discord").closest("article").dataset.status="attention";get("staff-health-signal").dataset.status="attention";feedback.textContent="Discord health is not available yet. Confirm the database upgrade and Edge Function deployment.";feedback.dataset.status="error";return false;}
+    if(error||data?.error){unresolvedDiscordFailure=null;get("discord-health-state").textContent="Unavailable";get("discord-health-state").dataset.status="denied";get("staff-summary-discord").textContent="Unavailable";get("staff-summary-discord-copy").textContent="Discord health could not be checked.";get("staff-summary-discord").closest("article").dataset.status="attention";get("staff-admin-signal").dataset.status="attention";feedback.textContent="Discord health is not available yet. Confirm the database upgrade and Edge Function deployment.";feedback.dataset.status="error";return false;}
     renderDiscordHealth(data);feedback.textContent="Discord health is up to date.";feedback.dataset.status="success";return true;
   }
   async function runDiscordHealthAction(action,button,logId=null) {

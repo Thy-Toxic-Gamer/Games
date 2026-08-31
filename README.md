@@ -2,6 +2,13 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.11 — Organized Staff Administration — Updated August 31, 2026
+
+- Renamed the Staff Control System Health tab to Admin.
+- Consolidated request-service controls, the global cooldown, the public schedule preview, and Discord health monitoring inside Admin.
+- Removed the separate Request Controls tab and kept active reviews, records, and archives focused on request work.
+- Preserved the existing owner and verified-moderator permissions for every administrative control.
+
 ## Ver. 1.10 — Staff Schedule Preview — Updated August 31, 2026
 
 - Added a verified Staff Control button for previewing the public Next Viewer Request panel without a payment.
