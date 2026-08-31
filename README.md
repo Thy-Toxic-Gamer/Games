@@ -2,6 +2,14 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.5 — Automatic Pre-Publish Validation — Updated August 31, 2026
+
+- Added an automatic GitHub validation workflow for every pull request and update to `main`.
+- Checks JavaScript syntax, HTML IDs and relationships, internal links, stylesheet assets, and Staff Control tab connections.
+- Loads the complete 623-game catalog and validates system IDs, sequential numbering, duplicate titles, and final local artwork files.
+- Blocks failed checks when a publishable file contains a Discord webhook URL.
+- The same complete check can be run locally with `node scripts/validate-site.js`.
+
 ## Ver. 1.4 — Dedicated Staff Archive — Updated August 30, 2026
 
 - Added a dedicated Archive tab to Staff Control.
