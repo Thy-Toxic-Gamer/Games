@@ -16,6 +16,7 @@
   const nextRequestPlatform = document.querySelector("#next-request-platform");
   const nextRequestType = document.querySelector("#next-request-type");
   const nextRequestSchedule = document.querySelector("#next-request-schedule");
+  const nextRequestStatus = document.querySelector("#next-request-status");
   const authName = document.querySelector("#request-auth-name");
   const signInButton = document.querySelector("#twitch-sign-in");
   const signOutButton = document.querySelector("#twitch-sign-out");
@@ -38,6 +39,9 @@
   let selected = null;
   let session = null;
   let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
+  const previewRequested = new URLSearchParams(window.location.search).get("preview") === "next-request";
+  const previewExpires = Number(window.sessionStorage.getItem("toxic-next-request-preview") || 0);
+  const nextRequestPreview = previewRequested && previewExpires > Date.now();
 
   function prettyPlatform(value) {
     if (value === "unlisted") return "Not in Catalog";
@@ -66,7 +70,14 @@
   function hideNextRequest() {
     if (nextRequestPanel) nextRequestPanel.hidden = true;
   }
-  function renderNextRequest(data) {
+  function previewSchedule() {
+    const date = new Date();
+    const daysUntilFriday = (5 - date.getDay() + 7) % 7 || 7;
+    date.setDate(date.getDate() + daysUntilFriday);
+    date.setHours(23, 0, 0, 0);
+    return date.toISOString();
+  }
+  function renderNextRequest(data, preview=false) {
     if (!nextRequestPanel || !data?.gameTitle || !data?.scheduledFor) {
       hideNextRequest();
       return;
@@ -76,10 +87,22 @@
     nextRequestType.textContent = requestGoalLabel(data.requestGoal);
     nextRequestSchedule.textContent = formatEasternSchedule(data.scheduledFor);
     nextRequestSchedule.dateTime = data.scheduledFor;
+    nextRequestPanel.classList.toggle("is-preview", preview);
+    nextRequestStatus.textContent = preview ? "Staff Preview" : "Coming Up";
     nextRequestPanel.hidden = false;
+    if (preview) window.setTimeout(() => nextRequestPanel.scrollIntoView({behavior:"smooth",block:"center"}), 50);
   }
   async function refreshNextRequest() {
     if (!client || !nextRequestPanel) return;
+    if (nextRequestPreview) {
+      renderNextRequest({
+        gameTitle:"Metroid Prime 4: Beyond",
+        platform:"Nintendo Switch",
+        requestGoal:"play",
+        scheduledFor:previewSchedule()
+      }, true);
+      return;
+    }
     const { data, error:nextRequestError } = await client.rpc("next_public_game_request");
     if (nextRequestError) {
       hideNextRequest();
