@@ -9,7 +9,7 @@
     />
     <meta name="theme-color" content="#050706" />
     <title>ThyToxicGamer Game Library</title>
-    <link rel="stylesheet" href="styles.css?v=1.0.22" />
+    <link rel="stylesheet" href="styles.css?v=1.0.23" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.45" />
     <link rel="stylesheet" href="request-test.css?v=1.0.38" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -123,6 +123,7 @@
             <button class="request-link-button" id="twitch-sign-in" type="button">Sign in with Twitch</button>
             <button class="request-link-button request-link-admin" id="twitch-sign-out" type="button" hidden>Sign Out</button>
             <button class="request-link-button request-link-updates" id="site-updates-button" type="button">Site Updates</button>
+            <p class="request-privacy-note">See how sign-in and request information are handled in <a href="privacy.html">Privacy &amp; Data Use</a>.</p>
           </div>
           <form class="unlisted-request" id="unlisted-request-form">
             <div class="unlisted-request-copy">
@@ -280,12 +281,9 @@
       </section>
     </main>
 
-    <footer>
+    <footer class="site-legal-footer">
       <span aria-hidden="true">☣</span>
-      <p>
-        All game names, artwork, and trademarks belong to their respective
-        owners.
-      </p>
+      <div class="footer-content"><p>All game names, artwork, and trademarks belong to their respective owners.</p><nav class="footer-links" aria-label="Legal and site links"><a href="privacy.html">Privacy &amp; Data Use</a></nav></div>
     </footer>
 
     <dialog class="request-dialog" id="request-dialog">
