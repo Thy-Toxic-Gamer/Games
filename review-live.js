@@ -158,6 +158,14 @@
     parsed.searchParams.delete("t");parsed.searchParams.delete("start");parsed.hash="";
     return parsed.toString();
   }
+  function updateCompletionViewLinks() {
+    [["youtube","completion-youtube","completion-view-youtube"],["twitch","completion-twitch","completion-view-twitch"]].forEach(([service,inputId,linkId])=>{
+      const link=get(linkId);let url="";
+      try{const value=get(inputId).value.trim();if(value)url=normalizeVodUrl(value,service);}catch{}
+      if(url){link.href=url;link.setAttribute("aria-disabled","false");}
+      else{link.removeAttribute("href");link.setAttribute("aria-disabled","true");}
+    });
+  }
   function openCompletionDialog(request) {
     completionRequest=request;
     const updating=Boolean(request.completed_at);
@@ -166,6 +174,7 @@
     get("completion-local").value=easternInputValue(request.completed_at||new Date().toISOString());
     get("completion-youtube").value=request.youtube_vod_url||"";
     get("completion-twitch").value=request.twitch_vod_url||"";
+    updateCompletionViewLinks();
     get("completion-lookup-status").textContent="";
     get("completion-error").textContent="";
     get("save-completion").textContent=updating?"Update Completed Stream":"Publish Completed Stream";
@@ -378,10 +387,12 @@
     if(error||data?.error){status.textContent=data?.error||"The VOD lookup could not be completed. Check its Edge Function and secrets.";return;}
     if(data?.youtube?.url)get("completion-youtube").value=data.youtube.url;
     if(data?.twitch?.url)get("completion-twitch").value=data.twitch.url;
+    updateCompletionViewLinks();
     const found=[data?.youtube?`YouTube: ${data.youtube.title}`:"",data?.twitch?`Twitch: ${data.twitch.title}`:""].filter(Boolean);
     const warnings=Array.isArray(data?.warnings)?data.warnings:[];
     status.textContent=found.length?`Found ${found.join(" · ")}. Confirm the links before publishing.${warnings.length?` ${warnings.join(" · ")}`:""}`:warnings.join(" · ")||"No recent VODs were found yet. Wait for processing, then try again.";
   });
+  get("completion-youtube").addEventListener("input",updateCompletionViewLinks);get("completion-twitch").addEventListener("input",updateCompletionViewLinks);
   get("completion-form").addEventListener("submit",async(event)=>{
     event.preventDefault();if(!completionRequest)return;
     const completedLocal=get("completion-local").value;const youtubeInput=get("completion-youtube").value;const twitchInput=get("completion-twitch").value.trim();

@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=1.0.24" />
-  <link rel="stylesheet" href="request-test.css?v=10.16" />
+  <link rel="stylesheet" href="request-test.css?v=10.17" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.12" defer></script>
+  <script src="review-live.js?v=10.13" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -227,12 +227,20 @@
       <label>Completed date and time (Eastern Time)
         <input id="completion-local" type="datetime-local" required />
       </label>
-      <label>YouTube VOD link
-        <input id="completion-youtube" type="url" inputmode="url" autocomplete="url" required placeholder="https://www.youtube.com/watch?v=…" />
-      </label>
-      <label>Twitch VOD link (optional)
-        <input id="completion-twitch" type="url" inputmode="url" autocomplete="url" placeholder="https://www.twitch.tv/videos/…" />
-      </label>
+      <div class="completion-vod-field">
+        <label for="completion-youtube">YouTube VOD link</label>
+        <div class="completion-vod-row">
+          <input id="completion-youtube" type="url" inputmode="url" autocomplete="url" required placeholder="https://www.youtube.com/watch?v=…" />
+          <a class="completion-view-link vod-youtube" id="completion-view-youtube" target="_blank" rel="noopener noreferrer" aria-disabled="true">View YouTube</a>
+        </div>
+      </div>
+      <div class="completion-vod-field">
+        <label for="completion-twitch">Twitch VOD link (optional)</label>
+        <div class="completion-vod-row">
+          <input id="completion-twitch" type="url" inputmode="url" autocomplete="url" placeholder="https://www.twitch.tv/videos/…" />
+          <a class="completion-view-link vod-twitch" id="completion-view-twitch" target="_blank" rel="noopener noreferrer" aria-disabled="true">View Twitch</a>
+        </div>
+      </div>
       <section class="completion-lookup" aria-labelledby="completion-lookup-heading">
         <div>
           <strong id="completion-lookup-heading">Automatic VOD lookup</strong>

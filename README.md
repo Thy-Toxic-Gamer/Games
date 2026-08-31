@@ -8,6 +8,7 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 - Searches the configured YouTube channel for completed broadcasts and the configured Twitch channel for stream archives.
 - Matches recent results against the request title and scheduled stream time.
 - Automatically fills the suggested YouTube and Twitch links while requiring staff confirmation before publication.
+- Adds platform-colored **View YouTube** and **View Twitch** buttons so each suggested VOD can be checked in a new tab before publishing.
 - Keeps API credentials inside Supabase Edge Function secrets and requires verified Staff Control access.
 - Added `supabase/functions/find-latest-vods/index.ts` and `VOD-LOOKUP-SETUP.md`.
 
