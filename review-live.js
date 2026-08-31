@@ -12,6 +12,7 @@
   let pendingRequest = null;
   let scheduleRequest = null;
   let editRequest = null;
+  let completionRequest = null;
   let viewerChangeReviewRequest = null;
   let staffAccessSource = null;
   let serviceEnabled = true;
@@ -112,9 +113,11 @@
   }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
+  function requestStatusLabel(request) { return request?.completed_at ? "Completed" : statusLabels[request?.status] || request?.status || "Unknown"; }
   function requestTierLabel(request) { return `${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`; }
   function canEditRequest(request) {
     return Boolean(request)
+      && !request.completed_at
       && ["pending","awaiting_payment","approved"].includes(request.status)
       && (!request.scheduled_for || new Date(request.scheduled_for).getTime() > Date.now());
   }
@@ -146,6 +149,33 @@
     get("clear-schedule").hidden=!request.scheduled_for;
     get("schedule-dialog").showModal();
     get("schedule-local").focus();
+  }
+  function normalizeVodUrl(value,service) {
+    const parsed=new URL(value.trim());
+    const host=parsed.hostname.toLowerCase().replace(/^www\./,"");
+    if(service==="youtube"&&!(["youtube.com","youtu.be"].includes(host)))throw new Error("Enter a valid YouTube VOD link.");
+    if(service==="twitch"&&(host!=="twitch.tv"||!/^\/videos\/\d+/.test(parsed.pathname)))throw new Error("Enter a valid Twitch VOD link.");
+    parsed.searchParams.delete("t");parsed.searchParams.delete("start");parsed.hash="";
+    return parsed.toString();
+  }
+  function openCompletionDialog(request) {
+    completionRequest=request;
+    const updating=Boolean(request.completed_at);
+    get("completion-title").textContent=updating?"Update Completed Stream":"Mark Request Complete";
+    get("completion-request-summary").textContent=`${request.game_title} · ${request.platform||"System not specified"} · ${requestGoalLabel(request.request_goal)}`;
+    get("completion-local").value=easternInputValue(request.completed_at||new Date().toISOString());
+    get("completion-youtube").value=request.youtube_vod_url||"";
+    get("completion-twitch").value=request.twitch_vod_url||"";
+    get("completion-error").textContent="";
+    get("save-completion").textContent=updating?"Update Completed Stream":"Publish Completed Stream";
+    get("completion-dialog").showModal();get("completion-youtube").focus();
+  }
+  function completedVodLinks(request) {
+    const links=make("p","request-history-vods");
+    const youtube=make("a","completed-vod-link vod-youtube","Watch on YouTube");youtube.href=request.youtube_vod_url;youtube.target="_blank";youtube.rel="noopener noreferrer";links.append(youtube);
+    const twitchActive=request.twitch_vod_url&&request.twitch_vod_expires_at&&new Date(request.twitch_vod_expires_at).getTime()>Date.now();
+    if(twitchActive){links.append(document.createTextNode(" · "));const twitch=make("a","completed-vod-link vod-twitch","Watch on Twitch");twitch.href=request.twitch_vod_url;twitch.target="_blank";twitch.rel="noopener noreferrer";links.append(twitch);}
+    return links;
   }
   function hasPendingViewerChange(request) { return request?.viewer_change_status === "pending" && Boolean(request.viewer_change_game_title); }
   function openEditDialog(request,useViewerChange=false) {
@@ -213,7 +243,7 @@
       const card=make("article",`request-history-card${options.archived?" is-archived":""}`);
       const head=make("div","request-history-head");
       const copy=make("div");copy.append(make("small",null,request.id),make("h3",null,request.game_title),make("p",null,`${request.twitch_name} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`));
-      const status=make("span","review-status",statusLabels[request.status]||request.status);status.dataset.status=request.status;
+      const status=make("span","review-status",requestStatusLabel(request));status.dataset.status=request.completed_at?"completed":request.status;
       head.append(copy,status);card.append(head);
       const details=make("p","request-history-details",`Submitted ${new Date(request.created_at).toLocaleString()} · ${request.platform||"Game"}`);card.append(details);
       if(request.denial_reason)card.append(make("p","request-history-reason",`Denial explanation: ${request.denial_reason}`));
@@ -222,7 +252,12 @@
       const viewerChangePanel=!options.archived?makeViewerChangePanel(request):null;if(viewerChangePanel)card.append(viewerChangePanel);
       if(request.payment_deadline&&request.status==="awaiting_payment")card.append(make("p","request-history-details",`Payment deadline: ${new Date(request.payment_deadline).toLocaleString()}`));
       if(request.scheduled_for)card.append(make("p","request-history-schedule",`Scheduled: ${formatEastern(request.scheduled_for)}`));
-      if(!options.archived&&request.status==="approved"&&request.paid_at){
+      if(request.completed_at){
+        card.append(make("p","request-history-completed",`Requested stream completed ${formatEastern(request.completed_at)}.`));
+        if(request.youtube_vod_url)card.append(completedVodLinks(request));
+        if(!options.archived){const updateCompletion=make("button","review-button review-button-edit","Update Completion Links");updateCompletion.type="button";updateCompletion.addEventListener("click",()=>openCompletionDialog(request));card.append(updateCompletion);}
+      }
+      if(!options.archived&&request.status==="approved"&&request.paid_at&&!request.completed_at){
         const schedulePanel=make("div","request-schedule-panel");
         schedulePanel.append(make("p",null,request.scheduled_for?"The agreed game time is recorded below.":"Payment is complete. Add a date only after everyone agrees."));
         if(canEditRequest(request)){
@@ -230,7 +265,8 @@
           editButton.type="button";editButton.addEventListener("click",()=>openEditDialog(request));schedulePanel.append(editButton);
         }
         const scheduleButton=make("button","review-button review-button-muted",request.scheduled_for?"Reschedule Game":"Schedule Game");
-        scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);card.append(schedulePanel);
+        scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);
+        const completeButton=make("button","review-button","Mark Request Complete");completeButton.type="button";completeButton.addEventListener("click",()=>openCompletionDialog(request));schedulePanel.append(completeButton);card.append(schedulePanel);
       }
       if(options.archived&&request.archived_at){
         const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
@@ -330,6 +366,21 @@
   const scheduleDialog=get("schedule-dialog");scheduleDialog.querySelector(".request-dialog-close").addEventListener("click",()=>scheduleDialog.close());
   get("schedule-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!scheduleRequest)return;const localValue=get("schedule-local").value;const reason=get("schedule-reason").value.trim();if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return}if(scheduleRequest.scheduled_for&&!reason){get("schedule-error").textContent="Explain why the scheduled time is changing.";return}const save=get("save-schedule");save.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:localValue,schedule_explanation:reason||null});save.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";return}scheduleDialog.close();await refreshDashboard()});
   get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const reason=get("schedule-reason").value.trim();if(!reason){get("schedule-error").textContent="Explain why the scheduled time is being cleared.";return}const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null,schedule_explanation:reason});button.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("explanation")?"Explain why the scheduled time is being cleared.":"This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
+
+  const completionDialog=get("completion-dialog");completionDialog.querySelector(".request-dialog-close").addEventListener("click",()=>completionDialog.close());get("cancel-completion").addEventListener("click",()=>completionDialog.close());
+  get("completion-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();if(!completionRequest)return;
+    const completedLocal=get("completion-local").value;const youtubeInput=get("completion-youtube").value;const twitchInput=get("completion-twitch").value.trim();
+    if(!completedLocal){get("completion-error").textContent="Choose the completed Eastern date and time.";return;}
+    let youtubeUrl;let twitchUrl=null;
+    try{youtubeUrl=normalizeVodUrl(youtubeInput,"youtube");if(twitchInput)twitchUrl=normalizeVodUrl(twitchInput,"twitch");}
+    catch(error){get("completion-error").textContent=error.message||"Check the VOD links and try again.";return;}
+    const save=get("save-completion");save.disabled=true;
+    const {error}=await client.rpc("staff_complete_game_request",{request_id:completionRequest.id,completed_local:completedLocal,youtube_vod:youtubeUrl,twitch_vod:twitchUrl});
+    save.disabled=false;
+    if(error){get("completion-error").textContent=error.message||"This requested stream could not be completed.";return;}
+    completionDialog.close();completionRequest=null;await refreshDashboard();
+  });
 
   if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(oauthReturnPending&&nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
   setupStaffTabs();initialize();

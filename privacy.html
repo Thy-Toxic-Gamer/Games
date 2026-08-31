@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#050706" />
   <title>Privacy &amp; Data Use · ThyToxicGamer</title>
   <link rel="stylesheet" href="styles.css?v=1.0.24" />
-  <link rel="stylesheet" href="request-test.css?v=10.12" />
+  <link rel="stylesheet" href="request-test.css?v=10.15" />
 </head>
 <body class="request-page privacy-page">
   <header class="site-header">
@@ -35,7 +35,7 @@
         <h2 id="information-heading">What the request system processes</h2>
         <div class="privacy-detail-grid">
           <article><h3>Twitch sign-in</h3><p>The system uses the Twitch account identifier and Twitch name needed to sign you in, associate you with your own requests, and verify owner or moderator access when applicable.</p></article>
-          <article><h3>Game requests</h3><p>Request records may contain the selected game, console or system, request type, price bracket, optional viewer note, status, timestamps, schedule, cancellation or denial explanation, and eligible game-change information.</p></article>
+          <article><h3>Game requests</h3><p>Request records may contain the selected game, console or system, request type, price bracket, optional viewer note, status, timestamps, schedule, completion date, VOD links, cancellation or denial explanation, and eligible game-change information.</p></article>
           <article><h3>Payment confirmation</h3><p>For an approved request, the system stores a generated request code and limited confirmation details such as provider, currency, amount, payment time, and transaction reference needed to match the payment. The website does not store full card numbers, bank credentials, or PayPal passwords.</p></article>
           <article><h3>Staff and delivery records</h3><p>Authorized staff verification, review actions, reasons, scheduling changes, and limited Discord delivery logs may be recorded to operate and protect the request system.</p></article>
         </div>
@@ -61,6 +61,7 @@
           <li>You can view your own request after signing in with the same Twitch account.</li>
           <li>ThyToxicGamer and currently verified Twitch moderators can access Staff Control.</li>
           <li>Operational request details may be sent to configured staff Discord channels.</li>
+          <li>After completion, the public website and completed-request Discord channel may display only the game, system, stream type, completed date, and VOD links. Viewer identity, notes, request IDs, and payment information are not included.</li>
           <li>Service providers process only the information needed for authentication, hosting, database operation, notifications, or payment confirmation.</li>
           <li>Request information is not sold.</li>
         </ul>
@@ -87,6 +88,7 @@
           <li>They then move to the staff-only Archive and are permanently deleted after six months there.</li>
           <li>Pending and awaiting-payment requests remain active until they are resolved or expire.</li>
           <li>Discord delivery-health logs older than 90 days are removed during system-health maintenance.</li>
+          <li>Public completed-stream entries retain the YouTube link as the permanent VOD record. Twitch links stop appearing 60 days after the recorded completion date.</li>
           <li>Copies held by connected services follow those services’ own retention policies.</li>
         </ul>
       </section>

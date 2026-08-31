@@ -25,6 +25,10 @@ type GameRequest = {
   viewer_change_requested_at: string | null;
   viewer_change_reviewed_at: string | null;
   viewer_change_decision_reason: string | null;
+  completed_at: string | null;
+  youtube_vod_url: string | null;
+  twitch_vod_url: string | null;
+  twitch_vod_expires_at: string | null;
   created_at: string;
 };
 
@@ -85,6 +89,7 @@ Deno.serve(async (request) => {
   const isNewPending = payload.type === "INSERT" && gameRequest.status === "pending";
   const isAwaitingPayment = payload.type === "UPDATE" && gameRequest.status === "awaiting_payment" && previous?.status !== "awaiting_payment";
   const isNewApproval = payload.type === "UPDATE" && gameRequest.status === "approved" && previous?.status !== "approved";
+  const isNewCompletion = payload.type === "UPDATE" && Boolean(gameRequest.completed_at) && !previous?.completed_at;
   const isNewDenial = payload.type === "UPDATE" && gameRequest.status === "denied" && previous?.status !== "denied";
   const isNewCancellation = payload.type === "UPDATE" && gameRequest.status === "cancelled" && previous?.status !== "cancelled";
   const isNewExpiration = payload.type === "UPDATE" && gameRequest.status === "expired" && previous?.status !== "expired";
@@ -123,6 +128,11 @@ Deno.serve(async (request) => {
     title = "✅ Game Request Approved";
     description = "Payment was confirmed and this request is fully approved.";
     color = 0x35d06f;
+  } else if (isNewCompletion) {
+    webhook = Deno.env.get("DISCORD_COMPLETED_WEBHOOK");
+    title = "🎬 Requested Stream Completed";
+    description = "This requested stream is complete and ready to watch from the beginning.";
+    color = 0xff2bd6;
   } else if (isNewDenial) {
     webhook = Deno.env.get("DISCORD_DENIED_WEBHOOK");
     title = "❌ Game Request Denied";
@@ -181,6 +191,7 @@ Deno.serve(async (request) => {
   const eventType = isNewPending ? "new_request"
     : isAwaitingPayment ? "awaiting_payment"
     : isNewApproval ? "request_approved"
+    : isNewCompletion ? "request_completed"
     : isNewDenial ? "request_denied"
     : isNewCancellation ? "request_cancelled"
     : isNewExpiration ? "request_expired"
@@ -192,6 +203,7 @@ Deno.serve(async (request) => {
   const webhookKey = isNewPending || isViewerChangeRequested || isViewerChangeDenied ? "pending"
     : isAwaitingPayment ? "awaiting_payment"
     : isNewApproval ? "approved"
+    : isNewCompletion ? "completed"
     : isNewDenial ? "denied"
     : isNewCancellation ? "cancelled"
     : isNewExpiration ? "expired"
@@ -199,9 +211,19 @@ Deno.serve(async (request) => {
     : gameRequest.status === "pending" ? "pending"
     : gameRequest.status === "awaiting_payment" ? "awaiting_payment"
     : "approved";
-  const target = webhookKey === "schedule" ? "schedule-updates" : webhookKey.replaceAll("_", "-");
+  const target = webhookKey === "schedule" ? "schedule-updates" : webhookKey === "completed" ? "completed-requests" : webhookKey.replaceAll("_", "-");
   const isViewerChangeNotice = isViewerChangeRequested || isViewerChangeDenied;
-  const fields = [
+  const completedWatchLinks = [
+    gameRequest.youtube_vod_url ? `[Watch on YouTube](${gameRequest.youtube_vod_url})` : "",
+    gameRequest.twitch_vod_url ? `[Watch on Twitch](${gameRequest.twitch_vod_url})` : "",
+  ].filter(Boolean).join(" · ");
+  const fields = isNewCompletion ? [
+    { name: "Requested Stream", value: shorten(gameRequest.game_title), inline: false },
+    { name: "System", value: shorten(gameRequest.platform), inline: true },
+    { name: "Stream Type", value: requestGoalLabel(gameRequest.request_goal), inline: true },
+    { name: "Completed", value: formatEastern(gameRequest.completed_at as string), inline: false },
+    { name: "Watch from the Beginning", value: completedWatchLinks || "VOD links unavailable", inline: false },
+  ] : [
     { name: isViewerChangeNotice ? "Current Game" : "Game", value: shorten(gameRequest.game_title), inline: false },
     { name: "Twitch Viewer", value: shorten(gameRequest.twitch_name), inline: true },
     { name: "Request Type", value: gameRequest.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog", inline: true },
@@ -211,8 +233,8 @@ Deno.serve(async (request) => {
     { name: "Request ID", value: shorten(gameRequest.id), inline: false },
   ];
   if (includeReviewLink) fields.push({ name: "Staff Review", value: `[Open Staff Control](${staffPage})`, inline: false });
-  if (gameRequest.scheduled_for) fields.push({ name: "Game Time (Eastern)", value: formatEastern(gameRequest.scheduled_for), inline: false });
-  if (gameRequest.schedule_change_reason) fields.push({ name: "Schedule Change Reason", value: shorten(gameRequest.schedule_change_reason), inline: false });
+  if (!isNewCompletion && gameRequest.scheduled_for) fields.push({ name: "Game Time (Eastern)", value: formatEastern(gameRequest.scheduled_for), inline: false });
+  if (!isNewCompletion && gameRequest.schedule_change_reason) fields.push({ name: "Schedule Change Reason", value: shorten(gameRequest.schedule_change_reason), inline: false });
   if (isRequestUpdated) {
     fields.push(
       { name: "Previous Game", value: shorten(previous?.game_title ?? gameRequest.previous_game_title), inline: true },
@@ -231,7 +253,7 @@ Deno.serve(async (request) => {
   const discordBody = {
     username: "ThyToxicGamer Game Requests",
     allowed_mentions: { parse: [] },
-    embeds: [{ title, description, color, fields, timestamp: isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }],
+    embeds: [{ title, description, color, fields, timestamp: isNewCompletion ? gameRequest.completed_at ?? new Date().toISOString() : isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }],
   };
 
   const sendSystemAudit = async (delivered: boolean, detail: string | null) => {

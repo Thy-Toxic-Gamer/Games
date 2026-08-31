@@ -2,6 +2,17 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.12 — Completed Requests & VODs — Updated August 31, 2026
+
+- Added **Mark Request Complete** to paid and approved request records in Staff Control.
+- Records the requested stream type, completed Eastern date and time, required YouTube VOD link, and optional Twitch VOD link.
+- Added a public **Completed Requests** tab with privacy-safe requested-stream cards and direct **Watch on YouTube · Watch on Twitch** links.
+- YouTube entries remain permanent; Twitch links automatically stop appearing 60 days after completion.
+- Added completed-state details and VOD links to the original viewer’s Request Status page.
+- Added dedicated `#completed-requests` Discord announcements through `DISCORD_COMPLETED_WEBHOOK`.
+- Preserved permanent public VOD records separately from private request records so normal archive deletion does not remove the YouTube history.
+- Added `RUN-THIS-v10.9-COMPLETED-REQUESTS.sql` and `COMPLETED-REQUESTS-SETUP.md`.
+
 ## Ver. 1.11 — Organized Staff Administration — Updated August 31, 2026
 
 - Renamed the Staff Control System Health tab to Admin.

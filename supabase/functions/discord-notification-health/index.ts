@@ -32,6 +32,7 @@ const webhookEnvironmentNames: Record<string, string> = {
   cancelled: "DISCORD_CANCELLED_WEBHOOK",
   expired: "DISCORD_EXPIRED_WEBHOOK",
   schedule: "DISCORD_SCHEDULE_WEBHOOK",
+  completed: "DISCORD_COMPLETED_WEBHOOK",
   system: "DISCORD_SYSTEM_LOG_WEBHOOK_URL",
 };
 

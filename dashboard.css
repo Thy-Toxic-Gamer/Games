@@ -256,7 +256,7 @@ main {
 /* Platform navigation */
 .platform-tabs {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 0.55rem;
   margin-bottom: 0.72rem;
   scroll-margin-top: 84px;
@@ -322,6 +322,8 @@ main {
 .platform-tab[data-platform="xbox"]::before { content: "◉"; }
 .platform-tab[data-platform="updates"] { --tab-accent: #ffb000; }
 .platform-tab[data-platform="updates"]::before { content: "↻"; }
+.platform-tab[data-platform="completed"] { --tab-accent: #ff2bd6; }
+.platform-tab[data-platform="completed"]::before { content: "▶"; }
 
 .platform-tab:hover,
 .platform-tab:focus-visible {
@@ -450,6 +452,7 @@ main {
 #platform-panel[data-dashboard-platform="snes"] { --active-platform-accent: var(--snes-accent); }
 #platform-panel[data-dashboard-platform="xbox"] { --active-platform-accent: var(--xbox-accent); }
 #platform-panel[data-dashboard-platform="updates"] { --active-platform-accent: #ffb000; }
+#platform-panel[data-dashboard-platform="completed"] { --active-platform-accent: #ff2bd6; }
 
 #platform-panel > .section-heading .eyebrow,
 #platform-panel > .section-heading .count-chip {
@@ -1063,6 +1066,31 @@ main {
 }
 
 /* Viewer-facing release notes */
+.completed-requests-panel {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #ff2bd6 58%, var(--border));
+  border-radius: 8px;
+  background: radial-gradient(circle at 88% 0,rgba(255,43,214,.12),transparent 31%),#080a09;
+  box-shadow: 0 0 35px rgba(255,43,214,.07);
+}
+
+.completed-requests-hero { padding:clamp(1.2rem,3vw,2.2rem); border-bottom:1px solid var(--border); }
+.completed-requests-hero .eyebrow { color:#ff73e4; }
+.completed-requests-hero h3 { margin:.25rem 0 .65rem; color:#fff; font-size:clamp(1.65rem,4vw,3rem); line-height:1.04; }
+.completed-requests-hero>p:last-child { max-width:860px; margin:0; color:var(--muted); line-height:1.65; }
+.completed-requests-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:.85rem; padding:clamp(1rem,2vw,1.5rem); }
+.completed-request-card { min-width:0; padding:1rem; border:1px solid #3a2938; border-left:4px solid #ff2bd6; border-radius:6px; background:rgba(5,7,6,.88); }
+.completed-request-card .eyebrow { margin:0; color:var(--toxic); }
+.completed-request-card h4 { margin:.35rem 0 .25rem; color:#fff; font-size:1.05rem; overflow-wrap:anywhere; }
+.completed-request-meta,.completed-request-date { margin:.2rem 0 0; color:#dce2de; font-size:.76rem; }
+.completed-request-date { color:var(--muted); }
+.completed-request-links { margin:.75rem 0 0; font-size:.78rem; font-weight:900; }
+.completed-request-links a { text-decoration:none; }
+.completed-request-links a:hover,.completed-request-links a:focus-visible { text-decoration:underline; outline:none; }
+.completed-request-links .vod-youtube { color:#ff4a4a; }
+.completed-request-links .vod-twitch { color:#bf94ff; }
+.completed-requests-empty { grid-column:1/-1; margin:0; padding:1.5rem; border:1px dashed #473045; color:var(--muted); text-align:center; }
+
 .updates-panel {
   border: 1px solid color-mix(in srgb, #ffb000 48%, var(--border));
   border-radius: 8px;
@@ -1954,7 +1982,7 @@ main {
   color: var(--subtab-ink);
 }
 
-#platform-panel[data-active-system]:not([data-active-system="all"]):not([data-active-system="search"]):not([data-active-system="updates"]) {
+#platform-panel[data-active-system]:not([data-active-system="all"]):not([data-active-system="search"]):not([data-active-system="updates"]):not([data-active-system="completed"]) {
   border-color: var(--active-platform-accent);
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--active-platform-accent) 8%, transparent), transparent 34%),
