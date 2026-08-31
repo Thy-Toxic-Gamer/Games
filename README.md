@@ -2,6 +2,15 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.13 — Automatic VOD Lookup — Updated August 31, 2026
+
+- Added **Find Latest VODs** to the requested-stream completion form.
+- Searches the configured YouTube channel for completed broadcasts and the configured Twitch channel for stream archives.
+- Matches recent results against the request title and scheduled stream time.
+- Automatically fills the suggested YouTube and Twitch links while requiring staff confirmation before publication.
+- Keeps API credentials inside Supabase Edge Function secrets and requires verified Staff Control access.
+- Added `supabase/functions/find-latest-vods/index.ts` and `VOD-LOOKUP-SETUP.md`.
+
 ## Ver. 1.12 — Completed Requests & VODs — Updated August 31, 2026
 
 - Added **Mark Request Complete** to paid and approved request records in Staff Control.

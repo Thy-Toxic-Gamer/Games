@@ -166,6 +166,7 @@
     get("completion-local").value=easternInputValue(request.completed_at||new Date().toISOString());
     get("completion-youtube").value=request.youtube_vod_url||"";
     get("completion-twitch").value=request.twitch_vod_url||"";
+    get("completion-lookup-status").textContent="";
     get("completion-error").textContent="";
     get("save-completion").textContent=updating?"Update Completed Stream":"Publish Completed Stream";
     get("completion-dialog").showModal();get("completion-youtube").focus();
@@ -368,6 +369,19 @@
   get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const reason=get("schedule-reason").value.trim();if(!reason){get("schedule-error").textContent="Explain why the scheduled time is being cleared.";return}const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null,schedule_explanation:reason});button.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("explanation")?"Explain why the scheduled time is being cleared.":"This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
 
   const completionDialog=get("completion-dialog");completionDialog.querySelector(".request-dialog-close").addEventListener("click",()=>completionDialog.close());get("cancel-completion").addEventListener("click",()=>completionDialog.close());
+  get("completion-find-vods").addEventListener("click",async()=>{
+    if(!completionRequest)return;
+    const button=get("completion-find-vods");const status=get("completion-lookup-status");
+    button.disabled=true;button.textContent="Searching…";status.textContent="Checking your latest completed streams…";
+    const {data,error}=await client.functions.invoke("find-latest-vods",{body:{requestId:completionRequest.id,providerToken}});
+    button.disabled=false;button.textContent="Find Latest VODs";
+    if(error||data?.error){status.textContent=data?.error||"The VOD lookup could not be completed. Check its Edge Function and secrets.";return;}
+    if(data?.youtube?.url)get("completion-youtube").value=data.youtube.url;
+    if(data?.twitch?.url)get("completion-twitch").value=data.twitch.url;
+    const found=[data?.youtube?`YouTube: ${data.youtube.title}`:"",data?.twitch?`Twitch: ${data.twitch.title}`:""].filter(Boolean);
+    const warnings=Array.isArray(data?.warnings)?data.warnings:[];
+    status.textContent=found.length?`Found ${found.join(" · ")}. Confirm the links before publishing.${warnings.length?` ${warnings.join(" · ")}`:""}`:warnings.join(" · ")||"No recent VODs were found yet. Wait for processing, then try again.";
+  });
   get("completion-form").addEventListener("submit",async(event)=>{
     event.preventDefault();if(!completionRequest)return;
     const completedLocal=get("completion-local").value;const youtubeInput=get("completion-youtube").value;const twitchInput=get("completion-twitch").value.trim();
