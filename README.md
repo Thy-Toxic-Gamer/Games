@@ -2,6 +2,14 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.9 — Public Schedule Preview — Updated August 31, 2026
+
+- Added a public Next Viewer Request panel below the request section and above the game-platform tabs.
+- The panel appears only for a paid, approved request with a future scheduled stream.
+- Shows only the game title, system, request type, and Eastern date and time.
+- Keeps Twitch identity, request IDs, viewer notes, payment references, and all other private request information out of the public response.
+- Added `RUN-THIS-v10.8-PUBLIC-SCHEDULE.sql` and `PUBLIC-SCHEDULE-SETUP.md` for the privacy-limited public schedule function.
+
 ## Ver. 1.8 — Private-Page Search Protection — Updated August 31, 2026
 
 - Added `noindex,nofollow` directives to Staff Control and Request Status.
