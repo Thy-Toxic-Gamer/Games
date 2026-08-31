@@ -2,6 +2,12 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.7 — Platform-Matched Privacy Contacts — Updated August 31, 2026
+
+- Expanded the Privacy & Data Use contact section with official Discord, Twitch, YouTube, Kick, and X links.
+- Matched every contact button to its platform color while preserving readable contrast and keyboard focus.
+- Added responsive two-column and single-column contact layouts for smaller screens.
+
 ## Ver. 1.6 — Privacy and Data Use — Updated August 31, 2026
 
 - Added a professional Privacy & Data Use page for the game-request system.
