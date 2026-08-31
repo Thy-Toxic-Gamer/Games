@@ -2,6 +2,13 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.6 — Privacy and Data Use — Updated August 31, 2026
+
+- Added a professional Privacy & Data Use page for the game-request system.
+- Explains Twitch sign-in data, request records, payment-confirmation metadata, staff records, connected services, access controls, retention, and viewer choices.
+- Clarifies that the website does not store full payment-card, bank, or PayPal credentials and that request information is not sold.
+- Added Privacy & Data Use links to the catalog account area and the footers of the catalog, Request Status, and Staff Control pages.
+
 ## Ver. 1.5 — Automatic Pre-Publish Validation — Updated August 31, 2026
 
 - Added an automatic GitHub validation workflow for every pull request and update to `main`.
