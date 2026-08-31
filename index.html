@@ -11,7 +11,7 @@
     <title>ThyToxicGamer Game Library</title>
     <link rel="stylesheet" href="styles.css?v=1.0.24" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.45" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.38" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.39" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -22,7 +22,7 @@
     <script src="game-summaries.js?v=1.0.1" defer></script>
     <script src="app.js?v=1.0.34" defer></script>
     <script src="dashboard.js?v=1.0.35" defer></script>
-    <script src="request-test.js?v=1.0.25" defer></script>
+    <script src="request-test.js?v=1.0.26" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
@@ -142,6 +142,33 @@
           </form>
           <a class="request-link-button request-link-admin catalog-staff-control" href="review.html">Staff Control</a>
         </section>
+        <section class="next-request-panel" id="next-request-panel" aria-labelledby="next-request-title" aria-live="polite" hidden>
+          <header class="next-request-heading">
+            <span class="next-request-light" aria-hidden="true"></span>
+            <div>
+              <p class="eyebrow">Paid · Approved · Scheduled</p>
+              <h2 id="next-request-title">Next Viewer Request</h2>
+            </div>
+            <span class="next-request-status">Coming Up</span>
+          </header>
+          <div class="next-request-details">
+            <article>
+              <small>Game</small>
+              <strong id="next-request-game"></strong>
+              <span id="next-request-platform"></span>
+            </article>
+            <article>
+              <small>Request Type</small>
+              <strong id="next-request-type"></strong>
+              <span>Viewer-requested stream</span>
+            </article>
+            <article>
+              <small>Scheduled Stream</small>
+              <time id="next-request-schedule"></time>
+              <span>Eastern Time</span>
+            </article>
+          </div>
+        </section>
         <div
           class="platform-tabs"
           id="platform-tabs"
@@ -206,7 +233,7 @@
           </div>
           <section class="updates-panel" id="updates-panel" aria-labelledby="updates-heading" hidden>
             <header class="updates-hero">
-              <p class="eyebrow">What’s New · Ver. 1.0</p>
+              <p class="eyebrow">What’s New · Ver. 1.9</p>
               <h3 id="updates-heading">The Toxic Vault keeps getting smarter</h3>
               <p>Here are the latest improvements to game requests, staff review, payments, scheduling, and moderator security.</p>
             </header>
@@ -218,6 +245,7 @@
               <article><span aria-hidden="true">📅</span><h4>Game Scheduling</h4><p>Paid games are scheduled in Eastern Time as an 18–24 hour stream beginning Friday evening or Saturday morning.</p></article>
               <article><span aria-hidden="true">✎</span><h4>Schedule Changes</h4><p>Rescheduling or clearing a game time requires a reason, which is shown to the viewer and included in Discord updates.</p></article>
               <article><span aria-hidden="true">✓</span><h4>Moderator Security</h4><p>Twitch moderator access is checked automatically. Staff must reverify after leaving, and removed moderators lose access.</p></article>
+              <article><span aria-hidden="true">◉</span><h4>Next Viewer Request</h4><p>Once a request is paid, approved, and scheduled, the catalog announces the game, system, request type, and Eastern stream time without revealing viewer or payment information.</p></article>
             </div>
 
             <section class="updates-catalog-guide" aria-labelledby="catalog-guide-title">
@@ -253,6 +281,10 @@
             <div class="updates-history" aria-label="Major update history">
               <h4>Major Updates</h4>
               <ol>
+                <li>
+                  <div class="updates-version"><span>Ver. 1.9</span><time datetime="2026-08-31">August 31, 2026</time></div>
+                  <div><strong>Public Schedule Preview</strong><p>Added a privacy-safe Next Viewer Request panel above the game tabs. It remains hidden until a paid and approved request has a future schedule, then displays only the game title, system, request type, and Eastern date and time.</p></div>
+                </li>
                 <li>
                   <div class="updates-version"><span>Ver. 1.0</span><time datetime="2026-08-29">August 29, 2026</time></div>
                   <div><strong>First Public Release</strong><p>Completed the live request system with Twitch sign-in, secure staff review, automatic StreamElements payment confirmation, Twitch moderator verification, Discord notifications, post-payment scheduling, required schedule-change explanations, easy access to Site Updates, Nintendo Classics collections for NES, SNES, Game Boy / Game Boy Color, Nintendo 64, Game Boy Advance, Sega Genesis, Virtual Boy, and GameCube, a duplicate-free SNES Emulation collection, a combined PlayStation library with separate PS5 and PS4 sections, a full hybrid artwork redesign for every non-PC game using original game imagery plus generated cinematic finishing, individually generated PS5 key art with each game title integrated into the picture and no boxed title labels, duplicate filtering that favors PS5 editions, platform-matched collection labels and game counts, and emulation labels.</p></div>
