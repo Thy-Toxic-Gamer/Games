@@ -273,6 +273,10 @@
   }
 
   get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+  get("preview-public-schedule")?.addEventListener("click",()=>{
+    window.sessionStorage.setItem("toxic-next-request-preview",String(Date.now()+10*60*1000));
+    window.location.href="index.html?preview=next-request#next-request-panel";
+  });
   get("refresh-discord-health").addEventListener("click",refreshDiscordHealth);
   get("test-discord-notification").addEventListener("click",()=>runDiscordHealthAction("test",get("test-discord-notification")));
   get("retry-discord-notification").addEventListener("click",()=>{if(unresolvedDiscordFailure)runDiscordHealthAction("retry",get("retry-discord-notification"),unresolvedDiscordFailure.id);});

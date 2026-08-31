@@ -2,6 +2,12 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.10 — Staff Schedule Preview — Updated August 31, 2026
+
+- Added a verified Staff Control button for previewing the public Next Viewer Request panel without a payment.
+- Uses fictional preview information and automatically expires after 10 minutes.
+- Does not create or modify requests, payments, schedules, cooldowns, the public request slot, or Discord notifications.
+
 ## Ver. 1.9 — Public Schedule Preview — Updated August 31, 2026
 
 - Added a public Next Viewer Request panel below the request section and above the game-platform tabs.
