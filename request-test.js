@@ -11,6 +11,11 @@
   const slotCard = document.querySelector("#request-status-card");
   const slotLabel = document.querySelector("#request-slot-label");
   const slotDetail = document.querySelector("#request-slot-detail");
+  const nextRequestPanel = document.querySelector("#next-request-panel");
+  const nextRequestGame = document.querySelector("#next-request-game");
+  const nextRequestPlatform = document.querySelector("#next-request-platform");
+  const nextRequestType = document.querySelector("#next-request-type");
+  const nextRequestSchedule = document.querySelector("#next-request-schedule");
   const authName = document.querySelector("#request-auth-name");
   const signInButton = document.querySelector("#twitch-sign-in");
   const signOutButton = document.querySelector("#twitch-sign-out");
@@ -41,6 +46,47 @@
     return catalog?.systems?.[systemId]?.label || ({pc:"PC Games",switch:"Nintendo Switch",ps5:"PlayStation 5",ps4:"PlayStation 4",snes:"Super Nintendo"})[value] || value;
   }
   function requestLabel(selection) { return selection.requestType === "unlisted" ? "Not in Catalog" : `${prettyPlatform(selection.gamePlatform)} · Owned Catalog Game`; }
+  function requestGoalLabel(goal) {
+    return ({play:"Play Game",speed_run:"Speed Run Game",completion:"100% Completion"})[goal] || "Play Game";
+  }
+  function formatEasternSchedule(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return "Schedule pending";
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone:"America/New_York",
+      weekday:"long",
+      month:"long",
+      day:"numeric",
+      year:"numeric",
+      hour:"numeric",
+      minute:"2-digit",
+      timeZoneName:"short"
+    }).format(date);
+  }
+  function hideNextRequest() {
+    if (nextRequestPanel) nextRequestPanel.hidden = true;
+  }
+  function renderNextRequest(data) {
+    if (!nextRequestPanel || !data?.gameTitle || !data?.scheduledFor) {
+      hideNextRequest();
+      return;
+    }
+    nextRequestGame.textContent = data.gameTitle;
+    nextRequestPlatform.textContent = data.platform || "System to be confirmed";
+    nextRequestType.textContent = requestGoalLabel(data.requestGoal);
+    nextRequestSchedule.textContent = formatEasternSchedule(data.scheduledFor);
+    nextRequestSchedule.dateTime = data.scheduledFor;
+    nextRequestPanel.hidden = false;
+  }
+  async function refreshNextRequest() {
+    if (!client || !nextRequestPanel) return;
+    const { data, error:nextRequestError } = await client.rpc("next_public_game_request");
+    if (nextRequestError) {
+      hideNextRequest();
+      return;
+    }
+    renderNextRequest(data);
+  }
   function selectRequestGoal(goal, focusTab=false) {
     if (!selected) return;
     const choices = requestChoices[selected.requestType];
@@ -80,7 +126,10 @@
   }
   async function refreshState() {
     if (!client) return;
-    const { data, error:stateError } = await client.rpc("request_system_state");
+    const [{ data, error:stateError }] = await Promise.all([
+      client.rpc("request_system_state"),
+      refreshNextRequest()
+    ]);
     if (!stateError && data) systemState = data;
     updateInterface();
   }
@@ -183,5 +232,9 @@
   }
   const observer = new MutationObserver(updateInterface);
   observer.observe(document.querySelector("#game-grid"), {childList:true});
+  window.setInterval(refreshNextRequest, 60000);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") refreshNextRequest();
+  });
   initialize();
 })();
