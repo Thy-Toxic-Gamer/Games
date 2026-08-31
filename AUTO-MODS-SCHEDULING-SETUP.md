@@ -6,7 +6,7 @@ This v10.0 upgrade gives current Twitch moderators automatic Staff Control acces
 
 - The owner and existing manually assigned staff keep their current access.
 - A Twitch moderator signs in to Staff Control and grants the read-only user:read:moderated_channels Twitch permission.
-- The Edge Function validates the Twitch token, matches it to the signed-in Supabase identity, and checks the immutable ThyToxicGamer broadcaster ID.
+- The Edge Function validates the Twitch token, matches it to the signed-in Supabase identity, and checks the immutable ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ broadcaster ID.
 - Confirmed moderators receive temporary Staff Control access. The page rechecks Twitch every 55 minutes, and automatic access expires after 65 minutes without successful verification.
 - Removing someone as a Twitch moderator removes their automatic access at the next verification.
 - Automatic moderators must sign in again whenever they leave Staff Control and return. Returning to the tab also triggers an immediate Twitch status check.
@@ -48,7 +48,7 @@ In the Supabase SQL Editor, run:
     from auth.users
     order by created_at;
 
-Find the row for the broadcaster account ThyToxicGamer. Copy only its numeric twitch_user_id.
+Find the row for the broadcaster account ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆. Copy only its numeric twitch_user_id.
 
 The Twitch user ID is not an API secret. Do not copy the Supabase user ID into the Edge Function secret.
 
@@ -56,7 +56,7 @@ The Twitch user ID is not an API secret. Do not copy the Supabase user ID into t
 
 In Supabase, add:
 
-- TWITCH_BROADCASTER_ID = the numeric Twitch user ID for ThyToxicGamer
+- TWITCH_BROADCASTER_ID = the numeric Twitch user ID for ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆
 - SITE_ORIGIN = https://thy-toxic-gamer.github.io
 
 Supabase automatically provides SUPABASE_URL, SUPABASE_ANON_KEY, and SUPABASE_SERVICE_ROLE_KEY to deployed Edge Functions. Never put the service-role key, Twitch OAuth token, or Discord webhook URL in GitHub.

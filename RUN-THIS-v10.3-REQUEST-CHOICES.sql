@@ -1,4 +1,4 @@
--- ThyToxicGamer request choices and secure pricing v10.3
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ request choices and secure pricing v10.3
 -- Run once in the Supabase SQL Editor before publishing the matching website files.
 -- Safe to run again if the first run is interrupted.
 

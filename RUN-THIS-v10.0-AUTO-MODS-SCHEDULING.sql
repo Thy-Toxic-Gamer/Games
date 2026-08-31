@@ -1,4 +1,4 @@
--- ThyToxicGamer automatic Twitch moderator access and optional scheduling v10.0
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ automatic Twitch moderator access and optional scheduling v10.0
 -- Run once after the existing v9.3 database upgrades.
 
 alter table public.request_staff

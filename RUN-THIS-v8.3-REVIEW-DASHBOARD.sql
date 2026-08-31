@@ -1,4 +1,4 @@
--- ThyToxicGamer staff review dashboard v8.3
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ staff review dashboard v8.3
 -- Run once after the v8.1 global cooldown functions are installed.
 
 create or replace function public.can_review_game_requests()

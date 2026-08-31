@@ -251,9 +251,9 @@ Deno.serve(async (request) => {
   }
 
   const discordBody = {
-    username: "ThyToxicGamer Game Requests",
+    username: "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Game Requests",
     allowed_mentions: { parse: [] },
-    embeds: [{ title, description, color, fields, timestamp: isNewCompletion ? gameRequest.completed_at ?? new Date().toISOString() : isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "ThyToxicGamer Request System" } }],
+    embeds: [{ title, description, color, fields, timestamp: isNewCompletion ? gameRequest.completed_at ?? new Date().toISOString() : isViewerChangeRequested ? gameRequest.viewer_change_requested_at ?? new Date().toISOString() : isViewerChangeDenied ? gameRequest.viewer_change_reviewed_at ?? new Date().toISOString() : isRequestUpdated ? gameRequest.request_changed_at ?? new Date().toISOString() : gameRequest.created_at, footer: { text: "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Request System" } }],
   };
 
   const sendSystemAudit = async (delivered: boolean, detail: string | null) => {
@@ -275,7 +275,7 @@ Deno.serve(async (request) => {
           ...(detail ? [{ name: "Error", value: shorten(detail, 500), inline: false }] : []),
         ],
         timestamp: new Date().toISOString(),
-        footer: { text: "ThyToxicGamer Request System" },
+        footer: { text: "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Request System" },
       }],
     };
     try {

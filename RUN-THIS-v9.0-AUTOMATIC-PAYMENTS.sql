@@ -1,4 +1,4 @@
--- ThyToxicGamer automatic StreamElements payment system v9.0
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ automatic StreamElements payment system v9.0
 -- Run once in the Supabase SQL editor after the v8.6 upgrades.
 
 alter table public.game_requests

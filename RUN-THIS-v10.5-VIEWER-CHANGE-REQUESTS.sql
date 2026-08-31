@@ -1,4 +1,4 @@
--- ThyToxicGamer viewer-requested game changes v10.5
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ viewer-requested game changes v10.5
 -- Run once after RUN-THIS-v10.4-REQUEST-EDITS.sql.
 -- Safe to run again if the first run is interrupted.
 

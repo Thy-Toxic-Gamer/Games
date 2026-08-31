@@ -1,4 +1,4 @@
--- ThyToxicGamer v9.3: regular StreamElements donation notifications.
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ v9.3: regular StreamElements donation notifications.
 -- Run once in the Supabase SQL Editor before deploying notify-regular-donations.
 
 create table if not exists public.regular_donation_notifier_state (

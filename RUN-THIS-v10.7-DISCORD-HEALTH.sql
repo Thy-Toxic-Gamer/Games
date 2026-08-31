@@ -1,4 +1,4 @@
--- ThyToxicGamer Discord delivery health and retry log v10.7
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Discord delivery health and retry log v10.7
 -- Run once after the existing v10.5 request-system upgrades.
 
 create table if not exists public.discord_notification_logs (

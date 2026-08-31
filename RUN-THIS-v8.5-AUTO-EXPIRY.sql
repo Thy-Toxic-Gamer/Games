@@ -1,4 +1,4 @@
--- ThyToxicGamer automatic awaiting-request expiration v8.5
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ automatic awaiting-request expiration v8.5
 
 alter table public.game_requests
 add column if not exists expired_at timestamptz;

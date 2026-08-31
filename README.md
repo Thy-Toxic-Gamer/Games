@@ -1,6 +1,6 @@
-# ThyToxicGamer Game Library — Professional Dashboard
+# ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Game Library — Professional Dashboard
 
-GitHub Pages-ready version of the ThyToxicGamer game catalog.
+GitHub Pages-ready version of the ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ game catalog.
 
 ## Ver. 1.13 — Automatic VOD Lookup — Updated August 31, 2026
 
@@ -192,7 +192,7 @@ GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
 ## Upload to GitHub
 
-Upload these files to the root of the `Thy-Toxic-Gamer/Games` repository and replace the existing versions:
+Upload these files to the root of the `Thy-𝐓☣︎𝐱𝐢c-Gamer/Games` repository and replace the existing versions:
 
 - `index.html`
 - `styles.css`

@@ -561,7 +561,7 @@
       <circle cx="470" cy="165" r="150" fill="#7cff00" fill-opacity=".08"/>
       <path d="M-80 760L680 420" stroke="#7cff00" stroke-opacity=".2" stroke-width="5"/>
       <path d="M-40 835L720 495" stroke="#7cff00" stroke-opacity=".1" stroke-width="18"/>
-      <text x="42" y="120" fill="#7cff00" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="6">THYTOXICGAMER</text>
+      <text x="42" y="120" fill="#7cff00" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="6">⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</text>
       <text x="42" y="430" fill="#f1f5ef" font-family="Arial,sans-serif" font-size="64" font-weight="900">${initialsText}</text>
       <text x="42" y="500" fill="#b7ff73" font-family="Arial,sans-serif" font-size="25" font-weight="700">${shortTitle}</text>
       <text x="42" y="842" fill="#7cff00" font-family="Consolas,monospace" font-size="22" letter-spacing="4">ARTWORK FALLBACK</text>

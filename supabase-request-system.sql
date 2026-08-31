@@ -1,4 +1,4 @@
--- ThyToxicGamer live request system v8.1
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ live request system v8.1
 -- Safe to run whether or not the earlier v8.0 helper script was run.
 
 create table if not exists public.request_system_settings (

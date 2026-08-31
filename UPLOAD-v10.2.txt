@@ -1,4 +1,4 @@
-ThyToxicGamer Games v10.2 Schedule Change Explanations
+⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Games v10.2 Schedule Change Explanations
 
 Run in Supabase SQL Editor:
 - RUN-THIS-v10.2-SCHEDULE-REASONS.sql

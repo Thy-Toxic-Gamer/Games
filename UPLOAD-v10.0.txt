@@ -1,4 +1,4 @@
-ThyToxicGamer Games v10.0 Upgrade and Backup
+⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Games v10.0 Upgrade and Backup
 
 Run in Supabase SQL Editor first:
 - RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql

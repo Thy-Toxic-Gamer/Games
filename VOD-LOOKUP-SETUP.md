@@ -7,7 +7,7 @@ This upgrade adds a staff-only **Find Latest VODs** button to the completed-requ
 Add these under **Supabase → Edge Functions → Secrets**:
 
 - `YOUTUBE_API_KEY` — a Google Cloud API key with YouTube Data API v3 enabled
-- `YOUTUBE_CHANNEL_ID` — the permanent channel ID for ThyToxicGamer
+- `YOUTUBE_CHANNEL_ID` — the permanent channel ID for ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆
 
 The existing `TWITCH_BROADCASTER_ID` secret is reused. Twitch lookup uses the fresh Twitch sign-in token already held by Staff Control, so no Twitch client secret is added.
 

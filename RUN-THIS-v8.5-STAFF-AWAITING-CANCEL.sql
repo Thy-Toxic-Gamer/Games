@@ -1,4 +1,4 @@
--- ThyToxicGamer staff awaiting-request cancellation v8.5
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ staff awaiting-request cancellation v8.5
 -- Run once after the v8.3 review dashboard upgrade.
 
 alter table public.game_requests

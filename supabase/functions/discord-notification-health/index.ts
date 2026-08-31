@@ -159,7 +159,7 @@ Deno.serve(async (request) => {
           { name: "Status", value: "Connected", inline: true },
         ],
         timestamp: now,
-        footer: { text: "ThyToxicGamer Request System" },
+        footer: { text: "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Request System" },
       }],
     };
     const result = await deliver(webhook, body);

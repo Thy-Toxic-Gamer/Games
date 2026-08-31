@@ -1,4 +1,4 @@
--- ThyToxicGamer global game-request service switch v9.1
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ global game-request service switch v9.1
 -- Run once in the Supabase SQL editor after the v9.0 upgrade.
 
 alter table public.request_system_settings

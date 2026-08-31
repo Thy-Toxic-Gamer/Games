@@ -1,4 +1,4 @@
--- ThyToxicGamer request archive retention v8.4
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ request archive retention v8.4
 -- Run once in the Supabase SQL Editor before uploading the v8.4 website files.
 
 alter table public.game_requests

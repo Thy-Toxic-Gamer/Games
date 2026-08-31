@@ -1,4 +1,4 @@
--- ThyToxicGamer required schedule-change explanations v10.2
+-- ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ required schedule-change explanations v10.2
 -- Run once after RUN-THIS-v10.0-AUTO-MODS-SCHEDULING.sql.
 
 alter table public.game_requests

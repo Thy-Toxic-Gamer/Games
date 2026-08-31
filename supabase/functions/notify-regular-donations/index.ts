@@ -233,7 +233,7 @@ Deno.serve(async (request) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: "ThyToxicGamer Donations",
+        username: "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Donations",
         allowed_mentions: { parse: [] },
         embeds: [
           {
