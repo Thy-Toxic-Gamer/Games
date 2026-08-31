@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=1.0.24" />
-  <link rel="stylesheet" href="request-test.css?v=10.15" />
+  <link rel="stylesheet" href="request-test.css?v=10.16" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.11" defer></script>
+  <script src="review-live.js?v=10.12" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -233,6 +233,14 @@
       <label>Twitch VOD link (optional)
         <input id="completion-twitch" type="url" inputmode="url" autocomplete="url" placeholder="https://www.twitch.tv/videos/…" />
       </label>
+      <section class="completion-lookup" aria-labelledby="completion-lookup-heading">
+        <div>
+          <strong id="completion-lookup-heading">Automatic VOD lookup</strong>
+          <span>Searches your latest completed YouTube broadcast and Twitch archive. Always confirm both links before publishing.</span>
+        </div>
+        <button class="review-button review-button-edit" id="completion-find-vods" type="button">Find Latest VODs</button>
+        <p id="completion-lookup-status" aria-live="polite"></p>
+      </section>
       <p class="request-dialog-rules">YouTube remains available permanently. Twitch is displayed for 60 days after the completed date. Time-position parameters are removed so both links begin at the start of the VOD.</p>
       <p class="request-form-error" id="completion-error" role="alert"></p>
       <div class="request-center-actions">

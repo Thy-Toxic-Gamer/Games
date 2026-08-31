@@ -112,6 +112,11 @@
 .request-account-line { margin:0; padding:.7rem; border-left:3px solid var(--toxic); background:rgba(124,255,0,.05); color:var(--muted); }.request-account-line strong{color:#fff}
 .request-form-error { min-height:1.2em; margin:0; color:#ff7970; font-size:.78rem; }
 .completion-request-summary { margin:0; padding:.7rem .8rem; border-left:3px solid var(--request-hot-pink); background:rgba(255,43,214,.06); color:#fff; font-weight:800; }
+.completion-lookup { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:.7rem; padding:.8rem; border:1px solid rgba(255,43,214,.55); background:rgba(255,43,214,.05); }
+.completion-lookup>div { display:grid; gap:.2rem; }
+.completion-lookup strong { color:#ff85e8; font-size:.78rem; }
+.completion-lookup span { color:var(--muted); font-size:.68rem; line-height:1.4; }
+.completion-lookup>p { grid-column:1/-1; min-height:1.1em; margin:0; color:#dce2de; font-size:.7rem; line-height:1.45; }
 .review-status[data-status="completed"] { border-color:var(--toxic); color:var(--toxic); background:rgba(124,255,0,.08); }
 .request-history-completed { margin:.7rem 0 0; color:var(--toxic-soft); font-weight:800; }
 .request-history-vods,.request-completion-links { margin:.5rem 0; }
@@ -131,6 +136,7 @@
 @media(max-width:520px){.site-header{grid-template-columns:minmax(0,1fr) auto}.library-count{display:none}.site-header .request-status-card{width:140px}.site-header .request-status-card small{font-size:.5rem;letter-spacing:.06em}.site-header .request-status-card strong{font-size:.78rem}}
 @media(max-width:620px){.request-how-to-heading{display:block}.request-how-to-heading p{margin-top:.35rem;text-align:left}.request-steps{grid-template-columns:1fr}}
 @media(max-width:700px){.next-request-details{grid-template-columns:1fr}.next-request-status{display:none}}
+@media(max-width:620px){.completion-lookup{grid-template-columns:1fr}.completion-lookup .review-button{width:100%}.completion-lookup>p{grid-column:auto}}
 .request-page { min-height:100vh; background:radial-gradient(circle at 80% 5%,rgba(124,255,0,.08),transparent 28%),#050706; }
 .request-page-shell { width:min(1040px,calc(100% - 28px)); margin:0 auto; padding:clamp(1.2rem,4vw,3rem) 0; }
 .request-page-heading { margin-bottom:1rem; padding:1.2rem; border-left:4px solid var(--toxic); background:#0a0d0b; }
