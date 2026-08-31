@@ -7,13 +7,13 @@
   <meta name="theme-color" content="#050706" />
   <title>Toxic Game Request Staff Control</title>
   <link rel="stylesheet" href="styles.css?v=1.0.24" />
-  <link rel="stylesheet" href="request-test.css?v=10.12" />
+  <link rel="stylesheet" href="request-test.css?v=10.13" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.0" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.8" defer></script>
+  <script src="review-live.js?v=10.9" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">☣</span><span><strong>ThyToxicGamer</strong><small>Staff Control</small></span></a></header>
@@ -86,6 +86,14 @@
             <button class="review-button review-button-muted" type="button" data-staff-tab-target="records">Open Request Records</button>
             <button class="review-button review-button-muted" type="button" data-staff-tab-target="archive">Open Archive</button>
             <button class="review-button review-button-edit" type="button" data-staff-tab-target="health">Open System Health</button>
+          </div>
+        </section>
+
+        <section class="staff-home-section" aria-labelledby="staff-preview-heading">
+          <div class="staff-home-heading"><div><p class="eyebrow">Safe Display Test</p><h2 id="staff-preview-heading">Public Schedule Panel Preview</h2></div></div>
+          <p class="staff-home-warning"><strong>No payment or live request is required.</strong> The preview uses fictional information and does not change a request, payment status, schedule, cooldown, request slot, or Discord notification.</p>
+          <div class="review-actions">
+            <button class="review-button review-button-edit" id="preview-public-schedule" type="button">Preview Next Viewer Request</button>
           </div>
         </section>
       </section>
