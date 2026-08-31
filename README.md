@@ -2,6 +2,12 @@
 
 GitHub Pages-ready version of the ThyToxicGamer game catalog.
 
+## Ver. 1.8 — Private-Page Search Protection — Updated August 31, 2026
+
+- Added `noindex,nofollow` directives to Staff Control and Request Status.
+- Kept the public catalog and Privacy & Data Use page available for normal search indexing.
+- Expanded automatic pre-publish validation so future updates fail if either private operational page loses its `noindex` directive.
+
 ## Ver. 1.7 — Platform-Matched Privacy Contacts — Updated August 31, 2026
 
 - Expanded the Privacy & Data Use contact section with official Discord, Twitch, YouTube, Kick, and X links.

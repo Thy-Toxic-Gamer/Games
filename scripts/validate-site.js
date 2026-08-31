@@ -64,12 +64,16 @@ function validateHtml(allFiles) {
   const files = allFiles.filter((file) => file.endsWith(".html"));
   const htmlByFile = new Map(files.map((file) => [file, read(file)]));
   const idsByFile = new Map(files.map((file) => [file, new Set(idsIn(htmlByFile.get(file)))]));
+  const privatePages = new Set([path.join(root, "review.html"), path.join(root, "status.html")]);
   const dynamicIdsByFile = new Map([
     [path.join(root, "index.html"), new Set(["tab-all"])],
   ]);
 
   files.forEach((file) => {
     const html = htmlByFile.get(file);
+    if (privatePages.has(file) && !/<meta\s+name=["']robots["']\s+content=["'][^"']*\bnoindex\b[^"']*["']\s*\/?>/i.test(html)) {
+      fail("Privacy", `${relative(file)} must retain its noindex robots directive`);
+    }
     const ids = idsIn(html);
     const duplicates = [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))];
     duplicates.forEach((id) => fail("HTML", `${relative(file)} contains duplicate id "${id}"`));
