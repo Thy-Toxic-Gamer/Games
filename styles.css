@@ -33,6 +33,8 @@ a {
   color: inherit;
 }
 
+.site-header, main, .site-legal-footer { position: relative; z-index: 1; }
+
 .skip-link {
   position: fixed;
   top: 0.75rem;
@@ -866,6 +868,11 @@ footer p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Shared toxic watermark — branded background layer */
+body { isolation: isolate; }
+body::before { content:"☣"; position:fixed; z-index:0; top:16vh; right:-9vw; color:rgba(168,240,0,.022); font:900 clamp(360px,52vw,760px)/1 "Arial Black","Segoe UI Symbol",sans-serif; -webkit-text-stroke:2px rgba(168,240,0,.065); text-shadow:0 0 80px rgba(168,240,0,.055),0 0 190px rgba(168,240,0,.025); transform:rotate(-10deg); pointer-events:none; user-select:none; }
+@media (max-width:700px) { body::before { top:28vh; right:-32vw; font-size:clamp(340px,105vw,560px); opacity:.78; } }
 
 /* Ver. 1.0 ecosystem shell — shared Central Command visual language */
 body { font-family: Inter, system-ui, sans-serif; }
