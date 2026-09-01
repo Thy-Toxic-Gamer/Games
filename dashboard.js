@@ -461,11 +461,13 @@
   window.addEventListener("scroll", hidePopover, { passive: true });
   window.addEventListener("resize", hidePopover);
 
-  tabs.addEventListener("click", function () {
+  tabs.addEventListener("click", function (event) {
+    if (!event.target.closest(".platform-tab")) return;
     setTimeout(scheduleDashboard, 0);
   });
 
-  tabs.addEventListener("keydown", function () {
+  tabs.addEventListener("keydown", function (event) {
+    if (!event.target.closest(".platform-tab")) return;
     setTimeout(scheduleDashboard, 0);
   });
 

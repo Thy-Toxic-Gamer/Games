@@ -201,8 +201,8 @@ h1 {
 }
 
 .platform-tabs {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 0.65rem;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
@@ -874,6 +874,12 @@ footer p {
 
   .privacy-social-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1120px) {
+  .platform-tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
