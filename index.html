@@ -20,7 +20,7 @@
     <script src="games.js?v=1.0.45" defer></script>
     <script src="catalog-utils.js?v=1.0.2" defer></script>
     <script src="game-summaries.js?v=1.0.1" defer></script>
-    <script src="app.js?v=1.0.35" defer></script>
+    <script src="app.js?v=1.0.36" defer></script>
     <script src="dashboard.js?v=1.0.36" defer></script>
     <script src="request-test.js?v=1.0.27" defer></script>
     <script src="completed-requests.js?v=1.0.0" defer></script>
@@ -123,7 +123,6 @@
             <div><small>Twitch account</small><strong id="request-auth-name">Not signed in</strong></div>
             <button class="request-link-button" id="twitch-sign-in" type="button">Sign in with Twitch</button>
             <button class="request-link-button request-link-admin" id="twitch-sign-out" type="button" hidden>Sign Out</button>
-            <button class="request-link-button request-link-updates" id="site-updates-button" type="button">Site Updates</button>
             <p class="request-privacy-note">See how sign-in and request information are handled in <a href="privacy.html">Privacy &amp; Data Use</a>.</p>
           </div>
           <form class="unlisted-request" id="unlisted-request-form">
@@ -240,97 +239,6 @@
             </header>
             <div class="completed-requests-grid" id="completed-requests-grid" aria-live="polite">
               <p class="completed-requests-empty">Loading completed requested streams…</p>
-            </div>
-          </section>
-          <section class="updates-panel" id="updates-panel" aria-labelledby="updates-heading" hidden>
-            <header class="updates-hero">
-              <p class="eyebrow">What’s New · Ver. 1.13</p>
-              <h3 id="updates-heading">The 𝐓☣︎𝐱𝐢c Vault keeps getting smarter</h3>
-              <p>Here are the latest improvements to game requests, staff review, payments, scheduling, and moderator security.</p>
-            </header>
-
-            <div class="updates-feature-grid">
-              <article><span aria-hidden="true">🎮</span><h4>Game Requests</h4><p>Request an owned or unlisted game, choose how it will be played, and receive the payment option only after approval.</p></article>
-              <article><span aria-hidden="true">🛡️</span><h4>Staff Review</h4><p>The channel owner and verified Twitch moderators can approve, deny, schedule, and manage request availability.</p></article>
-              <article><span aria-hidden="true">🔒</span><h4>Secure Payments</h4><p>The StreamElements payment option appears only after staff approval, and payment confirmation happens automatically.</p></article>
-              <article><span aria-hidden="true">📅</span><h4>Game Scheduling</h4><p>Paid games are scheduled in Eastern Time as an 18–24 hour stream beginning Friday evening or Saturday morning.</p></article>
-              <article><span aria-hidden="true">✎</span><h4>Schedule Changes</h4><p>Rescheduling or clearing a game time requires a reason, which is shown to the viewer and included in Discord updates.</p></article>
-              <article><span aria-hidden="true">✓</span><h4>Moderator Security</h4><p>Twitch moderator access is checked automatically. Staff must reverify after leaving, and removed moderators lose access.</p></article>
-              <article><span aria-hidden="true">◉</span><h4>Next Viewer Request</h4><p>Once a request is paid, approved, and scheduled, the catalog announces the game, system, request type, and Eastern stream time without revealing viewer or payment information.</p></article>
-              <article><span aria-hidden="true">▶</span><h4>Completed Requested Streams</h4><p>Completed requests link directly to the permanent YouTube VOD and the Twitch VOD during its 60-day availability window.</p></article>
-              <article><span aria-hidden="true">⌕</span><h4>Automatic VOD Lookup</h4><p>Staff can securely locate the latest completed YouTube and Twitch streams, then confirm the suggested links before publishing.</p></article>
-            </div>
-
-            <section class="updates-catalog-guide" aria-labelledby="catalog-guide-title">
-              <header>
-                <p class="eyebrow">Catalog Reference</p>
-                <h4 id="catalog-guide-title">Game IDs &amp; Catalog Search Guide</h4>
-                <p>Every owned game has a system-specific ID. Numbering begins at 001 within each system, making games easy to identify even when the same title exists on multiple platforms.</p>
-              </header>
-              <div class="updates-id-grid" aria-label="Game ID prefixes by system">
-                <span><code>PC#001</code> PC Games</span>
-                <span><code>PS5#001</code> PlayStation 5</span>
-                <span><code>PS4#001</code> PlayStation 4</span>
-                <span><code>SW#001</code> Nintendo Switch</span>
-                <span><code>GC#001</code> Nintendo GameCube</span>
-                <span><code>GBA#001</code> Game Boy Advance</span>
-                <span><code>GB#001</code> Game Boy</span>
-                <span><code>GBC#001</code> Game Boy Color</span>
-                <span><code>N64#001</code> Nintendo 64</span>
-                <span><code>NES#001</code> Nintendo Entertainment System</span>
-                <span><code>SNES#001</code> Super Nintendo</span>
-                <span><code>XB#001</code> Xbox</span>
-                <span><code>VB#001</code> Virtual Boy</span>
-                <span><code>SG#001</code> Sega Genesis</span>
-              </div>
-              <div class="updates-catalog-instructions">
-                <article><strong>1. Search the owned catalog</strong><p>Enter a game title, complete ID, number such as #001, system abbreviation, or system name. A system search displays every owned game for that system.</p></article>
-                <article><strong>2. Request a viewer change</strong><p>Open View Request Status, select Request a Game Change, and begin typing the replacement. Choose an owned result to fill in its exact system automatically.</p></article>
-                <article><strong>3. Apply a staff correction</strong><p>In Staff Control, use Edit Request or Apply Viewer Change. Select the owned game from the suggestions before saving so the correct title and system are recorded.</p></article>
-                <article><strong>4. Keep unlisted games separate</strong><p>The Request a Game Not Listed field remains freeform because those titles are not part of the owned catalog.</p></article>
-              </div>
-            </section>
-
-            <div class="updates-history" aria-label="Major update history">
-              <h4>Major Updates</h4>
-              <ol>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.13</span><time datetime="2026-08-31">August 31, 2026</time></div>
-                  <div><strong>Staff-Confirmed Automatic VOD Lookup</strong><p>Added a secure staff-only search for the latest completed YouTube broadcast and Twitch archive. Suggested links are filled automatically and include platform-colored preview buttons so staff can verify each VOD before publication.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.12</span><time datetime="2026-08-31">August 31, 2026</time></div>
-                  <div><strong>Completed Requests &amp; VODs</strong><p>Added a complete requested-stream closeout workflow, a public Completed Requests VOD section, permanent YouTube links, automatically expiring 60-day Twitch links, viewer-status completion details, and dedicated Discord completed-request announcements.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.11</span><time datetime="2026-08-31">August 31, 2026</time></div>
-                  <div><strong>Organized Staff Administration</strong><p>Consolidated request-service controls, cooldown administration, the safe public schedule preview, and Discord health monitoring into one dedicated Admin tab while keeping active reviews and request records separate.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.10</span><time datetime="2026-08-31">August 31, 2026</time></div>
-                  <div><strong>Staff Schedule Preview</strong><p>Added a safe Staff Control preview for the public Next Viewer Request panel. It uses fictional information, expires automatically, and does not alter requests, payments, schedules, cooldowns, or Discord notifications.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.9</span><time datetime="2026-08-31">August 31, 2026</time></div>
-                  <div><strong>Public Schedule Preview</strong><p>Added a privacy-safe Next Viewer Request panel above the game tabs. It remains hidden until a paid and approved request has a future schedule, then displays only the game title, system, request type, and Eastern date and time.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 1.0</span><time datetime="2026-08-29">August 29, 2026</time></div>
-                  <div><strong>First Public Release</strong><p>Completed the live request system with Twitch sign-in, secure staff review, automatic StreamElements payment confirmation, Twitch moderator verification, Discord notifications, post-payment scheduling, required schedule-change explanations, easy access to Site Updates, Nintendo Classics collections for NES, SNES, Game Boy / Game Boy Color, Nintendo 64, Game Boy Advance, Sega Genesis, Virtual Boy, and GameCube, a duplicate-free SNES Emulation collection, a combined PlayStation library with separate PS5 and PS4 sections, a full hybrid artwork redesign for every non-PC game using original game imagery plus generated cinematic finishing, individually generated PS5 key art with each game title integrated into the picture and no boxed title labels, duplicate filtering that favors PS5 editions, platform-matched collection labels and game counts, and emulation labels.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 0.9</span><time datetime="2026-08-28">August 28, 2026</time></div>
-                  <div><strong>Payment + Request Controls</strong><p>Added automatic payment confirmation, donation notifications, request service controls, cooldown management, and clearer reviewed and paid statuses.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 0.8</span><time datetime="2026-08-27">August 27, 2026</time></div>
-                  <div><strong>Live Twitch Request Workflow</strong><p>Moved from browser testing to a secure live system with Twitch accounts, staff approval, denial reasons, request status updates, expiration, cancellation, and retention safeguards.</p></div>
-                </li>
-                <li>
-                  <div class="updates-version"><span>Ver. 0.7</span><time datetime="2026-08-27">August 27, 2026</time></div>
-                  <div><strong>Catalog Foundation</strong><p>Built the multi-platform library, responsive dashboard, rotating game previews, improved artwork, and the original request experience.</p></div>
-                </li>
-              </ol>
             </div>
           </section>
         </div>
