@@ -12,7 +12,6 @@
     { id: "all", label: "ALL games", games: allGames },
     ...platforms,
     { id: "completed", label: "Completed Requests", games: [], completed: true },
-    { id: "updates", label: "Updates", games: [], updates: true },
   ];
   const grid = document.querySelector("#game-grid");
   const headerCount = document.querySelector("#header-count");
@@ -24,9 +23,7 @@
   const comingSoon = document.querySelector("#coming-soon-panel");
   const comingSoonLibrary = document.querySelector("#coming-soon-library");
   const comingSoonMessage = document.querySelector("#coming-soon-message");
-  const updatesPanel = document.querySelector("#updates-panel");
   const completedPanel = document.querySelector("#completed-requests-panel");
-  const siteUpdatesButton = document.querySelector("#site-updates-button");
   const gameSearchForm = document.querySelector("#owned-game-search");
   const gameSearchInput = document.querySelector("#owned-game-search-input");
   const gameSearchClear = document.querySelector("#owned-game-search-clear");
@@ -839,7 +836,6 @@
     panel.style.removeProperty("--active-platform-ink");
     panel.setAttribute("aria-labelledby", "owned-game-search-label");
     hidePlatformSubtabs();
-    updatesPanel.hidden = true;
     completedPanel.hidden = true;
     comingSoon.hidden = true;
     grid.hidden = false;
@@ -957,29 +953,16 @@
       panel.style.removeProperty("--active-platform-ink");
     }
 
-    if (platform.updates) {
-      hidePlatformSubtabs();
-      platformName.textContent = "System Updates";
-      libraryCount.textContent = "Ver. 1.0";
-      grid.hidden = true;
-      comingSoon.hidden = true;
-      updatesPanel.hidden = false;
-      completedPanel.hidden = true;
-      return;
-    }
-
     if (platform.completed) {
       hidePlatformSubtabs();
       platformName.textContent = "Completed Requests";
       libraryCount.textContent = "VOD Archive";
       grid.hidden = true;
       comingSoon.hidden = true;
-      updatesPanel.hidden = true;
-      completedPanel.hidden = false;
+        completedPanel.hidden = false;
       return;
     }
 
-    updatesPanel.hidden = true;
     completedPanel.hidden = true;
     platformName.textContent = platform.id === "all"
       ? "ALL games"
@@ -1053,13 +1036,11 @@
 
       const count = document.createElement("span");
       count.className = "tab-count";
-      count.textContent = platform.updates
-        ? "Latest"
-        : platform.completed
-          ? "VODs"
-          : platform.comingSoon
-            ? "Soon"
-            : String(platform.games.length);
+      count.textContent = platform.completed
+        ? "VODs"
+        : platform.comingSoon
+          ? "Soon"
+          : String(platform.games.length);
 
       button.append(label, count);
       button.addEventListener("click", () => activatePlatform(platform.id, false));
@@ -1100,8 +1081,6 @@
       || !comingSoon
       || !comingSoonLibrary
       || !comingSoonMessage
-      || !updatesPanel
-      || !siteUpdatesButton
       || !gameSearchForm
       || !gameSearchInput
       || !gameSearchClear
@@ -1136,20 +1115,6 @@
       gameSearchInput.focus();
     });
     createTabs();
-    siteUpdatesButton.addEventListener("click", function () {
-      const updatesTab = tabs.querySelector('[data-platform="updates"]');
-      updatesTab?.click();
-
-      requestAnimationFrame(function () {
-        if (!updatesTab?.classList.contains("active")) {
-          activatePlatform("updates", false);
-        }
-
-        requestAnimationFrame(function () {
-          tabs.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      });
-    });
     activatePlatform(activePlatformId, false);
   }
 
