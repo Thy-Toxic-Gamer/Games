@@ -9,7 +9,11 @@
     />
     <meta name="theme-color" content="#050706" />
     <title>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Game Library</title>
-    <link rel="stylesheet" href="styles.css?release=1.0-nav" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="assets/game-catalog-hero.webp" fetchpriority="high" />
+    <link rel="stylesheet" href="styles.css?release=1.0-visual" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.46" />
     <link rel="stylesheet" href="request-test.css?v=1.0.41" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
@@ -28,32 +32,35 @@
   <body>
     <a class="skip-link" href="#game-library">Skip to game library</a>
 
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="Return to the top">
-        <span class="brand-mark" aria-hidden="true">☣</span>
-        <span>
-          <strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong>
-          <small>Game Library · Ver. 1.0</small>
-        </span>
+    <header class="site-header ecosystem-header">
+      <a class="ecosystem-brand" href="#top" aria-label="Game Catalog home">
+        <strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong>
+        <small>GAME CATALOG</small>
       </a>
-      <div class="library-count" aria-label="Total games">
-        <strong id="header-count">208</strong>
-        <span>Total Games</span>
-      </div>
-      <div class="header-right">
-        <a class="central-command-return" href="https://thy-toxic-gamer.github.io/central-command/"><span aria-hidden="true">←</span> Central Command</a>
-        <div class="request-status-card" id="request-status-card" data-state="open">
-          <span class="request-status-light" aria-hidden="true"></span>
-          <div><small>Viewer request slot</small><strong id="request-slot-label">Open</strong><span id="request-slot-detail">Choose any game below.</span></div>
-        </div>
-        <div class="vault-mark" aria-label="The 𝐓☣︎𝐱𝐢c Vault">
-          <span aria-hidden="true">☣</span>
-          <strong>The 𝐓☣︎𝐱𝐢c Vault</strong>
-        </div>
-      </div>
+      <nav class="ecosystem-nav" aria-label="Primary navigation">
+        <a href="#game-library">Catalog</a>
+        <a href="status.html">Request Status</a>
+        <a href="review.html">Staff Control</a>
+        <a class="hub-link" href="https://thy-toxic-gamer.github.io/central-command/">Central Command <span aria-hidden="true">↗</span></a>
+      </nav>
     </header>
 
     <main id="top">
+      <section class="ecosystem-hero game-hero" aria-labelledby="game-hero-title">
+        <div class="ecosystem-hero-art" aria-hidden="true"></div>
+        <div class="ecosystem-hero-content">
+          <div class="ecosystem-status"><span></span> Vault online <b>Ver. 1.0</b></div>
+          <p class="ecosystem-kicker">THE 𝐓☣︎𝐱𝐢c ONE PRESENTS</p>
+          <h1 id="game-hero-title">GAME<br><em>CATALOG</em></h1>
+          <p>Explore the complete 𝐓☣︎𝐱𝐢c Vault, find the next stream, and submit a Twitch-verified game request from one connected library.</p>
+          <div class="ecosystem-actions"><a href="#game-library">Browse the Vault <span aria-hidden="true">↓</span></a><a href="status.html">Request Status <span aria-hidden="true">↗</span></a></div>
+          <div class="hero-live-data">
+            <div class="library-count" aria-label="Total games"><strong id="header-count">208</strong><span>Total Games</span></div>
+            <div class="request-status-card" id="request-status-card" data-state="open"><span class="request-status-light" aria-hidden="true"></span><div><small>Viewer request slot</small><strong id="request-slot-label">Open</strong><span id="request-slot-detail">Choose any game below.</span></div></div>
+          </div>
+        </div>
+        <div class="ecosystem-rail" aria-hidden="true"><span>NINTENDO</span><i></i><span>PLAYSTATION</span><i></i><span>PC</span><i></i><span>CLASSICS</span><i></i><span>REQUESTS</span></div>
+      </section>
       <section class="library-section" id="game-library" aria-labelledby="library-title">
         <section class="request-center" aria-labelledby="request-center-title">
           <div class="request-center-copy">
