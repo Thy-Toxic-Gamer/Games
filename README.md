@@ -4,7 +4,13 @@
 
 GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ game catalog.
 
-## Ver. 1.13 — Automatic VOD Lookup — Updated August 31, 2026
+## Current public release
+
+**Ver. 1.0 — Unified Central Command release — September 1, 2026**
+
+The numbered entries below are retained as development-build history and no longer represent separate public suite versions.
+
+## Development build 1.13 — Automatic VOD Lookup — Updated August 31, 2026
 
 - Added **Find Latest VODs** to the requested-stream completion form.
 - Searches the configured YouTube channel for completed broadcasts and the configured Twitch channel for stream archives.
@@ -14,7 +20,7 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Keeps API credentials inside Supabase Edge Function secrets and requires verified Staff Control access.
 - Added `supabase/functions/find-latest-vods/index.ts` and `VOD-LOOKUP-SETUP.md`.
 
-## Ver. 1.12 — Completed Requests & VODs — Updated August 31, 2026
+## Development build 1.12 — Completed Requests & VODs — Updated August 31, 2026
 
 - Added **Mark Request Complete** to paid and approved request records in Staff Control.
 - Records the requested stream type, completed Eastern date and time, required YouTube VOD link, and optional Twitch VOD link.
@@ -25,20 +31,20 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Preserved permanent public VOD records separately from private request records so normal archive deletion does not remove the YouTube history.
 - Added `RUN-THIS-v10.9-COMPLETED-REQUESTS.sql` and `COMPLETED-REQUESTS-SETUP.md`.
 
-## Ver. 1.11 — Organized Staff Administration — Updated August 31, 2026
+## Development build 1.11 — Organized Staff Administration — Updated August 31, 2026
 
 - Renamed the Staff Control System Health tab to Admin.
 - Consolidated request-service controls, the global cooldown, the public schedule preview, and Discord health monitoring inside Admin.
 - Removed the separate Request Controls tab and kept active reviews, records, and archives focused on request work.
 - Preserved the existing owner and verified-moderator permissions for every administrative control.
 
-## Ver. 1.10 — Staff Schedule Preview — Updated August 31, 2026
+## Development build 1.10 — Staff Schedule Preview — Updated August 31, 2026
 
 - Added a verified Staff Control button for previewing the public Next Viewer Request panel without a payment.
 - Uses fictional preview information and automatically expires after 10 minutes.
 - Does not create or modify requests, payments, schedules, cooldowns, the public request slot, or Discord notifications.
 
-## Ver. 1.9 — Public Schedule Preview — Updated August 31, 2026
+## Development build 1.9 — Public Schedule Preview — Updated August 31, 2026
 
 - Added a public Next Viewer Request panel below the request section and above the game-platform tabs.
 - The panel appears only for a paid, approved request with a future scheduled stream.
@@ -46,26 +52,26 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Keeps Twitch identity, request IDs, viewer notes, payment references, and all other private request information out of the public response.
 - Added `RUN-THIS-v10.8-PUBLIC-SCHEDULE.sql` and `PUBLIC-SCHEDULE-SETUP.md` for the privacy-limited public schedule function.
 
-## Ver. 1.8 — Private-Page Search Protection — Updated August 31, 2026
+## Development build 1.8 — Private-Page Search Protection — Updated August 31, 2026
 
 - Added `noindex,nofollow` directives to Staff Control and Request Status.
 - Kept the public catalog and Privacy & Data Use page available for normal search indexing.
 - Expanded automatic pre-publish validation so future updates fail if either private operational page loses its `noindex` directive.
 
-## Ver. 1.7 — Platform-Matched Privacy Contacts — Updated August 31, 2026
+## Development build 1.7 — Platform-Matched Privacy Contacts — Updated August 31, 2026
 
 - Expanded the Privacy & Data Use contact section with official Discord, Twitch, YouTube, Kick, and X links.
 - Matched every contact button to its platform color while preserving readable contrast and keyboard focus.
 - Added responsive two-column and single-column contact layouts for smaller screens.
 
-## Ver. 1.6 — Privacy and Data Use — Updated August 31, 2026
+## Development build 1.6 — Privacy and Data Use — Updated August 31, 2026
 
 - Added a professional Privacy & Data Use page for the game-request system.
 - Explains Twitch sign-in data, request records, payment-confirmation metadata, staff records, connected services, access controls, retention, and viewer choices.
 - Clarifies that the website does not store full payment-card, bank, or PayPal credentials and that request information is not sold.
 - Added Privacy & Data Use links to the catalog account area and the footers of the catalog, Request Status, and Staff Control pages.
 
-## Ver. 1.5 — Automatic Pre-Publish Validation — Updated August 31, 2026
+## Development build 1.5 — Automatic Pre-Publish Validation — Updated August 31, 2026
 
 - Added an automatic GitHub validation workflow for every pull request and update to `main`.
 - Checks JavaScript syntax, HTML IDs and relationships, internal links, stylesheet assets, and Staff Control tab connections.
@@ -73,14 +79,14 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Blocks failed checks when a publishable file contains a Discord webhook URL.
 - The same complete check can be run locally with `node scripts/validate-site.js`.
 
-## Ver. 1.4 — Dedicated Staff Archive — Updated August 30, 2026
+## Development build 1.4 — Dedicated Staff Archive — Updated August 30, 2026
 
 - Added a dedicated Archive tab to Staff Control.
 - Moved all archived requests out of Request Records so recent activity and retained records are easier to review.
 - Preserved the existing 30-day archive transfer and six-month archive retention information.
 - Added Archive to the Staff Control home-page workflow and quick navigation.
 
-## Ver. 1.3 — Staff Control Home and Navigation — Updated August 30, 2026
+## Development build 1.3 — Staff Control Home and Navigation — Updated August 30, 2026
 
 - Added a dedicated Staff Control Home page explaining the private dashboard's purpose and authorized use.
 - Added professional staff rules covering privacy, review integrity, payment brackets, changes, scheduling, service controls, Discord delivery, and escalation to the owner.
@@ -90,7 +96,7 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - New request reviews use amber alerts, viewer game-change reviews use hot-pink alerts, and a clear queue uses green.
 - Review alerts and tab badges send staff directly to the section containing the required action.
 
-## Ver. 1.2 — Discord Request-System Health — Updated August 30, 2026
+## Development build 1.2 — Discord Request-System Health — Updated August 30, 2026
 
 - Added a private Discord Notifications health panel to Staff Control.
 - Verified staff can send a safe test notification to `#request-system-logs`.
@@ -100,7 +106,7 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Resolved retry payloads are cleared, and delivery records older than 90 days are removed during health checks.
 - Included `RUN-THIS-v10.7-DISCORD-HEALTH.sql` and `DISCORD-HEALTH-SETUP.md`.
 
-## Ver. 1.1 — Viewer Game Change Requests — Updated August 30, 2026
+## Development build 1.1 — Viewer Game Change Requests — Updated August 30, 2026
 
 - Added a Request a Game Change button to each eligible viewer Request Status card.
 - Viewers can request a replacement title and console or system while keeping the original request type, price bracket, payment reference, and approval state locked.
@@ -109,7 +115,7 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - The viewer status page shows pending, approved, and denied change-request decisions.
 - Added secure database checks so only the original signed-in viewer can submit a change and only verified staff can approve or deny it.
 
-## Ver. 1.0 — First Public Release — Updated August 29, 2026
+## Development build 1.0 — First Public Release — Updated August 29, 2026
 
 - Added the viewer-facing Site Updates center and prominent shortcut.
 - Clarified the Friday evening or Saturday morning 18–24 hour stream window.
@@ -128,7 +134,7 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Discord can announce schedule, reschedule, and schedule-cleared updates without duplicating payment approval notices.
 - The Ver. 1.0 database setup retains its original internal migration filenames for deployment compatibility.
 
-## Version 7.0 — Game Request Phase 1 Test
+## Development build 7.0 — Game Request Phase 1 Test
 
 - Added a test-mode request center and status display to the catalog.
 - Added Request This Game controls to every game card.
@@ -136,36 +142,36 @@ GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦
 - Added pre-approval, required denial explanations, test payment completion, approved status, and 14-day cooldown simulation.
 - This phase intentionally uses browser storage only. It is not the final secure multi-user, Discord, Twitch, or payment integration.
 
-## Version 6.8 — Correct Witcher Sequence
+## Development build 6.8 — Correct Witcher Sequence
 
 - The Witcher: Enhanced Edition is now PC game #079.
 - The Witcher 2 moves to #080 and The Witcher 3 moves to #081.
 
-## Version 6.7 — Root-Level Switch Artwork Fix
+## Development build 6.7 — Root-Level Switch Artwork Fix
 
 - Moved the Atelier Ryza and Code of Princess EX PNGs to the repository root and updated their game entries to use simple root-level paths.
 - This prevents blank fallback tiles when GitHub uploads do not preserve the nested artwork folders.
 
-## Version 6.6 — Restored Supplied Switch Covers
+## Development build 6.6 — Restored Supplied Switch Covers
 
 - Replaced Atelier Ryza Secret Trilogy Deluxe Pack and Code of Princess EX with the newly supplied local PNG files.
 - Both covers now receive the explicit full-cover treatment in their cards and hover previews, preventing cropping.
 
-## Version 6.5 — Never-Crop Code of Princess EX
+## Development build 6.5 — Never-Crop Code of Princess EX
 
 - Code of Princess EX now receives an explicit full-cover class in both its Switch card and hover preview, guaranteeing the entire supplied cover remains visible.
 
-## Version 6.4 — Complete Code of Princess EX Artwork
+## Development build 6.4 — Complete Code of Princess EX Artwork
 
 - Code of Princess EX now shows the entire supplied Nintendo Switch cover inside its card instead of cropping the artwork.
 
-## Version 6.3 — PC Tab-Style Front Panel
+## Development build 6.3 — PC Tab-Style Front Panel
 
 - The PC front panel now uses the same wide Steam artwork, card proportions, numbering, titles, spacing, and wrapping grid as the full PC tab.
 - The PC preview displays 12 games in two six-card rows on wide screens, matching the supplied reference.
 - Responsive columns keep every preview inside the panel without overlap or horizontal overflow.
 
-## Version 6.2 — Matching Tab Covers + Responsive PC Showcase
+## Development build 6.2 — Matching Tab Covers + Responsive PC Showcase
 
 - Atelier Ryza Secret Trilogy Deluxe Pack and Code of Princess EX now use the supplied local Nintendo Switch artwork.
 - PC front-page cards now reuse the exact artwork shown in the PC tab instead of loading separate portrait covers.
@@ -211,7 +217,7 @@ Published site:
 https://thy-toxic-gamer.github.io/Games/
 
 
-## Version 5.0 — System Box Art Presentation
+## Development build 5.0 — System Box Art Presentation
 
 Console covers now use a system-authentic presentation:
 - Nintendo Switch: red Switch retail header
@@ -223,7 +229,7 @@ Console covers now use a system-authentic presentation:
 Upload all files in this package to the repository root and replace the older files.
 
 
-## Version 5.1 — Cover Layout Fix
+## Development build 5.1 — Cover Layout Fix
 
 This patch fixes the v5 console-cover display issue:
 - Real Switch, PS5, and SNES artwork fills the entire portrait case.
@@ -233,7 +239,7 @@ This patch fixes the v5 console-cover display issue:
 - Hover genre/story details and the professional dashboard remain unchanged.
 
 
-## Version 5.2 — Portrait Cover Artwork
+## Development build 5.2 — Portrait Cover Artwork
 
 This pass corrects the remaining visual mismatch:
 - Steam-backed Switch and PS5 entries use portrait 600x900 artwork instead of landscape header art.
@@ -243,7 +249,7 @@ This pass corrects the remaining visual mismatch:
 - Switch / PS5 / SNES system headers, platform colors, and hover story/genre panels remain.
 
 
-## Version 5.3 — Reference Dashboard Match
+## Development build 5.3 — Reference Dashboard Match
 
 - The All tab opens with a compact Nintendo Switch showcase.
 - Sixteen Switch covers form an 11-card first row and five-card second row on desktop.
@@ -253,7 +259,7 @@ This pass corrects the remaining visual mismatch:
 - Every preview card now includes a small genre label; PC cards also show Steam.
 
 
-## Version 5.4 — PC Featured + Clean Artwork
+## Development build 5.4 — PC Featured + Clean Artwork
 
 - PC now occupies the featured top position previously used by Nintendo Switch.
 - Nintendo Switch moves into the lower dashboard row with PS5 and SNES.
@@ -263,7 +269,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version `5.4`.
 
 
-## Version 5.5 — Unified Hover Details
+## Development build 5.5 — Unified Hover Details
 
 - Removed the large persistent PC detail panel from the All dashboard.
 - PC is still the wide featured section and now previews up to 16 games.
@@ -272,7 +278,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version `5.5`.
 
 
-## Version 5.6 — PC 22-Game Showcase + Switch Artwork Cleanup
+## Development build 5.6 — PC 22-Game Showcase + Switch Artwork Cleanup
 
 - PC showcase now displays 22 games (two 11-card rows on wide desktop layouts).
 - BALL x PIT uses its dedicated 600x900 Steam library capsule in the PC showcase instead of the horizontal header fallback.
@@ -281,7 +287,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version 5.6.
 
 
-## Version 5.7 — Unified Portrait Artwork
+## Development build 5.7 — Unified Portrait Artwork
 
 - Dashboard and full Switch/PS5/SNES cards use portrait-safe artwork sizing.
 - Artwork fills the shared portrait slot without stretching; landscape sources are cropped rather than displayed as horizontal cards.
@@ -291,7 +297,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version 5.7.
 
 
-## Version 5.8 — Portrait Artwork and Alphabetical Catalog
+## Development build 5.8 — Portrait Artwork and Alphabetical Catalog
 
 - Replaced the requested Switch artwork with portrait-transformed clean artwork.
 - All PC, Nintendo Switch, PS5, SNES, and All Games displays now sort alphabetically.
@@ -299,7 +305,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version 5.8.
 
 
-## Version 6.0 — Repository-Hosted Switch Artwork
+## Development build 6.0 — Repository-Hosted Switch Artwork
 
 - Added user-approved local artwork files for Goblin Sword, Minecraft, Pokémon Shield, Super Mario Maker 2, Super Mario Odyssey, The Legend of Zelda: Skyward Sword HD, and Paper Mario: The Origami King.
 - Mapped each uploaded cover to its matching Nintendo Switch catalog entry.
@@ -307,7 +313,7 @@ This pass corrects the remaining visual mismatch:
 - Cache-busting query strings updated to version 6.0.
 
 
-## Version 6.1 — Rotating Dashboard and Updated Artwork
+## Development build 6.1 — Rotating Dashboard and Updated Artwork
 
 - Added the supplied Season 4 artwork for The First Descendant on PS5.
 - Added the supplied portrait artwork for Castlevania: Belmont's Curse on the PC dashboard.
@@ -317,7 +323,7 @@ This pass corrects the remaining visual mismatch:
 - Full platform libraries remain alphabetized.
 - Cache-busting query strings updated to version 6.1.
 
-## Version 7.1 — Unlisted Game Requests
+## Development build 7.1 — Unlisted Game Requests
 
 - Added a **Can't find the game?** message bar above the catalog.
 - Viewers can type a game that is not in the catalog and submit it through the same review flow.
@@ -325,7 +331,7 @@ This pass corrects the remaining visual mismatch:
 - Catalog and unlisted requests share the same one-viewer request slot, approval/denial process, test payment step, and 14-day cooldown.
 - Cache-busting query strings updated to version 7.1.
 
-## Version 7.2 — Viewer Request Cancellation
+## Development build 7.2 — Viewer Request Cancellation
 
 - Added **Cancel My Request** to the viewer status page while a request is pending review.
 - Cancellation requires confirmation and records the status as **Cancelled by Viewer**.
@@ -333,7 +339,7 @@ This pass corrects the remaining visual mismatch:
 - Requests can no longer be cancelled after pre-approval or payment.
 - Cache-busting query strings updated to version 7.2.
 
-## Version 7.3 — Request Pricing Tiers
+## Development build 7.3 — Request Pricing Tiers
 
 - Every owned game tile now displays **Request for $5+**.
 - The unlisted-game bar now displays **Request for $10+** and explains the $10 minimum.
@@ -342,7 +348,7 @@ This pass corrects the remaining visual mismatch:
 - Approval still happens before any payment option is shown.
 - Cache-busting query strings updated to version 7.3.
 
-## Version 8.0 — Live Twitch and Supabase Requests
+## Development build 8.0 — Live Twitch and Supabase Requests
 
 - Replaced browser-only request storage with the shared Supabase database.
 - Added Twitch sign-in and automatic Twitch-account identification.
@@ -354,7 +360,7 @@ This pass corrects the remaining visual mismatch:
 - Included `supabase-request-system.sql`, which must be run once before publishing version 8.0.
 - The owner review dashboard and Discord delivery remain disabled until the owner account is assigned in the next stage.
 
-## Version 8.1 — Global Cooldown Staff Reset
+## Development build 8.1 — Global Cooldown Staff Reset
 
 - Changed the 14-day restriction into one global community request cooldown.
 - An approved request automatically closes new requests for 14 days.
@@ -363,14 +369,14 @@ This pass corrects the remaining visual mismatch:
 - Resetting makes every viewer eligible again, including the viewer whose request started the cooldown.
 - Staff cooldown bypass remains supported through the staff permission record.
 
-## Version 8.2 — Authentication Button Display Fix
+## Development build 8.2 — Authentication Button Display Fix
 
 - Fixed hidden authentication controls being forced visible by the shared button display style.
 - Signed-in viewers and staff now see only **Sign Out**.
 - Signed-out visitors now see only **Sign in with Twitch**.
 - Cache-busting query strings updated to version 8.2.
 
-## Version 8.3 — Live Approval and Denial Dashboard
+## Development build 8.3 — Live Approval and Denial Dashboard
 
 - Added the live pending-request card to the private staff dashboard.
 - Authorized reviewers can approve a pending request into **Awaiting Payment**.
@@ -380,7 +386,7 @@ This pass corrects the remaining visual mismatch:
 - Approval reserves the request slot but does not start the 14-day cooldown; payment confirmation will start it later.
 - Included the one-time `RUN-THIS-v8.3-REVIEW-DASHBOARD.sql` database upgrade.
 
-## Version 8.4 — Automatic Request Archive
+## Development build 8.4 — Automatic Request Archive
 
 - Completed requests remain in **Recent Requests** for 30 days, then move to the staff-only **Archive**.
 - Archived requests are permanently deleted after spending six months in the Archive.
@@ -388,7 +394,7 @@ This pass corrects the remaining visual mismatch:
 - Maintenance runs automatically once each day through Supabase Cron.
 - Included the one-time `RUN-THIS-v8.4-ARCHIVE-RETENTION.sql` database upgrade.
 
-## Version 8.5 — Awaiting Request Controls
+## Development build 8.5 — Awaiting Request Controls
 
 - The live staff queue now displays both pending and awaiting-payment requests.
 - Added a confirmed **Cancel Awaiting Request** staff control with a required explanation.
@@ -400,7 +406,7 @@ This pass corrects the remaining visual mismatch:
 - Included the reusable `RUN-THIS-v8.5-AUTO-EXPIRY.sql` maintenance script.
 - Included the one-time `RUN-THIS-v8.5-STAFF-AWAITING-CANCEL.sql` database upgrade.
 
-## Version 8.6 — Live Viewer Status
+## Development build 8.6 — Live Viewer Status
 
 - The viewer status page now refreshes automatically every 15 seconds without page flicker.
 - Awaiting requests display a live days, hours, minutes, and seconds countdown.
@@ -408,7 +414,7 @@ This pass corrects the remaining visual mismatch:
 - Returning to the browser tab triggers an immediate status refresh.
 - Updated the repository Discord function backup with Cancelled and Expired routing.
 
-## Version 9.0 — Automatic StreamElements Payments
+## Development build 9.0 — Automatic StreamElements Payments
 
 - Added the real StreamElements tip link to requests approved for payment.
 - Added a unique payment reference for every awaiting-payment request.
@@ -420,7 +426,7 @@ This pass corrects the remaining visual mismatch:
 - Preserved the version 8.6 live refresh, countdown, last-checked time, and tab-return refresh behavior.
 - Included `RUN-THIS-v9.0-AUTOMATIC-PAYMENTS.sql` and `PAYMENT-SETUP.md`.
 
-## Version 9.1 — Global Service Switch
+## Development build 9.1 — Global Service Switch
 
 - Added a staff-only ON/OFF switch for new game-request submissions.
 - Turning services OFF immediately blocks only brand-new request submissions.
@@ -429,7 +435,7 @@ This pass corrects the remaining visual mismatch:
 - Added server-side enforcement so stale or bypassed website pages cannot submit a new request while services are OFF.
 - Included `RUN-THIS-v9.1-GLOBAL-SERVICE-SWITCH.sql`.
 
-## Version 9.2 — Verified Payment Channel and Status Labels
+## Development build 9.2 — Verified Payment Channel and Status Labels
 
 - Updated the repository Edge Function backup to match the successfully tested StreamElements payment checker.
 - Payment matching now reads the StreamElements channel that owns the public tipping page, which is the connected YouTube channel in the current setup; Twitch remains the viewer request identity.
@@ -437,7 +443,7 @@ This pass corrects the remaining visual mismatch:
 - Staff-approved requests display **Approved · Awaiting Payment** until payment is confirmed.
 - Confirmed requests display **Paid & Approved** on both staff review and viewer status pages.
 
-## Version 9.3 — Regular Donations to Discord
+## Development build 9.3 — Regular Donations to Discord
 
 - Added a separate scheduled notifier for successful StreamElements donations that are not game-request payments.
 - Regular donations post the donor display name, amount, message, platform, and time to a dedicated Discord webhook.
@@ -446,7 +452,7 @@ This pass corrects the remaining visual mismatch:
 - Older donations made before setup are ignored.
 - Included `RUN-THIS-v9.3-REGULAR-DONATIONS.sql` and `REGULAR-DONATIONS-SETUP.md`.
 
-## Version 10.4 — Staff Request Corrections
+## Development build 10.4 — Staff Request Corrections
 
 - Added a staff-only **Edit Request** control for pending, awaiting-payment, and paid/approved requests before the scheduled stream begins.
 - Staff can correct the game title or console/system while the original request category, play style, payment amount, payment reference, and status remain locked.
