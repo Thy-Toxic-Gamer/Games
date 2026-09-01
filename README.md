@@ -1,5 +1,7 @@
 # ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Game Library — Professional Dashboard
 
+> Public release notes are now centralized in [Central Command](https://thy-toxic-gamer.github.io/central-command/#updates). The Game Catalog remains focused on browsing, requests, staff review, scheduling, and completed-request VODs.
+
 GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ game catalog.
 
 ## Ver. 1.13 — Automatic VOD Lookup — Updated August 31, 2026
