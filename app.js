@@ -4,6 +4,7 @@
   const library = window.GAME_LIBRARY || { platforms: [], totalGames: 0 };
   const platforms = Array.isArray(library.platforms) ? library.platforms : [];
   const catalog = window.TOXIC_CATALOG;
+  const releaseYears = window.GAME_RELEASE_YEARS || {};
   const allGames = Array.isArray(catalog?.entries) ? [...catalog.entries] : platforms
     .filter((platform) => !platform.comingSoon)
     .flatMap((platform) => platform.games.map((game) => ({ ...game, sourcePlatformId:game.sourcePlatformId || platform.id, collectionPlatformId:platform.id })))
@@ -697,6 +698,7 @@
     const card = document.createElement(isPcGame ? "a" : "article");
     card.className = "game-card";
     const sourcePlatformId = catalogMeta.systemId;
+    const releaseDisplay = releaseYears[`${sourcePlatformId}::${game.title}`] || "Unknown";
     card.classList.add(`platform-${sourcePlatformId}`);
     card.dataset.gameSystemId = sourcePlatformId;
     card.dataset.gameSystemLabel = catalogMeta.systemLabel;
@@ -769,11 +771,17 @@
     genre.className = "game-genre";
     genre.textContent = gameInfo.genre;
 
+    const release = document.createElement("span");
+    release.className = "game-release-year";
+    release.textContent = releaseDisplay === "Unreleased"
+      ? `${catalogMeta.systemLabel}: Unreleased`
+      : `Released on ${catalogMeta.systemLabel}: ${releaseDisplay}`;
+
     const description = document.createElement("p");
     description.className = "game-description";
     description.textContent = gameInfo.description;
 
-    hoverInfo.append(genre, description);
+    hoverInfo.append(genre, release, description);
     card.append(cover, details, hoverInfo, requestButton);
     return card;
   }

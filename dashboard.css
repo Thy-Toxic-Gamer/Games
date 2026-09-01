@@ -17,7 +17,7 @@
 }
 
 /* Professional dashboard header */
-.site-header {
+.site-header:not(.ecosystem-header) {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   min-height: 72px;
@@ -917,6 +917,7 @@ main {
 }
 
 .game-detail-genre,
+.game-detail-release,
 .game-detail-story {
   margin: 0;
   color: #eef3ef;

@@ -96,6 +96,8 @@
       <p class="game-detail-platform"></p>
       <span class="game-detail-label">Genre</span>
       <p class="game-detail-genre"></p>
+      <span class="game-detail-label">Release</span>
+      <p class="game-detail-release"></p>
       <span class="game-detail-label">About the game</span>
       <p class="game-detail-story"></p>
     </div>
@@ -406,6 +408,7 @@
     const title = card.querySelector(".game-details h3")?.textContent?.trim() || "Game";
     const info = card.querySelector(".game-hover-info");
     const genre = info?.querySelector(".game-genre")?.textContent?.trim() || "Game";
+    const release = info?.querySelector(".game-release-year")?.textContent?.trim() || "Release year unavailable";
     const story = info?.querySelector(".game-description")?.textContent?.trim() || "Story information is not available.";
     const sourceImage = card.querySelector(".game-cover");
     const platformId = platformFromCard(card);
@@ -415,6 +418,7 @@
     popover.querySelector("h3").textContent = title;
     popover.querySelector(".game-detail-platform").textContent = card.dataset.gameSystemLabel || meta.label;
     popover.querySelector(".game-detail-genre").textContent = genre;
+    popover.querySelector(".game-detail-release").textContent = release;
     popover.querySelector(".game-detail-story").textContent = story;
 
     renderDetailCover(

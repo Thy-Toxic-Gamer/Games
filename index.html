@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link rel="preload" as="image" href="assets/game-catalog-hero.webp" fetchpriority="high" />
-    <link rel="stylesheet" href="styles.css?release=1.0-visual" />
-    <link rel="stylesheet" href="dashboard.css?v=1.0.47" />
+    <link rel="stylesheet" href="styles.css?release=1.0.48" />
+    <link rel="stylesheet" href="dashboard.css?v=1.0.48" />
     <link rel="stylesheet" href="request-test.css?v=1.0.41" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.22" defer></script>
@@ -24,8 +24,9 @@
     <script src="games.js?v=1.0.45" defer></script>
     <script src="catalog-utils.js?v=1.0.2" defer></script>
     <script src="game-summaries.js?v=1.0.1" defer></script>
-    <script src="app.js?v=1.0.36" defer></script>
-    <script src="dashboard.js?v=1.0.36" defer></script>
+    <script src="release-years.js?v=1.0.0" defer></script>
+    <script src="app.js?v=1.0.48" defer></script>
+    <script src="dashboard.js?v=1.0.48" defer></script>
     <script src="request-test.js?v=1.0.27" defer></script>
     <script src="completed-requests.js?v=1.0.0" defer></script>
   </head>
@@ -33,15 +34,14 @@
     <a class="skip-link" href="#game-library">Skip to game library</a>
 
     <header class="site-header ecosystem-header">
-      <a class="ecosystem-brand" href="#top" aria-label="Game Catalog home">
-        <strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong>
-        <small>GAME CATALOG</small>
-      </a>
+      <div class="ecosystem-brand">
+        <a class="ecosystem-brand-home" href="#top" aria-label="Game Catalog home"><strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong></a>
+        <small>GAME CATALOG <span>·</span> <a class="brand-hub" href="https://thy-toxic-gamer.github.io/central-command/">CENTRAL COMMAND</a></small>
+      </div>
       <nav class="ecosystem-nav" aria-label="Primary navigation">
         <a href="#game-library">Catalog</a>
         <a href="status.html">Request Status</a>
         <a href="review.html">Staff Control</a>
-        <a class="hub-link" href="https://thy-toxic-gamer.github.io/central-command/">Central Command <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
 

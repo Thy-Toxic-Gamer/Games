@@ -131,14 +131,15 @@ function validateCss(allFiles) {
 function validateCatalog() {
   const context = vm.createContext({ window:{}, console, encodeURIComponent, decodeURIComponent, URL });
   context.window.window = context.window;
-  ["nintendo-classics.js", "hybrid-covers.js", "ps5-covers.js", "games.js", "catalog-utils.js"].forEach((file) => {
+  ["nintendo-classics.js", "hybrid-covers.js", "ps5-covers.js", "games.js", "catalog-utils.js", "release-years.js"].forEach((file) => {
     vm.runInContext(read(path.join(root, file)), context, { filename:file });
   });
 
   const library = context.window.GAME_LIBRARY;
   const catalog = context.window.TOXIC_CATALOG;
-  if (!library || !catalog) {
-    fail("Catalog", "GAME_LIBRARY or TOXIC_CATALOG did not initialize");
+  const releaseYears = context.window.GAME_RELEASE_YEARS;
+  if (!library || !catalog || !releaseYears) {
+    fail("Catalog", "GAME_LIBRARY, TOXIC_CATALOG, or GAME_RELEASE_YEARS did not initialize");
     return;
   }
   const entries = [...catalog.entries];
@@ -162,6 +163,12 @@ function validateCatalog() {
       if (titles.has(titleKey)) fail("Catalog", `duplicate ${system.label} title "${game.title}"`);
       titles.add(titleKey);
 
+      const releaseKey = `${systemId}::${game.title}`;
+      const releaseDisplay = releaseYears[releaseKey];
+      if (!releaseDisplay || (!/^\d{4}$/.test(releaseDisplay) && releaseDisplay !== "Unreleased")) {
+        fail("Release years", `${game.catalogId} ${game.title} has invalid release metadata`);
+      }
+
       if (!game.image && !game.appId) fail("Artwork", `${game.catalogId} ${game.title} has no artwork source`);
       if (typeof game.image === "string") {
         const sprite = game.image.match(/^hybrid-sprite:(.+):\d+$/);
@@ -175,7 +182,10 @@ function validateCatalog() {
       }
     });
   });
-  pass(`${entries.length} games passed ID, numbering, duplicate-title, and artwork validation`);
+  if (Object.keys(releaseYears).length !== entries.length) {
+    fail("Release years", `release metadata has ${Object.keys(releaseYears).length} entries; expected ${entries.length}`);
+  }
+  pass(`${entries.length} games passed ID, numbering, release-year, duplicate-title, and artwork validation`);
 }
 
 function validateSecrets(allFiles) {
