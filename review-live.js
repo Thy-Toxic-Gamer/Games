@@ -456,7 +456,7 @@
     if(!completionRequest)return;
     const button=get("completion-find-vods");const status=get("completion-lookup-status");
     button.disabled=true;button.textContent="Searching…";status.textContent="Checking your latest completed streams…";
-    const {data,error}=await client.functions.invoke("find-latest-vods",{body:{requestId:completionRequest.id,providerToken}});
+    const {data,error}=await client.functions.invoke("find-latest-vods",{body:{requestId:completionRequest.id}});
     button.disabled=false;button.textContent="Find Latest VODs";
     if(error||data?.error){status.textContent=data?.error||"The VOD lookup could not be completed. Check its Edge Function and secrets.";return;}
     if(data?.youtube?.url)get("completion-youtube").value=data.youtube.url;
