@@ -126,6 +126,15 @@ as $$
       where singleton = true
         and global_cooldown_ends > now()
     ),
+    'cooldownKind', (
+      select case
+        when cooldown_request_id is null then 'break'
+        else 'request'
+      end
+      from public.request_system_settings
+      where singleton = true
+        and global_cooldown_ends > now()
+    ),
     'canBypassCooldown', public.can_bypass_request_cooldown()
   );
 $$;
