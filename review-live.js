@@ -92,7 +92,7 @@
     if(!items.length){log.append(make("p","request-history-empty","No Discord delivery activity has been recorded yet."));return;}
     items.slice(0,8).forEach((item)=>{
       const row=make("article",`discord-health-log-item is-${item.status}`);
-      const copy=make("div");copy.append(make("strong",null,discordEventLabel(item.eventType)),make("span",null,`${item.target} · ${discordDeliveryTime(item.createdAt)}`));
+      const copy=make("div");copy.append(make("small",null,request.is_test?"🧪 Owner Test · "+request.id:request.id),make("h3",null,request.game_title),make("p",null,request.twitch_name+" · "+requestGoalLabel(request.request_goal)+" · "+(request.is_test?"$0 Owner Test":"$"+request.minimum_amount)));
       if(item.errorMessage)copy.append(make("small",null,item.errorMessage));
       const badge=make("span","review-status",item.status==="success"?"Delivered":item.resolvedAt?"Resolved":"Failed");badge.dataset.status=item.status==="success"||item.resolvedAt?"approved":"denied";
       row.append(copy,badge);log.append(row);
@@ -115,7 +115,9 @@
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
   function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
   function requestStatusLabel(request) { return request?.completed_at ? "Completed" : statusLabels[request?.status] || request?.status || "Unknown"; }
-  function requestTierLabel(request) { return `${request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog"} · ${requestGoalLabel(request.request_goal)} · $${request.minimum_amount}`; }
+  function requestTierLabel(request) { return (request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog")+" · "+requestGoalLabel(request.request_goal)+" · "+(request.is_test ? "Owner Test · $0" : "$"+request.minimum_amount); }
+  function catalogSummary(gameTitle) { return window.GAME_SUMMARIES?.[gameTitle] || ""; }
+  function catalogReleaseYear(gameTitle) { const suffix=`::${gameTitle}`;const match=Object.entries(window.GAME_RELEASE_YEARS||{}).find(([key])=>key.endsWith(suffix));return match?.[1]||""; }
   function canEditRequest(request) {
     return Boolean(request)
       && !request.completed_at
@@ -143,6 +145,8 @@
     scheduleRequest=request;
     get("schedule-title").textContent=`Schedule ${request.game_title}`;
     get("schedule-local").value=easternInputValue(request.scheduled_for);
+    get("schedule-game-summary").value=request.game_summary||catalogSummary(request.game_title);
+    get("schedule-release-year").value=request.release_year||catalogReleaseYear(request.game_title);
     get("schedule-reason-row").hidden=!request.scheduled_for;
     get("schedule-reason").required=Boolean(request.scheduled_for);
     get("schedule-reason").value="";
@@ -369,10 +373,6 @@
   }
 
   get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;staffRole=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
-  get("preview-public-schedule")?.addEventListener("click",()=>{
-    window.sessionStorage.setItem("toxic-next-request-preview",String(Date.now()+10*60*1000));
-    window.location.href="index.html?preview=next-request#next-request-panel";
-  });
   get("refresh-discord-health").addEventListener("click",refreshDiscordHealth);
   get("test-discord-notification").addEventListener("click",()=>runDiscordHealthAction("test",get("test-discord-notification")));
   get("retry-discord-notification").addEventListener("click",()=>{if(unresolvedDiscordFailure)runDiscordHealthAction("retry",get("retry-discord-notification"),unresolvedDiscordFailure.id);});
@@ -424,7 +424,31 @@
   });
 
   const scheduleDialog=get("schedule-dialog");scheduleDialog.querySelector(".request-dialog-close").addEventListener("click",()=>scheduleDialog.close());
-  get("schedule-form").addEventListener("submit",async(event)=>{event.preventDefault();if(!scheduleRequest)return;const localValue=get("schedule-local").value;const reason=get("schedule-reason").value.trim();if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return}if(scheduleRequest.scheduled_for&&!reason){get("schedule-error").textContent="Explain why the scheduled time is changing.";return}const save=get("save-schedule");save.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:localValue,schedule_explanation:reason||null});save.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";return}scheduleDialog.close();await refreshDashboard()});
+  get("schedule-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();if(!scheduleRequest)return;
+    const localValue=get("schedule-local").value;
+    const reason=get("schedule-reason").value.trim();
+    const summary=get("schedule-game-summary").value.trim();
+    const releaseYear=Number(get("schedule-release-year").value);
+    if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return;}
+    if(!Number.isInteger(releaseYear)||releaseYear<1950||releaseYear>2100){get("schedule-error").textContent="Add a valid four-digit release year.";return;}
+    if(summary.length<30){get("schedule-error").textContent="Add a public game summary of at least 30 characters.";return;}
+    if(scheduleRequest.scheduled_for&&!reason&&localValue!==easternInputValue(scheduleRequest.scheduled_for)){get("schedule-error").textContent="Explain why the scheduled time is changing.";return;}
+    const save=get("save-schedule");save.disabled=true;
+    const {error}=await client.rpc("staff_schedule_game_request",{
+      request_id:scheduleRequest.id,
+      scheduled_local:localValue,
+      schedule_explanation:reason||null,
+      game_summary_text:summary,
+      release_year_value:releaseYear
+    });
+    save.disabled=false;
+    if(error){
+      get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("summary")?"Add a public game summary of at least 30 characters.":error.message?.includes("release year")?"Add a valid four-digit release year.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";
+      return;
+    }
+    scheduleDialog.close();await refreshDashboard();
+  });
   get("clear-schedule").addEventListener("click",async()=>{if(!scheduleRequest)return;const reason=get("schedule-reason").value.trim();if(!reason){get("schedule-error").textContent="Explain why the scheduled time is being cleared.";return}const button=get("clear-schedule");button.disabled=true;const {error}=await client.rpc("staff_schedule_game_request",{request_id:scheduleRequest.id,scheduled_local:null,schedule_explanation:reason});button.disabled=false;if(error){get("schedule-error").textContent=error.message?.includes("explanation")?"Explain why the scheduled time is being cleared.":"This schedule could not be cleared.";return}scheduleDialog.close();await refreshDashboard()});
 
   const completionDialog=get("completion-dialog");completionDialog.querySelector(".request-dialog-close").addEventListener("click",()=>completionDialog.close());get("cancel-completion").addEventListener("click",()=>completionDialog.close());
