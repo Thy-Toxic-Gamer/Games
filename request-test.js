@@ -18,6 +18,9 @@
   const openSignalState = document.querySelector("#request-signal-open-state");
   const blockedSignalState = document.querySelector("#request-signal-blocked-state");
   const cooldownSignalState = document.querySelector("#request-signal-cooldown-state");
+  const breakPanel = document.querySelector("#request-break-panel");
+  const breakCountdown = document.querySelector("#request-break-countdown");
+  const breakReopens = document.querySelector("#request-break-reopens");
   const nextRequestPanel = document.querySelector("#next-request-panel");
   const nextRequestGame = document.querySelector("#next-request-game");
   const nextRequestPlatform = document.querySelector("#next-request-platform");
@@ -51,7 +54,8 @@
   let selected = null;
   let session = null;
   let ownerTestMode = false;
-  let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
+  let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, cooldownKind:null, canBypassCooldown:false };
+  let breakWasActive = false;
 
   function prettyPlatform(value) {
     if (value === "unlisted") return "Not in Catalog";
@@ -152,6 +156,33 @@
     return data.preferred_username || data.user_name || data.login || data.name || data.full_name || "Twitch Viewer";
   }
   function cooldownActive() { return !systemState.canBypassCooldown && systemState.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now(); }
+  function scheduledBreakActive() {
+    return systemState.cooldownKind === "break"
+      && systemState.globalCooldownEnds
+      && new Date(systemState.globalCooldownEnds).getTime() > Date.now();
+  }
+  function formatBreakCountdown(milliseconds) {
+    const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000));
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const clock = String(hours).padStart(2,"0") + "h " + String(minutes).padStart(2,"0") + "m " + String(seconds).padStart(2,"0") + "s";
+    return days ? days + "d " + clock : clock;
+  }
+  function renderBreakNotice() {
+    const active = Boolean(scheduledBreakActive());
+    if (!breakPanel) return active;
+    breakPanel.hidden = !active;
+    if (active) {
+      const deadline = new Date(systemState.globalCooldownEnds);
+      breakCountdown.textContent = formatBreakCountdown(deadline.getTime() - Date.now());
+      breakReopens.textContent = formatEasternSchedule(deadline);
+      breakReopens.dateTime = deadline.toISOString();
+    }
+    breakWasActive = active;
+    return active;
+  }
   function requestLocked() { return ownerTestMode ? !systemState.slotOpen : systemState.serviceEnabled === false || !systemState.slotOpen || cooldownActive(); }
   function authRedirect() { return new URL("index.html", window.location.href).href; }
   async function signIn() {
@@ -181,6 +212,8 @@
       && new Date(systemState.globalCooldownEnds).getTime() > Date.now()
     );
     const publicOpen = systemState.serviceEnabled !== false && systemState.slotOpen && !publicCooldown;
+    const isScheduledBreak = scheduledBreakActive();
+    renderBreakNotice();
     slotCard.classList.toggle("show-owner-signals",ownerTestMode);
     if (publicSignals) {
       publicSignals.hidden = !ownerTestMode;
@@ -210,8 +243,11 @@
       slotCard.dataset.state = "cooldown"; slotLabel.textContent = "New Requests Temporarily Off";
       slotDetail.textContent = "Staff paused new submissions.";
     } else if (cooldownActive()) {
-      slotCard.dataset.state = "cooldown"; slotLabel.textContent = "14-Day Cooldown";
-      slotDetail.textContent = `Requests reopen ${new Date(systemState.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`;
+      slotCard.dataset.state = "cooldown";
+      slotLabel.textContent = isScheduledBreak ? "⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ Is Taking a Break" : "14-Day Cooldown";
+      slotDetail.textContent = isScheduledBreak
+        ? "Requests reopen in " + formatBreakCountdown(new Date(systemState.globalCooldownEnds).getTime() - Date.now()) + "."
+        : "Requests reopen " + new Date(systemState.globalCooldownEnds).toLocaleString() + ", unless staff resets the cooldown early.";
     } else if (!systemState.slotOpen) {
       slotCard.dataset.state = "locked"; slotLabel.textContent = "Request in Progress";
       slotDetail.textContent = "The single viewer request slot is currently occupied.";
@@ -301,8 +337,20 @@
   const observer = new MutationObserver(updateInterface);
   observer.observe(document.querySelector("#game-grid"), {childList:true});
   window.setInterval(refreshNextRequest, 60000);
+  window.setInterval(() => {
+    const wasActive = breakWasActive;
+    const active = renderBreakNotice();
+    if (wasActive && !active) {
+      systemState.globalCooldownEnds = null;
+      systemState.cooldownKind = null;
+      updateInterface();
+      refreshState();
+    } else if (active && !ownerTestMode) {
+      slotDetail.textContent = "Requests reopen in " + formatBreakCountdown(new Date(systemState.globalCooldownEnds).getTime() - Date.now()) + ".";
+    }
+  }, 1000);
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") refreshNextRequest();
+    if (document.visibilityState === "visible") refreshState();
   });
   initialize();
 })();
