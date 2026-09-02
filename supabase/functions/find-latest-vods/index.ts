@@ -25,9 +25,8 @@ type YouTubeSearchResponse = {
   error?: { message?: string };
 };
 
-type TwitchValidation = {
-  client_id?: string;
-  user_id?: string;
+type TwitchAppTokenResponse = {
+  access_token?: string;
 };
 
 type TwitchVideosResponse = {
@@ -43,31 +42,6 @@ function json(body: unknown, status = 200) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
-}
-
-function linkedTwitchIds(user: {
-  identities?: Array<{
-    id?: string;
-    provider?: string;
-    identity_data?: Record<string, unknown>;
-  }>;
-  user_metadata?: Record<string, unknown>;
-}) {
-  const values = new Set<string>();
-  const add = (value: unknown) => {
-    if (typeof value === "string" && value.trim()) values.add(value.trim());
-  };
-  for (const identity of user.identities ?? []) {
-    if (identity.provider !== "twitch") continue;
-    add(identity.id);
-    add(identity.identity_data?.sub);
-    add(identity.identity_data?.provider_id);
-    add(identity.identity_data?.user_id);
-  }
-  add(user.user_metadata?.sub);
-  add(user.user_metadata?.provider_id);
-  add(user.user_metadata?.user_id);
-  return values;
 }
 
 function titleWords(value: string) {
@@ -142,21 +116,25 @@ async function findYouTubeVod(
 async function findTwitchVod(
   gameTitle: string,
   targetValue: string | null,
-  providerToken: string,
-  linkedIds: Set<string>,
 ) {
+  const clientId = Deno.env.get("TWITCH_CLIENT_ID");
+  const clientSecret = Deno.env.get("TWITCH_CLIENT_SECRET");
   const broadcasterId = Deno.env.get("TWITCH_BROADCASTER_ID");
-  if (!broadcasterId) throw new Error("Twitch broadcaster ID is not configured");
-  if (!providerToken) throw new Error("Sign in with Twitch again to search Twitch VODs");
+  if (!clientId || !clientSecret || !broadcasterId) {
+    throw new Error("Twitch lookup secrets are not configured");
+  }
 
-  const validationResponse = await fetch("https://id.twitch.tv/oauth2/validate", {
-    headers: { Authorization: `OAuth ${providerToken}` },
+  const tokenUrl = new URL("https://id.twitch.tv/oauth2/token");
+  tokenUrl.searchParams.set("client_id", clientId);
+  tokenUrl.searchParams.set("client_secret", clientSecret);
+  tokenUrl.searchParams.set("grant_type", "client_credentials");
+  const tokenResponse = await fetch(tokenUrl, {
+    method: "POST",
     signal: AbortSignal.timeout(12_000),
   });
-  if (!validationResponse.ok) throw new Error("The Twitch session must be refreshed");
-  const validation = (await validationResponse.json()) as TwitchValidation;
-  if (!validation.client_id || !validation.user_id || !linkedIds.has(validation.user_id)) {
-    throw new Error("The Twitch session does not match the signed-in staff account");
+  const tokenResult = (await tokenResponse.json()) as TwitchAppTokenResponse;
+  if (!tokenResponse.ok || !tokenResult.access_token) {
+    throw new Error(`Twitch authentication returned ${tokenResponse.status}`);
   }
 
   const url = new URL("https://api.twitch.tv/helix/videos");
@@ -166,8 +144,8 @@ async function findTwitchVod(
   url.searchParams.set("first", "10");
   const response = await fetch(url, {
     headers: {
-      Authorization: `Bearer ${providerToken}`,
-      "Client-Id": validation.client_id,
+      Authorization: `Bearer ${tokenResult.access_token}`,
+      "Client-Id": clientId,
     },
     signal: AbortSignal.timeout(12_000),
   });
@@ -213,9 +191,6 @@ Deno.serve(async (request) => {
 
   const payload = await request.json().catch(() => ({}));
   const requestId = typeof payload.requestId === "string" ? payload.requestId.trim() : "";
-  const providerToken = typeof payload.providerToken === "string"
-    ? payload.providerToken.trim()
-    : "";
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)) {
     return json({ error: "A valid game request is required" }, 400);
   }
@@ -236,12 +211,7 @@ Deno.serve(async (request) => {
   const targetValue = gameRequest.scheduled_for ?? gameRequest.completed_at ?? null;
   const [youtubeResult, twitchResult] = await Promise.allSettled([
     findYouTubeVod(gameRequest.game_title, targetValue),
-    findTwitchVod(
-      gameRequest.game_title,
-      targetValue,
-      providerToken,
-      linkedTwitchIds(userData.user),
-    ),
+    findTwitchVod(gameRequest.game_title, targetValue),
   ]);
   const youtube = youtubeResult.status === "fulfilled" ? youtubeResult.value : null;
   const twitch = twitchResult.status === "fulfilled" ? twitchResult.value : null;
