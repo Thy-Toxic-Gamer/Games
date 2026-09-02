@@ -119,7 +119,7 @@ begin
     clean_twitch,
     case when clean_twitch is null then null else completion_instant + interval '60 days' end
   )
-  on conflict (request_id) do update set
+  on conflict on constraint completed_request_vods_request_id_key do update set
     game_title = excluded.game_title,
     platform = excluded.platform,
     request_goal = excluded.request_goal,
