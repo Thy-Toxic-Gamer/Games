@@ -15,7 +15,7 @@
     <link rel="preload" as="image" href="assets/game-catalog-hero.webp" fetchpriority="high" />
     <link rel="stylesheet" href="styles.css?release=1.0.49" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.48" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.45" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.46" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.23" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -27,7 +27,7 @@
     <script src="release-years.js?v=1.0.0" defer></script>
     <script src="app.js?v=1.0.48" defer></script>
     <script src="dashboard.js?v=1.0.48" defer></script>
-    <script src="request-test.js?v=1.0.30" defer></script>
+    <script src="request-test.js?v=1.0.31" defer></script>
     <script src="completed-requests.js?v=1.0.1" defer></script>
   </head>
   <body>
@@ -64,6 +64,17 @@
           <span class="request-public-signal" id="request-signal-cooldown" data-signal="cooldown" data-active="false"><i aria-hidden="true"></i><b>Cooldown</b><em id="request-signal-cooldown-state">Off</em></span>
         </span><span id="request-slot-detail">Choose any game below.</span></div></div>
         <div class="ecosystem-rail" aria-hidden="true"><span>NINTENDO</span><i></i><span>PLAYSTATION</span><i></i><span>PC</span><i></i><span>CLASSICS</span><i></i><span>REQUESTS</span></div>
+      </section>
+      <section class="request-break-panel" id="request-break-panel" hidden aria-labelledby="request-break-title">
+        <div class="request-break-copy">
+          <p class="eyebrow">Scheduled Request Break</p>
+          <h2 id="request-break-title">⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ is taking a break</h2>
+          <p>Game requests are temporarily closed and will automatically reopen at <time id="request-break-reopens">the scheduled time</time>.</p>
+        </div>
+        <div class="request-break-timer">
+          <span>Requests reopen in</span>
+          <strong id="request-break-countdown">00h 00m 00s</strong>
+        </div>
       </section>
       <section class="library-section" id="game-library" aria-labelledby="library-title">
         <section class="request-center" aria-labelledby="request-center-title">
