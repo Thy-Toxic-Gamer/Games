@@ -16,7 +16,7 @@
   <script src="catalog-utils.js?v=1.0.2" defer></script>
   <script src="game-summaries.js?v=1.0.1" defer></script>
   <script src="release-years.js?v=1.0.0" defer></script>
-  <script src="review-live.js?v=10.17" defer></script>
+  <script src="review-live.js?v=10.18" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header ecosystem-header"><div class="ecosystem-brand"><a class="ecosystem-brand-home" href="index.html"><strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong></a><small>GAME CATALOG <span>·</span> <a class="brand-hub" href="https://thy-toxic-gamer.github.io/central-command/">CENTRAL COMMAND</a></small></div><nav class="ecosystem-nav" aria-label="Primary navigation"><a href="index.html">Catalog</a><a href="status.html">Request Status</a><a href="review.html" aria-current="page">Staff Control</a></nav></header>
@@ -231,28 +231,28 @@
         <input id="completion-local" type="datetime-local" required />
       </label>
       <div class="completion-vod-field">
-        <label for="completion-youtube">YouTube VOD link</label>
-        <div class="completion-vod-row">
-          <input id="completion-youtube" type="url" inputmode="url" autocomplete="url" required placeholder="https://www.youtube.com/watch?v=…" />
-          <a class="completion-view-link vod-youtube" id="completion-view-youtube" target="_blank" rel="noopener noreferrer" aria-disabled="true">View YouTube</a>
-        </div>
-      </div>
-      <div class="completion-vod-field">
-        <label for="completion-twitch">Twitch VOD link (optional)</label>
+        <label for="completion-twitch">Twitch VOD link (primary)</label>
         <div class="completion-vod-row">
           <input id="completion-twitch" type="url" inputmode="url" autocomplete="url" placeholder="https://www.twitch.tv/videos/…" />
           <a class="completion-view-link vod-twitch" id="completion-view-twitch" target="_blank" rel="noopener noreferrer" aria-disabled="true">View Twitch</a>
         </div>
       </div>
+      <div class="completion-vod-field">
+        <label for="completion-youtube">YouTube VOD link (optional)</label>
+        <div class="completion-vod-row">
+          <input id="completion-youtube" type="url" inputmode="url" autocomplete="url" placeholder="https://www.youtube.com/watch?v=…" />
+          <a class="completion-view-link vod-youtube" id="completion-view-youtube" target="_blank" rel="noopener noreferrer" aria-disabled="true">View YouTube</a>
+        </div>
+      </div>
       <section class="completion-lookup" aria-labelledby="completion-lookup-heading">
         <div>
           <strong id="completion-lookup-heading">Automatic VOD lookup</strong>
-          <span>Searches your latest completed YouTube broadcast and Twitch archive. Always confirm both links before publishing.</span>
+          <span>Searches your latest Twitch archive and completed YouTube broadcast. Confirm any link before publishing.</span>
         </div>
         <button class="review-button review-button-edit" id="completion-find-vods" type="button">Find Latest VODs</button>
         <p id="completion-lookup-status" aria-live="polite"></p>
       </section>
-      <p class="request-dialog-rules">YouTube remains available permanently. Twitch is displayed for 60 days after the completed date. Time-position parameters are removed so both links begin at the start of the VOD.</p>
+      <p class="request-dialog-rules">Add at least one valid VOD link. Twitch is the primary platform and is displayed for 60 days after the completed date; YouTube is optional and remains available permanently. Time-position parameters are removed so links begin at the start of the VOD.</p>
       <p class="request-form-error" id="completion-error" role="alert"></p>
       <div class="request-center-actions">
         <button class="review-button review-button-muted" id="cancel-completion" type="button">Keep Request Open</button>
