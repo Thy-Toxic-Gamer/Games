@@ -11,6 +11,7 @@
   const slotCard = document.querySelector("#request-status-card");
   const slotLabel = document.querySelector("#request-slot-label");
   const slotDetail = document.querySelector("#request-slot-detail");
+  const publicStatus = document.querySelector("#request-public-status");
   const nextRequestPanel = document.querySelector("#next-request-panel");
   const nextRequestGame = document.querySelector("#next-request-game");
   const nextRequestPlatform = document.querySelector("#next-request-platform");
@@ -169,6 +170,22 @@
   function updateInterface() {
     const signedIn = Boolean(session?.user);
     const locked = requestLocked();
+    const publicCooldown = Boolean(
+      systemState.globalCooldownEnds
+      && new Date(systemState.globalCooldownEnds).getTime() > Date.now()
+    );
+    const publicState = systemState.serviceEnabled === false
+      ? "closed"
+      : publicCooldown
+        ? "cooldown"
+        : systemState.slotOpen
+          ? "open"
+          : "closed";
+    if (publicStatus) {
+      publicStatus.hidden = !ownerTestMode;
+      publicStatus.dataset.state = publicState;
+      publicStatus.textContent = `Public Requests: ${publicState === "open" ? "Open" : publicState === "cooldown" ? "Cooldown" : "Closed"}`;
+    }
     authName.textContent = signedIn ? twitchName(session.user) : "Not signed in";
     signInButton.hidden = signedIn;
     signOutButton.hidden = !signedIn;
