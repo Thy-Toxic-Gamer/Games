@@ -264,6 +264,8 @@ Deno.serve(async (request) => {
   };
 
   const sendSystemAudit = async (delivered: boolean, detail: string | null) => {
+    if (!(isNewCompletion || isNewDenial || isNewCancellation || isNewExpiration)) return;
+
     const systemWebhook = Deno.env.get("DISCORD_SYSTEM_LOG_WEBHOOK_URL");
     if (!systemWebhook) return;
     const auditBody = {
