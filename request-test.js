@@ -17,7 +17,12 @@
   const nextRequestType = document.querySelector("#next-request-type");
   const nextRequestSchedule = document.querySelector("#next-request-schedule");
   const nextRequestStatus = document.querySelector("#next-request-status");
+  const nextRequestYear = document.querySelector("#next-request-year");
+  const nextRequestSummary = document.querySelector("#next-request-summary");
   const authName = document.querySelector("#request-auth-name");
+  const ownerTestNotice = document.querySelector("#owner-test-notice");
+  const requestDialogRules = document.querySelector("#request-dialog-rules");
+  const requestSubmitButton = document.querySelector("#request-submit-button");
   const signInButton = document.querySelector("#twitch-sign-in");
   const signOutButton = document.querySelector("#twitch-sign-out");
   const unlistedForm = document.querySelector("#unlisted-request-form");
@@ -38,10 +43,8 @@
   });
   let selected = null;
   let session = null;
+  let ownerTestMode = false;
   let systemState = { serviceEnabled:true, slotOpen:true, globalCooldownEnds:null, canBypassCooldown:false };
-  const previewRequested = new URLSearchParams(window.location.search).get("preview") === "next-request";
-  const previewExpires = Number(window.sessionStorage.getItem("toxic-next-request-preview") || 0);
-  const nextRequestPreview = previewRequested && previewExpires > Date.now();
 
   function prettyPlatform(value) {
     if (value === "unlisted") return "Not in Catalog";
@@ -67,47 +70,43 @@
       timeZoneName:"short"
     }).format(date);
   }
-  function hideNextRequest() {
-    if (nextRequestPanel) nextRequestPanel.hidden = true;
+  function catalogSummary(gameTitle) {
+    return window.GAME_SUMMARIES?.[gameTitle] || "";
   }
-  function previewSchedule() {
-    const date = new Date();
-    const daysUntilFriday = (5 - date.getDay() + 7) % 7 || 7;
-    date.setDate(date.getDate() + daysUntilFriday);
-    date.setHours(23, 0, 0, 0);
-    return date.toISOString();
+  function catalogReleaseYear(gameTitle) {
+    const suffix=`::${gameTitle}`;
+    const match=Object.entries(window.GAME_RELEASE_YEARS||{}).find(([key])=>key.endsWith(suffix));
+    return match?.[1] || "";
   }
-  function renderNextRequest(data, preview=false) {
-    if (!nextRequestPanel || !data?.gameTitle || !data?.scheduledFor) {
-      hideNextRequest();
+  function renderNextRequest(data) {
+    if (!nextRequestPanel) return;
+    const scheduled=Boolean(data?.gameTitle&&data?.scheduledFor);
+    nextRequestPanel.classList.toggle("has-scheduled-game",scheduled);
+    nextRequestStatus.textContent=scheduled?"Coming Up":"No Game Scheduled";
+    if (!scheduled) {
+      nextRequestGame.textContent="No game is currently scheduled";
+      nextRequestPlatform.textContent="A game will appear here after staff records an agreed stream date.";
+      nextRequestType.textContent="—";
+      nextRequestSchedule.textContent="To be announced";
+      nextRequestSchedule.removeAttribute("datetime");
+      nextRequestYear.textContent="—";
+      nextRequestSummary.textContent="There is no scheduled viewer-requested game right now. Check back after the next paid and approved request is scheduled.";
+      nextRequestPanel.hidden=false;
       return;
     }
-    nextRequestGame.textContent = data.gameTitle;
-    nextRequestPlatform.textContent = data.platform || "System to be confirmed";
-    nextRequestType.textContent = requestGoalLabel(data.requestGoal);
-    nextRequestSchedule.textContent = formatEasternSchedule(data.scheduledFor);
-    nextRequestSchedule.dateTime = data.scheduledFor;
-    nextRequestPanel.classList.toggle("is-preview", preview);
-    nextRequestStatus.textContent = preview ? "Staff Preview" : "Coming Up";
-    nextRequestPanel.hidden = false;
-    if (preview) window.setTimeout(() => nextRequestPanel.scrollIntoView({behavior:"smooth",block:"center"}), 50);
+    nextRequestGame.textContent=data.gameTitle;
+    nextRequestPlatform.textContent=data.platform||"System to be confirmed";
+    nextRequestType.textContent=requestGoalLabel(data.requestGoal);
+    nextRequestSchedule.textContent=formatEasternSchedule(data.scheduledFor);
+    nextRequestSchedule.dateTime=data.scheduledFor;
+    nextRequestYear.textContent=String(data.releaseYear||catalogReleaseYear(data.gameTitle)||"Year to be confirmed");
+    nextRequestSummary.textContent=data.gameSummary||catalogSummary(data.gameTitle)||"A public game summary will be added before the scheduled stream.";
+    nextRequestPanel.hidden=false;
   }
   async function refreshNextRequest() {
-    if (!client || !nextRequestPanel) return;
-    if (nextRequestPreview) {
-      renderNextRequest({
-        gameTitle:"Metroid Prime 4: Beyond",
-        platform:"Nintendo Switch",
-        requestGoal:"play",
-        scheduledFor:previewSchedule()
-      }, true);
-      return;
-    }
-    const { data, error:nextRequestError } = await client.rpc("next_public_game_request");
-    if (nextRequestError) {
-      hideNextRequest();
-      return;
-    }
+    if (!client||!nextRequestPanel) return;
+    const {data,error:nextRequestError}=await client.rpc("next_public_game_request");
+    if(nextRequestError){renderNextRequest(null);return;}
     renderNextRequest(data);
   }
   function selectRequestGoal(goal, focusTab=false) {
@@ -119,7 +118,7 @@
       const tabGoal = tab.dataset.requestGoal;
       const choice = choices[tabGoal];
       const active = tabGoal === nextGoal;
-      tab.querySelector("[data-choice-price]").textContent = `$${choice.amount}`;
+      tab.querySelector("[data-choice-price]").textContent = ownerTestMode ? "$0 · Owner Test" : "$"+choice.amount;
       tab.classList.toggle("active", active);
       tab.setAttribute("aria-selected", String(active));
       tab.tabIndex = active ? 0 : -1;
@@ -132,6 +131,11 @@
     platform.textContent = requestLabel(selected);
     accountName.textContent = twitchName(session.user);
     error.textContent = "";
+    ownerTestNotice.hidden=!ownerTestMode;
+    requestDialogRules.textContent=ownerTestMode
+      ? "This owner-only test reserves the active request slot and immediately simulates an approved-and-paid request. No payment transaction is created."
+      : "Submitting reserves the only viewer request slot while the request is reviewed. No payment is requested until the request is approved.";
+    requestSubmitButton.textContent=ownerTestMode?"Submit Free Owner Test":"Submit Game Request";
     selectRequestGoal("play");
     dialog.showModal();
     requestChoiceTabs[0]?.focus();
@@ -141,11 +145,17 @@
     return data.preferred_username || data.user_name || data.login || data.name || data.full_name || "Twitch Viewer";
   }
   function cooldownActive() { return !systemState.canBypassCooldown && systemState.globalCooldownEnds && new Date(systemState.globalCooldownEnds).getTime() > Date.now(); }
-  function requestLocked() { return systemState.serviceEnabled === false || !systemState.slotOpen || cooldownActive(); }
+  function requestLocked() { return ownerTestMode ? !systemState.slotOpen : systemState.serviceEnabled === false || !systemState.slotOpen || cooldownActive(); }
   function authRedirect() { return new URL("index.html", window.location.href).href; }
   async function signIn() {
     if (!client) return;
     await client.auth.signInWithOAuth({ provider:"twitch", options:{redirectTo:authRedirect()} });
+  }
+  async function refreshOwnerAccess() {
+    ownerTestMode=false;
+    if(!client||!session?.user)return;
+    const {data,error:accessError}=await client.rpc("my_request_staff_access");
+    ownerTestMode=!accessError&&data?.role==="owner"&&data?.canReview===true;
   }
   async function refreshState() {
     if (!client) return;
@@ -164,14 +174,17 @@
     signOutButton.hidden = !signedIn;
     document.querySelectorAll(".request-game-button").forEach((button) => {
       button.setAttribute("aria-disabled", String(locked));
-      button.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Request Game" : "Sign in to Request";
+      button.textContent = locked ? "Request Slot Unavailable" : ownerTestMode ? "Request Free Test" : systemState.serviceEnabled === false ? "Requests Temporarily Off" : signedIn ? "Request Game" : "Sign in to Request";
     });
     if (unlistedButton) {
       unlistedButton.disabled = locked;
-      unlistedButton.textContent = systemState.serviceEnabled === false ? "Requests Temporarily Off" : locked ? "Request Slot Unavailable" : signedIn ? "Choose Request Type" : "Sign in to Request";
+      unlistedButton.textContent = locked ? "Request Slot Unavailable" : ownerTestMode ? "Choose Free Test" : systemState.serviceEnabled === false ? "Requests Temporarily Off" : signedIn ? "Choose Request Type" : "Sign in to Request";
     }
     if (unlistedTitle) unlistedTitle.disabled = locked;
-    if (systemState.serviceEnabled === false) {
+    if (ownerTestMode && systemState.slotOpen) {
+      slotCard.dataset.state = "open"; slotLabel.textContent = "Owner Test Mode";
+      slotDetail.textContent = "Submit any owned or unlisted game for $0 to test the real paid-request workflow.";
+    } else if (systemState.serviceEnabled === false) {
       slotCard.dataset.state = "cooldown"; slotLabel.textContent = "New Requests Temporarily Off";
       slotDetail.textContent = "Staff paused new submissions.";
     } else if (cooldownActive()) {
@@ -182,7 +195,7 @@
       slotDetail.textContent = "The single viewer request slot is currently occupied.";
     } else {
       slotCard.dataset.state = "open"; slotLabel.textContent = "Open";
-      slotDetail.textContent = signedIn ? "Choose any game below." : "Sign in with Twitch to request a game.";
+      slotDetail.textContent = ownerTestMode ? "Owner testing is available for owned or unlisted games at $0." : signedIn ? "Choose any game below." : "Sign in with Twitch to request a game.";
     }
   }
   async function openRequest(button) {
@@ -238,10 +251,19 @@
     };
     const submitButton = form.querySelector(".request-submit");
     submitButton.disabled = true;
-    const { error:insertError } = await client.from("game_requests").insert(payload);
+    const result = ownerTestMode
+      ? await client.rpc("owner_submit_test_game_request",{
+          request_type_text:payload.request_type,
+          request_goal_text:payload.request_goal,
+          game_title_text:payload.game_title,
+          platform_text:payload.platform,
+          viewer_note_text:payload.viewer_note,
+          twitch_name_text:payload.twitch_name
+        })
+      : await client.from("game_requests").insert(payload);
     submitButton.disabled = false;
-    if (insertError) {
-      error.textContent = insertError.code === "23505" ? "Another request reached the single request slot first. Please try again later." : "The request could not be submitted. Check the request slot or cooldown and try again.";
+    if (result.error) {
+      error.textContent = result.error.message || (result.error.code === "23505" ? "Another request reached the single request slot first. Please try again later." : "The request could not be submitted. Check the request slot or cooldown and try again.");
       await refreshState(); return;
     }
     dialog.close(); form.reset(); selected = null; window.location.href = "status.html";
@@ -250,7 +272,8 @@
     if (!client) { slotLabel.textContent = "Connection Error"; slotDetail.textContent = "The request service could not load."; return; }
     const { data } = await client.auth.getSession();
     session = data.session;
-    client.auth.onAuthStateChange((_event,nextSession) => { session = nextSession; updateInterface(); });
+    await refreshOwnerAccess();
+    client.auth.onAuthStateChange((_event,nextSession) => { session = nextSession; refreshOwnerAccess().then(refreshState); });
     await refreshState();
   }
   const observer = new MutationObserver(updateInterface);
