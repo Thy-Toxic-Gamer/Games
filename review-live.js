@@ -259,8 +259,6 @@
   async function permanentlyDeleteRequestRecord(request,button) {
     if(staffRole!=="owner")return;
     if(!window.confirm(`Permanently delete "${request.game_title}" and its related request records? This cannot be undone.`))return;
-    const confirmation=window.prompt('Type DELETE to permanently remove this request.');
-    if(confirmation!=="DELETE"){if(confirmation!==null)window.alert('Permanent deletion cancelled. Type DELETE exactly to confirm.');return;}
     button.disabled=true;
     const {error}=await client.rpc("owner_delete_game_request",{target_request_id:request.id});
     if(error){window.alert(error.message||"The request could not be permanently deleted.");button.disabled=false;return;}
@@ -299,15 +297,17 @@
         scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);
         const completeButton=make("button","review-button","Mark Request Complete");completeButton.type="button";completeButton.addEventListener("click",()=>openCompletionDialog(request));schedulePanel.append(completeButton);card.append(schedulePanel);
       }
-      if(!options.archived&&isFinalRequestRecord(request)){
+      if(isFinalRequestRecord(request)){
         const actions=make("div","request-record-actions");
-        const archiveButton=make("button","review-button review-button-muted","Move to Archive");
-        archiveButton.type="button";archiveButton.addEventListener("click",()=>archiveRequestRecord(request,archiveButton));actions.append(archiveButton);
+        if(!options.archived){
+          const archiveButton=make("button","review-button review-button-muted","Move to Archive");
+          archiveButton.type="button";archiveButton.addEventListener("click",()=>archiveRequestRecord(request,archiveButton));actions.append(archiveButton);
+        }
         if(staffRole==="owner"){
           const deleteButton=make("button","review-button review-button-deny","Permanently Delete");
           deleteButton.type="button";deleteButton.addEventListener("click",()=>permanentlyDeleteRequestRecord(request,deleteButton));actions.append(deleteButton);
         }
-        card.append(actions);
+        if(actions.childElementCount)card.append(actions);
       }
       if(options.archived&&request.archived_at){
         const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
