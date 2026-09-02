@@ -164,7 +164,7 @@
     return parsed.toString();
   }
   function updateCompletionViewLinks() {
-    [["youtube","completion-youtube","completion-view-youtube"],["twitch","completion-twitch","completion-view-twitch"]].forEach(([service,inputId,linkId])=>{
+    [["twitch","completion-twitch","completion-view-twitch"],["youtube","completion-youtube","completion-view-youtube"]].forEach(([service,inputId,linkId])=>{
       const link=get(linkId);let url="";
       try{const value=get(inputId).value.trim();if(value)url=normalizeVodUrl(value,service);}catch{}
       if(url){link.href=url;link.setAttribute("aria-disabled","false");}
@@ -183,13 +183,13 @@
     get("completion-lookup-status").textContent="";
     get("completion-error").textContent="";
     get("save-completion").textContent=updating?"Update Completed Stream":"Publish Completed Stream";
-    get("completion-dialog").showModal();get("completion-youtube").focus();
+    get("completion-dialog").showModal();get("completion-twitch").focus();
   }
   function completedVodLinks(request) {
     const links=make("p","request-history-vods");
-    const youtube=make("a","completed-vod-link vod-youtube","Watch on YouTube");youtube.href=request.youtube_vod_url;youtube.target="_blank";youtube.rel="noopener noreferrer";links.append(youtube);
     const twitchActive=request.twitch_vod_url&&request.twitch_vod_expires_at&&new Date(request.twitch_vod_expires_at).getTime()>Date.now();
-    if(twitchActive){links.append(document.createTextNode(" · "));const twitch=make("a","completed-vod-link vod-twitch","Watch on Twitch");twitch.href=request.twitch_vod_url;twitch.target="_blank";twitch.rel="noopener noreferrer";links.append(twitch);}
+    if(twitchActive){const twitch=make("a","completed-vod-link vod-twitch","Watch on Twitch");twitch.href=request.twitch_vod_url;twitch.target="_blank";twitch.rel="noopener noreferrer";links.append(twitch);}
+    if(request.youtube_vod_url){if(links.childNodes.length)links.append(document.createTextNode(" · "));const youtube=make("a","completed-vod-link vod-youtube","Watch on YouTube");youtube.href=request.youtube_vod_url;youtube.target="_blank";youtube.rel="noopener noreferrer";links.append(youtube);}
     return links;
   }
   function hasPendingViewerChange(request) { return request?.viewer_change_status === "pending" && Boolean(request.viewer_change_game_title); }
@@ -462,17 +462,21 @@
     if(data?.youtube?.url)get("completion-youtube").value=data.youtube.url;
     if(data?.twitch?.url)get("completion-twitch").value=data.twitch.url;
     updateCompletionViewLinks();
-    const found=[data?.youtube?`YouTube: ${data.youtube.title}`:"",data?.twitch?`Twitch: ${data.twitch.title}`:""].filter(Boolean);
+    const found=[data?.twitch?"Twitch: "+data.twitch.title:"",data?.youtube?"YouTube: "+data.youtube.title:""].filter(Boolean);
     const warnings=Array.isArray(data?.warnings)?data.warnings:[];
     status.textContent=found.length?`Found ${found.join(" · ")}. Confirm the links before publishing.${warnings.length?` ${warnings.join(" · ")}`:""}`:warnings.join(" · ")||"No recent VODs were found yet. Wait for processing, then try again.";
   });
   get("completion-youtube").addEventListener("input",updateCompletionViewLinks);get("completion-twitch").addEventListener("input",updateCompletionViewLinks);
   get("completion-form").addEventListener("submit",async(event)=>{
     event.preventDefault();if(!completionRequest)return;
-    const completedLocal=get("completion-local").value;const youtubeInput=get("completion-youtube").value;const twitchInput=get("completion-twitch").value.trim();
+    const completedLocal=get("completion-local").value;const twitchInput=get("completion-twitch").value.trim();const youtubeInput=get("completion-youtube").value.trim();
     if(!completedLocal){get("completion-error").textContent="Choose the completed Eastern date and time.";return;}
-    let youtubeUrl;let twitchUrl=null;
-    try{youtubeUrl=normalizeVodUrl(youtubeInput,"youtube");if(twitchInput)twitchUrl=normalizeVodUrl(twitchInput,"twitch");}
+    let twitchUrl=null;let youtubeUrl=null;
+    try{
+      if(twitchInput)twitchUrl=normalizeVodUrl(twitchInput,"twitch");
+      if(youtubeInput)youtubeUrl=normalizeVodUrl(youtubeInput,"youtube");
+      if(!twitchUrl&&!youtubeUrl)throw new Error("Add at least one valid Twitch or YouTube VOD link.");
+    }
     catch(error){get("completion-error").textContent=error.message||"Check the VOD links and try again.";return;}
     const save=get("save-completion");save.disabled=true;
     const {error}=await client.rpc("staff_complete_game_request",{request_id:completionRequest.id,completed_local:completedLocal,youtube_vod:youtubeUrl,twitch_vod:twitchUrl});
