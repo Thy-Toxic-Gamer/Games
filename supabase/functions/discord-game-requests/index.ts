@@ -3,6 +3,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 type GameRequest = {
   id: string;
   status: string;
+  is_test: boolean;
   game_title: string;
   twitch_name: string;
   request_type: string;
@@ -217,6 +218,12 @@ Deno.serve(async (request) => {
     gameRequest.youtube_vod_url ? `[Watch on YouTube](${gameRequest.youtube_vod_url})` : "",
     gameRequest.twitch_vod_url ? `[Watch on Twitch](${gameRequest.twitch_vod_url})` : "",
   ].filter(Boolean).join(" · ");
+  const isOwnerTest = Boolean(gameRequest.is_test);
+  if (isOwnerTest) {
+    title = "🧪 Owner Test · " + title;
+    description = "Owner-only $0 workflow test. " + description;
+  }
+
   const fields = isNewCompletion ? [
     { name: "Requested Stream", value: shorten(gameRequest.game_title), inline: false },
     { name: "System", value: shorten(gameRequest.platform), inline: true },
@@ -227,7 +234,7 @@ Deno.serve(async (request) => {
     { name: isViewerChangeNotice ? "Current Game" : "Game", value: shorten(gameRequest.game_title), inline: false },
     { name: "Twitch Viewer", value: shorten(gameRequest.twitch_name), inline: true },
     { name: "Request Type", value: gameRequest.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog", inline: true },
-    { name: "Request Choice", value: `${requestGoalLabel(gameRequest.request_goal)} · $${gameRequest.minimum_amount}`, inline: true },
+    { name: "Request Choice", value: requestGoalLabel(gameRequest.request_goal)+" · "+(isOwnerTest ? "$0 Owner Test" : "$"+gameRequest.minimum_amount), inline: true },
     { name: isViewerChangeNotice ? "Current Platform" : "Platform", value: shorten(gameRequest.platform), inline: true },
     { name: "Viewer Message", value: shorten(gameRequest.viewer_note), inline: false },
     { name: "Request ID", value: shorten(gameRequest.id), inline: false },
