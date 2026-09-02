@@ -63,7 +63,7 @@ const formatEastern = (value: string) => new Intl.DateTimeFormat("en-US", {
 
 Deno.serve(async (request) => {
   if (request.method !== "POST") return Response.json({ error: "Method not allowed" }, { status: 405 });
-  const expectedToken = Deno.env.get("DATABASE_WEBHOOK_TOKEN");
+  const expectedToken = Deno.env.get("DATABASE_WEBHOOK_SECRET");
   const suppliedToken = request.headers.get("x-webhook-token");
   if (!expectedToken || suppliedToken !== expectedToken) return Response.json({ error: "Unauthorized webhook request" }, { status: 401 });
 

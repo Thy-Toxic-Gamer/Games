@@ -4,6 +4,10 @@
 
 GitHub Pages-ready version of  ⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆ game catalog.
 
+## Live backend
+
+Game Request data, Edge Functions, webhooks, schedules, and private integration credentials are hosted in the consolidated **Polls | Appeals Center** Supabase project. The former standalone Game Request project was retired after the production website cutover on September 2, 2026.
+
 ## Current public release
 
 **Ver. 1.0 — Unified Central Command release — September 1, 2026**

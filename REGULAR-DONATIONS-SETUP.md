@@ -4,12 +4,14 @@ This setup sends successful regular StreamElements donations to a dedicated Disc
 
 ## Setup
 
-1. Add the Discord channel webhook to Supabase Edge Function Secrets as `DISCORD_DONATIONS_WEBHOOK`.
-2. Run `RUN-THIS-v9.3-REGULAR-DONATIONS.sql` once in the Supabase SQL Editor. The setup time is recorded so older donations are not posted.
-3. Create and deploy the Edge Function `notify-regular-donations` using `supabase/functions/notify-regular-donations/index.ts`.
-4. Disable JWT verification for this server-to-server function. The function itself requires the Supabase secret key on the `apikey` header and rejects calls without it.
-5. In Supabase, open **Integrations → Cron**, create a job named `notify-regular-donations`, select the Supabase Edge Function, run it every minute (`* * * * *`), set the maximum 5,000 ms timeout, and use **Add secret key** under HTTP Headers.
-6. Check the Cron job history and Edge Function logs after the first run.
+The production deployment is hosted in the consolidated **Polls | Appeals Center** Supabase project.
+
+1. Add `DISCORD_DONATIONS_WEBHOOK`, `STREAMELEMENTS_ACCOUNT_ID`, and `STREAMELEMENTS_JWT` to Supabase Edge Function Secrets.
+2. Deploy `notify-regular-donations` from `supabase/functions/notify-regular-donations/index.ts` with JWT verification enabled.
+3. Store the project's legacy `service_role` key in Supabase Vault as `game_request_service_role_key`. Never place the key in this repository.
+4. Set `regular_donation_notifier_state.started_at` to the production activation time so older donations are not announced.
+5. Schedule `notify-regular-donations` through `pg_cron` and `pg_net` every minute (`* * * * *`). Read the service-role key from Vault and send it in both the `apikey` and `Authorization: Bearer` headers.
+6. Confirm that the `notify-regular-donations` Cron job exists and is active. Do not generate fake donations for routine verification.
 
 ## Discord message
 
