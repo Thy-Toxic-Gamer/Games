@@ -117,9 +117,14 @@
     const activeRequest = ["pending","awaiting_payment","approved"].includes(request.status) && !request.completed_at;
     const streamStarted = request.scheduled_for && new Date(request.scheduled_for).getTime() <= Date.now();
     const changeButton = get("request-game-change-button");
+    const viewerChangeAlreadyUsed = Boolean(request.viewer_change_requested_at);
     changeButton.hidden = !activeRequest || Boolean(streamStarted);
-    changeButton.disabled = viewerChangeStatus === "pending";
-    changeButton.textContent = viewerChangeStatus === "pending" ? "Change Request Pending" : "Request a Game Change";
+    changeButton.disabled = viewerChangeAlreadyUsed;
+    changeButton.textContent = viewerChangeStatus === "pending"
+      ? "Change Request Pending"
+      : viewerChangeAlreadyUsed
+        ? "Game Change Already Used"
+        : "Request a Game Change";
     get("status-last-checked").textContent = `Updated ${new Date().toLocaleTimeString()}`;
     const awaitingPayment = request.status === "awaiting_payment";
     get("payment-panel").hidden = !awaitingPayment;
