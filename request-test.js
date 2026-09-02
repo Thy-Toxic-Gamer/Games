@@ -11,7 +11,13 @@
   const slotCard = document.querySelector("#request-status-card");
   const slotLabel = document.querySelector("#request-slot-label");
   const slotDetail = document.querySelector("#request-slot-detail");
-  const publicStatus = document.querySelector("#request-public-status");
+  const publicSignals = document.querySelector("#request-public-signals");
+  const openSignal = document.querySelector("#request-signal-open");
+  const blockedSignal = document.querySelector("#request-signal-blocked");
+  const cooldownSignal = document.querySelector("#request-signal-cooldown");
+  const openSignalState = document.querySelector("#request-signal-open-state");
+  const blockedSignalState = document.querySelector("#request-signal-blocked-state");
+  const cooldownSignalState = document.querySelector("#request-signal-cooldown-state");
   const nextRequestPanel = document.querySelector("#next-request-panel");
   const nextRequestGame = document.querySelector("#next-request-game");
   const nextRequestPlatform = document.querySelector("#next-request-platform");
@@ -174,17 +180,16 @@
       systemState.globalCooldownEnds
       && new Date(systemState.globalCooldownEnds).getTime() > Date.now()
     );
-    const publicState = systemState.serviceEnabled === false
-      ? "closed"
-      : publicCooldown
-        ? "cooldown"
-        : systemState.slotOpen
-          ? "open"
-          : "closed";
-    if (publicStatus) {
-      publicStatus.hidden = !ownerTestMode;
-      publicStatus.dataset.state = publicState;
-      publicStatus.textContent = `Public Requests: ${publicState === "open" ? "Open" : publicState === "cooldown" ? "Cooldown" : "Closed"}`;
+    const publicOpen = systemState.serviceEnabled !== false && systemState.slotOpen && !publicCooldown;
+    slotCard.classList.toggle("show-owner-signals",ownerTestMode);
+    if (publicSignals) {
+      publicSignals.hidden = !ownerTestMode;
+      openSignal.dataset.active = String(publicOpen);
+      blockedSignal.dataset.active = String(!publicOpen);
+      cooldownSignal.dataset.active = String(publicCooldown);
+      openSignalState.textContent = publicOpen ? "On" : "Off";
+      blockedSignalState.textContent = publicOpen ? "Open" : "Closed";
+      cooldownSignalState.textContent = publicCooldown ? "Active" : "Off";
     }
     authName.textContent = signedIn ? twitchName(session.user) : "Not signed in";
     signInButton.hidden = signedIn;
