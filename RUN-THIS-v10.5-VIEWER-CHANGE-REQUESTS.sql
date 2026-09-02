@@ -94,8 +94,8 @@ begin
     raise exception 'A change cannot be requested after the scheduled stream has begun.';
   end if;
 
-  if current_request.viewer_change_status = 'pending' then
-    raise exception 'A game change request is already waiting for staff review.';
+  if current_request.viewer_change_requested_at is not null then
+    raise exception 'The one game-change request for this request has already been used. Contact staff through a ticket if another change is necessary.';
   end if;
 
   if lower(cleaned_title) = lower(current_request.game_title)
