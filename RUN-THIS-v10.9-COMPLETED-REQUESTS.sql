@@ -19,7 +19,7 @@ create table if not exists public.completed_request_vods (
   platform text not null,
   request_goal text not null check (request_goal in ('play', 'speed_run', 'completion')),
   completed_at timestamptz not null,
-  youtube_vod_url text not null,
+  youtube_vod_url text,
   twitch_vod_url text,
   twitch_vod_expires_at timestamptz,
   created_at timestamptz not null default now(),
@@ -28,6 +28,9 @@ create table if not exists public.completed_request_vods (
 
 create index if not exists completed_request_vods_completed_at_idx
   on public.completed_request_vods (completed_at desc);
+
+alter table public.completed_request_vods
+  alter column youtube_vod_url drop not null;
 
 alter table public.completed_request_vods enable row level security;
 
@@ -51,7 +54,7 @@ declare
   current_request public.game_requests;
   completed_request public.game_requests;
   completion_instant timestamptz;
-  clean_youtube text := trim(coalesce(youtube_vod, ''));
+  clean_youtube text := nullif(trim(coalesce(youtube_vod, '')), '');
   clean_twitch text := nullif(trim(coalesce(twitch_vod, '')), '');
 begin
   if not public.can_review_game_requests() then
@@ -85,12 +88,16 @@ begin
     raise exception 'The completion date cannot be in the future.';
   end if;
 
-  if clean_youtube !~* '^https://(www\.)?(youtube\.com|youtu\.be)/' then
-    raise exception 'Enter a valid HTTPS YouTube VOD link.';
+  if clean_youtube is null and clean_twitch is null then
+    raise exception 'Add at least one valid Twitch or YouTube VOD link.';
   end if;
 
   if clean_twitch is not null and clean_twitch !~* '^https://(www\.)?twitch\.tv/videos/[0-9]+' then
     raise exception 'Enter a valid HTTPS Twitch VOD link.';
+  end if;
+
+  if clean_youtube is not null and clean_youtube !~* '^https://(www\.)?(youtube\.com|youtu\.be)/' then
+    raise exception 'Enter a valid HTTPS YouTube VOD link.';
   end if;
 
   update public.game_requests
