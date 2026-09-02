@@ -8,13 +8,15 @@
   <title>𝐓☣︎𝐱𝐢c Game Request Staff Control</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?release=1.0.48" />
-  <link rel="stylesheet" href="request-test.css?v=10.19" />
+  <link rel="stylesheet" href="request-test.css?v=10.20" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.1" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
   <script src="games.js?v=1.0.45" defer></script>
   <script src="catalog-utils.js?v=1.0.2" defer></script>
-  <script src="review-live.js?v=10.16" defer></script>
+  <script src="game-summaries.js?v=1.0.1" defer></script>
+  <script src="release-years.js?v=1.0.0" defer></script>
+  <script src="review-live.js?v=10.17" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header ecosystem-header"><div class="ecosystem-brand"><a class="ecosystem-brand-home" href="index.html"><strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong></a><small>GAME CATALOG <span>·</span> <a class="brand-hub" href="https://thy-toxic-gamer.github.io/central-command/">CENTRAL COMMAND</a></small></div><nav class="ecosystem-nav" aria-label="Primary navigation"><a href="index.html">Catalog</a><a href="status.html">Request Status</a><a href="review.html" aria-current="page">Staff Control</a></nav></header>
@@ -118,7 +120,7 @@
       </section>
 
       <section class="staff-tab-panel" id="staff-panel-admin" role="tabpanel" aria-labelledby="staff-tab-admin" tabindex="0" data-staff-panel="admin" hidden>
-        <div class="staff-panel-heading"><p class="eyebrow">Private Administration</p><h2>Admin</h2><p>Manage request-system availability, safely preview public features, and monitor connected services.</p></div>
+        <div class="staff-panel-heading"><p class="eyebrow">Private Administration</p><h2>Admin</h2><p>Manage request-system availability, owner testing, retention, and connected service health.</p></div>
         <article class="review-card">
           <div class="review-card-head"><div><p class="eyebrow">Emergency Control</p><h2>Game Request Services</h2><p>Manual staff switch</p></div><span class="review-status" id="request-service-state"></span></div>
           <div class="status-message" id="request-service-message"></div>
@@ -131,13 +133,6 @@
           <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
           <p class="request-dialog-rules">Resetting clears the cooldown immediately. New submissions reopen only when Game Request Services are also ON.</p>
         </article>
-        <section class="staff-home-section" aria-labelledby="staff-preview-heading">
-          <div class="staff-home-heading"><div><p class="eyebrow">Safe Display Test</p><h2 id="staff-preview-heading">Public Schedule Panel Preview</h2></div></div>
-          <p class="staff-home-warning"><strong>No payment or live request is required.</strong> The preview uses fictional information and does not change a request, payment status, schedule, cooldown, request slot, or Discord notification.</p>
-          <div class="review-actions">
-            <button class="review-button review-button-edit" id="preview-public-schedule" type="button">Preview Next Viewer Request</button>
-          </div>
-        </section>
         <section class="review-live-section discord-health-panel staff-panel-section admin-discord-panel" aria-labelledby="discord-health-heading">
           <div class="review-section-title">
             <div><p class="eyebrow">Connected Service Health</p><h2 id="discord-health-heading">Discord Notifications</h2><p class="discord-health-intro">Private delivery monitoring for game requests and staff updates.</p></div>
@@ -208,6 +203,13 @@
       <label>Date and time (Eastern Time)
         <input id="schedule-local" type="datetime-local" required />
       </label>
+      <label>Original release year
+        <input id="schedule-release-year" type="number" min="1950" max="2100" inputmode="numeric" required />
+      </label>
+      <label>Public game summary
+        <textarea id="schedule-game-summary" maxlength="1000" minlength="30" rows="5" required placeholder="Describe the game for viewers in at least 30 characters."></textarea>
+      </label>
+      <p class="schedule-zone-note">These public details appear with the scheduled game on the main catalog page.</p>
       <label id="schedule-reason-row" hidden>Reason for changing the schedule
         <textarea id="schedule-reason" maxlength="500" rows="4" placeholder="Tell the viewer why the agreed time must change."></textarea>
       </label>
