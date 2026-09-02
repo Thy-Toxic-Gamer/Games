@@ -8,7 +8,7 @@
   <title>𝐓☣︎𝐱𝐢c Game Request Staff Control</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css?release=1.0.48" />
-  <link rel="stylesheet" href="request-test.css?v=10.20" />
+  <link rel="stylesheet" href="request-test.css?v=10.21" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
   <script src="supabase-config.js?v=10.1" defer></script>
   <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -16,7 +16,7 @@
   <script src="catalog-utils.js?v=1.0.2" defer></script>
   <script src="game-summaries.js?v=1.0.1" defer></script>
   <script src="release-years.js?v=1.0.0" defer></script>
-  <script src="review-live.js?v=10.18" defer></script>
+  <script src="review-live.js?v=10.19" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header ecosystem-header"><div class="ecosystem-brand"><a class="ecosystem-brand-home" href="index.html"><strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong></a><small>GAME CATALOG <span>·</span> <a class="brand-hub" href="https://thy-toxic-gamer.github.io/central-command/">CENTRAL COMMAND</a></small></div><nav class="ecosystem-nav" aria-label="Primary navigation"><a href="index.html">Catalog</a><a href="status.html">Request Status</a><a href="review.html" aria-current="page">Staff Control</a></nav></header>
@@ -128,10 +128,15 @@
           <p class="request-dialog-rules">Turning services off blocks only new request submissions. Existing requests keep their normal review, payment, and expiration flow. Services stay off until staff turns them back on.</p>
         </article>
         <article class="review-card">
-          <div class="review-card-head"><div><p class="eyebrow">Authorized Staff</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
+          <div class="review-card-head"><div><p class="eyebrow">Owner Availability Control</p><h2>Global Request Cooldown</h2><p id="staff-role"></p></div><span class="review-status" id="global-cooldown-state"></span></div>
           <div class="status-message" id="global-cooldown-message"></div>
+          <form class="cooldown-schedule-controls" id="schedule-cooldown-form" hidden>
+            <label for="schedule-cooldown-end">Cooldown ends (Eastern Time)</label>
+            <div><input id="schedule-cooldown-end" type="datetime-local" required /><button class="review-button review-button-edit" id="schedule-global-cooldown" type="submit">Start Scheduled Cooldown</button></div>
+            <p class="request-form-error" id="schedule-cooldown-error" role="alert"></p>
+          </form>
           <div class="review-actions"><button class="review-button review-button-deny" id="reset-global-cooldown" type="button">Reset Global Cooldown</button></div>
-          <p class="request-dialog-rules">Resetting clears the cooldown immediately. New submissions reopen only when Game Request Services are also ON.</p>
+          <p class="request-dialog-rules">A scheduled cooldown starts immediately and reopens public submissions automatically at the selected Eastern time. Resetting clears it early. Game Request Services must also be ON before viewers can submit.</p>
         </article>
         <section class="review-live-section discord-health-panel staff-panel-section admin-discord-panel" aria-labelledby="discord-health-heading">
           <div class="review-section-title">
