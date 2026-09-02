@@ -15,6 +15,7 @@
   let completionRequest = null;
   let viewerChangeReviewRequest = null;
   let staffAccessSource = null;
+  let staffRole = null;
   let serviceEnabled = true;
   let unresolvedDiscordFailure = null;
   let activeStaffTab = "home";
@@ -245,6 +246,26 @@
     if(hasPendingViewerChange(request)){get("pending-viewer-change-title").textContent=`${request.viewer_change_game_title} · ${request.viewer_change_platform||"System not specified"}`;get("pending-viewer-change-reason").textContent=request.viewer_change_reason||"No explanation provided.";}
     get("edit-request").hidden=!canEditRequest(request);get("approve-request").hidden=awaiting;get("deny-request").hidden=awaiting;get("cancel-awaiting-request").hidden=!awaiting;
   }
+  function isFinalRequestRecord(request) {
+    return Boolean(request.completed_at)||["denied","expired","cancelled"].includes(request.status);
+  }
+  async function archiveRequestRecord(request,button) {
+    if(!window.confirm(`Move "${request.game_title}" to Archive? Staff will still be able to view it in the Archive tab.`))return;
+    button.disabled=true;
+    const {error}=await client.rpc("staff_archive_game_request",{target_request_id:request.id});
+    if(error){window.alert(error.message||"The request could not be archived.");button.disabled=false;return;}
+    await refreshDashboard();
+  }
+  async function permanentlyDeleteRequestRecord(request,button) {
+    if(staffRole!=="owner")return;
+    if(!window.confirm(`Permanently delete "${request.game_title}" and its related request records? This cannot be undone.`))return;
+    const confirmation=window.prompt('Type DELETE to permanently remove this request.');
+    if(confirmation!=="DELETE"){if(confirmation!==null)window.alert('Permanent deletion cancelled. Type DELETE exactly to confirm.');return;}
+    button.disabled=true;
+    const {error}=await client.rpc("owner_delete_game_request",{target_request_id:request.id});
+    if(error){window.alert(error.message||"The request could not be permanently deleted.");button.disabled=false;return;}
+    await refreshDashboard();
+  }
   function renderHistory(requests,options={}) {
     const container=get(options.containerId||"request-history");container.replaceChildren();
     const history=options.archived?requests:requests.filter((request)=>!["pending","awaiting_payment"].includes(request.status));
@@ -277,6 +298,16 @@
         const scheduleButton=make("button","review-button review-button-muted",request.scheduled_for?"Reschedule Game":"Schedule Game");
         scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);
         const completeButton=make("button","review-button","Mark Request Complete");completeButton.type="button";completeButton.addEventListener("click",()=>openCompletionDialog(request));schedulePanel.append(completeButton);card.append(schedulePanel);
+      }
+      if(!options.archived&&isFinalRequestRecord(request)){
+        const actions=make("div","request-record-actions");
+        const archiveButton=make("button","review-button review-button-muted","Move to Archive");
+        archiveButton.type="button";archiveButton.addEventListener("click",()=>archiveRequestRecord(request,archiveButton));actions.append(archiveButton);
+        if(staffRole==="owner"){
+          const deleteButton=make("button","review-button review-button-deny","Permanently Delete");
+          deleteButton.type="button";deleteButton.addEventListener("click",()=>permanentlyDeleteRequestRecord(request,deleteButton));actions.append(deleteButton);
+        }
+        card.append(actions);
       }
       if(options.archived&&request.archived_at){
         const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
@@ -313,12 +344,12 @@
     await verifyAutomaticStaff();
     const {data:access,error}=await client.rpc("my_request_staff_access");
     if(error){message("Staff controls unavailable","The staff access check could not be completed.");return;}
-    staffAccessSource=access?.accessSource||null;
+    staffAccessSource=access?.accessSource||null;staffRole=access?.role||null;
     if(!access?.isStaff||(access.accessSource==="twitch_moderator"&&!providerToken)){get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","Sign in with Twitch again. Current channel moderators receive Staff Control automatically.");return;}
     get("staff-role").textContent=`Signed in as ${access.role==="owner"?"Owner":"Moderator"}`;await refreshDashboard();
   }
 
-  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
+  get("staff-sign-in").addEventListener("click",signIn);get("staff-sign-out").addEventListener("click",async()=>{providerToken="";staffAccessSource=null;staffRole=null;window.sessionStorage.removeItem("toxic-twitch-provider-token");window.sessionStorage.removeItem("toxic-staff-oauth-pending");await client.auth.signOut();window.location.reload()});get("refresh-requests").addEventListener("click",refreshDashboard);
   get("preview-public-schedule")?.addEventListener("click",()=>{
     window.sessionStorage.setItem("toxic-next-request-preview",String(Date.now()+10*60*1000));
     window.location.href="index.html?preview=next-request#next-request-panel";
