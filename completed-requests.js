@@ -19,9 +19,12 @@
     streams.forEach((stream)=>{
       const card=make("article","completed-request-card");
       card.append(make("p","eyebrow","Requested Stream"),make("h4",null,stream.gameTitle),make("p","completed-request-meta",`${stream.platform||"System not specified"} · ${requestGoalLabels[stream.requestGoal]||"Play Game"}`),make("p","completed-request-date",`Completed ${completedDate(stream.completedAt)}`));
-      const links=make("p","completed-request-links");links.append(safeVodLink("Watch on YouTube",stream.youtubeUrl,"vod-youtube"));
-      if(stream.twitchUrl){links.append(document.createTextNode(" · "),safeVodLink("Watch on Twitch",stream.twitchUrl,"vod-twitch"));}
-      card.append(links);grid.append(card);
+      const links=make("p","completed-request-links");
+      if(stream.twitchUrl)links.append(safeVodLink("Watch on Twitch",stream.twitchUrl,"vod-twitch"));
+      if(stream.youtubeUrl){if(links.childNodes.length)links.append(document.createTextNode(" · "));links.append(safeVodLink("Watch on YouTube",stream.youtubeUrl,"vod-youtube"));}
+      if(links.childNodes.length)card.append(links);
+      else card.append(make("p","completed-request-meta","The Twitch VOD availability period has ended."));
+      grid.append(card);
     });
   }
   async function load(){
