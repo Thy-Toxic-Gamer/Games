@@ -17,6 +17,7 @@
   let staffAccessSource = null;
   let staffRole = null;
   let serviceEnabled = true;
+  let globalCooldownEnds = null;
   let unresolvedDiscordFailure = null;
   let activeStaffTab = "home";
   const catalog = window.TOXIC_CATALOG;
@@ -113,6 +114,26 @@
     feedback.textContent=action==="test"?"Test delivered to #request-system-logs.":"Failed notification delivered successfully.";feedback.dataset.status="success";
   }
   function formatEastern(value) { return new Intl.DateTimeFormat("en-US",{timeZone:easternZone,weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"numeric",minute:"2-digit",timeZoneName:"short"}).format(new Date(value)); }
+  function cooldownRemaining(value) {
+    const remaining=Math.max(0,new Date(value).getTime()-Date.now());
+    const totalSeconds=Math.floor(remaining/1000);
+    const days=Math.floor(totalSeconds/86400);
+    const hours=Math.floor((totalSeconds%86400)/3600);
+    const minutes=Math.floor((totalSeconds%3600)/60);
+    const seconds=totalSeconds%60;
+    return [days?days+"d":"",hours||days?hours+"h":"",minutes||hours||days?minutes+"m":"",seconds+"s"].filter(Boolean).join(" ");
+  }
+  function renderGlobalCooldownState() {
+    const active=Boolean(globalCooldownEnds&&new Date(globalCooldownEnds).getTime()>Date.now());
+    get("global-cooldown-state").textContent=active?"Cooldown Active":"No Cooldown";
+    get("global-cooldown-state").dataset.status=active?"cooldown":"approved";
+    get("global-cooldown-message").textContent=active
+      ? "Public requests reopen "+formatEastern(globalCooldownEnds)+" · Time remaining: "+cooldownRemaining(globalCooldownEnds)
+      : serviceEnabled
+        ? "There is no active global cooldown. Viewers can submit a game request."
+        : "There is no active global cooldown. New submissions remain closed by the manual service switch.";
+    get("reset-global-cooldown").disabled=!active;
+  }
   function requestGoalLabel(value) { return requestGoalLabels[value] || "Play Game"; }
   function requestStatusLabel(request) { return request?.completed_at ? "Completed" : statusLabels[request?.status] || request?.status || "Unknown"; }
   function requestTierLabel(request) { return (request.request_type === "catalog" ? "Owned Catalog Game" : "Not in Catalog")+" · "+requestGoalLabel(request.request_goal)+" · "+(request.is_test ? "Owner Test · $0" : "$"+request.minimum_amount); }
@@ -353,10 +374,10 @@
     get("request-service-state").textContent=serviceEnabled?"Services ON":"Services OFF";get("request-service-state").dataset.status=serviceEnabled?"approved":"denied";
     get("request-service-message").textContent=serviceEnabled?"New game request submissions are available.":"New request submissions are closed until staff turns services on. Existing requests continue normally.";
     const serviceToggle=get("toggle-request-service");serviceToggle.textContent=serviceEnabled?"Turn Services Off":"Turn Services On";serviceToggle.setAttribute("aria-checked",String(serviceEnabled));serviceToggle.classList.toggle("review-button-deny",serviceEnabled);
-    const active=state.globalCooldownEnds&&new Date(state.globalCooldownEnds).getTime()>Date.now();
-    get("global-cooldown-state").textContent=active?"Cooldown Active":"Requests Open";get("global-cooldown-state").dataset.status=active?"denied":"approved";
-    get("global-cooldown-message").textContent=active?`Requests are closed until ${new Date(state.globalCooldownEnds).toLocaleString()}, unless staff resets the cooldown early.`:serviceEnabled?"There is no active global cooldown. Viewers can submit a game request.":"There is no active global cooldown. New submissions remain closed by the manual service switch.";
-    get("reset-global-cooldown").disabled=!active;
+    globalCooldownEnds=state.globalCooldownEnds&&new Date(state.globalCooldownEnds).getTime()>Date.now()?state.globalCooldownEnds:null;
+    get("schedule-cooldown-form").hidden=staffRole!=="owner";
+    get("schedule-cooldown-end").min=easternInputValue(new Date(Date.now()+60000).toISOString());
+    renderGlobalCooldownState();
     renderPending(requests.find((request)=>["pending","awaiting_payment"].includes(request.status))||null);renderStaffReviewAlerts(requests);renderHistory(requests);renderHistory(archived,{containerId:"request-archive",archived:true,emptyMessage:"No requests have reached the Archive yet."});
     await refreshDiscordHealth();
   }
@@ -380,6 +401,19 @@
   const serviceDialog=get("toggle-service-dialog");get("toggle-request-service").addEventListener("click",()=>{const turningOn=!serviceEnabled;get("toggle-service-error").textContent="";get("toggle-service-title").textContent=turningOn?"Turn new game requests on?":"Turn new game requests off?";get("toggle-service-copy").textContent=turningOn?"This restores new request submissions. Any active global cooldown still applies.":"This immediately blocks only new request submissions. Existing requests can still be reviewed, paid, confirmed, or expired normally.";const confirm=get("confirm-service-toggle");confirm.textContent=turningOn?"Turn Services On":"Turn Services Off";confirm.classList.toggle("review-button-deny",!turningOn);serviceDialog.showModal()});get("keep-service-state").addEventListener("click",()=>serviceDialog.close());serviceDialog.querySelector(".request-dialog-close").addEventListener("click",()=>serviceDialog.close());
   get("toggle-service-form").addEventListener("submit",async(event)=>{event.preventDefault();const nextState=!serviceEnabled;const confirm=get("confirm-service-toggle");confirm.disabled=true;const {error}=await client.rpc("set_request_service_enabled",{enabled:nextState});confirm.disabled=false;if(error){get("toggle-service-error").textContent="The service state could not be changed.";return}serviceDialog.close();await refreshDashboard()});
 
+  get("schedule-cooldown-form").addEventListener("submit",async(event)=>{
+    event.preventDefault();
+    const input=get("schedule-cooldown-end");const feedback=get("schedule-cooldown-error");const button=get("schedule-global-cooldown");
+    feedback.textContent="";
+    if(staffRole!=="owner"){feedback.textContent="Owner access is required.";return}
+    if(!input.value){feedback.textContent="Choose the Eastern date and time when requests should reopen.";return}
+    button.disabled=true;
+    const {error}=await client.rpc("schedule_global_request_cooldown",{cooldown_ends_local:input.value});
+    button.disabled=false;
+    if(error){feedback.textContent=error.message||"The scheduled cooldown could not be started.";return}
+    input.value="";
+    await refreshDashboard();
+  });
   const resetDialog=get("reset-cooldown-dialog");get("reset-global-cooldown").addEventListener("click",()=>{get("reset-cooldown-error").textContent="";resetDialog.showModal()});get("keep-global-cooldown").addEventListener("click",()=>resetDialog.close());resetDialog.querySelector(".request-dialog-close").addEventListener("click",()=>resetDialog.close());
   get("reset-cooldown-form").addEventListener("submit",async(event)=>{event.preventDefault();const {error}=await client.rpc("reset_global_request_cooldown");if(error){get("reset-cooldown-error").textContent="The cooldown could not be reset.";return}resetDialog.close();await refreshDashboard()});
 
@@ -487,6 +521,7 @@
 
   if(client)client.auth.onAuthStateChange((event,nextSession)=>{if(oauthReturnPending&&nextSession?.provider_token){providerToken=nextSession.provider_token;window.sessionStorage.setItem("toxic-twitch-provider-token",providerToken)}if(event==="SIGNED_OUT"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token")}});
   setupStaffTabs();initialize();
+  window.setInterval(()=>{if(document.hidden||!globalCooldownEnds)return;if(new Date(globalCooldownEnds).getTime()<=Date.now()){globalCooldownEnds=null;refreshDashboard();return}renderGlobalCooldownState()},1000);
   window.setInterval(async()=>{if(providerToken&&!document.hidden){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}},55*60*1000);
   document.addEventListener("visibilitychange",async()=>{if(!document.hidden&&providerToken&&staffAccessSource==="twitch_moderator"){const verified=await verifyAutomaticStaff();if(verified&&verified.isStaff===false){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator access ended","Twitch no longer lists this account as a moderator for this channel.");}}});
   window.addEventListener("pageshow",(event)=>{if(event.persisted&&staffAccessSource==="twitch_moderator"){providerToken="";window.sessionStorage.removeItem("toxic-twitch-provider-token");get("staff-sign-in").hidden=false;get("staff-sign-in").textContent="Verify moderator access";message("Moderator verification required","You left Staff Control. Sign in with Twitch again to re-establish moderator access.");}});
