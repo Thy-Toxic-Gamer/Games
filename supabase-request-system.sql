@@ -216,13 +216,71 @@ begin
 end;
 $$;
 
+create or replace function public.schedule_global_request_cooldown(
+  cooldown_ends_local text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  cooldown_deadline timestamptz;
+begin
+  if not exists (
+    select 1
+    from public.request_staff
+    where user_id = auth.uid()
+      and role = 'owner'
+      and can_review = true
+  ) then
+    raise exception 'Owner access required.';
+  end if;
+
+  if cooldown_ends_local is null or char_length(trim(cooldown_ends_local)) = 0 then
+    raise exception 'Choose when the cooldown should end.';
+  end if;
+
+  begin
+    cooldown_deadline := cooldown_ends_local::timestamp at time zone 'America/New_York';
+  exception when others then
+    raise exception 'The cooldown end date and time is invalid.';
+  end;
+
+  if cooldown_deadline <= now() + interval '1 minute' then
+    raise exception 'Choose a cooldown end time at least one minute in the future.';
+  end if;
+
+  insert into public.request_system_settings (
+    singleton, global_cooldown_ends, cooldown_started_at,
+    cooldown_request_id, reset_at, reset_by
+  ) values (
+    true, cooldown_deadline, now(), null, null, null
+  )
+  on conflict (singleton) do update set
+    global_cooldown_ends = excluded.global_cooldown_ends,
+    cooldown_started_at = excluded.cooldown_started_at,
+    cooldown_request_id = null,
+    reset_at = null,
+    reset_by = null;
+
+  return jsonb_build_object(
+    'success', true,
+    'cooldownEnds', cooldown_deadline,
+    'startedAt', now()
+  );
+end;
+$$;
+
 revoke all on function public.request_system_state() from public;
 revoke all on function public.my_request_staff_access() from public;
 revoke all on function public.reset_global_request_cooldown() from public;
+revoke all on function public.schedule_global_request_cooldown(text) from public;
 revoke all on function public.request_service_enabled() from public;
 revoke all on function public.set_request_service_enabled(boolean) from public;
 grant execute on function public.request_system_state() to anon, authenticated;
 grant execute on function public.my_request_staff_access() to authenticated;
 grant execute on function public.reset_global_request_cooldown() to authenticated;
+grant execute on function public.schedule_global_request_cooldown(text) to authenticated;
 grant execute on function public.request_service_enabled() to authenticated;
 grant execute on function public.set_request_service_enabled(boolean) to authenticated;
