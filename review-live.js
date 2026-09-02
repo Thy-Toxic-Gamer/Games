@@ -264,10 +264,31 @@
     if(error){window.alert(error.message||"The request could not be permanently deleted.");button.disabled=false;return;}
     await refreshDashboard();
   }
+  async function permanentlyDeleteAllArchivedRequests(requests,button) {
+    if(staffRole!=="owner"||!requests.length)return;
+    const count=requests.length;
+    const label=count===1?"archived request":"archived requests";
+    if(!window.confirm(`Permanently delete all ${count} ${label}? This cannot be undone.`))return;
+    button.disabled=true;
+    const {data,error}=await client.rpc("owner_delete_all_archived_game_requests");
+    if(error){window.alert(error.message||"The archived requests could not be permanently deleted.");button.disabled=false;return;}
+    const deletedCount=Number(data?.deletedCount??count);
+    window.alert(`Permanently deleted ${deletedCount} archived request${deletedCount===1?"":"s"}.`);
+    await refreshDashboard();
+  }
+
   function renderHistory(requests,options={}) {
     const container=get(options.containerId||"request-history");container.replaceChildren();
     const history=options.archived?requests:requests.filter((request)=>!["pending","awaiting_payment"].includes(request.status));
     if(!history.length){container.append(make("p","request-history-empty",options.emptyMessage||"No reviewed or completed requests yet."));return;}
+    if(options.archived&&staffRole==="owner"){
+      const toolbar=make("div","request-archive-toolbar");
+      const deleteAllButton=make("button","review-button review-button-deny",`Delete All Archived Requests (${history.length})`);
+      deleteAllButton.type="button";
+      deleteAllButton.addEventListener("click",()=>permanentlyDeleteAllArchivedRequests(history,deleteAllButton));
+      toolbar.append(deleteAllButton);
+      container.append(toolbar);
+    }
     history.forEach((request)=>{
       const card=make("article",`request-history-card${options.archived?" is-archived":""}`);
       const head=make("div","request-history-head");
@@ -297,17 +318,15 @@
         scheduleButton.type="button";scheduleButton.addEventListener("click",()=>openScheduleDialog(request));schedulePanel.append(scheduleButton);
         const completeButton=make("button","review-button","Mark Request Complete");completeButton.type="button";completeButton.addEventListener("click",()=>openCompletionDialog(request));schedulePanel.append(completeButton);card.append(schedulePanel);
       }
-      if(isFinalRequestRecord(request)){
+      if(!options.archived&&isFinalRequestRecord(request)){
         const actions=make("div","request-record-actions");
-        if(!options.archived){
-          const archiveButton=make("button","review-button review-button-muted","Move to Archive");
-          archiveButton.type="button";archiveButton.addEventListener("click",()=>archiveRequestRecord(request,archiveButton));actions.append(archiveButton);
-        }
+        const archiveButton=make("button","review-button review-button-muted","Move to Archive");
+        archiveButton.type="button";archiveButton.addEventListener("click",()=>archiveRequestRecord(request,archiveButton));actions.append(archiveButton);
         if(staffRole==="owner"){
           const deleteButton=make("button","review-button review-button-deny","Permanently Delete");
           deleteButton.type="button";deleteButton.addEventListener("click",()=>permanentlyDeleteRequestRecord(request,deleteButton));actions.append(deleteButton);
         }
-        if(actions.childElementCount)card.append(actions);
+        card.append(actions);
       }
       if(options.archived&&request.archived_at){
         const archivedAt=new Date(request.archived_at);const deleteAt=new Date(archivedAt);deleteAt.setMonth(deleteAt.getMonth()+6);
