@@ -15,7 +15,7 @@
     <link rel="preload" as="image" href="assets/game-catalog-hero.webp" fetchpriority="high" />
     <link rel="stylesheet" href="styles.css?release=1.0.49" />
     <link rel="stylesheet" href="dashboard.css?v=1.0.48" />
-    <link rel="stylesheet" href="request-test.css?v=1.0.41" />
+    <link rel="stylesheet" href="request-test.css?v=1.0.42" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="supabase-config.js?v=1.0.23" defer></script>
     <script src="nintendo-classics.js?v=1.0.45" defer></script>
@@ -27,7 +27,7 @@
     <script src="release-years.js?v=1.0.0" defer></script>
     <script src="app.js?v=1.0.48" defer></script>
     <script src="dashboard.js?v=1.0.48" defer></script>
-    <script src="request-test.js?v=1.0.27" defer></script>
+    <script src="request-test.js?v=1.0.28" defer></script>
     <script src="completed-requests.js?v=1.0.0" defer></script>
   </head>
   <body>
@@ -150,30 +150,39 @@
           </form>
           <a class="request-link-button request-link-admin catalog-staff-control" href="review.html">Staff Control</a>
         </section>
-        <section class="next-request-panel" id="next-request-panel" aria-labelledby="next-request-title" aria-live="polite" hidden>
+        <section class="next-request-panel" id="next-request-panel" aria-labelledby="next-request-title" aria-live="polite">
           <header class="next-request-heading">
             <span class="next-request-light" aria-hidden="true"></span>
             <div>
-              <p class="eyebrow">Paid · Approved · Scheduled</p>
+              <p class="eyebrow">Public Game Schedule</p>
               <h2 id="next-request-title">Next Viewer Request</h2>
             </div>
-            <span class="next-request-status" id="next-request-status">Coming Up</span>
+            <span class="next-request-status" id="next-request-status">Checking Schedule</span>
           </header>
           <div class="next-request-details">
-            <article>
+            <article class="next-request-game-card">
               <small>Game</small>
-              <strong id="next-request-game"></strong>
-              <span id="next-request-platform"></span>
+              <strong id="next-request-game">Checking the schedule…</strong>
+              <span id="next-request-platform">System will appear here</span>
             </article>
             <article>
               <small>Request Type</small>
-              <strong id="next-request-type"></strong>
+              <strong id="next-request-type">—</strong>
               <span>Viewer-requested stream</span>
             </article>
             <article>
               <small>Scheduled Stream</small>
-              <time id="next-request-schedule"></time>
+              <time id="next-request-schedule">To be announced</time>
               <span>Eastern Time</span>
+            </article>
+            <article>
+              <small>Original Release</small>
+              <strong id="next-request-year">—</strong>
+              <span>Original game release year</span>
+            </article>
+            <article class="next-request-summary-card">
+              <small>About the Game</small>
+              <p id="next-request-summary">Schedule details will appear after a paid and approved game request receives an agreed stream date.</p>
             </article>
           </div>
         </section>
@@ -291,9 +300,10 @@
           Optional note
           <textarea id="request-note" name="note" maxlength="300" rows="4" placeholder="Why would you like to see this game?"></textarea>
         </label>
-        <p class="request-dialog-rules">Submitting reserves the only viewer request slot while the request is reviewed. No payment is requested until the request is approved.</p>
+        <p class="owner-test-notice" id="owner-test-notice" hidden><strong>Owner Test Request:</strong> This request costs $0 and will be recorded as approved and paid without creating a StreamElements or PayPal transaction. It will use the real request, Discord, scheduling, records, and archive workflow.</p>
+        <p class="request-dialog-rules" id="request-dialog-rules">Submitting reserves the only viewer request slot while the request is reviewed. No payment is requested until the request is approved.</p>
         <p class="request-form-error" id="request-form-error" role="alert"></p>
-        <button class="request-submit" type="submit">Submit Game Request</button>
+        <button class="request-submit" id="request-submit-button" type="submit">Submit Game Request</button>
       </form>
     </dialog>
   </body>
