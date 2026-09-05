@@ -16,7 +16,8 @@
   <script src="catalog-utils.js?v=1.0.2" defer></script>
   <script src="game-summaries.js?v=1.0.1" defer></script>
   <script src="release-years.js?v=1.0.0" defer></script>
-  <script src="review-live.js?v=10.19" defer></script>
+  <script src="catalog-game-details.js?v=1.0.0" defer></script>
+  <script src="review-live.js?v=10.22" defer></script>
 </head>
 <body class="request-page">
   <header class="site-header ecosystem-header"><div class="ecosystem-brand"><a class="ecosystem-brand-home" href="index.html"><strong>⁅𝐓𝐡𝐲𝐓☣︎𝐱𝐢𝐜𝐆𝐚𝐦𝐞𝐫⁆</strong></a><small>GAME CATALOG <span>·</span> <a class="brand-hub" href="https://thy-toxic-gamer.github.io/central-command/">CENTRAL COMMAND</a></small></div><nav class="ecosystem-nav" aria-label="Primary navigation"><a href="index.html">Catalog</a><a href="status.html">Request Status</a><a href="review.html" aria-current="page">Staff Control</a></nav></header>
@@ -208,13 +209,9 @@
       <label>Date and time (Eastern Time)
         <input id="schedule-local" type="datetime-local" required />
       </label>
-      <label>Original release year
-        <input id="schedule-release-year" type="number" min="1950" max="2100" inputmode="numeric" required />
-      </label>
-      <label>Public game summary
-        <textarea id="schedule-game-summary" maxlength="1000" minlength="30" rows="5" required placeholder="Describe the game for viewers in at least 30 characters."></textarea>
-      </label>
-      <p class="schedule-zone-note">These public details appear with the scheduled game on the main catalog page.</p>
+      <div class="request-edit-locked"><strong>Original release year</strong><span id="schedule-release-year"></span></div>
+      <div class="request-edit-locked"><strong>Game summary</strong><p id="schedule-game-summary"></p></div>
+      <p class="schedule-zone-note">Game details come from the catalog and cannot be edited here. Saving changes only the agreed stream date and time.</p>
       <label id="schedule-reason-row" hidden>Reason for changing the schedule
         <textarea id="schedule-reason" maxlength="500" rows="4" placeholder="Tell the viewer why the agreed time must change."></textarea>
       </label>

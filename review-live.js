@@ -166,8 +166,9 @@
     scheduleRequest=request;
     get("schedule-title").textContent=`Schedule ${request.game_title}`;
     get("schedule-local").value=easternInputValue(request.scheduled_for);
-    get("schedule-game-summary").value=request.game_summary||catalogSummary(request.game_title);
-    get("schedule-release-year").value=request.release_year||catalogReleaseYear(request.game_title);
+    const details=window.TOXIC_GAME_DETAILS.forGame(request.game_title,request.platform);
+    get("schedule-game-summary").textContent=details.summary||"No verified game summary is available yet.";
+    get("schedule-release-year").textContent=details.releaseYear||"Release year not yet verified";
     get("schedule-reason-row").hidden=!request.scheduled_for;
     get("schedule-reason").required=Boolean(request.scheduled_for);
     get("schedule-reason").value="";
@@ -462,23 +463,17 @@
     event.preventDefault();if(!scheduleRequest)return;
     const localValue=get("schedule-local").value;
     const reason=get("schedule-reason").value.trim();
-    const summary=get("schedule-game-summary").value.trim();
-    const releaseYear=Number(get("schedule-release-year").value);
     if(!localValue){get("schedule-error").textContent="Choose an Eastern date and time.";return;}
-    if(!Number.isInteger(releaseYear)||releaseYear<1950||releaseYear>2100){get("schedule-error").textContent="Add a valid four-digit release year.";return;}
-    if(summary.length<30){get("schedule-error").textContent="Add a public game summary of at least 30 characters.";return;}
     if(scheduleRequest.scheduled_for&&!reason&&localValue!==easternInputValue(scheduleRequest.scheduled_for)){get("schedule-error").textContent="Explain why the scheduled time is changing.";return;}
     const save=get("save-schedule");save.disabled=true;
     const {error}=await client.rpc("staff_schedule_game_request",{
       request_id:scheduleRequest.id,
       scheduled_local:localValue,
-      schedule_explanation:reason||null,
-      game_summary_text:summary,
-      release_year_value:releaseYear
+      schedule_explanation:reason||null
     });
     save.disabled=false;
     if(error){
-      get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("summary")?"Add a public game summary of at least 30 characters.":error.message?.includes("release year")?"Add a valid four-digit release year.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";
+      get("schedule-error").textContent=error.message?.includes("future")?"Choose a date and time in the future.":error.message?.includes("explanation")?"Explain why the scheduled time is changing.":"This schedule could not be saved. Confirm that payment is complete.";
       return;
     }
     scheduleDialog.close();await refreshDashboard();

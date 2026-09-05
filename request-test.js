@@ -110,8 +110,9 @@
     nextRequestType.textContent=requestGoalLabel(data.requestGoal);
     nextRequestSchedule.textContent=formatEasternSchedule(data.scheduledFor);
     nextRequestSchedule.dateTime=data.scheduledFor;
-    nextRequestYear.textContent=String(data.releaseYear||catalogReleaseYear(data.gameTitle)||"Year to be confirmed");
-    nextRequestSummary.textContent=data.gameSummary||catalogSummary(data.gameTitle)||"A public game summary will be added before the scheduled stream.";
+    const details=window.TOXIC_GAME_DETAILS.forGame(data.gameTitle,data.platform);
+    nextRequestYear.textContent=String(details.releaseYear||"Release year not yet verified");
+    nextRequestSummary.textContent=details.summary||"No verified game summary is available yet.";
     nextRequestPanel.hidden=false;
   }
   async function refreshNextRequest() {
